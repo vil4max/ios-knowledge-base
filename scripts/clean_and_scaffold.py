@@ -118,6 +118,11 @@ def scaffold_and_sidebar() -> None:
             if not readme.exists():
                 readme.write_text(STUB_TEMPLATE.format(title=topic_title), encoding="utf-8")
                 print(f"stub {readme.relative_to(KB)}")
+            elif DRAFT_MARKER in readme.read_text(encoding="utf-8") and substantive_chars(
+                readme.read_text(encoding="utf-8")
+            ) < 120:
+                readme.write_text(STUB_TEMPLATE.format(title=topic_title), encoding="utf-8")
+                print(f"restore {readme.relative_to(KB)}")
             sidebar_lines.append(f"  - [{topic_title}]({url})")
         sidebar_lines.append("")
     (KB / "_sidebar.md").write_text("\n".join(sidebar_lines).rstrip() + "\n", encoding="utf-8")
