@@ -131,6 +131,31 @@
 - Абстракция **тяжелее** задачи (стратегия для одного сравнения).
 - Паттерн дублирует то, что уже даёт **Swift** (value types, protocols, `async/await` вместо ручного Observer).
 
+<a id="swift-patterns-under-the-hood"></a>
+
+## Swift under the hood — language-level patterns
+
+Паттерны — не только то, что ты **выбираешь** в архитектуре. Часть GoF уже **вшита в Swift и stdlib**: каждый `for-in`, `@State`, `sorted()` — ты стоишь на паттерне, даже если не называешь его. Задача — **узнавать** и применять **осознанно**, а не «случайно правильно».
+
+### Quick reference (language)
+
+| Pattern | Problem it solves | Swift hook | Deep dive |
+|--------|-------------------|------------|-----------|
+| **Iterator** | Обойти коллекцию, не раскрывая внутреннее устройство | `Sequence`, `IteratorProtocol`, `makeIterator()`, `for-in` | [Syntax & Idioms](../../swift/syntax/README.md) (combinators over `Sequence`) |
+| **Decorator** | Добавить поведение полю/свойству без подкласса | `@propertyWrapper` — `@State`, `@Published`, `@AppStorage` | [SwiftUI model data](../../ios-sdk/swiftui/README.md) (`@ViewBuilder` — sibling: DSL-декоратор тела view) |
+| **Observer** | Один источник изменений → много подписчиков | `didSet`, `NotificationCenter`, `@Published`, `AsyncStream` | [Observer](#observer-наблюдатель) выше; [Concurrency](../../swift/concurrency/README.md) (`AsyncStream`) |
+| **Builder** | Собрать сложное значение по шагам, читаемо на call site | `@resultBuilder`, `ViewBuilder`, `SceneBuilder` | [SwiftUI `View` / `@ViewBuilder`](../../ios-sdk/swiftui/README.md); app-level [Builder](#builder-строитель) (`URLSessionConfiguration`) |
+| **Prototype (CoW)** | Дорого копировать value; часто читают, редко мутируют | `Array`, `String`, `Dictionary` — shared buffer до первой мутации | [CoW Q-card](../../swift/syntax/README.md) |
+| **Strategy** | Подменить алгоритм без правки клиента | протокол + `struct`; generics / `some` — compile-time; `any` — witness table | [Strategy](#strategy-стратегия) выше |
+| **Facade** | Простой API поверх сложной подсистемы | `sorted()`, `JSONDecoder`, большая часть stdlib | [Facade](#facade-фасад) выше; [Foundation](../../ios-sdk/foundation/README.md) |
+| **Command** | Отложить действие: определил сейчас, выполнил позже | closures, `Task { }`, `UIAction`, undo stacks | — |
+
+### Nuances (interview)
+
+- **`@Published`** — и Observer (рассылка), и Decorator (обёртка над stored property); на собесе полезно назвать **обе** роли.
+- **Strategy «без dynamic dispatch»** — верно для `some Protocol` / monomorphic generics; у **`any Protocol`** — witness tables, паттерн тот же, стоимость другая.
+- **Command:** предпочитай **`Task { }`** / async handlers в новом коде; `DispatchQueue.async` — legacy GCD, тот же паттерн.
+
 ## Apple docs
 
 - [Cocoa Design Patterns](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaDesignPatterns/CocoaDesignPatterns.html) — MVC, delegation, notifications (классический справочник).
@@ -142,8 +167,9 @@
 ### Focus
 
 - **Problem-first:** для каждого из **11 iOS-паттернов** (Delegate, DataSource, Observer, Singleton, Factory, Builder, Coordinator, Adapter, Strategy, Facade, DI) — **какую боль решает** + **1–2 API из UIKit/Foundation/SwiftUI**.
+- **Swift under the hood:** **8 language-level** паттернов ([таблица](#swift-patterns-under-the-hood)) — Iterator, Decorator, Observer, Builder, Prototype/CoW, Strategy, Facade, Command; связь с stdlib и SwiftUI, не только app architecture.
 - **Creational (GoF):** **Abstract Factory**, **Builder**, **Factory Method**, **Prototype**, **Singleton** — одна фраза «зачем»; для **Singleton** — плюсы/минусы и **DI** как альтернатива.
-- **Развести пары:** Delegate vs DataSource vs Observer; Adapter vs Facade; Factory vs Builder; Coordinator vs «толстый» VC.
+- **Развести пары:** Delegate vs DataSource vs Observer; Adapter vs Facade; Factory vs Builder; Coordinator vs «толстый» VC; Decorator (`@propertyWrapper`) vs Adapter (чужой API).
 
 ### Defer
 
@@ -162,7 +188,10 @@
 - **Strategy:** взаимозаменяемые алгоритмы за протоколом.
 - **Adapter / Facade:** один чужой API vs целая подсистема.
 - **Dependency Injection:** зависимости снаружи — [IV/16 Q51](../../IV.%20Архитектура/16%20MVC%20→%20MVVM%20→%20VIPER%20→%20Clean%20→%20TCA/Architecture-MVC-MVVM-VIPER-Clean-TCA.md).
-- **Prototype / copy:** `NSCopying`, value type copy semantics, deep vs shallow.
+- **Prototype / copy:** `NSCopying`, value type copy semantics, deep vs shallow — [CoW](../../swift/syntax/README.md).
+- **Iterator:** `Sequence` + `for-in`; custom traversal без раскрытия storage.
+- **Decorator:** `@propertyWrapper` — поведение поверх свойства.
+- **Command:** closure / `Task` / `UIAction` как отложенное действие.
 
 ## 🏋️ Exercises
 
@@ -170,7 +199,8 @@
 2. На одном экране со списком: кто **DataSource**, кто **Delegate**, что уйдёт в **Coordinator** при добавлении второго flow.
 3. Смоделировать **Factory** для аналитики: события разных типов, общий интерфейс `track`.
 4. **Adapter:** описать mapping DTO → domain для одного endpoint; **Facade:** один метод сервиса, скрывающий network + cache.
-5. **Strategy:** вынести сортировку/фильтр списка в протокол; unit-тест с mock strategy.
+5. **Strategy:** вынести сортировку/фильтр списка в протокол; unit-test с mock strategy.
+6. **Swift under the hood:** для каждого из [8 language patterns](#swift-patterns-under-the-hood) — один пример из своего кода или stdlib; где паттерн уже есть «бесплатно», а где вводишь вручную.
 
 ## 🌟 Senior+ (strategic)
 
@@ -196,7 +226,7 @@
 - **Answer (RU):** Нет — это **именованные решения типовых проблем** (делегирование поведения, источник данных для списка, реакция на события, единая точка создания объектов). На iOS они **уже в SDK**: `UITableViewDelegate`, `NotificationCenter`, `URLSession.shared`. На собесе важнее **какую проблему снимает паттерн**, а не определение из книги.
 - **Answer (EN):** Patterns name recurring solutions to recurring problems—not a clean-code badge. iOS APIs embody many of them; interview value is stating the problem solved and trade-offs.
 - **Устный канон:** «Паттерн = **проблема → проверенный приём**; не вводить, если только усложняет.»
-- **Доп. информация:** [problem-first map](#ios-design-patterns-problem-first); [`assets/ios-design-patterns-overview.png`](assets/ios-design-patterns-overview.png).
+- **Доп. информация:** [problem-first map](#ios-design-patterns-problem-first); [Swift under the hood](#swift-patterns-under-the-hood); [`assets/ios-design-patterns-overview.png`](assets/ios-design-patterns-overview.png).
 - **Playground:** [open](design_patterns.playground/Contents.swift)
 
 ### Q7
@@ -231,5 +261,13 @@
 - **Answer (EN):** MVVM handles screen state; Coordinator owns routing and module assembly so view models stay navigation-agnostic.
 - **Устный канон:** «**MVVM** — экран; **Coordinator** — куда дальше и из чего собрать следующий модуль.»
 - **Playground:** [open](design_patterns.playground/Contents.swift)
+
+### Q11
+- **Question (RU):** Какие паттерны **вшиты в Swift**, а не только в UIKit/SwiftUI?
+- **Question (EN):** Which design patterns are built into Swift itself—not only the iOS SDK?
+- **Answer (RU):** **Iterator** — `Sequence` / `for-in`; **Decorator** — `@propertyWrapper` (`@State`, `@Published`); **Observer** — `didSet`, notifications, `@Published`; **Builder** — `@resultBuilder` / `ViewBuilder`; **Prototype** — Copy-on-Write у `Array`/`String`; **Strategy** — протоколы и generics; **Facade** — stdlib (`sorted`, `JSONDecoder`); **Command** — closures, `Task`, `UIAction`. Смысл: ты уже пишешь на паттернах — важно **называть** проблему и не изобретать обёртку, если язык уже даёт механизм.
+- **Answer (EN):** Swift embeds Iterator (`Sequence`), Decorator (`@propertyWrapper`), Observer, Builder (`@resultBuilder`), Prototype (CoW), Strategy (protocols/generics), Facade (stdlib), and Command (closures/async work items). Recognize them to use the language intentionally.
+- **Устный канон:** «Паттерн в Swift — не всегда класс с именем *Strategy*; часто это **языковая фича**.»
+- **Доп. информация:** [Swift under the hood](#swift-patterns-under-the-hood); [Syntax CoW](../../swift/syntax/README.md); [SwiftUI `@ViewBuilder`](../../ios-sdk/swiftui/README.md).
 
 <!-- knowledge-cards-canonical:end -->
