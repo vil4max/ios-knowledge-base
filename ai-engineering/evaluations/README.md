@@ -28,6 +28,7 @@
 ### Defer
 
 - Full ML benchmark suites (MMLU, etc.) — not app-level eval.
+- **IDE-generated Swift** — validate with unit tests and [AI-assisted TDD](../../quality/testing/notes/ai-assisted-tdd.md), not this eval framework.
 - Human rating infrastructure at scale — mention spot-check + Model Judge.
 - Statistical significance formulas — qualitative "compare runs in Xcode" enough for interview.
 

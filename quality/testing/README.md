@@ -51,6 +51,7 @@
 - **Test Plan (тест-план в Xcode):** `.xctestplan` — какие тесты, какие конфигурации (язык, диагностика, повторы), подмножества для CI vs pre-release; теги Swift Testing / категории XCTest.
 - **Swift Testing vs XCTest:** новый фреймворк с `#expect`, параметризацией, тегами; XCTest остаётся стандартом для legacy и части CI-интеграций; в одном бандле могут сосуществовать.
 - **TDD / test-after:** TDD — цикл red–green–refactor; test-after — тесты после кода; на собесе важно уметь обосновать выбор под риск и дедлайн.
+- **AI-assisted TDD:** LLM ускоряет red/green; инженер владеет triangulation, refactor тестов и constraints-файлом; автотесты — детерминированная валидация сгенерированного Swift — см. [AI-assisted TDD](notes/ai-assisted-tdd.md).
 - **Regression test (регрессионный):** тест на конкретный баг (красный → фикс → зелёный); высокий ROI.
 - **Contract test (контрактный):** клиент ↔ API (схема, фикстуры ответов); ловит расхождение до продакшена.
 
@@ -82,8 +83,8 @@
 
 ### Последние заметки
 
+- [AI-assisted TDD — LLM, constraints, triangulation (RU)](notes/ai-assisted-tdd.md)
 - [Senior unit testing — вопросы, задачи, чеклист (RU)](notes/Senior-Unit-Testing-Mastery-RU.md)
-- `notes/event-stream-sequence-testing-in-swift-testing.md`
 
 ---
 
@@ -217,6 +218,22 @@ func testSystemInPhases() async {
 Ниже — Q&A по теме.
 
 <!-- knowledge-cards-canonical:start -->
+
+### Q52
+- **Question (RU):** как валидировать Swift-код, сгенерированный LLM / coding agent?
+- **Question (EN):** How do you validate LLM-generated Swift code?
+- **Answer (RU):** **Unit/integration** тесты на поведение и регрессии (детерминированные); **ревью** до merge; **constraints-файл** (`CLAUDE.md`, `AGENTS.md`) с правилами TDD и TPP — не wiki. Инженер решает triangulation и удаление устаревших тестов. **On-device LLM-фичи** приложения — отдельно [evaluations](../../ai-engineering/evaluations/README.md), не вместо domain tests.
+
+- **Answer (EN):** Deterministic unit/integration tests plus human review; project constraints encode TDD rules. Engineer owns triangulation and test lifecycle. Product LLM features need eval suites separately.
+
+- **Устная заготовка (RU):** тесты — фильтр для сгенерированного кода; человек — за refactor и «какой тест устарел»; evals — для LLM в продукте.
+
+- **Устная заготовка (EN):** Tests gate generated code; human owns test evolution; evals are for in-app LLM behavior.
+
+- **Follow-up:** чем AI-assisted TDD отличается от Evaluations framework?
+- **Follow-up answer:** Unit-тесты проверяют **ваш Swift** (домен, VM, мапперы). Evaluations — **недетерминированные** ответы модели в фиче (golden set, tool trajectory).
+
+- **Notes:** [AI-assisted TDD](notes/ai-assisted-tdd.md)
 
 ### Q37
 - **Question (RU):** какие тесты приоритетны под deadline (дедлайн)?
