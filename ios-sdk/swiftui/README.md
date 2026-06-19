@@ -13,6 +13,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 - [Image](https://developer.apple.com/documentation/swiftui/image) — `AsyncImage`; caching — [Image Caching note](../../data-and-network/caching-offline-first/notes/Image-Caching-UIKit-SwiftUI.md) (**Q35**)
 - [Accessibility](https://developer.apple.com/documentation/swiftui/view-accessibility) — labels, traits, VoiceOver.
 - [List](https://developer.apple.com/documentation/swiftui/list) — dynamic rows, sections, edit mode; note [swiftui-list-dynamic-data.md](notes/swiftui-list-dynamic-data.md)
+- [View.task](https://developer.apple.com/documentation/swiftui/view/task(priority:_:)) — async load tied to view lifetime; note [swiftui-data-loading-task.md](notes/swiftui-data-loading-task.md)
 
 ## SwiftUI components — quick map
 
@@ -37,6 +38,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 - Переиспользуемые немодальные UI-паттерны обратной связи (toast) в SwiftUI.
 - Практические паттерны MapKit в SwiftUI: состояние карты, поиск и аннотации.
 - **View identity:** стабильные `id` в `ForEach`; избегать лишних пересозданий stateful child views.
+- **Data loading:** `.task` / `.task(id:)` + FSM в `@Observable` VM; не API в `.onAppear` + неструктурированный `Task`.
 
 ### Defer
 
@@ -62,6 +64,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 
 ### Последние заметки
 
+- `notes/swiftui-data-loading-task.md` — `.task` vs `.onAppear`, `LoadState`, cooperative cancel, `.refreshable`
 - `notes/swiftui-list-dynamic-data.md` — `List`, sections, swipe, edit mode, empty state, stable `id`
 - `notes/migrating-to-observable-without-breaking-your-app.md`
 - `notes/swiftui-toast-in-5-steps.md`
@@ -413,6 +416,42 @@ struct DetailView: View {
 **Follow-up:** Заменяет ли Observation **Combine**?
 
 **Доп. информация:** Внутри `@Observable` нужный SwiftUI-ховер на чтение реализован через `withObservationTracking { read } onChange: { … }` — этот же API можно использовать вручную вне SwiftUI (например, в логировании/аналитике), но в обычной View им пользоваться не приходится. `@Bindable` нужен только когда дочерней View нужны **биндинги** (`$counter.value`); иначе достаточно передать `let counter: Counter`.
+
+---
+
+### Q-card: Data loading — `.task` vs `.onAppear`
+
+**Вопрос (RU):** Почему не стоит грузить данные с API в `.onAppear`? Что использовать вместо этого?
+
+**Ответ (RU):** Зацепка: **`.onAppear` — lifecycle, не контракт на загрузку**.
+
+- `View` пересоздаётся часто; `.onAppear` срабатывает при **каждом** появлении → повторные запросы без guard/кэша.
+- `Task { await load() }` внутри `.onAppear` — **неструктурированная** задача; SwiftUI **не отменяет** её при disappear (нужен ручной wiring → утечки трафика и гонки с UI).
+- Вместо разрозненных `isLoading` / `error` / `data` — **`enum LoadState`** в **`@MainActor` `@Observable` ViewModel** (ровно одно состояние экрана).
+- В view — **`.task`** или **`.task(id:)`** ([Apple](https://developer.apple.com/documentation/swiftui/view/task(priority:_:))): async из коробки, **cooperative cancel** при исчезновении view. Повторный fetch при возврате на экран блокируют **`guard case .idle`** / уже `.loaded` / VM выше по навигации — **не сам `.task`**.
+- Pull-to-refresh — **`.refreshable`**, отдельный путь `retry()`.
+
+**Ответ (EN):** Don't use `.onAppear` for primary async API loads: it fires on every appearance and `Task { }` inside it isn't tied to view lifetime. Use a screen-state `enum` in an `@Observable` ViewModel plus `.task` or `.task(id:)` for structured async with automatic cancellation. Prevent duplicate fetches with guards or cached `.loaded`, not by switching modifiers alone.
+
+**Устная заготовка (RU):**
+
+1. `.onAppear` — «экран виден», не «загрузи данные».
+2. `.task` — structured async + отмена с view.
+3. FSM в VM — один state, без loader+error одновременно.
+4. Дубли запросов — guard/кэш, не магия `.task`.
+
+**Устная заготовка (EN):**
+
+1. `.onAppear` is lifecycle, not a data-loading API.
+2. `.task` binds async work to view lifetime.
+3. One `enum` state in the ViewModel.
+4. Dedupe with guards/cache, not modifier choice alone.
+
+**Follow-up (RU):** Когда `.onAppear` допустим?
+
+**Follow-up answer (RU):** Синхронные side effects: аналитика, scroll, geometry — без async fetch.
+
+**Notes:** [swiftui-data-loading-task.md](notes/swiftui-data-loading-task.md)
 
 ---
 
