@@ -13,6 +13,20 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 - [Image](https://developer.apple.com/documentation/swiftui/image) — `AsyncImage`; caching — [Image Caching note](../../data-and-network/caching-offline-first/notes/Image-Caching-UIKit-SwiftUI.md) (**Q35**)
 - [Accessibility](https://developer.apple.com/documentation/swiftui/view-accessibility) — labels, traits, VoiceOver.
 
+## SwiftUI components — quick map
+
+**Инфографика:** [`assets/swiftui-components-overview.png`](assets/swiftui-components-overview.png) — пять блоков: Layout, Navigation, Lists, Text/Media, Input.
+
+Каталог для **ориентации**; на собесе и в проде важнее state, identity, владение навигацией и профилирование — см. Q-cards и **Focus vs Defer** ниже.
+
+| Area | Building blocks | Go deeper in this repo |
+|------|-----------------|------------------------|
+| **Layout & structure** | `VStack` / `HStack` / `ZStack`, `Spacer`, `Divider`, `ScrollView`, `ScrollViewReader`, `LazyVStack` / `LazyHStack` / `LazyVGrid` / `LazyHGrid`, `Grid` / `GridRow`, `Group`, `Section`, `Form`, `GeometryReader`, alignment guides | **Defer** ниже (`GeometryReader`, custom `Layout`); [Auto Layout](../auto-layout/README.md) |
+| **Navigation & app structure** | `NavigationStack`, `NavigationSplitView`, `NavigationLink`, `navigationDestination`, `TabView`, `PageTabViewStyle`, `toolbar`, `searchable`, `refreshable` | [Navigation & Deep Links](../../architecture/navigation/README.md); Q9 (multilevel dismiss) |
+| **Lists & collections** | `List`, `ForEach`, `OutlineGroup`, `swipeActions`, `listStyle`, row insets / separators | [Performance](../../quality/performance/README.md) (stable `id`, lazy containers); Q11 (view identity) |
+| **Text & media** | `Text`, `TextEditor`, `AttributedString`, `Image`, `AsyncImage`, SF Symbols, `ProgressView`, `Gauge`, Swift Charts, `Map`, `VideoPlayer` | Map TL;DR ниже; [Image Caching](../../data-and-network/caching-offline-first/notes/Image-Caching-UIKit-SwiftUI.md) |
+| **Input controls** | `Button`, `Link`, `Toggle`, `Slider`, `Stepper`, `Picker` (segmented / wheel / menu), `ColorPicker`, `DatePicker`, `TextField`, `SecureField`, `Menu`, `ContextMenu`, `ControlGroup`, `Label`, `GroupBox`, `DisclosureGroup` | Form + state — Q-cards **Observation** / `@Bindable` |
+
 ## 🎯 Focus vs Defer
 
 ### Focus
