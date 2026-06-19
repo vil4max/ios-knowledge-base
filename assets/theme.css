@@ -11,6 +11,69 @@
   --gh-toggle-bg: #f6f8fa;
   --gh-toggle-border: #d0d7de;
   --gh-toggle-hover: #eef1f4;
+  --gh-font-size: 17px;
+  --gh-line-height: 1.7;
+  --gh-sidebar-font-size: 15px;
+  --gh-sidebar-line-height: 1.65;
+}
+
+html {
+  font-size: var(--gh-font-size);
+}
+
+body {
+  font-size: 1rem !important;
+  line-height: var(--gh-line-height) !important;
+}
+
+.sidebar ul li a {
+  font-size: var(--gh-sidebar-font-size) !important;
+  line-height: var(--gh-sidebar-line-height) !important;
+}
+
+.sidebar > h1 {
+  font-size: 1.35rem !important;
+}
+
+.markdown-section p,
+.markdown-section li,
+.markdown-section ol,
+.markdown-section ul {
+  line-height: var(--gh-line-height) !important;
+}
+
+.markdown-section h1 {
+  font-size: 2.125rem !important;
+}
+
+.markdown-section h2 {
+  font-size: 1.75rem !important;
+}
+
+.markdown-section h3 {
+  font-size: 1.5rem !important;
+}
+
+.markdown-section h4 {
+  font-size: 1.25rem !important;
+}
+
+.markdown-section :not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) code {
+  font-size: 0.9rem !important;
+}
+
+.markdown-section pre > code {
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+}
+
+.search input {
+  font-size: 1rem !important;
+}
+
+.search .results-panel .matching-post {
+  font-size: 0.95rem !important;
+  line-height: var(--gh-line-height) !important;
 }
 
 html[data-theme="dark"] {
