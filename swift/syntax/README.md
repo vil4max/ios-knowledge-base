@@ -119,6 +119,7 @@
 | `static` vs `class` | `StaticVsClassMethodsInterview.playground` |
 | memberwise / class init | `ClassMemberwiseInitInterview.playground` |
 | optionals baseline | `OptionalsJuniorInterview.playground` |
+| `map` / `flatMap` / `compactMap` / `reduce` | `MapFlatMapCompactMapInterview.playground` |
 | широкий обзор value/reference/layout (не один вопрос) | `SwiftCore.playground` |
 
 ---
@@ -545,11 +546,15 @@ let sections = [Section] {
 - **Question (EN):** `map` / `flatMap` / `compactMap` / `reduce` in Swift and Combine—distinctions and related sequence operators?
 - **Answer (RU):** Зацепка: это в основном **функции высшего порядка** над **`Sequence` / `Collection`** (и над **`Publisher`** в Combine) — **трансформируют или агрегируют** поток элементов **без ручного цикла** (часто **читаемее** и композируемо с **`lazy`**).
 
-    **`map`:** по каждому элементу **один результат** того же «размера» (тип может меняться): `[1,2].map { $0 * 2 }` → `[2,4]`.
+    **`map`:** по каждому элементу **один результат** того же «размера» (тип может меняться): `[1,2].map { $0 * 2 }` → `[2,4]`. Было 3 элемента — останется 3.
 
-    **`compactMap`:** как `map`, но замыкание возвращает **`Optional`**; из результата **выкидываются** `.none`, **остаются развёрнутые** значения. (Исторически тот кейс называли `flatMap` на последовательности — **deprecated** в пользу `compactMap`, см. **SE-0187**.)
+    **`map` + `Optional`:** если transform возвращает **`Optional`**, `map` **не удаляет** `nil`: `["1","2","3"].map { Int($0) }` → `[Optional(1), Optional(2), Optional(3)]`.
 
-    **`flatMap` (последовательность):** замыкание возвращает **другую последовательность**; все куски **склеиваются в один уровень** (не рекурсивно «до атома» — **один** уровень flatten). Пример: `[[1,2],[3]].flatMap { $0 }` → `[1,2,3]`. **Не путать** с `compactMap`: если вернуть **`String`** из `Character`-последовательности, `flatMap` может **развернуть посимвольно** — классический собеседовательский подводный камень.
+    **`compactMap`:** как `map`, но замыкание возвращает **`Optional`**; из результата **выкидываются** `.none`, **остаются развёрнутые** значения: `["1","x","3"].compactMap { Int($0) }` → `[1, 3]`. (Исторически тот кейс называли `flatMap` на последовательности — **deprecated** в пользу `compactMap`, см. **SE-0187**.)
+
+    **`flatMap` (последовательность):** замыкание возвращает **другую последовательность**; все куски **склеиваются в один уровень** (не рекурсивно «до атома» — **один** уровень flatten). Пример: `[[1,2],[3,4]].flatMap { $0 }` → `[1,2,3,4]`. **Не путать** с `compactMap`: если вернуть **`String`** из `Character`-последовательности, `flatMap` может **развернуть посимвольно** — классический собеседовательский подводный камень.
+
+    **Сравнение на строках:** `["Hi","Swift"].map { Array($0) }` → `[["H","i"],["S","w","i","f","t"]]`; `flatMap { Array($0) }` → `["H","i","S","w","i","f","t"]`.
 
     **`Optional.map` / `Optional.flatMap`:** `map` поднимает `Wrapped`; `flatMap` — **bind**: если внутри снова optional, **не получаем** `T??` «лесенку», а один уровень.
 
@@ -630,7 +635,7 @@ let sections = [Section] {
 - **Follow-up (RU):** зачем **`lazy`**?
 - **Follow-up answer (RU):** цепочка **`lazy.map.filter`** не строит **промежуточные массивы** целиком — элементы вычисляются **по требованию** при обходе (**индекс/итератор**); полезно на **больших** данных, но каждый проход может заново вычислять замыкания.
 
-- **Доп. информация:** [Habr H21](https://habr.com/en/articles/726388/); [SE-0187 `compactMap`](https://github.com/apple/swift-evolution/blob/main/proposals/0187-introduce-filtermap.md); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.21; [Swift Algorithms](https://github.com/apple/swift-algorithms); **V/20 Networking** (Combine в сетевом слое при необходимости).
+- **Доп. информация:** [Habr H21](https://habr.com/en/articles/726388/); [SE-0187 `compactMap`](https://github.com/apple/swift-evolution/blob/main/proposals/0187-introduce-filtermap.md); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.21; [Swift Algorithms](https://github.com/apple/swift-algorithms); **V/20 Networking** (Combine в сетевом слое при необходимости). Playground: [MapFlatMapCompactMapInterview.playground](MapFlatMapCompactMapInterview.playground/Contents.swift) — runnable drill по PDF-карточкам (`map` count, `Optional` trap, `compactMap`, nested `flatMap`).
 
 
 ### Q52
