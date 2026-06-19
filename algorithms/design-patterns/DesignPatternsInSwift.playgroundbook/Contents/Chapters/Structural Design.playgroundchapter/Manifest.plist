@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Structural Design Patterns</string>
+	<key>Pages</key>
+	<array>
+		<string>Introduction.playgroundpage</string>
+		<string>Adapter Conceptual Example.playgroundpage</string>
+		<string>Adapter Real World Example.playgroundpage</string>
+		<string>Bridge Conceptual Example.playgroundpage</string>
+		<string>Bridge Real World Example.playgroundpage</string>
+		<string>Composite Conceptual Example.playgroundpage</string>
+		<string>Composite Real World Example.playgroundpage</string>
+		<string>Decorator Conceptual Example.playgroundpage</string>
+		<string>Decorator Real World Example.playgroundpage</string>
+		<string>Facade Conceptual Example.playgroundpage</string>
+		<string>Facade Real World Example.playgroundpage</string>
+		<string>Flyweight Conceptual Example.playgroundpage</string>
+		<string>Flyweight Real World Example.playgroundpage</string>
+		<string>Proxy Conceptual Example.playgroundpage</string>
+		<string>Proxy Real World Example.playgroundpage</string>
+	</array>
+</dict>
+</plist>

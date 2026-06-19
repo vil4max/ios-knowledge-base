@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>快速排序的平均时间复杂度为 `O(n log n)`，但如果枢轴选择不当，最坏情况下可能退化为 `O(n²)`。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>为提高性能，可选择随机枢轴或使用“三数中值法”作为枢轴。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

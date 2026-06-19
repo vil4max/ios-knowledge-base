@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie einen Zähler, um die offenen Klammern zu verfolgen.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Wenn Sie auf eine schließende Klammer `)` stoßen, ohne dass es eine passende offene Klammer gibt, ist die Zeichenkette unausgeglichen.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

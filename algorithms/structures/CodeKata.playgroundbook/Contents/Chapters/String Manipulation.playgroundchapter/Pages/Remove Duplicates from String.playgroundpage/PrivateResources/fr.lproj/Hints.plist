@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez un `Set` pour suivre les caractères qui ont déjà été ajoutés.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Alternativement, utilisez `filter` pour créer une nouvelle chaîne contenant uniquement des caractères uniques.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

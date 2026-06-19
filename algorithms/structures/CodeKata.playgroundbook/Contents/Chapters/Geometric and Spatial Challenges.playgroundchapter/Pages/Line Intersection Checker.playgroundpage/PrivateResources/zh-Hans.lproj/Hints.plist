@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用方向检查确定点的相对方向。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>如果一条线段“跨越”了另一条线段的两个端点，则线段相交。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

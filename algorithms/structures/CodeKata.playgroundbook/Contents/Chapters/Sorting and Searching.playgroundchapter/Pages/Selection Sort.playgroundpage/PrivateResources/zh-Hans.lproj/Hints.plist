@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>选择排序的时间复杂度为 `O(n²)`，因此对于大型数组可能较慢。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>使用嵌套循环：一个循环迭代每个位置，另一个循环找到未排序部分中的最小元素。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

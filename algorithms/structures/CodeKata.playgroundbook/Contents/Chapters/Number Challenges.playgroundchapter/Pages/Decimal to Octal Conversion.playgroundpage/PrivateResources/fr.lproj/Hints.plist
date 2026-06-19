@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez une boucle pour diviser le nombre par 8 et suivre les restes.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Similaire au défi précédent, `String(number, radix: 8)` effectuera cette conversion en Swift, mais essayez d'abord de l'implémenter manuellement.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

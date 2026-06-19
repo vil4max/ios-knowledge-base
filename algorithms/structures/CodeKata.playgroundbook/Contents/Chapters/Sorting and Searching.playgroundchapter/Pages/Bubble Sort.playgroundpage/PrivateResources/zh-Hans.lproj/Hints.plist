@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>冒泡排序的时间复杂度为 `O(n²)`，对于较大的数组可能较慢。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>使用一个标志来跟踪数组是否在一次遍历中进行了交换，如果数组已经排序，则可以提前停止。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

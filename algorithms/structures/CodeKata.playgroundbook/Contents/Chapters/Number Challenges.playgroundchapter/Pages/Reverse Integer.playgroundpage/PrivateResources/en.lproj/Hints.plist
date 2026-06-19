@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Use modulus and division to extract and reverse the digits.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Check for overflow by comparing the reversed integer to the 32-bit range.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>L'algorithme d'Euclide est efficace pour calculer le PGCD.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Rappelez-vous que `gcd(a, 0) = a`.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

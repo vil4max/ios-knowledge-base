@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Usa bucles anidados para intercambiar las filas y columnas.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Asegúrate de que la función pueda manejar matrices no cuadradas (por ejemplo, matrices 2x3 o 3x2).</string>
+        </dict>
+    </array>
+</dict>
+</plist>

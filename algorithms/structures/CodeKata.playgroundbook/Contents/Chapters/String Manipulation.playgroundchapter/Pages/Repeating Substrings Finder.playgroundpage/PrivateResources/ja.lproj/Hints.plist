@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>入れ子になったループを使用して、各部分文字列を文字列の残り部分と比較します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>すでに確認された部分文字列を保存するために `Set` を使用することを検討してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

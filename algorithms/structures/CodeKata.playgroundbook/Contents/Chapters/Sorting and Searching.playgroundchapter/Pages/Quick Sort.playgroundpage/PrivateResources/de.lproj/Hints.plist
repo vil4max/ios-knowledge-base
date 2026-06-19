@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Quicksort hat eine durchschnittliche Zeitkomplexität von `O(n log n)`, kann jedoch im schlimmsten Fall bei schlechter Pivot-Auswahl auf `O(n²)` abfallen.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Um die Leistung zu verbessern, wählen Sie ein zufälliges Pivot oder verwenden Sie den Median von drei Elementen.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Le tri par sélection a une complexité en temps de `O(n²)`, il peut donc être lent pour de grands tableaux.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez des boucles imbriquées : une pour parcourir chaque position et une autre pour trouver l'élément minimum dans la portion non triée restante.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

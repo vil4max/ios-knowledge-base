@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez un dictionnaire pour compter les occurrences de chaque caractère au fur et à mesure que vous parcourez la chaîne.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Considérez les cas particuliers, comme une chaîne vide ou une chaîne où tous les caractères se répètent.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>このアルゴリズムはソートされた配列でのみ機能します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>配列を半分に分割し、探索範囲を徐々に狭めるためにループまたは再帰を使用します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

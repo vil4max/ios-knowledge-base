@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用 `components(separatedBy:)` 方法按空格分割字符串。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>考虑修剪字符串的首尾空格以确保统计准确。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

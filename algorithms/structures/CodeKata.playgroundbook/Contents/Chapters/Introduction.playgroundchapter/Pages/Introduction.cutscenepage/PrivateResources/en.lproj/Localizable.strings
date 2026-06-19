@@ -1,0 +1,4 @@
+/* English */
+"first_paragraph" = "A **code kata** is a programming exercise designed to be repeated regularly, helping developers sharpen their coding skills, improve problem-solving abilities, and deepen their understanding of language features. Inspired by martial arts practice, where “kata” refers to structured, repeated movements to build mastery, code katas focus on discipline, technique, and incremental improvement.";
+"second_paragraph" = "By practicing code katas in **Swift**, you’ll engage in a series of small, purposeful challenges that reinforce coding fundamentals, promote clean code habits, and encourage continuous growth in your craft.";
+"begin" = "Begin your practice opening the list of katas at the top-left.";

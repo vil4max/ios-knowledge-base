@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie eine Schleife, um die Zahl wiederholt durch 2 zu teilen und die Reste zu verfolgen.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Swift bietet auch `String(number, radix: 2)`, aber versuchen Sie, es manuell zu implementieren, um die Umwandlungslogik zu üben.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Creational Design Patterns</string>
+	<key>Pages</key>
+	<array>
+		<string>Introduction.playgroundpage</string>
+		<string>Factory Method Conceptual Example.playgroundpage</string>
+		<string>Factory Method Real World Example.playgroundpage</string>
+		<string>Abstract Factory Conceptual Example.playgroundpage</string>
+		<string>Abstract Factory Real World Example.playgroundpage</string>
+		<string>Builder Conceptual Example.playgroundpage</string>
+		<string>Builder Real World Example.playgroundpage</string>
+		<string>Prototype Conceptual Example.playgroundpage</string>
+		<string>Prototype Real World Example.playgroundpage</string>
+		<string>Singleton Conceptual Example.playgroundpage</string>
+		<string>Singleton Real World Example.playgroundpage</string>
+	</array>
+</dict>
+</plist>

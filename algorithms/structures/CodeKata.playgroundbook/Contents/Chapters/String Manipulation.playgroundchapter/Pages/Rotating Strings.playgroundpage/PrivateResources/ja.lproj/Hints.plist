@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>巻き戻し処理にはモジュラー演算を使用します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>回転回数が文字列の長さを超える場合を考慮して処理してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

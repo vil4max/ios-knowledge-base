@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Cet algorithme ne fonctionne que sur des tableaux triés.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez une boucle ou la récursivité pour diviser le tableau en deux parties, réduisant ainsi la plage de recherche à chaque étape.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

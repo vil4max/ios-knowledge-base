@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Usa un diccionario para almacenar los conteos y actualízalo mientras recorres la cadena.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Asegúrate de manejar adecuadamente espacios, signos de puntuación y caracteres en mayúscula si deben ser contados.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

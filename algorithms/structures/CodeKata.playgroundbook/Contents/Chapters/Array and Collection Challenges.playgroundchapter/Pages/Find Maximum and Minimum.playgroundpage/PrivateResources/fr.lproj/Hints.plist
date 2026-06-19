@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez les méthodes `min()` et `max()`, ou parcourez manuellement pour trouver les deux valeurs.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Assurez-vous que la fonction gère correctement un tableau vide en retournant `nil`.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

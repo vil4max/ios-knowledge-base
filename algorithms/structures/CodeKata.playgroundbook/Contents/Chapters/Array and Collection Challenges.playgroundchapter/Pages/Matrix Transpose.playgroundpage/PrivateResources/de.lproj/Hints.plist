@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie verschachtelte Schleifen, um die Zeilen und Spalten zu vertauschen.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Stellen Sie sicher, dass die Funktion nicht-quadratische Matrizen (z. B. 2x3 oder 3x2 Matrizen) verarbeiten kann.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

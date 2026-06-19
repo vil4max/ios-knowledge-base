@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用字典将每个罗马数字字符映射到其整数值。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>注意处理小数字在大数字之前的情况，这表示需要减法。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

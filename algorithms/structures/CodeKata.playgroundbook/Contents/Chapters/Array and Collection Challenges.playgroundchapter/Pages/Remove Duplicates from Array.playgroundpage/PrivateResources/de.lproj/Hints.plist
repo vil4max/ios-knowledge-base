@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie ein `Set` oder überprüfen Sie die Einhaltung, um doppelte Werte zu verfolgen und herauszufiltern.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Bewahren Sie die ursprüngliche Reihenfolge der Elemente im resultierenden Array.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

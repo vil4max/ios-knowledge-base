@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>You have the option to choose from the **PublicResources** available within the project, or alternatively, you can import images from the Files app, Photos app, or directly from the Camera app.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>In this example, we utilize image literals; however, you can also employ `UIImage(named: "photo.png")` for this purpose.</string>
+            <key>SpoilerButtonTitle</key>
+            <string>Show Spoiler</string>
+        </dict>
+        <dict>
+            <key>FileReference</key>
+            <string>MyHint.txt</string>
+        </dict>
+    </array>
+</dict>
+</plist>

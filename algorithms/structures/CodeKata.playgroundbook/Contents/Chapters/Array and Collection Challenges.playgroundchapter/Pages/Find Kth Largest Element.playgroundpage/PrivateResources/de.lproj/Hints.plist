@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Sortieren Sie das Array und greifen Sie dann auf das K-te Element von hinten zu.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Für einen effizienteren Ansatz verwenden Sie einen Min-Heap oder den Quickselect-Algorithmus.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

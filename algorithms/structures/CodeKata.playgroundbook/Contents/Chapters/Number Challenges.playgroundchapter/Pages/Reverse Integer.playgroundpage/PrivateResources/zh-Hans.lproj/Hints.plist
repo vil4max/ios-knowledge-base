@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用取模和除法提取并反转数字。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>通过比较反转后的整数与 32 位范围，检查是否溢出。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

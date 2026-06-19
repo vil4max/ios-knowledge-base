@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utiliza el operador módulo % para verificar la divisibilidad.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Este desafío es un clásico en entrevistas técnicas porque evalúa la comprensión del flujo de control y la lógica condicional básica.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

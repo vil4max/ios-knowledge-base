@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>La fórmula del Shoelace es útil para calcular el área de un polígono simple basado en sus vértices.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Asegúrate de que las coordenadas estén listadas en un orden consistente (ya sea en el sentido de las agujas del reloj o en sentido contrario).</string>
+        </dict>
+    </array>
+</dict>
+</plist>

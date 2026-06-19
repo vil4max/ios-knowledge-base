@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Use nested loops to switch the rows and columns.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Ensure the function can handle non-square matrices (e.g., 2x3 or 3x2 matrices).</string>
+        </dict>
+    </array>
+</dict>
+</plist>

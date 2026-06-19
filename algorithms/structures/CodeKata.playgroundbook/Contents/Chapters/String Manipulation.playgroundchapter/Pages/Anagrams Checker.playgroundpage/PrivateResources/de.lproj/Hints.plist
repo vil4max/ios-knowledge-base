@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Sortieren Sie beide Zeichenketten und prüfen Sie auf Gleichheit, oder verwenden Sie ein Wörterbuch, um die Häufigkeit der Zeichen in jeder Zeichenkette zu zählen.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Ignorieren Sie Leerzeichen und Satzzeichen, wenn Sie Anagramme aus mehreren Wörtern zulassen möchten.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

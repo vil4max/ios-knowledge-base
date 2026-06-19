@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>剰余演算子と除算を使用して桁を抽出し、反転させます。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>反転した整数を32ビット範囲と比較してオーバーフローを確認します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

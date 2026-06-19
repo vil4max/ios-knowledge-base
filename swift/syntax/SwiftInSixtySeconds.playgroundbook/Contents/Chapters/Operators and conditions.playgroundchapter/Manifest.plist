@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Operators and conditions</string>
+	<key>Pages</key>
+	<array>
+		<string>Arithmetic operators.playgroundpage</string>
+		<string>Operator overloading.playgroundpage</string>
+		<string>Compound assignment operators.playgroundpage</string>
+		<string>Comparison operators.playgroundpage</string>
+		<string>Conditions.playgroundpage</string>
+		<string>Combining conditions.playgroundpage</string>
+		<string>The ternary operator.playgroundpage</string>
+		<string>Switch statements.playgroundpage</string>
+		<string>Range operators.playgroundpage</string>
+		<string>Operators and conditions summary.playgroundpage</string>
+	</array>
+</dict>
+</plist>

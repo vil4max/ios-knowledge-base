@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>要素の合計を計算するために、`reduce` メソッドまたはループを使用します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>配列が空の場合に関数が適切に処理し、`0` を返すことを確認してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

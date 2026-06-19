@@ -1,0 +1,4 @@
+/* Spanish */
+"first_paragraph" = "Un **kata de código** es un ejercicio de programación diseñado para repetirse regularmente, ayudando a los desarrolladores a afinar sus habilidades de programación, mejorar sus capacidades de resolución de problemas y profundizar en su comprensión de las características del lenguaje. Inspirados en la práctica de las artes marciales, donde el “kata” se refiere a movimientos estructurados y repetidos para alcanzar la maestría, los katas de código se centran en la disciplina, la técnica y la mejora incremental.";
+"second_paragraph" = "Al practicar katas de código en **Swift**, te enfrentarás a una serie de pequeños y específicos desafíos que refuerzan los fundamentos del código, promover hábitos de código limpio y fomentar un crecimiento continuo en tu oficio.";
+"begin" = "Comienza tu práctica abriendo la lista de katas en la parte superior izquierda.";

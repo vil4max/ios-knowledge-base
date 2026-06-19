@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez des boucles imbriquées pour comparer chaque sous-chaîne avec le reste de la chaîne.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Envisagez d'utiliser un `Set` pour stocker les sous-chaînes déjà rencontrées.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>鞋带公式非常适合根据顶点计算简单多边形的面积。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>确保顶点坐标以一致的顺序排列（顺时针或逆时针）。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

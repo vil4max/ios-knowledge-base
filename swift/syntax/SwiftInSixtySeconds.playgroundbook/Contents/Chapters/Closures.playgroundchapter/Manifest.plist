@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Closures</string>
+	<key>Pages</key>
+	<array>
+		<string>Creating basic closures.playgroundpage</string>
+		<string>Accepting parameters in a closure.playgroundpage</string>
+		<string>Returning values from a closure.playgroundpage</string>
+		<string>Closures as parameters.playgroundpage</string>
+		<string>Trailing closure syntax.playgroundpage</string>
+		<string>Using closures as parameters when they accept parameters.playgroundpage</string>
+		<string>Using closures as parameters when they return values.playgroundpage</string>
+		<string>Shorthand parameter names.playgroundpage</string>
+		<string>Closures with multiple parameters.playgroundpage</string>
+		<string>Returning closures from functions.playgroundpage</string>
+		<string>Capturing values.playgroundpage</string>
+		<string>Closures summary.playgroundpage</string>
+	</array>
+</dict>
+</plist>

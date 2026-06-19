@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>バブルソートの計算量は `O(n²)` であるため、大きな配列には遅い場合があります。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>配列の通過中に交換が行われたかを追跡するフラグを使用し、配列がすでにソートされている場合に早期終了できるようにします。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

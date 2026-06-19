@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>将整数转换为字符串以方便访问每个数字。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>使用 `pow` 函数计算每个数字提升到总位数次方的结果。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

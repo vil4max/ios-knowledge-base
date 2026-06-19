@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Looping</string>
+	<key>Pages</key>
+	<array>
+		<string>For loops.playgroundpage</string>
+		<string>While loops.playgroundpage</string>
+		<string>Repeat loops.playgroundpage</string>
+		<string>Exiting loops.playgroundpage</string>
+		<string>Exiting multiple loops.playgroundpage</string>
+		<string>Skipping items.playgroundpage</string>
+		<string>Infinite loops.playgroundpage</string>
+		<string>Looping summary.playgroundpage</string>
+	</array>
+</dict>
+</plist>

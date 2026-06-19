@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Optionals</string>
+	<key>Pages</key>
+	<array>
+		<string>Handling missing data.playgroundpage</string>
+		<string>Unwrapping optionals.playgroundpage</string>
+		<string>Unwrapping with guard.playgroundpage</string>
+		<string>Force unwrapping.playgroundpage</string>
+		<string>Implicitly unwrapped optionals.playgroundpage</string>
+		<string>Nil coalescing.playgroundpage</string>
+		<string>Optional chaining.playgroundpage</string>
+		<string>Optional try.playgroundpage</string>
+		<string>Failable initializers.playgroundpage</string>
+		<string>Typecasting.playgroundpage</string>
+		<string>Optionals summary.playgroundpage</string>
+	</array>
+</dict>
+</plist>

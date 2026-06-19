@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Complex types</string>
+	<key>Pages</key>
+	<array>
+		<string>Arrays.playgroundpage</string>
+		<string>Sets.playgroundpage</string>
+		<string>Tuples.playgroundpage</string>
+		<string>Arrays vs sets vs tuples.playgroundpage</string>
+		<string>Dictionaries.playgroundpage</string>
+		<string>Dictionary default values.playgroundpage</string>
+		<string>Creating empty collections.playgroundpage</string>
+		<string>Enumerations.playgroundpage</string>
+		<string>Enum associated values.playgroundpage</string>
+		<string>Enum raw values.playgroundpage</string>
+		<string>Complex types: Summary.playgroundpage</string>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Le tri rapide a une complexité moyenne en temps de `O(n log n)`, mais peut se dégrader à `O(n²)` dans le pire des cas si la sélection du pivot est mauvaise.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Pour améliorer les performances, envisagez de choisir un pivot aléatoire ou d'utiliser la médiane de trois éléments.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

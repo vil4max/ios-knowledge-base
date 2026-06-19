@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Convierte el número entero en una cadena para acceder a cada dígito, o utiliza el operador módulo `%` y la división `/` para extraer los dígitos.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Recuerda manejar números negativos si es necesario.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

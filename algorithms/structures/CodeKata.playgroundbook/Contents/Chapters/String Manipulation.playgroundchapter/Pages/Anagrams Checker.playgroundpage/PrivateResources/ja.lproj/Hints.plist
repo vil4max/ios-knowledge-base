@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>両方の文字列をソートして等しいか確認するか、辞書を使って各文字列内の文字の出現回数をカウントします。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>複数単語のアナグラムを許可したい場合は、スペースや句読点を無視します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

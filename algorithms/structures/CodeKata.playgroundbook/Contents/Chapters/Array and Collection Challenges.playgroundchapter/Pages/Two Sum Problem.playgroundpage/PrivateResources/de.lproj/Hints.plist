@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie ein Wörterbuch, um den Index jeder Zahl während der Iteration durch das Array zu speichern.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Überprüfen Sie für jedes Element, ob das Ziel minus der aktuellen Zahl im Wörterbuch vorhanden ist.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

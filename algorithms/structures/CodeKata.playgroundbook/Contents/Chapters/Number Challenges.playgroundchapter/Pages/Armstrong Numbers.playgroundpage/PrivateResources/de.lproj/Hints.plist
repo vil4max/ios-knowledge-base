@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Konvertieren Sie die ganze Zahl in einen String, um leichter auf jede Ziffer zugreifen zu können.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie die pow-Funktion, um jede Ziffer auf die Potenz der Gesamtanzahl der Ziffern zu erheben.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

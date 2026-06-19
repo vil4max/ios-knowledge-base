@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>辞書を使用して出現回数を保存し、文字列を反復処理しながら更新します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>必要に応じてスペース、句読点、大文字を適切に処理します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>各桁にアクセスするために整数を文字列に変換するか、剰余 `%` と除算 `/` を使用して桁を抽出します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>必要に応じて負の数を処理することを忘れないでください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

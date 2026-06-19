@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>对两个字符串进行排序并检查是否相等，或者使用字典统计每个字符串中字符的出现次数。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>如果希望允许多词异序词，请忽略空格和标点符号。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

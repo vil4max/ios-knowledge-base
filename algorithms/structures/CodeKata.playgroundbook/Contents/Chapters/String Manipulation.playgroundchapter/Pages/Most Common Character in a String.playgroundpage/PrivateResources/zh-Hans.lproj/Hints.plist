@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用字典统计每个字符的出现次数。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>如果需要，处理忽略空格或标点符号的情况。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

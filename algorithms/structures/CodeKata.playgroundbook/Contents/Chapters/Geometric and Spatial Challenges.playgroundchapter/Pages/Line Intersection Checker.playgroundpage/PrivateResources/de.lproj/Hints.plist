@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie Orientierungsprüfungen, um die relative Richtung der Punkte zu bestimmen.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Die Segmente schneiden sich, wenn ein Segment die Endpunkte des anderen Segments „überlappt“.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

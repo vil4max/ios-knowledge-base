@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Simple types</string>
+	<key>Pages</key>
+	<array>
+		<string>Variables.playgroundpage</string>
+		<string>Strings and integers.playgroundpage</string>
+		<string>Multi-line strings.playgroundpage</string>
+		<string>Doubles and booleans.playgroundpage</string>
+		<string>String interpolation.playgroundpage</string>
+		<string>Constants.playgroundpage</string>
+		<string>Type annotations.playgroundpage</string>
+		<string>Simple types: Summary.playgroundpage</string>
+	</array>
+</dict>
+</plist>

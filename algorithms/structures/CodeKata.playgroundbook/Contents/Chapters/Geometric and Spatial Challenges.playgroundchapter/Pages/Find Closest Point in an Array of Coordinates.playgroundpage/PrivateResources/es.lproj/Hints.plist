@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Usa la fórmula `distance = sqrt((x2 - x1)^2 + (y2 - y1)^2)` para calcular cada distancia.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Rastrea la distancia mínima mientras iteras a través del arreglo.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

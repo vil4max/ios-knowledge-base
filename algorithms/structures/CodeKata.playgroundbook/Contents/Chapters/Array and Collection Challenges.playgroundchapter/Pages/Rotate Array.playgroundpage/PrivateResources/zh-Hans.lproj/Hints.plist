@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用模运算来处理数组中的循环。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>考虑使用数组切片来简化旋转过程。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

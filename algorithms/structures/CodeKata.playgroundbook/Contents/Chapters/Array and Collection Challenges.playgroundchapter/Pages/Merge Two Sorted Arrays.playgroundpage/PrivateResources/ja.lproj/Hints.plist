@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>2つのポインタを使用して効率的に配列をマージします。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>1つの配列が他方より長い場合に適切に処理できることを確認してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

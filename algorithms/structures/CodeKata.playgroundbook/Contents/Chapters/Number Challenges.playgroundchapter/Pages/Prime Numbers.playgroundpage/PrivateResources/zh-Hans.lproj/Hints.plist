@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>为了提高效率，仅检查该数字平方根以下的可整除性。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>使用取模运算符 `%` 来检查是否有因数。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

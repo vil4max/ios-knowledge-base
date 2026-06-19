@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Use a helper function to merge two sorted halves.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Merge sort has a time complexity of `O(n log n)` and is more efficient than bubble or selection sort for large arrays.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

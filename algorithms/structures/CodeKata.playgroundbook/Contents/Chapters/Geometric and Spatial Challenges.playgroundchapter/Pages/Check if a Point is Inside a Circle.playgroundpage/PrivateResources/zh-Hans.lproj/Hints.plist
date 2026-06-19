@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用公式 `distance = sqrt((x2 - x1)^2 + (y2 - y1)^2)` 计算距离。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>将计算得出的距离与圆的半径进行比较，以确定点相对于圆的位置。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

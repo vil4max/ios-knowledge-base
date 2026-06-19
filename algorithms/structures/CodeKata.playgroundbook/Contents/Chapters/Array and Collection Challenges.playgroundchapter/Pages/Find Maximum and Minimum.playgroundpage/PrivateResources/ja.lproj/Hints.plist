@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>`min()` および `max()` メソッドを使用するか、手動で反復処理を行って両方の値を見つけます。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>配列が空の場合に適切に処理し、`nil` を返すことを確認してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

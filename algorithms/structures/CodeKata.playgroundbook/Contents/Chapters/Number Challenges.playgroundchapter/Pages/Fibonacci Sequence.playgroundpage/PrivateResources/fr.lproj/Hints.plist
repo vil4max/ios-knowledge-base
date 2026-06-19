@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Commencez par 0 et 1 comme les deux premiers termes.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Pour plus d'efficacité, utilisez une approche itérative si possible.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

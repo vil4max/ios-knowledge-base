@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>最初の2項は0と1から始めます。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>可能であれば、効率のために反復（iterative）アプローチを使用してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

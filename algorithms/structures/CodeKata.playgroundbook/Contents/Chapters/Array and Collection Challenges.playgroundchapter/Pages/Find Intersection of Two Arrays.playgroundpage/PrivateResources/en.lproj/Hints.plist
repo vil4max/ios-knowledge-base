@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Use a `Set` to track unique values in each array, then find the intersection.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Alternatively, use `filter` with `contains` to identify common elements.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

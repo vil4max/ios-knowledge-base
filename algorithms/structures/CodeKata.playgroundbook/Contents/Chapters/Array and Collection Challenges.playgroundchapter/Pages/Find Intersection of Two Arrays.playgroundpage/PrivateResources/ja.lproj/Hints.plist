@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>各配列内のユニークな値を追跡するために `Set` を使用し、交差部分を見つけます。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>または、`filter` を使用して、共通の要素を特定します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

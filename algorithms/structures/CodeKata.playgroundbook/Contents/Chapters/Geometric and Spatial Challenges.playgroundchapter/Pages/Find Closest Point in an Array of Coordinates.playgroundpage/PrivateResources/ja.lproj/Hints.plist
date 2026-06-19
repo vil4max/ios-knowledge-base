@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>距離を計算するために次の公式を使用します: `distance = sqrt((x2 - x1)^2 + (y2 - y1)^2)`</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>配列を反復処理しながら、最小距離を追跡します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

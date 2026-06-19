@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez des boucles imbriquées pour inverser les lignes et les colonnes.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Assurez-vous que la fonction peut gérer des matrices non carrées (par exemple, 2x3 ou 3x2).</string>
+        </dict>
+    </array>
+</dict>
+</plist>

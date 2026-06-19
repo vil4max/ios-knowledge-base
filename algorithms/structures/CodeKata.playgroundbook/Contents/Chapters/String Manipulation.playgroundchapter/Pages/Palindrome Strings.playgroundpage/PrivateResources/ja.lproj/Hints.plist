@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>比較を大文字小文字を区別せずに行うために、`lowercased()` を使用します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>非英数字を取り除くために、`filter` の使用を検討してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

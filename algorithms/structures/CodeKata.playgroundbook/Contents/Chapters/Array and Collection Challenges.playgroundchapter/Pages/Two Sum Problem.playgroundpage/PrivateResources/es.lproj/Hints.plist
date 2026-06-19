@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Usa un diccionario para almacenar el índice de cada número mientras recorres el arreglo.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Para cada elemento, verifica si el número objetivo menos el número actual existe en el diccionario.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

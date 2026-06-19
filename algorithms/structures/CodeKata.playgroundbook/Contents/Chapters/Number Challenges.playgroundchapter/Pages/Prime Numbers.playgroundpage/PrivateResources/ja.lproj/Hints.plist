@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>効率を上げるため、数値の平方根までの割り切れる条件のみを確認します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>割り切れるかどうかを確認するには剰余演算子 `%` を使用します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>El ordenamiento por selección tiene una complejidad temporal de `O(n²)`, por lo que puede ser lento para arreglos grandes.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Usa bucles anidados: uno para iterar sobre cada posición y otro para encontrar el elemento más pequeño en la porción no ordenada.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

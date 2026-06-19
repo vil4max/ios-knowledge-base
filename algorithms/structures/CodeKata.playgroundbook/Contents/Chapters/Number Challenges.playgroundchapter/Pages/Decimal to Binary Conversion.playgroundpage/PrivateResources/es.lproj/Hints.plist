@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Usa un bucle para dividir repetidamente el número entre 2 y rastrear los residuos.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Swift también tiene `String(number, radix: 2)`, pero intenta implementarlo manualmente primero para practicar la lógica de conversión.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

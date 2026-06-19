@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Konvertieren Sie die Ganzzahl in eine Zeichenkette, um auf jede Ziffer zuzugreifen, oder verwenden Sie den Modulus `%` und die Division `/`, um Ziffern zu extrahieren.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Denken Sie daran, negative Zahlen bei Bedarf zu behandeln.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

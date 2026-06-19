@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez une boucle pour diviser le nombre par 16 de manière répétée et suivez les restes.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Swift propose aussi `String(number, radix: 16)`, mais essayez de l'implémenter manuellement pour vous entraîner à la logique de conversion.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

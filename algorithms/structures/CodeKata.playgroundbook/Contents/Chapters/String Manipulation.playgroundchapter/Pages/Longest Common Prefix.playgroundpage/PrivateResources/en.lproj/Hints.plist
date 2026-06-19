@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Start by assuming the first string is the common prefix and shorten it as you compare with each subsequent string.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Stop early if the common prefix becomes an empty string.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

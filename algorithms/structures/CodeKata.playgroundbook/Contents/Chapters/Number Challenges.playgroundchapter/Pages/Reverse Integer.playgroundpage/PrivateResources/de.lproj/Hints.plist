@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie Modulus und Division, um die Ziffern zu extrahieren und umzukehren.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Prüfen Sie Überläufe, indem Sie die umgekehrte Ganzzahl mit dem 32-Bit-Bereich vergleichen.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Créez un dictionnaire pour associer chaque caractère à son équivalent en code Morse.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez `uppercased()` pour gérer les entrées en majuscules et minuscules.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用 `components(separatedBy: " ")` 将字符串分割，并使用 `joined(separator: " ")` 重新组装。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>对每个单词使用 `capitalized` 方法，轻松实现首字母大写。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

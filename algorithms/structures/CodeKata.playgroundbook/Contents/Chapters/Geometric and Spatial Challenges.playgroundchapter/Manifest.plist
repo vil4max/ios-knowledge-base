@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Geometric and Spatial Challenges</string>
+	<key>Pages</key>
+	<array>
+		<string>Area of Polygon.playgroundpage</string>
+		<string>Distance Between Two Points.playgroundpage</string>
+		<string>Line Intersection Checker.playgroundpage</string>
+		<string>Find Closest Point in an Array of Coordinates.playgroundpage</string>
+		<string>Check if a Point is Inside a Circle.playgroundpage</string>
+	</array>
+</dict>
+</plist>

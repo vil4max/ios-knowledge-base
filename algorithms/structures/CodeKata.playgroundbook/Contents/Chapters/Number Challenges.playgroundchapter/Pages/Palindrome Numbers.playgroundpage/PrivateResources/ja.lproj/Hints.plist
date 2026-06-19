@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>数値を文字列に変換して、元の形と反転した形を簡単に比較します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>または、文字列に変換せずに数値を反転させる数学的操作を使用して確認します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

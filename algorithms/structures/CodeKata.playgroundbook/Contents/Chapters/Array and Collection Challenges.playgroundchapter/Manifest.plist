@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Array and Collection Challenges</string>
+	<key>Pages</key>
+	<array>
+		<string>Sum of All Elements.playgroundpage</string>
+		<string>Find Maximum and Minimum.playgroundpage</string>
+		<string>Find Duplicate Elements.playgroundpage</string>
+		<string>Remove Duplicates from Array.playgroundpage</string>
+		<string>Merge Two Sorted Arrays.playgroundpage</string>
+		<string>Find Intersection of Two Arrays.playgroundpage</string>
+		<string>Rotate Array.playgroundpage</string>
+		<string>Find Kth Largest Element.playgroundpage</string>
+		<string>Matrix Transpose.playgroundpage</string>
+		<string>Two Sum Problem.playgroundpage</string>
+	</array>
+</dict>
+</plist>

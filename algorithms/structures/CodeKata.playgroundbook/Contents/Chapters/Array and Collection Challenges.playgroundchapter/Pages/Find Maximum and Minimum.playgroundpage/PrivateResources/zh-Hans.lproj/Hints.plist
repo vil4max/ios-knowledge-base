@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用 `min()` 和 `max()` 方法，或者手动遍历数组以找到两个值。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>确保函数能够正确处理空数组，返回 `nil`。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

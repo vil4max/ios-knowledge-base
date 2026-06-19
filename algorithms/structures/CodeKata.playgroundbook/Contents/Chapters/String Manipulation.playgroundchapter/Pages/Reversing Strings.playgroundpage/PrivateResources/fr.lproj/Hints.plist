@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Vous pouvez utiliser la méthode `reversed()` en Swift ou créer une boucle pour inverser les caractères manuellement.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Assurez-vous que les espaces et la ponctuation sont traités comme des caractères normaux.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

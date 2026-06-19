@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Bubble sort has a time complexity of `O(n²)`, so it may be slow for large arrays.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Use a flag to track whether a pass through the array made any swaps, allowing you to stop early if the array is already sorted.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

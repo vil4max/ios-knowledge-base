@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用取模运算符 `%` 来检查是否可整除。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>这个挑战是技术面试中的经典题目，因为它测试了对控制流程和基本条件逻辑的理解。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

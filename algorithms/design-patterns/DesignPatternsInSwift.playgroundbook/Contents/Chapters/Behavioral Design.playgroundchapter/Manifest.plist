@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Behavioral Design Patterns</string>
+	<key>Pages</key>
+	<array>
+		<string>Introduction.playgroundpage</string>
+		<string>Chain of Responsibility Conceptual Example.playgroundpage</string>
+		<string>Chain of Responsibility Real World Example.playgroundpage</string>
+		<string>Command Conceptual Example.playgroundpage</string>
+		<string>Command Real World Example.playgroundpage</string>
+		<string>Iterator Conceptual Example.playgroundpage</string>
+		<string>Iterator Real World Example.playgroundpage</string>
+		<string>Mediator Conceptual Example.playgroundpage</string>
+		<string>Mediator Real World Example.playgroundpage</string>
+		<string>Memento Conceptual Example.playgroundpage</string>
+		<string>Memento Real World Example.playgroundpage</string>
+		<string>Observer Conceptual Example.playgroundpage</string>
+		<string>Observer Real World Example.playgroundpage</string>
+		<string>State Conceptual Example.playgroundpage</string>
+		<string>State Real World Example.playgroundpage</string>
+		<string>Strategy Conceptual Example.playgroundpage</string>
+		<string>Strategy Real World Example.playgroundpage</string>
+		<string>Template Method Conceptual Example.playgroundpage</string>
+		<string>Template Method Real World Example.playgroundpage</string>
+		<string>Visitor Conceptual Example.playgroundpage</string>
+		<string>Visitor Real World Example.playgroundpage</string>
+	</array>
+</dict>
+</plist>

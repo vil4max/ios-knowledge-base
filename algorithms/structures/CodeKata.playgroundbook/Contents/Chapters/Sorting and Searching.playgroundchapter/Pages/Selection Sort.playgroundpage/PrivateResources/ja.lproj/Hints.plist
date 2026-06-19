@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>選択ソートの計算量は `O(n²)` であるため、大きな配列には遅い場合があります。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>入れ子のループを使用します: 一方は各位置を反復し、もう一方は未ソート部分から最小の要素を見つけます。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

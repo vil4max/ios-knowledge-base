@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Number Challenges</string>
+	<key>Pages</key>
+	<array>
+		<string>Fizz Buzz.playgroundpage</string>
+		<string>Prime Numbers.playgroundpage</string>
+		<string>Fibonacci Sequence.playgroundpage</string>
+		<string>Factorial Calculation.playgroundpage</string>
+		<string>Sum of Digits.playgroundpage</string>
+        <string>Palindrome Numbers.playgroundpage</string>
+        <string>Armstrong Numbers.playgroundpage</string>
+        <string>Greatest Common Divisor.playgroundpage</string>
+        <string>Least Common Multiple.playgroundpage</string>
+        <string>Decimal to Binary Conversion.playgroundpage</string>
+        <string>Decimal to Hexadecimal Conversion.playgroundpage</string>
+        <string>Decimal to Octal Conversion.playgroundpage</string>
+        <string>Roman Numerals to Decimal Conversion.playgroundpage</string>
+        <string>Reverse Integer.playgroundpage</string>
+        <string>Happy Numbers.playgroundpage</string>
+	</array>
+</dict>
+</plist>

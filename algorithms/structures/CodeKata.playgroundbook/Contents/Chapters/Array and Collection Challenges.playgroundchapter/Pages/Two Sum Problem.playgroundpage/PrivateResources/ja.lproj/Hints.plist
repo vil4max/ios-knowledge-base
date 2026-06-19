@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>配列を反復処理しながら、各数値のインデックスを保存するために辞書を使用します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>各要素に対して、`ターゲット - 現在の数値` が辞書に存在するかを確認します。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

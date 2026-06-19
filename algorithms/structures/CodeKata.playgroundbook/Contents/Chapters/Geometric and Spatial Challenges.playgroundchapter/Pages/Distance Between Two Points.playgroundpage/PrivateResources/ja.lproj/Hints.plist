@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>次の公式を使用します: `distance = sqrt((x2 - x1)^2 + (y2 - y1)^2)`</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Swiftの `Foundation` ライブラリに含まれる `sqrt` 関数を使用できます。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

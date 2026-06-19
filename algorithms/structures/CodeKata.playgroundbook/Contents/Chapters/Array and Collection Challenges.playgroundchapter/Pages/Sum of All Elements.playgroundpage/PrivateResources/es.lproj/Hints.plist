@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Usa el método `reduce` o un bucle para sumar los elementos.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Asegúrate de que la función maneje un arreglo vacío devolviendo `0` en ese caso.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>数値を2で繰り返し割り、その余りを追跡するためにループを使用します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Swiftには `String(number, radix: 2)` という機能がありますが、最初に変換ロジックを練習するために手動で実装してみてください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

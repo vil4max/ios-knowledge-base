@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez une fonction auxiliaire pour fusionner deux moitiés triées.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Le tri par fusion a une complexité en temps de `O(n log n)` et est plus efficace que le tri à bulles ou le tri par sélection pour les grands tableaux.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

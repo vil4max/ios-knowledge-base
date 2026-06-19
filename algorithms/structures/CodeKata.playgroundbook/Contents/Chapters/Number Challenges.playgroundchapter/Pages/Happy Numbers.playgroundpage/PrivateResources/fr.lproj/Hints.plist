@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez un `Set` pour garder une trace des nombres déjà rencontrés afin de détecter les cycles.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Le processus entrera probablement dans un cycle s'il n'atteint pas 1 après plusieurs étapes.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

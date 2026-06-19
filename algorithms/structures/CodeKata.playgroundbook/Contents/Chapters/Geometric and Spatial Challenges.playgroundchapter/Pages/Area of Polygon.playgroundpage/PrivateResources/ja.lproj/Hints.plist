@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>シューレース公式は、頂点に基づいて単純多角形の面積を計算するのに便利です。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>座標が一貫した順序（時計回りまたは反時計回り）でリストされていることを確認してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

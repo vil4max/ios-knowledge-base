@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Use `components(separatedBy: " ")` to split the string and `joined(separator: " ")` to reassemble it.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Use capitalized on each word to easily capitalize the first letter.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

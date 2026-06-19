@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>String Manipulation</string>
+	<key>Pages</key>
+	<array>
+		<string>Anagrams Checker.playgroundpage</string>
+		<string>Reversing Strings.playgroundpage</string>
+		<string>Counting Words.playgroundpage</string>
+		<string>Palindrome Strings.playgroundpage</string>
+		<string>Pangram Checker.playgroundpage</string>
+		<string>Longest Common Prefix.playgroundpage</string>
+		<string>Remove Duplicates from String.playgroundpage</string>
+		<string>Character Frequency Counter.playgroundpage</string>
+		<string>Morse Code Translator.playgroundpage</string>
+		<string>Find First Non-Repeating Character.playgroundpage</string>
+		<string>Rotating Strings.playgroundpage</string>
+		<string>Capitalize First Letter of Each Word.playgroundpage</string>
+		<string>Check for Balanced Parentheses.playgroundpage</string>
+		<string>Repeating Substrings Finder.playgroundpage</string>
+		<string>Most Common Character in a String.playgroundpage</string>
+	</array>
+</dict>
+</plist>

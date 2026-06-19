@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Use a loop to divide the number by 8 and track remainders.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Similar to the previous challenge, `String(number, radix: 8)` will do this in Swift, but try implementing it manually first.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

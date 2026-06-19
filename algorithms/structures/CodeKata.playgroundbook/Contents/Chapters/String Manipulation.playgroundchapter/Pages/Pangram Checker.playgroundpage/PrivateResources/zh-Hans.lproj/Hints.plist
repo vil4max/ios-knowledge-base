@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用 `Set` 存储字符串中的唯一字母，并与字母表进行比较。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>确保空格和标点符号不会影响检查。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

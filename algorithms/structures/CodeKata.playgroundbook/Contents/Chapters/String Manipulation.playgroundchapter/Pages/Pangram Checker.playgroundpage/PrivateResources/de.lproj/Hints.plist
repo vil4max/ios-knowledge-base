@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie ein `Set`, um eindeutige Buchstaben in der Zeichenkette zu speichern und mit dem Alphabet zu vergleichen.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Stellen Sie sicher, dass Leerzeichen und Satzzeichen die Überprüfung nicht beeinflussen.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

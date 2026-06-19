@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Usa comprobaciones de orientación para determinar la dirección relativa de los puntos.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Los segmentos se intersectan si uno de ellos “cruza” los puntos extremos del otro segmento.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

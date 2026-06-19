@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用 `Set` 跟踪已见过的元素，并使用另一个集合存储重复项。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>这种方法确保重复项以唯一值的形式存储。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

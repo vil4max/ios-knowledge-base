@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>`components(separatedBy:)` メソッドを使用して文字列をスペースで分割します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>正確にカウントするために、先頭や末尾のスペースを削除することを検討してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>This algorithm works only on sorted arrays.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Use a loop or recursion to divide the array into halves, reducing the search range each time.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

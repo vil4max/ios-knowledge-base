@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>重複値を追跡してフィルタリングするために `Set` を使用するか、値が既に含まれているかを確認します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>結果の配列内で要素の元の順序が保持されるようにします。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

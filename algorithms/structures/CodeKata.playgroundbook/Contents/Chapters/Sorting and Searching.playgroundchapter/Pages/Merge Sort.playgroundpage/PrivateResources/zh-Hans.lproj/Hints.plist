@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>使用一个辅助函数来合并两个已排序的部分。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>归并排序的时间复杂度为 `O(n log n)`，比冒泡排序或选择排序对大数组更高效。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

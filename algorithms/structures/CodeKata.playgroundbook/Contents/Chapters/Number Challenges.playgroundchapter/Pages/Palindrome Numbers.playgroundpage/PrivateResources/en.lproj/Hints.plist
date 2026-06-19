@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Convert the number to a string to easily compare the forward and reversed forms.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Alternatively, use mathematical operations to reverse the number without converting it to a string.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

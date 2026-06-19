@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>各ローマ数字の文字をその整数値にマッピングする辞書を使用します。</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>小さい数字が大きい数字の前に来る場合、減算を行うケースに注意してください。</string>
+        </dict>
+    </array>
+</dict>
+</plist>

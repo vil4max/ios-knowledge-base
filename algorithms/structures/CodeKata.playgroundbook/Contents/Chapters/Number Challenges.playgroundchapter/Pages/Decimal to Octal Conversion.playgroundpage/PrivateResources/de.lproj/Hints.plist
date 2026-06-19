@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie eine Schleife, um die Zahl durch 8 zu teilen und die Reste zu verfolgen.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Ähnlich wie bei der vorherigen Herausforderung wird `String(number, radix: 8)` dies in Swift tun, aber versuchen Sie es zuerst manuell zu implementieren.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Functions</string>
+	<key>Pages</key>
+	<array>
+		<string>Writing functions.playgroundpage</string>
+		<string>Accepting parameters.playgroundpage</string>
+		<string>Returning values.playgroundpage</string>
+		<string>Parameter labels.playgroundpage</string>
+		<string>Omitting parameter labels.playgroundpage</string>
+		<string>Default parameters.playgroundpage</string>
+		<string>Variadic functions.playgroundpage</string>
+		<string>Writing throwing functions.playgroundpage</string>
+		<string>Running throwing functions.playgroundpage</string>
+		<string>inout parameters.playgroundpage</string>
+		<string>Functions summary.playgroundpage</string>
+	</array>
+</dict>
+</plist>

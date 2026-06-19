@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Selection Sort hat eine Zeitkomplexität von `O(n²)` und ist daher für große Arrays langsam.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Verwenden Sie verschachtelte Schleifen: eine, um jede Position zu durchlaufen, und eine andere, um das kleinste Element im verbleibenden unsortierten Teil zu finden.</string>
+        </dict>
+    </array>
+</dict>
+</plist>

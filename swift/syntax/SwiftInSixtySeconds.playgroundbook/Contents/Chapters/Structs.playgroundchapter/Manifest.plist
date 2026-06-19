@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Structs</string>
+	<key>Pages</key>
+	<array>
+		<string>Creating your own structs.playgroundpage</string>
+		<string>Computed properties.playgroundpage</string>
+		<string>Property observers.playgroundpage</string>
+		<string>Methods.playgroundpage</string>
+		<string>Mutating methods.playgroundpage</string>
+		<string>Properties and methods of strings.playgroundpage</string>
+		<string>Properties and methods of arrays.playgroundpage</string>
+		<string>Initializers.playgroundpage</string>
+		<string>Referring to the current instance.playgroundpage</string>
+		<string>Lazy properties.playgroundpage</string>
+		<string>Static properties and methods.playgroundpage</string>
+		<string>Access control.playgroundpage</string>
+		<string>Structs summary.playgroundpage</string>
+	</array>
+</dict>
+</plist>

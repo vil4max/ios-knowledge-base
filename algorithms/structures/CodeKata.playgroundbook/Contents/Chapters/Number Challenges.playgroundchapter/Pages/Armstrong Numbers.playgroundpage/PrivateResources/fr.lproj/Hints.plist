@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Hints</key>
+    <array>
+        <dict>
+            <key>Content</key>
+            <string>Convertissez l'entier en une chaîne pour accéder facilement à chaque chiffre.</string>
+        </dict>
+        <dict>
+            <key>Content</key>
+            <string>Utilisez la fonction pow pour calculer chaque chiffre élevé à la puissance du nombre total de chiffres.</string>
+        </dict>
+    </array>
+</dict>
+</plist>
