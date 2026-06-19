@@ -11,6 +11,7 @@
   - [Types & Generics](/swift/types-generics/)
   - [Memory & ARC](/swift/memory-arc/)
   - [Concurrency](/swift/concurrency/)
+  - [Metaprogramming](/swift/metaprogramming/)
 
 - **iOS SDK**
   - [Foundation & Lifecycle](/ios-sdk/foundation/)

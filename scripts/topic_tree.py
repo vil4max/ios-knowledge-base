@@ -18,6 +18,7 @@ TOPIC_TREE = {
             "types-generics": "Types & Generics",
             "memory-arc": "Memory & ARC",
             "concurrency": "Concurrency",
+            "metaprogramming": "Metaprogramming",
         },
     },
     "ios-sdk": {
