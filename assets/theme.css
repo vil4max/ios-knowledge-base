@@ -15,75 +15,109 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --gh-accent: #4493f8;
+  --gh-accent: #58a6ff;
   --gh-canvas: #0d1117;
   --gh-canvas-subtle: #161b22;
   --gh-border: #30363d;
-  --gh-fg: #e6edf3;
-  --gh-fg-muted: #7d8590;
+  --gh-fg: #f0f6fc;
+  --gh-fg-muted: #c9d1d9;
   --gh-code-bg: #161b22;
   --gh-pre-bg: #161b22;
-  --gh-link: #4493f8;
+  --gh-link: #58a6ff;
+  --gh-link-hover: #79c0ff;
   --gh-toggle-bg: #21262d;
   --gh-toggle-border: #30363d;
   --gh-toggle-hover: #30363d;
+  --theme-color: #58a6ff;
 }
 
 html[data-theme="dark"] body {
   background-color: var(--gh-canvas);
-  color: var(--gh-fg);
+  color: var(--gh-fg) !important;
 }
 
 html[data-theme="dark"] .sidebar {
   background-color: var(--gh-canvas-subtle);
   border-right: 1px solid var(--gh-border);
+  color: var(--gh-fg-muted) !important;
 }
 
+html[data-theme="dark"] .sidebar > h1,
+html[data-theme="dark"] .sidebar > h1 a,
 html[data-theme="dark"] .sidebar .app-name {
-  color: var(--gh-fg);
+  color: var(--gh-fg) !important;
 }
 
-html[data-theme="dark"] .sidebar-nav li a {
-  color: var(--gh-fg-muted);
+html[data-theme="dark"] .sidebar-nav li a,
+html[data-theme="dark"] .sidebar ul li a {
+  color: var(--gh-fg-muted) !important;
 }
 
 html[data-theme="dark"] .sidebar-nav li a:hover,
-html[data-theme="dark"] .sidebar-nav li.active > a {
-  color: var(--gh-link);
+html[data-theme="dark"] .sidebar ul li a:hover,
+html[data-theme="dark"] .sidebar-nav li.active > a,
+html[data-theme="dark"] .sidebar ul li.active > a {
+  color: var(--gh-link) !important;
+  text-decoration: none;
 }
 
 html[data-theme="dark"] .sidebar-nav > ul > li > p,
-html[data-theme="dark"] .sidebar-nav > ul > li > strong {
-  color: var(--gh-fg);
+html[data-theme="dark"] .sidebar-nav > ul > li > strong,
+html[data-theme="dark"] .sidebar li > p {
+  color: var(--gh-fg) !important;
 }
 
-html[data-theme="dark"] .markdown-section {
-  color: var(--gh-fg);
+html[data-theme="dark"] .markdown-section,
+html[data-theme="dark"] .markdown-section p,
+html[data-theme="dark"] .markdown-section li {
+  color: var(--gh-fg) !important;
 }
 
-html[data-theme="dark"] .markdown-section h1,
-html[data-theme="dark"] .markdown-section h2,
-html[data-theme="dark"] .markdown-section h3,
-html[data-theme="dark"] .markdown-section h4,
-html[data-theme="dark"] .markdown-section h5,
-html[data-theme="dark"] .markdown-section h6 {
-  color: var(--gh-fg);
+html[data-theme="dark"] .markdown-section :is(h1, h2, h3, h4, h5, h6),
+html[data-theme="dark"] .markdown-section strong {
+  color: var(--gh-fg) !important;
   border-bottom-color: var(--gh-border);
 }
 
-html[data-theme="dark"] .markdown-section a {
-  color: var(--gh-link);
+html[data-theme="dark"] .markdown-section h6 {
+  color: var(--gh-fg-muted) !important;
+}
+
+html[data-theme="dark"] .markdown-section a,
+html[data-theme="dark"] .markdown-section a strong {
+  color: var(--gh-link) !important;
+}
+
+html[data-theme="dark"] .markdown-section a:hover {
+  color: var(--gh-link-hover) !important;
+  text-decoration: underline;
+}
+
+html[data-theme="dark"] .anchor span {
+  color: var(--gh-fg-muted) !important;
+}
+
+html[data-theme="dark"] .markdown-section em {
+  color: var(--gh-fg-muted) !important;
 }
 
 html[data-theme="dark"] .markdown-section blockquote {
-  border-left-color: var(--gh-border);
-  color: var(--gh-fg-muted);
+  border-left-color: var(--gh-link);
+  color: var(--gh-fg-muted) !important;
+}
+
+html[data-theme="dark"] .markdown-section blockquote p {
+  color: var(--gh-fg-muted) !important;
 }
 
 html[data-theme="dark"] .markdown-section code {
   background-color: var(--gh-code-bg);
-  color: var(--gh-fg);
+  color: #ff9b61 !important;
   border: 1px solid var(--gh-border);
+}
+
+html[data-theme="dark"] .markdown-section pre > code {
+  color: var(--gh-fg) !important;
 }
 
 html[data-theme="dark"] .markdown-section pre {
@@ -141,13 +175,37 @@ html[data-theme="dark"] .content {
   background-color: var(--gh-canvas);
 }
 
-html[data-theme="dark"] .app-nav li a {
-  color: var(--gh-fg-muted);
+html[data-theme="dark"] .search a,
+html[data-theme="dark"] .search .search-keyword {
+  color: var(--gh-link) !important;
 }
 
-html[data-theme="dark"] .app-nav li a:hover,
-html[data-theme="dark"] .app-nav li a.active {
-  color: var(--gh-link);
+html[data-theme="dark"] .search .matching-post {
+  border-bottom-color: var(--gh-border);
+}
+
+html[data-theme="dark"] .search h2,
+html[data-theme="dark"] .search p {
+  color: var(--gh-fg) !important;
+}
+
+html[data-theme="dark"] .app-nav a {
+  color: var(--gh-fg-muted) !important;
+}
+
+html[data-theme="dark"] .app-nav a:hover,
+html[data-theme="dark"] .app-nav a.active {
+  color: var(--gh-link) !important;
+  border-bottom-color: var(--gh-link) !important;
+}
+
+html[data-theme="dark"] .app-nav li ul {
+  background-color: var(--gh-canvas-subtle);
+  border-color: var(--gh-border);
+}
+
+html[data-theme="dark"] .progress {
+  background-color: var(--gh-link);
 }
 
 html[data-theme="dark"] .github-corner svg {
