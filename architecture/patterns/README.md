@@ -40,6 +40,22 @@ flowchart LR
 
 На iOS `View` и `Controller` часто сливаются в одном **UIViewController** → Massive View Controller.
 
+### MVP (passive View)
+
+```mermaid
+sequenceDiagram
+    participant V as View passive
+    participant P as Presenter
+    participant M as Model
+
+    V->>P: user action
+    P->>M: command
+    M-->>P: result
+    P-->>V: update via protocol
+```
+
+View **пассивна** — только события и отрисовка. **View владеет** Presenter (strong); Presenter держит View по **протоколу weak**. Навигацию часто выносят в **Coordinator** (MVP-C), как в MVVM-C.
+
 ### MVVM (+ Coordinator)
 
 ```mermaid
