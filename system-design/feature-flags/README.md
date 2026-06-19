@@ -4,6 +4,11 @@
 
 **Feature flags** and **remote config** decouple release from exposure: ship code dark, enable per user/segment, run **gradual rollout**, and flip a **kill switch** without App Store delay. Client-side evaluation reads cached config at launch; server-side gates sensitive or paid features. Interview answers cover flag lifecycle, consistency, analytics linkage, and avoiding flag spaghetti.
 
+## Материалы
+
+- **Implementation (Swift):** [notes/swift-type-safe-resolver.md](notes/swift-type-safe-resolver.md) — type-safe resolver, priority sources, environment composition ([Livsy Code](https://livsycode.com/best-practices/a-feature-flags-system-in-swift/), [FeatureFlagsKit](https://github.com/Livsy90/FeatureFlagsKit))
+- **Playground:** [feature_flags_resolver.playground](feature_flags_resolver.playground/Contents.swift) — runnable `Feature`, sources, `FeatureFlagsConfigurator`, override demo
+
 ## Apple docs
 
 - No first-party feature-flag SDK — integrate Firebase Remote Config, LaunchDarkly, custom CDN JSON, or backend-driven config via your API.
@@ -21,6 +26,7 @@
 - **Targeting:** user id hash bucket for stable assignment.
 - **Observability:** log exposure events for experiment analysis.
 - **Cleanup:** remove dead flags to avoid combinatorial complexity.
+- **Type-safe client layer:** `Feature` enum + priority sources + sync resolver — see [implementation note](notes/swift-type-safe-resolver.md).
 
 ### Defer
 
@@ -76,6 +82,9 @@ Launch → fetch config (CDN/API)
 
 - [LaunchDarkly architecture concepts](https://docs.launchdarkly.com/home/about/architecture) — vendor-neutral patterns
 - [Firebase Remote Config](https://firebase.google.com/docs/remote-config) — common mobile choice
+- [Type-safe resolver (note)](notes/swift-type-safe-resolver.md) · [Playground](feature_flags_resolver.playground/Contents.swift)
+- [Livsy Code — A Feature Flags System in Swift](https://livsycode.com/best-practices/a-feature-flags-system-in-swift/)
+- [FeatureFlagsKit](https://github.com/Livsy90/FeatureFlagsKit)
 - Related: [analytics](../analytics/README.md), [scaling-teams](../scaling-teams/README.md)
 
 ## Карточки знаний (Q&A)
@@ -105,5 +114,11 @@ Launch → fetch config (CDN/API)
 - **Question (EN):** What are the risks of client-side evaluation?
 - **Answer (RU):** Пользователь может подменить cached config на jailbreak (редко критично для UI experiments). **Платные/безопасные** gates — проверять на **server**. Клиентские флаги — для UX rollout и performance; не для авторизации. Минимизировать вложенность флагов и удалять мёртвые.
 - **Answer (EN):** Client cache can be tampered with on jailbroken devices — fine for UX rollouts, not for authorization or paid gates (verify server-side). Remove stale flags to limit complexity.
+
+### Q5
+- **Question (RU):** Как устроить type-safe feature flags на клиенте?
+- **Question (EN):** How do you structure type-safe feature flags on the client?
+- **Answer (RU):** Enum + `Feature` protocol (`key`, `defaultValue`). Значения из **источников с приоритетом** (`business` → `testing` → overrides); resolver возвращает первое non-`nil`, иначе default. Remote config — отдельный source, не строки в UI. Playground: [feature_flags_resolver.playground](feature_flags_resolver.playground/Contents.swift).
+- **Answer (EN):** String-backed enum conforming to `Feature`; merge prioritized sources (business, testing, overrides); first non-nil wins, else default. Remote config maps into a source — no string keys in views. See playground link above.
 
 <!-- knowledge-cards-canonical:end -->
