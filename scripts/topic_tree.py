@@ -34,6 +34,7 @@ TOPIC_TREE = {
             "collection-views": "Collection Views",
             "animations": "Animations",
             "graphics": "Graphics & Metal",
+            "core-bluetooth": "Core Bluetooth & BLE",
         },
     },
     "architecture": {

@@ -24,6 +24,7 @@
   - [Collection Views](/ios-sdk/collection-views/)
   - [Animations](/ios-sdk/animations/)
   - [Graphics & Metal](/ios-sdk/graphics/)
+  - [Core Bluetooth & BLE](/ios-sdk/core-bluetooth/)
 
 - **Architecture**
   - [MVVM → TCA](/architecture/patterns/)
