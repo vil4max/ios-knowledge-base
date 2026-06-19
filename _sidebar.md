@@ -57,15 +57,21 @@
   - [Data Structures & Big-O](/algorithms/structures/)
   - [Design Patterns](/algorithms/design-patterns/)
 
-- **AI**
-  - [Fundamentals](/ai/fundamentals/)
-  - [LLM](/ai/llm/)
-  - [RAG](/ai/rag/)
-  - [Agents & Tool Calling](/ai/agents/)
-  - [Apple Foundation Models](/ai/apple-foundation-models/)
-  - [AI in iOS Apps](/ai/ai-in-ios-apps/)
-  - [Prompt Engineering](/ai/prompt-engineering/)
-  - [AI Tools & MCP](/ai/tools/)
+- **AI Engineering**
+  - [01 · LLM Basics](/ai-engineering/llm-basics/)
+  - [02 · Tokens](/ai-engineering/tokens/)
+  - [03 · Context Window](/ai-engineering/context-window/)
+  - [04 · Embeddings](/ai-engineering/embeddings/)
+  - [05 · Vector Search](/ai-engineering/vector-search/)
+  - [06 · RAG](/ai-engineering/rag/)
+  - [07 · Structured Output](/ai-engineering/structured-output/)
+  - [08 · Tool Calling](/ai-engineering/tool-calling/)
+  - [09 · Agents](/ai-engineering/agents/)
+  - [10 · MCP](/ai-engineering/mcp/)
+  - [11 · Foundation Models](/ai-engineering/foundation-models/)
+  - [12 · Apple Intelligence](/ai-engineering/apple-intelligence/)
+  - [13 · Dynamic Profiles](/ai-engineering/dynamic-profiles/)
+  - [14 · Evaluations](/ai-engineering/evaluations/)
 
 - **Reference**
   - [Glossary](/glossary/)

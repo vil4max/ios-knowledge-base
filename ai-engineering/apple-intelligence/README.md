@@ -1,4 +1,4 @@
-# AI in iOS Apps
+# 12 · Apple Intelligence
 
 ## За 30 секунд
 

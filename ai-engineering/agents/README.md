@@ -1,8 +1,8 @@
-# Agents & Tool Calling
+# 09 · Agents
 
 ## За 30 секунд
 
-**AI agents** loop: model plans → **calls tools** (functions, APIs, MCP servers) → observes results → repeats until done. **Tool calling** grounds actions in real data and side effects (calendar, database, network). **MCP (Model Context Protocol)** standardizes how tools and context plug into agents. **Guardrails** limit scope: allowed tools, human approval, timeouts, output validation — critical on mobile where bad tool calls affect user data and battery.
+**AI agents** run a loop: model plans → calls [tools](../tool-calling/) → observes results → repeats until done or a step limit. Unlike a single chat completion, an agent **persists state** across turns and may chain multiple tool calls. **Guardrails** (allowlists, human approval, timeouts) matter on mobile where side effects touch user data and battery. For transport and IDE integration see [MCP](../mcp/); for on-device tool wiring see [Foundation Models](../foundation-models/).
 
 ## Apple docs
 
