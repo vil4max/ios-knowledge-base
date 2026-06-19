@@ -17,6 +17,7 @@
   - [Foundation & Lifecycle](/ios-sdk/foundation/)
   - [UIKit](/ios-sdk/uikit/)
   - [SwiftUI](/ios-sdk/swiftui/)
+  - [App Intents](/ios-sdk/app-intents/)
   - [Auto Layout](/ios-sdk/auto-layout/)
   - [Collection Views](/ios-sdk/collection-views/)
   - [Animations](/ios-sdk/animations/)

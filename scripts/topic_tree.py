@@ -27,6 +27,7 @@ TOPIC_TREE = {
             "foundation": "Foundation & Lifecycle",
             "uikit": "UIKit",
             "swiftui": "SwiftUI",
+            "app-intents": "App Intents",
             "auto-layout": "Auto Layout",
             "collection-views": "Collection Views",
             "animations": "Animations",
