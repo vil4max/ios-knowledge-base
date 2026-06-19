@@ -8,6 +8,7 @@
 
 - **Swift**
   - [Syntax & Idioms](/swift/syntax/)
+  - [Protocols](/swift/protocols/)
   - [Types & Generics](/swift/types-generics/)
   - [Memory & ARC](/swift/memory-arc/)
   - [Concurrency](/swift/concurrency/)

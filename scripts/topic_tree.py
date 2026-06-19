@@ -15,6 +15,7 @@ TOPIC_TREE = {
         "title": "Swift",
         "topics": {
             "syntax": "Syntax & Idioms",
+            "protocols": "Protocols",
             "types-generics": "Types & Generics",
             "memory-arc": "Memory & ARC",
             "concurrency": "Concurrency",
