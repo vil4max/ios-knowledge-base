@@ -8,6 +8,10 @@
 
 ### Defer
 
+- Vendor-specific **MCP server zoo** before one stable read-only workflow (docs search, issue lookup) works in CI.
+- **Fully autonomous** agents on production branches without human review gates.
+- Replacing **unit tests** with “agent said it works” sign-off.
+- Maintaining 50-page **AGENTS.md** instead of small skills + hooks for repeated mistakes.
 
 ## 🏋️ Exercises
 

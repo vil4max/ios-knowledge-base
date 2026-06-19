@@ -4,4 +4,4 @@ Personal knowledge base for Senior iOS interviews — Swift, iOS SDK, architectu
 
 Use the **sidebar** or **search** to open a topic and refresh before an interview.
 
-Draft topics are marked `Status: draft` until notes are filled in.
+Each topic includes a **30-second summary**, **Apple documentation links**, **Focus vs Defer**, **key concepts**, **exercises**, **WWDC / external references**, and **interview Q&A cards** (RU/EN where applicable).

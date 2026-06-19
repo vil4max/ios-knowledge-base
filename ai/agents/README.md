@@ -1,23 +1,103 @@
 # Agents & Tool Calling
 
-> **Status:** draft — content pending
-
 ## За 30 секунд
 
-_(to be added)_
+**AI agents** loop: model plans → **calls tools** (functions, APIs, MCP servers) → observes results → repeats until done. **Tool calling** grounds actions in real data and side effects (calendar, database, network). **MCP (Model Context Protocol)** standardizes how tools and context plug into agents. **Guardrails** limit scope: allowed tools, human approval, timeouts, output validation — critical on mobile where bad tool calls affect user data and battery.
+
+## Apple docs
+
+- [Foundation Models — tool integration](https://developer.apple.com/documentation/foundationmodels) — provide Swift tools the on-device model can invoke.
+- [WWDC — Expand your app’s experience with generative AI](https://developer.apple.com/videos/) — search “Foundation Models” for tool-calling sessions.
+- [App Intents](https://developer.apple.com/documentation/appintents) — structured actions Siri/Shortcuts; conceptually similar “typed tools” for system integration.
+
+## 🎯 Focus vs Defer
+
+### Focus
+
+- **Agent loop:** plan → tool call → observe → iterate (ReAct pattern).
+- **Tool schema:** name, description, typed parameters — model chooses JSON args.
+- **MCP:** host exposes resources/tools; client (Cursor, agent runtime) discovers capabilities.
+- **Idempotency & auth:** tools that write need same safeguards as REST mutations.
+- **Guardrails:** tool allowlist, max steps, confirmation UI, PII redaction.
+- **Human-in-the-loop:** approve payments, sends, deletes.
+
+### Defer
+
+- Full autonomous multi-agent swarms — single-agent loop is enough for interview.
+- MCP wire protocol bytes — explain client/server roles.
+- Replacing app architecture with agents everywhere — anti-pattern.
 
 ## Ключевые понятия
 
-_(to be added)_
+| Term | Role |
+|------|------|
+| **Tool / function calling** | Model emits structured call; runtime executes |
+| **ReAct** | Reasoning + Acting interleaved |
+| **MCP server** | Exposes tools, prompts, resources to MCP clients |
+| **MCP client** | IDE, agent host connecting to servers |
+| **Observation** | Tool result fed back into context |
+| **Max iterations** | Cap loops to prevent runaway cost |
+| **Guardrail** | Policy layer before/after model |
 
-## Как отвечать на интервью
+**Typical loop:**
 
-_(to be added)_
+```text
+User goal
+  → LLM (with tool definitions)
+  → tool_call: searchDocs(query)
+  → execute locally / API
+  → tool_result → LLM
+  → final answer OR next tool_call
+```
 
-## Код и примеры
+**MCP value:** one protocol for filesystem, Git, Xcode, Figma tools — agents discover capabilities dynamically instead of hardcoding every integration.
 
-_(to be added)_
+**Mobile guardrails:** run tools on background executor; MainActor for UI; no silent sends; Keychain for secrets; sandbox file access.
+
+## 🏋️ Exercises
+
+1. **Travel assistant agent** — Tools: `searchFlights`, `getCalendar`, `createHold`. *Expected:* diagram loop; confirm before book.
+
+2. **MCP mental model** — Explain how Cursor uses MCP for Xcode. *Expected:* client lists tools from server; model picks `BuildProject`.
+
+3. **Runaway loop** — Agent calls search 50 times. *Expected:* max steps, dedupe queries, cost cap.
+
+4. **Swift tool** — Foundation Models `Tool` wrapping HealthKit read (mock). *Expected:* typed parameters, error as observation.
+
+5. **Unsafe tool** — `deleteAllNotes`. *Expected:* not in allowlist; require explicit user confirmation.
 
 ## Ссылки
 
-_(to be added)_
+- [Model Context Protocol](https://modelcontextprotocol.io/) — specification
+- [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
+- Related: [tools](../tools/README.md), [prompt-engineering](../prompt-engineering/README.md)
+
+## Карточки знаний (Q&A)
+
+<!-- knowledge-cards-canonical:start -->
+
+### Q1
+- **Question (RU):** Что такое agent loop?
+- **Question (EN):** What is an agent loop?
+- **Answer (RU):** LLM получает цель и **описания tools** → решает вызвать tool с JSON-аргументами → runtime **выполняет** → результат (**observation**) возвращается в контекст → модель продолжает до финального ответа или лимита шагов.
+- **Answer (EN):** The model receives a goal and tool definitions, emits a structured tool call, the runtime executes it, feeds the result back as observation, and repeats until done or a step limit is hit.
+
+### Q2
+- **Question (RU):** Tool calling vs просто prompt?
+- **Question (EN):** Tool calling vs plain prompting?
+- **Answer (RU):** Prompt alone — модель **галлюцинирует** факты и не может безопасно выполнить side effects. **Tools** дают реальные данные (API, DB, sensors) и controlled actions. Описание tool важно — model routing по description.
+- **Answer (EN):** Prompting alone hallucinates facts and cannot safely perform side effects. Tools provide real data and controlled actions; clear tool descriptions drive correct routing.
+
+### Q3
+- **Question (RU):** MCP — зачем?
+- **Question (EN):** Why MCP?
+- **Answer (RU):** **Стандартный протокол** между agent host (IDE, app) и **tool servers** (Git, Xcode, docs). Один раз реализовал server — многие clients подключаются. Alternatives: ad hoc REST wrappers per agent — не масштабируется.
+- **Answer (EN):** MCP standardizes how agent hosts connect to tool servers — implement once, reuse across clients. Ad hoc per-agent integrations do not scale.
+
+### Q4
+- **Question (RU):** Guardrails для production agent?
+- **Question (EN):** Guardrails for a production agent?
+- **Answer (RU):** **Allowlist** tools; max iterations; timeout; validate outputs (schema); **human confirm** на destructive/financial; log traces; redact PII из observations; rate limit API. На iOS — не блокировать main thread; чёткие error states в UI.
+- **Answer (EN):** Tool allowlists, step/time limits, schema validation, human confirmation for destructive actions, logging, PII redaction, rate limits. On iOS keep work off the main thread with clear UI error states.
+
+<!-- knowledge-cards-canonical:end -->

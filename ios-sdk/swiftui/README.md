@@ -1,8 +1,17 @@
 # SwiftUI
 
+## За 30 секунд
+
+SwiftUI is **declarative UI**: views are values, state drives body recomputation, modifiers build a render tree. Interview depth: **`@State` / `@Binding` / `@Observable`**, view identity (`id`, `ForEach`), navigation (`NavigationStack`), performance (unnecessary body work), and **UIKit interop** (`UIViewRepresentable`). Know when SwiftUI is wrong tool (complex gestures, legacy UIKit investment).
+
 ## Apple docs
 
-- **`AsyncImage` и кэширование:** [Image Caching in UIKit and SwiftUI](../../../V.%20Данные%20и%20сеть/22%20Кэширование%20и%20offline-first/notes/Image-Caching-UIKit-SwiftUI.md) — почему ранний `AsyncImage` не заменял Kingfisher/Nuke; карточка **Q35** в теме 22
+- [SwiftUI](https://developer.apple.com/documentation/swiftui) — views, modifiers, previews.
+- [Model data](https://developer.apple.com/documentation/swiftui/model-data) — `@State`, `@Binding`, `@Observable`, `@Environment`.
+- [NavigationStack](https://developer.apple.com/documentation/swiftui/navigationstack) — typed routes, `NavigationPath`.
+- [UIViewRepresentable](https://developer.apple.com/documentation/swiftui/uiviewrepresentable) — UIKit bridge.
+- [Image](https://developer.apple.com/documentation/swiftui/image) — `AsyncImage`; caching — [Image Caching note](../../data-and-network/caching-offline-first/notes/Image-Caching-UIKit-SwiftUI.md) (**Q35**)
+- [Accessibility](https://developer.apple.com/documentation/swiftui/view-accessibility) — labels, traits, VoiceOver.
 
 ## 🎯 Focus vs Defer
 
@@ -12,13 +21,22 @@
 - Снижение риска регрессий при переходе с `ObservableObject`.
 - Переиспользуемые немодальные UI-паттерны обратной связи (toast) в SwiftUI.
 - Практические паттерны MapKit в SwiftUI: состояние карты, поиск и аннотации.
+- **View identity:** стабильные `id` в `ForEach`; избегать лишних пересозданий stateful child views.
 
 ### Defer
 
+- Custom **Layout** protocol until default `HStack`/`VStack`/`Grid` limits are hit.
+- Rewriting entire UIKit app in one release without feature flags / screen-by-screen migration.
+- **GeometryReader** everywhere instead of `safeAreaInset`, `alignmentGuide`, or `containerRelativeFrame`.
+- Deep **Metal** shaders in SwiftUI before mastering draw cycle and Instruments SwiftUI template.
 
 ## 🏋️ Exercises
 
-- Каждое упражнение: **задача** → **ожидаемый результат** → при необходимости **ссылка** на документацию.
+1. **Observation migration:** Convert one `ObservableObject` screen to `@Observable`; verify fewer `objectWillChange` fan-outs. **Expected:** same UX, simpler dependency injection.
+2. **NavigationStack:** Push three destinations with typed `Hashable` route enum. **Expected:** programmatic pop to root via `path`.
+3. **Identity bug:** `ForEach` without stable `id` on mutable list; fix flicker. **Expected:** explain identity vs data identity.
+4. **Representable:** Embed `MKMapView` with coordinator for delegate callbacks. **Expected:** lifecycle `makeUIView` / `updateUIView` / `dismantle`.
+5. **Performance:** Instruments SwiftUI template on scrolling list; remove one heavy `body` computation. **Expected:** measurable frame time improvement.
 
 ## Артефакты
 

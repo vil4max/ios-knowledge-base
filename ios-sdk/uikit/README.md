@@ -1,12 +1,16 @@
 # UIKit
 
-## Что дальше
+## За 30 секунд
 
-- Заполним упражнения (10) в `exercises/` и, если нужно, заведём практику:
-  - `UICollectionView` (Diffable + Compositional)
-  - Custom transition (`UIViewControllerAnimatedTransitioning`)
+UIKit is the **imperative** iOS UI framework: **UIView** hierarchy, **UIViewController** lifecycle, **Auto Layout**, tables/collections, and touch handling via **responder chain**. Still essential for interviews, legacy codebases, and SwiftUI bridges. Know lifecycle callbacks, when layout runs, memory (retain cycles in closures), and adaptive traits (size class, Dynamic Type).
 
----
+## Apple docs
+
+- [UIKit](https://developer.apple.com/documentation/uikit) — views, view controllers, controls.
+- [UIViewController](https://developer.apple.com/documentation/uikit/uiviewcontroller) — lifecycle, containment, transitions.
+- [UIView](https://developer.apple.com/documentation/uikit/uiview) — layout, drawing, gestures.
+- [UITableView](https://developer.apple.com/documentation/uikit/uitableview) / [UICollectionView](https://developer.apple.com/documentation/uikit/uicollectionview) — reuse, data source.
+- [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) — patterns and platform conventions.
 
 ## 🎯 Фокус vs можно отложить (вопрос → ответ)
 

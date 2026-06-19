@@ -1,27 +1,46 @@
 # Caching & Offline-First
 
+## За 30 секунд
+
+**Caching** reduces latency and bandwidth: HTTP cache (`URLCache`), in-memory (`NSCache`), disk files, and image pipelines (decode + resize + memory/disk tiers). **Offline-first** means the UI reads a **local source of truth** and syncs in the background—network is an optimization, not a hard dependency. Interviewers ask about cache invalidation, memory pressure, stale data, and conflict resolution.
+
 ## Apple docs
 
-- [NSURLCache](https://developer.apple.com/documentation/foundation/nsurlcache) — HTTP-кэш (`URLCache`).
-- [NSCache](https://developer.apple.com/documentation/foundation/nscache) — in-memory cache с eviction при memory pressure.
+- [URLCache](https://developer.apple.com/documentation/foundation/urlcache) — HTTP response cache for `URLSession`.
+- [NSCache](https://developer.apple.com/documentation/foundation/nscache) — in-memory cache with system eviction on memory pressure.
+- [NSURLRequest.CachePolicy](https://developer.apple.com/documentation/foundation/nsurlrequest/cachepolicy) — reload, return cache, else load.
+- [Using background sessions](https://developer.apple.com/documentation/foundation/url_loading_system/downloading_files_in_the_background) — large downloads while suspended.
+- [Reducing memory footprint](https://developer.apple.com/documentation/xcode/reducing-your-app-s-memory-use) — Jetsam, cache sizing.
 
 ## Материалы
 
-- Конспект: [Image Caching in UIKit and SwiftUI](notes/Image-Caching-UIKit-SwiftUI.md) — `URLCache` vs `NSCache`, decode cost, memory pressure / Jetsam, production pipeline (Kingfisher / Nuke / SDWebImage), `AsyncImage` до WWDC26; карточка **Q35**
-- HTTP-кэш и заголовки — [Networking — URLSession](../../20%20Networking%20—%20URLSession,%20REST,%20WebSocket,%20GraphQL,%20gRPC/Networking-URLSession-REST-WebSocket.md)
-- Параллельная загрузка N картинок — [ImageLoadingConcurrencyLab](../../../II.%20Swift/08%20Swift%20Concurrency%20—%20async-await,%20actor,%20isolation/ImageLoadingConcurrencyLab.playground/Contents.swift)
+- [Image Caching in UIKit and SwiftUI](notes/Image-Caching-UIKit-SwiftUI.md) — decode cost, memory pressure, production pipelines, `AsyncImage`; карточка **Q35**
+- HTTP cache policies — [Networking & URLSession](../networking/README.md) (Q31, Q47)
+- Parallel image loading — [Swift Concurrency](../../swift/concurrency/README.md)
 
 ## 🎯 Focus vs Defer
 
 ### Focus
 
+- **HTTP cache:** `Cache-Control`, ETag, `URLCache` limits; when to use `.reloadIgnoringLocalCacheData`.
+- **Image pipeline:** download → decode off main → downscale → memory + disk cache; cost of decoding on main thread.
+- **NSCache vs Dictionary:** `NSCache` evicts under pressure; no strong guarantee of retention.
+- **Offline-first UX:** optimistic UI, outbox queue, show stale with timestamp, retry with backoff.
+- **Invalidation:** TTL, version keys, push silent refresh, pull-to-refresh as explicit user intent.
 
 ### Defer
 
+- Building a full **CDN** strategy before app-level cache headers are correct.
+- **Multi-tier L1/L2** custom cache frameworks without measuring hit rate.
+- Perfect **conflict-free replicated data types** (CRDTs) unless role requires distributed systems depth.
 
 ## 🏋️ Exercises
 
-- Каждое упражнение: **задача** → **ожидаемый результат** → при необходимости **ссылка** на документацию.
+1. **URLCache:** Two identical GETs; second with default policy. **Expected:** second may hit cache; log `URLSessionTaskMetrics` if available.
+2. **NSCache pressure:** Fill cache with large images; simulate memory warning. **Expected:** entries evicted without crash.
+3. **Stale-while-revalidate:** Show cached feed immediately; refresh in background; update UI on success. **Expected:** no blank screen on launch offline.
+4. **Image downscale:** Decode 4000px image to cell size off main. **Expected:** lower peak memory vs full decode.
+5. **Cache key design:** Same URL, different auth headers. **Expected:** explain why URL alone is insufficient for authenticated resources.
 
 ## Артефакты
 

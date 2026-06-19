@@ -1,12 +1,30 @@
 # Data Structures & Big-O
 
+## За 30 секунд
+
+Mobile interviews still test **arrays, hash maps, sets, stacks, queues, trees, and graphs** plus **Big-O** for time and space. You rarely implement a red-black tree on iOS, but you must reason about **lookup vs insert**, sorting cost, and **when Swift `Dictionary`/`Set`/`Array` fit**. Pair theory with 2–3 LeetCode-medium patterns: two pointers, BFS/DFS, sliding window.
+
+## Apple docs & Swift
+
+- [Swift Collections](https://developer.apple.com/documentation/swift/array) — `Array`, `Dictionary`, `Set` complexity expectations.
+- [Sequence](https://developer.apple.com/documentation/swift/sequence) — `sorted()`, `filter`, lazy chains.
+- [Choosing between structures and classes](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/) — value semantics and CoW.
+
 ## 🎯 Focus vs Defer
 
 ### Focus
 
+- **Big-O:** O(1), O(log n), O(n), O(n log n), O(n²)—recognize in loops and nested structures.
+- **Hash map / set:** O(1) average lookup; counting frequencies; deduplication.
+- **Stack / queue:** parsing, BFS (queue), DFS (stack/recursion), undo stacks.
+- **Two pointers / sliding window:** sorted arrays, substring problems.
+- **Trees & graphs:** BFS shortest path unweighted; DFS connectivity; don't mutate while iterating Swift collections.
 
 ### Defer
 
+- Proving amortized analysis formally unless staff-level algorithms round.
+- Implementing **custom balanced trees** in interview unless explicitly asked.
+- Memorizing 200 LeetCode hard problems—prefer 30 representative patterns with explanations.
 
 ## 📚 Key terms (Q&A)
 

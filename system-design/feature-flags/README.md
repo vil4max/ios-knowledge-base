@@ -1,23 +1,109 @@
 # Feature Flags
 
-> **Status:** draft — content pending
-
 ## За 30 секунд
 
-_(to be added)_
+**Feature flags** and **remote config** decouple release from exposure: ship code dark, enable per user/segment, run **gradual rollout**, and flip a **kill switch** without App Store delay. Client-side evaluation reads cached config at launch; server-side gates sensitive or paid features. Interview answers cover flag lifecycle, consistency, analytics linkage, and avoiding flag spaghetti.
+
+## Apple docs
+
+- No first-party feature-flag SDK — integrate Firebase Remote Config, LaunchDarkly, custom CDN JSON, or backend-driven config via your API.
+- [BackgroundTasks](https://developer.apple.com/documentation/backgroundtasks) — optional periodic config refresh (not real-time guarantee).
+- [App Store review guidelines](https://developer.apple.com/app-store/review/guidelines/) — hidden switches for review vs production must comply with guideline 2.3.1 (no undisclosed toggles for reviewers).
+
+## 🎯 Focus vs Defer
+
+### Focus
+
+- **Remote config vs feature flag:** config values (thresholds, copy) vs on/off gates.
+- **Kill switch:** disable broken feature instantly; graceful degradation UI.
+- **Gradual rollout:** percentage, allowlist, geo, app version, platform.
+- **Client evaluation:** cached snapshot, stale-while-revalidate, default safe values.
+- **Targeting:** user id hash bucket for stable assignment.
+- **Observability:** log exposure events for experiment analysis.
+- **Cleanup:** remove dead flags to avoid combinatorial complexity.
+
+### Defer
+
+- Full experimentation statistics (Bayesian vs frequentist) unless data science round.
+- Multi-layer flag inheritance across 50 teams — keep example scoped.
+- Server-side rendering of flags for static sites — mobile focus stays client cache + API.
 
 ## Ключевые понятия
 
-_(to be added)_
+| Pattern | Use |
+|---------|-----|
+| **Boolean flag** | Feature on/off |
+| **Multivariate config** | JSON parameters (timeout, variant id) |
+| **Allowlist** | Internal/beta users |
+| **Percentage rollout** | `hash(userId) % 100 < N` |
+| **Kill switch** | Force off regardless of other rules |
+| **Sticky assignment** | Same user stays in variant |
+| **Default off** | Safe when fetch fails |
 
-## Как отвечать на интервью
+**Architecture:**
 
-_(to be added)_
+```text
+Launch → fetch config (CDN/API)
+      → persist cache + etag
+      → evaluate flags locally (sync, fast)
+      → UI reads FlagProvider protocol
+      → analytics: exposure + conversion
+```
 
-## Код и примеры
+**Client-side vs server-side:**
 
-_(to be added)_
+| | Client-side | Server-side |
+|---|-------------|-------------|
+| Latency | Instant after cache | Network per request |
+| Security | Can be tampered | Authoritative for paid/gated |
+| Offline | Uses last cache | May block |
+
+**Anti-patterns:** nested `if flagA { if flagB {` without defaults; no TTL; flags without owners; permanent flags named `temp_*`.
+
+## 🏋️ Exercises
+
+1. **New checkout flow** — Roll out to 5% iOS 18+ users; kill switch if crash rate spikes. *Expected:* hash bucketing, crash telemetry tie-in, revert without release.
+
+2. **Remote config** — API timeout default 30s → change to 15s without app update. *Expected:* config key + client read at request layer.
+
+3. **Offline launch** — Config fetch fails. *Expected:* bundled defaults, last cached values, feature off if unknown.
+
+4. **A/B naming** — Define exposure event and primary metric for search UI experiment. *Expected:* `search_ui_variant_assigned`, metric `search_result_tap`.
+
+5. **Flag cleanup RFC** — Process to remove flag after 100% rollout. *Expected:* default true in code, delete branch, remove remote key.
 
 ## Ссылки
 
-_(to be added)_
+- [LaunchDarkly architecture concepts](https://docs.launchdarkly.com/home/about/architecture) — vendor-neutral patterns
+- [Firebase Remote Config](https://firebase.google.com/docs/remote-config) — common mobile choice
+- Related: [analytics](../analytics/README.md), [scaling-teams](../scaling-teams/README.md)
+
+## Карточки знаний (Q&A)
+
+<!-- knowledge-cards-canonical:start -->
+
+### Q1
+- **Question (RU):** Remote config vs feature flag?
+- **Question (EN):** Remote config vs feature flag?
+- **Answer (RU):** **Remote config** — параметры (строки, числа, JSON): тексты, лимиты, URLs. **Feature flag** — gate поведения (вкл/выкл, variant). На практике один сервис часто делает и то и другое; важно разделить **kill switch** (безопасность) и **experiments** (продукт).
+- **Answer (EN):** Remote config tunes parameters (strings, numbers, JSON). Feature flags gate behavior on/off or variants. One service often provides both; separate kill switches from experiments operationally.
+
+### Q2
+- **Question (RU):** Как делать gradual rollout на клиенте?
+- **Question (EN):** How do you implement gradual rollout on the client?
+- **Answer (RU):** Стабильный **bucket**: `hash(userId) % 100 < rolloutPercent`. Пользователь остаётся в группе между запусками. Добавить фильтры: версия app, OS, locale. Сервер отдаёт процент или готовый boolean per user — оба valid; главное — **sticky** assignment и логирование exposure.
+- **Answer (EN):** Use stable bucketing (e.g. hash userId mod 100) plus filters for app version/OS. Server can send percent or per-user booleans; sticky assignment and exposure logging matter most.
+
+### Q3
+- **Question (RU):** Kill switch — что должно произойти в UI?
+- **Question (EN):** What should happen in the UI when a kill switch fires?
+- **Answer (RU):** Feature **исчезает или degrades gracefully**: скрыть entry point, показать legacy flow, disable только risky sub-step. Не crash и не пустой экран. Config refresh на launch + периодически; при off — локальный cache обновляется. Критичные флаги — **default safe** (off) если config недоступен, если риск высокий.
+- **Answer (EN):** Hide or degrade gracefully — legacy flow, disabled sub-step, no crashes or blank screens. Refresh config on launch; for high-risk features default safe (off) when config is unavailable.
+
+### Q4
+- **Question (RU):** Client-side evaluation — риски?
+- **Question (EN):** What are the risks of client-side evaluation?
+- **Answer (RU):** Пользователь может подменить cached config на jailbreak (редко критично для UI experiments). **Платные/безопасные** gates — проверять на **server**. Клиентские флаги — для UX rollout и performance; не для авторизации. Минимизировать вложенность флагов и удалять мёртвые.
+- **Answer (EN):** Client cache can be tampered with on jailbroken devices — fine for UX rollouts, not for authorization or paid gates (verify server-side). Remove stale flags to limit complexity.
+
+<!-- knowledge-cards-canonical:end -->

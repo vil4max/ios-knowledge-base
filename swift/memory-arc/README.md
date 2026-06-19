@@ -24,26 +24,116 @@
 
 - [Habr (hh.ru) — «Память в Swift от 0 до 1»](https://habr.com/en/companies/hh/articles/546856/) — ARC, ссылки, retain cycles, `[weak self]` и смежное.
 - [Habr (Avito) — «Как Swift работает с памятью: подробный гайд для разработчиков. Часть 1»](https://habr.com/en/companies/avito/articles/1017162/) — устройство памяти в Swift (серия, часть 1).
+- [Habr (Avito) — часть 2](https://habr.com/en/companies/avito/articles/1017248/) — практические задачи и типовые ошибки.
 
-## Доп. конспект: Avito ч.1 (якоря вне RunLoop / autorelease)
+## Доп. конспект: Avito ч.1 (теория)
 
 Источник: [Habr (Avito), часть 1](https://habr.com/en/companies/avito/articles/1017162/).
 
-- **Side table** — отдельная мета-структура для учёта **strong / unowned / weak** и обнуления `weak`; часто появляется при первой `weak` или при переполнении inline-счётчиков в объекте.
-- **Жизненный цикл объекта** — цепочка состояний в духе Live → Deiniting → Deinited / Freed → Dead; «зомби» в смысле статьи — `deinit` уже выполнен, а память объекта ещё не освобождена (например, из-за `unowned` / side table).
-- **Стек / куча / глобальная** — разные цены выделения и горизонты жизни; см. также **I·01** [`Stack-vs-heap.md`](<../../I. Фундамент/01 · Computer Science/Стек vs куча — где живут данные, как двигаются между потоками/Stack-vs-heap.md>).
-- **CoW + большой struct в `any SomeProtocol`** — разделяемый буфер в куче; мутация через копию триггерит копирование данных; пересекается с **II·06** ([`Swift-Types-Protocols-Generics.md`](<../06 Типы, протоколы, дженерики, opaque и existentials/Swift-Types-Protocols-Generics.md>)).
-- **Экзистенциальный контейнер** — фиксированный «ящик» + witness tables; `P & Q` шире; для class-only / `AnyObject` контейнер может быть компактнее.
-- **`@frozen` / non-frozen** — стабильность layout типов из эволюционирующих модулей → влияние на размещение (стек vs куча vs глобальная).
-- **Alignment** — padding и связка с `MemoryLayout.size / stride / alignment`.
-- **Класс vs struct** — trade-off кучи и ARC при копировании; реальное размещение зависит от контекста (поле класса, existential, `inout`, escaping).
-- **Инструменты** — Allocations, Memory Graph, vmmap/leaks/heap и т.д. → **VI·24** Debug / Instruments.
+### Области памяти
+
+- **Стек** — LIFO, быстрый сдвиг указателя; локальные переменные и параметры с lifetime в пределах кадра вызова.
+- **Куча** — произвольный доступ, дороже аллокация; объекты с неопределённым или длинным lifetime, reference types, буферы value-контейнеров.
+- **Глобальная** — на весь процесс; `static` / глобальные сущности фиксированного размера, известного на compile time. **Non-frozen** value types в глобальной области хранятся **косвенно** (ссылка в глобальной, тело — в куче).
+
+### Value vs Reference
+
+- **Value** (`struct`, `enum`, tuples, примитивы) — копия независима; чаще стек, но не всегда (см. ниже).
+- **Reference** (`class`, `actor`, `indirect enum`, closures) — копируется указатель; изменения видны через все ссылки; обычно куча.
+- **Коллекции** (`Array`, `String`, …) — value-семантика, но **буфер в куче** + **CoW**.
+
+### Copy-on-Write
+
+- До мутации копии и оригинал делят один буфер; при записи в shared storage — копирование данных.
+- Неявный CoW: стандартные коллекции; **большой struct (>3 machine words) в existential** — копируется контейнер, данные в куче; мутация через копию контейнера триггерит CoW данных.
+
+### Экзистенциальный контейнер
+
+- Базовый `any P`: **5 machine words** (64-bit → 40 байт): 3 под значение или ссылку на кучу, 1 value witness table, 1 protocol witness table.
+- **`P & Q`**: **6 words** — два protocol witness table.
+- **Class-only / `AnyObject`**: **2 words** — ссылка на `HeapObject` + одна PWT (метаданные класса уже в объекте).
+- **`ProtocolA & ProtocolB`** (один class-only): **3 words** — ссылка + две PWT.
+
+### Типы ссылок (цена / безопасность)
+
+| Тип | Удерживает объект | После dealloc | Overhead |
+|-----|-------------------|---------------|----------|
+| **strong** | да | — | минимальный |
+| **weak** | нет | `nil` | side table, дороже |
+| **unowned (safe)** | нет | crash | счётчик unowned; может задержать тело без side table → «зомби» |
+| **unowned (unsafe)** | нет | UB | без счётчика |
+
+По умолчанию у объекта **2 inline-счётчика** в метаданных: **strong** и **unowned (safe)**. При первой **weak** или переполнении inline — учёт в **side table** (**3** счётчика: strong, unowned safe, weak).
+
+### Side table
+
+- Отдельная мета-структура: ссылка на объект, счётчики, флаги; обнуление `weak` после освобождения тела.
+- Создаётся при первой `weak` или переполнении inline-счётчиков strong / unowned (safe).
+
+### Жизненный цикл объекта
+
+```text
+Live → (strong == 0) → Deiniting [deinit]
+  → нет weak/unowned → Dead
+  → есть unowned (safe) → Deinited → (unowned == 0) → Dead или Freed
+  → Freed: тело снято, side table ждёт weak == 0 → Dead
+```
+
+- **«Зомби»** — `deinit` уже вызван, память тела ещё не возвращена: **unowned (safe)** без side table удерживает объект в **Deinited**; аналогично сценарий strong+unowned → снять strong при живом unowned.
+- **Strong reference cycle** — контур strong-ссылок; лечение: `weak` / `unowned`, capture list, weak delegate.
+
+### Класс vs struct (критерии Apple)
+
+1. **Стоимость аллокации** — куча дороже; class обычно в куче; struct — стек, но: поле class, existential >3 words, escaping capture, `inout` → куча.
+2. **ARC при копировании** — struct с двумя **value**-полями дешевле class; struct с двумя **reference**-полями при копии увеличивает **два** refcount vs **один** у class.
+3. **Диспетчеризация** — struct статическая; class динамическая (`final` / devirtualization — быстрее).
+4. **Нужны ли** наследование, `===`, `AnyObject` / `NSObject` — class.
+
+### Non-frozen типы
+
+- Размер/layout могут измениться в новой версии бинарного модуля без перекомпиляции app.
+- Компилятор может не заранее выделить стек под кадр с non-frozen (например `URL`) — отдельная аллокация по фактическому размеру.
+- **Frozen** — фиксированный layout → оптимизации (стек, глобальная память).
+
+### Alignment
+
+- Поля выравниваются под machine word → **padding**; `MemoryLayout.size` ≠ сумма полей; `stride` — шаг в contiguous storage (массив).
+- Пример: `Bool` + `UInt64` → size 16 из-за выравнивания `UInt64` на 8 байт.
+
+### Инструменты
+
+- Runtime: **Allocations**, malloc stack logging.
+- Снимок: **Leaks**, **Memory Graph**, Virtual Memory Tracker.
+- CLI по `*.memgraph`: `footprint`, `vmmap`, `leaks`, `heap`, `malloc_history`.
+- См. также **quality/debug** и карточки **Q42**–**Q46** ниже.
 
 ### Собес ~60 с: side table + жизненный цикл
 
 **Side table:** когда появляется первая **`weak`** или не хватает inline-счётчиков в объекте, рантайм выносит учёт **strong / unowned / weak** в **отдельную структуру** рядом с объектом. Тогда после `deinit` можно **обнулить `weak`** и корректно освободить память; **`weak` дороже `strong`** из-за этой косвенности.
 
-**Цикл:** пока есть strong — объект **Live**; strong упал в ноль — **`deinit`** (фаза **Deiniting**). Дальше без `weak`/`unowned` часто сразу **Dead**. Если был **`unowned`**, тело может задержаться после `deinit`, пока считаются unowned; при **side table** возможна фаза, когда тело уже сняли, а таблица ждёт нуля по **weak** — важно: **`deinit` не всегда означает «вся память сразу вернулась ОС»** в краевых схемах.
+**Цикл:** пока есть strong — объект **Live**; strong упал в ноль — **`deinit`** (фаза **Deiniting**). Дальше без `weak`/`unowned` часто сразу **Dead**. Если был **`unowned`**, тело может задержаться после `deinit`, пока считаются unowned; при **side table** возможна фаза **Freed**, когда тело уже сняли, а таблица ждёт нуля по **weak** — важно: **`deinit` не всегда означает «вся память сразу вернулась ОС»**.
+
+## Доп. конспект: Avito ч.2 (практика)
+
+Источник: [Habr (Avito), часть 2](https://habr.com/en/companies/avito/articles/1017248/).
+
+| # | Суть | Вывод для собеса |
+|---|------|------------------|
+| 1 | `ClassA` ↔ `ClassB` strong | Retain cycle; одна ссылка → `weak` |
+| 2 | `weak var array = [MyClass()]` | `weak` только на reference type; обёртка `WeakBox` |
+| 3 | Рекурсия `number -= 2` | Stack overflow; guard `>= 0`; tail call vs `@_optimize(none)` |
+| 4 | `struct { var next: Self? }` | Value type — бесконечный размер при compile time; `class` / `indirect enum` ок |
+| 5 | `Bool` + `UInt64` vs порядок полей | Padding: size/stride 16 vs 9/16; у `class` layout — размер ссылки (8) |
+| 6 | `[MyProtocol]` из struct | В массиве existential **40** байт, не размер struct |
+| 7 | `ProtocolA` / `ProtocolB: AnyObject` / `A & B` | **40 / 16 / 24** байт — базовый / class-only / композиция PWT |
+| 8 | Два больших struct в `any` ссылаются | Утечки нет: value + CoW через existential — копии расходятся при мутации |
+| 9 | Closure с/без `[myClass]` | Неявный захват **переменной** (ref-to-ref) vs копия ссылки в capture list |
+| 10 | `callback = { async { [weak self] } }` | `[weak self]` во внутреннем closure не спасает — strong `self` во внешнем |
+| 11 | `closure = closure ?? foo` | Неявный strong `self` на method reference → cycle; `[weak self]` в default |
+| 12 | `[unowned labelView]` после `cleanView` | **Зомби** в Deinited без side table; фикс: `nil` closure / strong ref + cleanup |
+| 13 | `var b = ClassB(a: self)` | Циклическая инициализация; `lazy` / optional + `weak` обратная ссылка |
+| 14 | `let x = MyClass()` + `shared` | Два разных экземпляра; `static let` — lazy init при первом обращении |
+| 15 | `swap(&MyClass.myStruct.a, &MyClass.myStruct.b)` | Overlapping exclusive access (`inout`); локальная копия struct |
 
 ## 🎯 Фокус vs можно отложить
 
@@ -146,11 +236,13 @@
   - **Ответ**: дополнительная структура для weak/unowned bookkeeping (например список weak‑ссылок, счётчики). Создаётся лениво — только если объект участвует в weak‑сценариях.  
 
 - Heap object header.
+  - **Ответ**: метаданные reference type в куче (`HeapObject`): inline-счётчики strong / unowned (safe), type metadata; при необходимости — указатель на side table. Для value type `MemoryLayout` класса показывает размер **ссылки**, не всего объекта.
 
-  - **Ответ**: `{ [weak self, unowned vc] in ... }` позволяет явно выбрать семантику захвата и управление временем жизни, предотвращая retain cycle.  
-    Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/`
+- Capture list.
+  - **Ответ**: `{ [weak self, unowned vc] in ... }` явно задаёт семантику захвата; без списка reference types захватываются **strong** → риск retain cycle. Явный `[myClass]` копирует **значение** переменной (ссылку на объект), а не «ссылку на переменную».
 
-  - **Ответ**: цикл сильных ссылок (2+ объекта удерживают друг друга через strong), refcount не падает до 0 → `deinit` не вызывается. Лечится разрывом strong‑звена или отменой подписок/наблюдателей.  
+- Retain cycle.
+  - **Ответ**: цикл сильных ссылок (2+ объекта или `self` ↔ closure), refcount не падает до 0 → `deinit` не вызывается. Лечится разрывом strong‑звена, capture list, weak delegate, отменой подписок.  
     Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/`
 
 - Abandoned memory.
@@ -293,14 +385,10 @@
 <!-- knowledge-cards-canonical:start -->
 
 ### Q3
-
-    - **Compile-time** (**этап компиляции**): компилятор вставляет и может оптимизировать **retain/release** там, где время жизни ссылок и **scope** — присваивания, вход/выход из scope, аргументы вызовов и т.п.
-
-    - **Runtime** (**этап выполнения**): эти вызовы меняют **strong reference count**; при **`0`** объект деаллоцируется.
-
-    - **Compile time:** the compiler inserts **retain/release** where **lifetimes** and **scope** dictate (assignments, scopes, calls).
-
-    - **Runtime:** those updates change the refcount and trigger **deallocation** at zero.
+- **Question (RU):** ARC работает на этапе компиляции или выполнения?
+- **Question (EN):** Does ARC work at compile time or at runtime?
+- **Answer (RU):** На **обоих**. **Compile-time:** компилятор вставляет и может оптимизировать **retain/release** там, где из времени жизни ссылок и **scope** следуют точки учёта — присваивания, вход/выход из scope, аргументы вызовов, capture list. **Runtime:** эти вызовы меняют **strong reference count**; при **`0`** вызывается **`deinit`** и память освобождается.
+- **Answer (EN):** Both stages. At **compile time** the compiler inserts and may optimize **retain/release** where lifetimes and scope dictate. At **runtime** those updates change the strong refcount; at zero the object is deallocated.
 - **Устная заготовка (RU):**
 
     2. Compile-time: компилятор вставляет и может оптимизировать retain/release в точках, которые следуют из времени жизни ссылок и scope — присваивания, вход/выход из scope, аргументы вызовов.
@@ -351,9 +439,9 @@
 - **Follow-up answer:** когда **`self`** уже **`nil`**, а код после **`guard let self`** или без него **молча не делает нужную работу**: **completion** после **dismiss** экрана, отложенный **UI update**, «пропавший» **side effect** без лога. Ещё: забытый **`guard`** при опционале, или ветка «ничего не делаем» маскирует ошибку состояния. Лечится явным **`guard let self else { … }`** (log / assertion / user-visible fail), осмысленным **fallback** и тестами на отмену / **deallocation**.
 
 ### Q42
-
-    для reference types компилятор вставляет retain/release; пока есть strong-ссылка — объект живёт; при нуле — деинициализация. `weak` не удерживает и даёт `nil` после освобождения; `unowned` без optional при контракте lifetime.
-
+- **Question (RU):** как в двух словах устроен ARC и роли `strong` / `weak` / `unowned`?
+- **Question (EN):** ARC in brief—roles of `strong`, `weak`, and `unowned`?
+- **Answer (RU):** Для reference types компилятор вставляет **retain/release**; пока есть **strong**-ссылка — объект живёт; при нуле strong — **`deinit`**. **`weak`** не удерживает, после освобождения — `nil` (через side table). **`unowned`** не удерживает, non-optional; безопасен только при гарантии lifetime, иначе crash / «зомби» в Deinited.
 - **Answer (EN):** Strong refs keep instances alive; `weak` avoids cycles and zeroes out; `unowned` is non-optional and crashes if the instance dies early.
 
 - **Устная заготовка (RU):** strong держит; weak — цикл и Optional; unowned — только если «всегда живёт дольше».

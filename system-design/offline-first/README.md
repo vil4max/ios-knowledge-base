@@ -1,23 +1,102 @@
 # Offline First
 
-> **Status:** draft — content pending
-
 ## За 30 секунд
 
-_(to be added)_
+**Offline-first** means the app treats **local storage as the source of truth** for what the user sees. Reads never block on network; writes are recorded locally first, then synced. Network is reconciliation, not a gate for every screen. Interview answers cover outbox queues, idempotent APIs, conflict policies, and UX for pending/failed states.
+
+## Apple docs
+
+- [Using background tasks](https://developer.apple.com/documentation/backgroundtasks) — `BGAppRefreshTask`, deferred sync windows.
+- [NWPathMonitor](https://developer.apple.com/documentation/network/nwpathmonitor) — reachability without polling.
+- [Core Data](https://developer.apple.com/documentation/coredata) — persistent local store; [NSPersistentCloudKitContainer](https://developer.apple.com/documentation/coredata/nspersistentcloudkitcontainer) for Apple-managed sync (know limits vs custom backend).
+- [URLSession background configuration](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1407496-background) — large uploads/downloads while suspended.
+
+## 🎯 Focus vs Defer
+
+### Focus
+
+- **Local source of truth:** UI binds to local DB/cache, not raw network responses.
+- **Outbound mutation queue (outbox):** durable on disk until server ack.
+- **Idempotency:** client-generated IDs or `Idempotency-Key` header.
+- **Conflict resolution:** LWW, field-level merge, server wins, or user prompt.
+- **Sync triggers:** app launch, foreground, connectivity restored, push silent refresh.
+- **UX:** pending, synced, failed, retry — visible states.
+
+### Defer
+
+- Full CRDT/OT unless collaborative editing is in scope.
+- CloudKit as default answer for every custom backend — mention when it fits vs when it does not.
+- Perfect real-time consistency across devices in v1.
 
 ## Ключевые понятия
 
-_(to be added)_
+| Term | Meaning |
+|------|---------|
+| **Read model** | Denormalized local view optimized for screens |
+| **Outbox** | Table/queue of pending mutations with retry metadata |
+| **Cursor / watermark** | Last synced server version or timestamp |
+| **Tombstone** | Deleted flag synced so deletes propagate |
+| **Optimistic write** | Apply locally before server confirms |
+| **Reconciliation** | Merge server delta into local store |
+| **Idempotent API** | Same request twice → same server state |
+| **Last-write-wins (LWW)** | Higher timestamp wins whole record |
+| **Field-level merge** | Merge non-conflicting fields independently |
 
-## Как отвечать на интервью
+**Anti-patterns:** network-only reads; in-memory-only outbox (lost on crash); blocking UI on `URLSession` without local cache.
 
-_(to be added)_
+**Sync trigger matrix:**
 
-## Код и примеры
+| Event | Typical action |
+|-------|----------------|
+| App foreground | Pull delta, flush outbox |
+| Network restored | Flush outbox, backoff pull |
+| User pull-to-refresh | Force pull + retry failed |
+| Silent push | Wake app, fetch delta (budget-aware) |
 
-_(to be added)_
+## 🏋️ Exercises
+
+1. **Notes app** — Design local schema + outbox for create/edit/delete. *Expected:* `Note` table, `PendingMutation` table, LWW on `updatedAt`.
+
+2. **Shopping cart offline** — User adds items offline, prices change on server. *Expected:* local cart authoritative for UX; reconcile price conflicts on sync with user message.
+
+3. **Failure UX** — Message stuck in “sending” for 24h. *Expected:* retry with exponential backoff, manual retry, delete draft, analytics on failure reason.
+
+4. **Reachability** — Replace timer-based polling with `NWPathMonitor` + foreground sync. *Expected:* no background poll loop; sync on path satisfied.
+
+5. **Idempotency** — POST /messages twice with same client UUID. *Expected:* server returns same resource id both times.
 
 ## Ссылки
 
-_(to be added)_
+- [Using Background Tasks](https://developer.apple.com/documentation/backgroundtasks)
+- Related: [sync-engine](../sync-engine/README.md), [caching-offline-first](../../data-and-network/caching-offline-first/README.md)
+- [Offline First (offlinefirst.org)](https://offlinefirst.org/) — principles and patterns
+
+## Карточки знаний (Q&A)
+
+<!-- knowledge-cards-canonical:start -->
+
+### Q1
+- **Question (RU):** Что значит «local source of truth»?
+- **Question (EN):** What does “local source of truth” mean?
+- **Answer (RU):** UI и бизнес-логика читают **локальное хранилище** (Core Data, SQLite, файлы). Сеть **обновляет** локальное состояние, но не является единственным местом, откуда экран берёт данные. Пользователь видит последнее известное состояние сразу, даже без сети.
+- **Answer (EN):** Screens read from local storage; the network updates that store but does not gate every read. The user sees the last known state immediately, including offline.
+
+### Q2
+- **Question (RU):** Зачем outbox на диске?
+- **Question (EN):** Why a durable outbox on disk?
+- **Answer (RU):** Мутации (create/update/delete) записываются в **очередь на диске** до ack сервера. При краше или offline очередь сохраняется; при восстановлении сети — retry с backoff. In-memory queue теряет данные при kill процесса.
+- **Answer (EN):** Mutations persist in a disk queue until the server acknowledges them. Survives crashes and offline periods; retries with backoff when online. In-memory queues lose work on process death.
+
+### Q3
+- **Question (RU):** Last-write-wins vs custom merge — когда что?
+- **Question (EN):** Last-write-wins vs custom merge — when to use which?
+- **Answer (RU):** **LWW** — простые сущности, одно поле «версии» (`updatedAt`), допустимо перезатереть запись. **Custom merge** — разные поля от разных клиентов (статус + комментарий), доменные инварианты, или нужен **user-facing conflict UI**. Часто: LWW для metadata, field merge для контента.
+- **Answer (EN):** LWW fits simple records with a single version timestamp. Custom merge fits multi-field edits, domain rules, or user-visible conflicts. Often combine both strategies by entity type.
+
+### Q4
+- **Question (RU):** Как offline-first стыкуется с push?
+- **Question (EN):** How does offline-first work with push notifications?
+- **Answer (RU):** Push — **триггер синхронизации**, не транспорт данных: silent push будит app → fetch **delta** → merge в local store → UI обновляется через observation (Combine/async stream/FRC). Не полагаться только на push payload для больших данных.
+- **Answer (EN):** Push triggers sync, it is not the data transport: silent push wakes the app, fetches a delta, merges locally, UI updates via observation. Do not rely on push payload alone for large payloads.
+
+<!-- knowledge-cards-canonical:end -->

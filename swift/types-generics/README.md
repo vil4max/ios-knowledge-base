@@ -14,7 +14,7 @@
 - Дженерик-ограничения: `where`, `==`, `:`, несколько ограничений сразу.
 - Phantom types для compile-time контроля состояния.
 
-**Память и ABI рядом с `any` / existential:** экзистенциальные контейнеры, non-frozen, CoW крупных значений в протокольной типизации — [Habr (Avito) — память Swift, ч.1](https://habr.com/en/companies/avito/articles/1017162/); якоря вынесены в **II·07** [`Memory-ARC-Retain-Cycles.md`](<../07 Память, ARC, retain cycles, side tables/Memory-ARC-Retain-Cycles.md>) (раздел **Доп. конспект: Avito ч.1**).
+**Память и ABI рядом с `any` / existential:** экзистенциальные контейнеры, non-frozen, CoW крупных значений в протокольной типизации — [Habr (Avito) — память Swift, ч.1](https://habr.com/en/companies/avito/articles/1017162/); якоря в [`swift/memory-arc/README.md`](../memory-arc/README.md) (разделы **Доп. конспект: Avito ч.1–2**).
 
 
 ## Структура топика
