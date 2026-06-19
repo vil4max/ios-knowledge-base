@@ -1,22 +1,35 @@
 import Foundation
 
-struct User {
+struct Profile {
     let name: String
     let age: Int
-}
 
-struct Company {
-    let boss: User
-    let employees: [User]
-}
-
-func inspect<T>(_ value: T) {
-    let mirror = Mirror(reflecting: value)
-    print("Inspecting \(mirror.subjectType):")
-    for child in mirror.children {
-        let label = child.label ?? "unknown"
-        print("  - \(label): \(child.value)")
+    var displayLabel: String {
+        "\(name), \(age)"
     }
+}
+
+struct Team {
+    let lead: Profile
+    let members: [Profile]
+}
+
+enum LoadState {
+    case idle
+    case loaded(Profile)
+    case failed(String)
+}
+
+func inspect<T>(_ value: T, title: String) {
+    let mirror = Mirror(reflecting: value)
+    print("=== \(title) ===")
+    print("subjectType: \(mirror.subjectType)")
+    print("displayStyle: \(String(describing: mirror.displayStyle))")
+    for child in mirror.children {
+        let label = child.label ?? "·"
+        print("  \(label): \(child.value)")
+    }
+    print()
 }
 
 func prettyPrint(_ value: Any, indent: Int = 0) {
@@ -70,26 +83,37 @@ struct JSONObject {
     var string: String? { value as? String }
     var int: Int? { value as? Int }
     var isNull: Bool { value is NSNull }
+    var isMissing: Bool { isNull }
 }
 
-let michael = User(name: "Michael Scott", age: 44)
-inspect(michael)
+let alex = Profile(name: "Alex", age: 30)
+inspect(alex, title: "Profile stored properties")
+print("displayLabel is computed — not in Mirror.children above")
+print()
 
-let dunderMifflin = Company(
-    boss: User(name: "Michael", age: 44),
-    employees: [
-        User(name: "Jim", age: 33),
-        User(name: "Dwight", age: 38)
+let team = Team(
+    lead: Profile(name: "Alex", age: 30),
+    members: [
+        Profile(name: "Sam", age: 28),
+        Profile(name: "Jordan", age: 31)
     ]
 )
-prettyPrint(dunderMifflin)
+print("=== prettyPrint Team ===")
+prettyPrint(team)
+print()
+
+inspect(LoadState.loaded(alex), title: "Enum with associated value")
+print()
 
 let payload: [String: Any] = [
-    "user": [
+    "profile": [
         "name": "Alex",
         "age": 30
     ]
 ]
 let json = JSONObject(payload)
-print(json.user.name.string ?? "missing")
-print(json.user.age.int ?? -1)
+print("=== Dynamic JSON ===")
+print("name:", json.profile.name.string ?? "nil")
+print("age:", json.profile.age.int.map(String.init) ?? "nil")
+print("typo key isMissing:", json.profil.name.isMissing)
+print("valid path isMissing:", json.profile.name.isMissing)
