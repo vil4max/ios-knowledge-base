@@ -14,6 +14,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 - [Accessibility](https://developer.apple.com/documentation/swiftui/view-accessibility) — labels, traits, VoiceOver.
 - [List](https://developer.apple.com/documentation/swiftui/list) — dynamic rows, sections, edit mode; note [swiftui-list-dynamic-data.md](notes/swiftui-list-dynamic-data.md)
 - [View.task](https://developer.apple.com/documentation/swiftui/view/task(priority:_:)) — async load tied to view lifetime; note [swiftui-data-loading-task.md](notes/swiftui-data-loading-task.md)
+- [TimelineView](https://developer.apple.com/documentation/swiftui/timelineview) — time-driven UI refresh; note [timeline-view-swiftui.md](notes/timeline-view-swiftui.md)
 
 ## SwiftUI components — quick map
 
@@ -39,6 +40,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 - Практические паттерны MapKit в SwiftUI: состояние карты, поиск и аннотации.
 - **View identity:** стабильные `id` в `ForEach`; избегать лишних пересозданий stateful child views.
 - **Data loading:** `.task` / `.task(id:)` + FSM в `@Observable` VM; не API в `.onAppear` + неструктурированный `Task`.
+- **Time-driven UI:** `TimelineView` + schedule (`everyMinute`, `periodic`, `animation`) и `context.cadence`; не `Timer` + `@State` tick для часов на экране.
 
 ### Defer
 
@@ -64,6 +66,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 
 ### Последние заметки
 
+- `notes/timeline-view-swiftui.md` — `TimelineView`, schedules, `cadence`, vs `Timer`; playground [TimelineViewDemo.playground](TimelineViewDemo.playground)
 - `notes/swiftui-data-loading-task.md` — `.task` vs `.onAppear`, `LoadState`, cooperative cancel, `.refreshable`
 - `notes/swiftui-list-dynamic-data.md` — `List`, sections, swipe, edit mode, empty state, stable `id`
 - `notes/migrating-to-observable-without-breaking-your-app.md`
@@ -455,6 +458,39 @@ struct DetailView: View {
 
 ---
 
+### Q-card: Time-driven UI — `TimelineView` vs `Timer`
+
+**Вопрос (RU):** Зачем `TimelineView`, если есть `Timer`?
+
+**Ответ (RU):** Зацепка: **`TimelineView` — отрисовка от времени, `Timer` — работа во времени**.
+
+- `TimelineView` пересчитывает content по **расписанию**, пока view в дереве; исчез — тики останавливаются без `invalidate`.
+- `context.date` + **`cadence`** — формат UI под реальную частоту обновлений (например дробные секунды только при `.live`).
+- Расписания: `.everyMinute`, `.periodic(from:by:)`, `.animation(minimumInterval:paused:)`.
+- `Timer` / периодический `Task` — fetch, таймауты, доменная логика; не для секундомера в `body` через лишний `@State`.
+
+**Ответ (EN):** Use `TimelineView` when UI content is a function of time (clocks, shimmer, animation phase via `context.date`). Ticks are tied to view lifetime and expose `cadence` for adaptive detail. Use `Timer` or async tasks for data refresh and non-rendering timers.
+
+**Устная заготовка (RU):**
+
+1. UI от времени → `TimelineView`.
+2. Данные / side effects → `Task` или `Timer` вне render loop.
+3. `cadence` — не обещай 60 FPS везде.
+
+**Устная заготовка (EN):**
+
+1. Time-based *display* → `TimelineView`.
+2. Time-based *work* → `Task` / `Timer`.
+3. Branch on `cadence` for detail level.
+
+**Follow-up (RU):** Где ещё встречается в базе?
+
+**Follow-up answer (RU):** [Graphics / shaders](../graphics/README.md) — uniform времени через `TimelineView(.animation)`.
+
+**Notes:** [timeline-view-swiftui.md](notes/timeline-view-swiftui.md) · **Playground:** [TimelineViewDemo.playground](TimelineViewDemo.playground)
+
+---
+
 ### Q9
 - **Question (RU):** **multilevel dismiss** в SwiftUI: несколько уровней **sheet** / **fullScreenCover** / **навигация** — как задать состояние и **кто** закрывает какой уровень?
 - **Question (EN):** Multilevel dismiss in SwiftUI—stacked sheets, fullScreenCover, navigation; state patterns and who dismisses which level?
@@ -589,6 +625,17 @@ struct DetailView: View {
 ---
 
 ## Ресурсы
+
+### TimelineView — time-driven UI (Nil Coalescing)
+- **Type:** article + playground
+- **URL:** https://nilcoalescing.com/blog/TimelineViewInSwiftUI/
+- **Author:** Natalia Panferova (Nil Coalescing)
+- **Why:** Schedules, `context.cadence`, animation without state; vs `Timer`
+- **When:** Clocks, countdown, shimmer, shader time uniform
+- **Tags:** `swiftui`, `timelineview`, `animation`, `pattern`
+- **Note:** [timeline-view-swiftui.md](notes/timeline-view-swiftui.md)
+- **Playground:** [TimelineViewDemo.playground](TimelineViewDemo.playground)
+- **Added:** 2026-06-19
 
 ### Floating card using safeAreaBar (Codakuma)
 - **Type:** article + code
