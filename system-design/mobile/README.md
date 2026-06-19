@@ -2,97 +2,121 @@
 
 ## За 30 секунд
 
-Mobile system design interviews test whether you can turn a product brief into a **landscape of entities**, **client–server contracts**, and **mobile-specific secondary requirements** (offline, push, analytics, deep links, lifecycle). Start by sketching the entity graph, clarifying read vs write paths, then layer sync, caching, and observability. Senior answers name trade-offs (poll vs push, local source of truth vs network-first) and estimate complexity with concrete ranges.
+Mobile system design — собеседование на **сеньорность**: не только язык и UI, а **система целиком** — сущности, API, кэш, offline, push, observability, границы модулей. Ответ строят за ~45 минут: requirements → entity graph → read/write paths → trade-offs → secondary requirements (логи, аналитика, флаги).
 
-## Apple docs
+## Материалы
 
-- [App lifecycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle) — background limits, state restoration entry points.
-- [Background execution](https://developer.apple.com/documentation/uikit/app_and_environment/scenes/preparing_your_app_to_run_in_the_background) — when sync and push handlers may run.
-- [URLSession](https://developer.apple.com/documentation/foundation/urlsession) — networking layer for REST/GraphQL clients.
-- [Core Data](https://developer.apple.com/documentation/coredata) / [SwiftData](https://developer.apple.com/documentation/swiftdata) — common local persistence choices in iOS designs.
+### immh — Mobile System Design
+
+| Material | Status |
+|----------|--------|
+| [immh-series-index.md](notes/immh-series-index.md) | index + integration checklist |
+| [immh-interview-glava-1.md](notes/immh-interview-glava-1.md) | awaiting paste |
+| [immh-logger.md](notes/immh-logger.md) | awaiting paste |
+
+### Playgrounds
+
+| Playground | Focus |
+|------------|-------|
+| [mobile_system_design.playground](mobile_system_design.playground) | STAR template, entity graph, interview outline |
+
+### Child topics (углубления)
+
+| Topic | Focus |
+|-------|-------|
+| [Backend-Driven UI](/system-design/bdui/) | Server-driven screens |
+| [Offline First](/system-design/offline-first/) | Cache, stale data |
+| [Sync Engine](/system-design/sync-engine/) | Conflict resolution |
+| [Push Notifications](/system-design/push-notifications/) | Delivery, payload |
+| [Deep Links](/system-design/deep-links/) | Cold start, attribution |
+| [Feature Flags](/system-design/feature-flags/) | Rollout |
+| [Analytics](/system-design/analytics/) | Events, remote config |
+| [Scaling Teams](/system-design/scaling-teams/) | Standards, ownership |
 
 ## 🎯 Focus vs Defer
 
-### Focus
+**Focus**
 
-- **Entity graph first:** users, sessions, feeds, messages, devices — nodes and relationships before UI patterns.
-- **Read path vs write path:** who is source of truth, what is cached, what is optimistic.
-- **Secondary requirements:** loading/empty/error states, offline, push, deep links, analytics, accessibility.
-- **Mobile constraints:** battery, memory, flaky network, app kill, binary size, App Store review.
-- **API alignment:** pagination, idempotency keys, versioning, error taxonomy.
-- **45-minute interview structure:** clarify → landscape → deep dive 2–3 areas → trade-offs → wrap-up.
+- Entity graph: users, content, sessions, local vs remote source of truth
+- Read path vs write path (online, offline, optimistic)
+- API shape, pagination, idempotency
+- Non-functional: battery, memory, background limits
+- Secondary: logging, analytics, feature flags, deep links
 
-### Defer
+**Defer**
 
-- Pixel-perfect UI component inventory unless the prompt is UI-heavy.
-- Full backend schema normalization — sketch tables/endpoints, not every index.
-- Exotic sync (CRDTs, operational transforms) unless the product is collaborative editing.
-- Platform-specific Android details unless the interview is explicitly cross-platform.
+- Pixel-perfect UI на доске
+- Полная схема БД до обсуждения use cases
+- Выбор MVVM vs TCA как единственный критерий
 
 ## Ключевые понятия
 
-| Concept | Interview use |
-|--------|----------------|
-| **Landscape / entity graph** | Map domain objects and flows before modules |
-| **Primary vs secondary requirements** | Happy path vs offline, errors, analytics |
-| **Local source of truth** | UI reads local DB; network reconciles |
-| **Optimistic UI** | Show pending state; rollback on failure |
-| **Pagination** | Cursor vs offset; stale page handling |
-| **Session & auth** | Token refresh, secure storage, logout everywhere |
-| **Push vs poll** | Real-time freshness without draining battery |
-| **Feature flags / remote config** | Gradual rollout, kill switch |
-| **Analytics taxonomy** | Events tied to product questions, not noise |
-| **Modular ownership** | Team boundaries map to module boundaries |
-
-**Typical deep-dive areas:** feed/timeline, chat, maps, media upload, checkout, search.
-
-**Estimation anchors (order of magnitude):** simple CRUD screen 1–3 days; offline-first entity with sync 1–3 weeks; full sync engine across many entity types 1–3 months (team-dependent).
+| Phase | What to cover |
+|-------|----------------|
+| Clarify | Users, scale, offline?, platforms, constraints |
+| High-level | Modules, data flow, main APIs |
+| Deep dive | Storage, sync, errors, caching |
+| Secondary | Observability, security, rollout |
+| Trade-offs | Alternatives + why chosen |
 
 ## 🏋️ Exercises
 
-1. **Design a message inbox** — Entity graph (conversation, message, read receipt, device). Define read path (local DB + pagination), write path (send queue), push for new messages, and analytics events. *Expected:* diagram with 5–8 entities and explicit offline behavior.
+1. **Feed app** — entities, pagination API, offline read, image cache. _(extend after immh glava 1 paste)_
+2. **Chat** — write path, ordering, push, background delivery.
+3. **Checkout** — idempotent payment, optimistic UI, rollback.
 
-2. **Design a workout history screen** — Network-first vs offline-first trade-off. *Expected:* justify local cache for list/detail, background sync on launch, skeleton loading states.
+## Код и примеры
 
-3. **Clarifying questions drill** — Given “build Instagram Stories,” list 10 clarifying questions for PM/design/backend. *Expected:* audience size, media pipeline, expiry, moderation, analytics, deep link entry.
+[mobile_system_design.playground](mobile_system_design.playground) — шаблон ответа (STAR + placeholders).
 
-4. **Secondary requirements pass** — Take any primary flow and add error, empty, offline, and accessibility requirements without changing the core API. *Expected:* checklist applied to one screen.
+## Ресурсы
 
-5. **Estimate with ranges** — Break “offline-first notes app with sync” into milestones with week ranges and risks. *Expected:* local CRUD, outbox, delta sync, conflict policy called out separately.
+### immh — Mobile System Design Interview (глава 1)
+- **Type:** article
+- **URL:** https://immh.tech/blog/mobile-system-design-interview-glava-1
+- **Author:** immh
+- **Why:** Ввод в mobile SD interview: рамка, отличия, структура ответа
+- **When:** Старт подготовки к senior mobile system design
+- **Tags:** `system-design`, `interview`, `immh`, `mobile`
+- **Note:** [immh-interview-glava-1.md](notes/immh-interview-glava-1.md)
+- **Added:** 2026-06-19
+
+### immh — Logger (system design)
+- **Type:** article
+- **URL:** https://immh.tech/blog/system-design-logger
+- **Author:** immh
+- **Why:** Логирование как secondary requirement на собесе
+- **When:** Observability, production logging architecture
+- **Tags:** `system-design`, `logging`, `observability`, `immh`
+- **Note:** [immh-logger.md](notes/immh-logger.md)
+- **Added:** 2026-06-19
 
 ## Ссылки
 
-- [Mobile System Design: Resourceful Engineering](https://www.mobilesystemdesign.com/) — landscape, holistic development (Tjeerd in 't Veen)
-- [Building Mobile Apps at Scale](https://www.mobileatscale.com/) — 39 engineering challenges (Gergely Orosz)
-- [WWDC — Background execution overview](https://developer.apple.com/videos/) — search “background” for platform limits
-- Related topics: [offline-first](../offline-first/README.md), [sync-engine](../sync-engine/README.md), [push-notifications](../push-notifications/README.md)
+- Series index: [notes/immh-series-index.md](notes/immh-series-index.md)
+- Service vs Repository: [architecture/patterns/](/architecture/patterns/) → [immh note](/architecture/patterns/notes/immh-service-vs-repository.md)
+- BDUI: [system-design/bdui/](/system-design/bdui/)
 
 ## Карточки знаний (Q&A)
 
-<!-- knowledge-cards-canonical:start -->
+### Q1. С чего начать mobile system design на доске?
 
-### Q1
-- **Question (RU):** С чего начать mobile system design на интервью?
-- **Question (EN):** Where do you start in a mobile system design interview?
-- **Answer (RU):** Уточнить scope и пользователя, нарисовать **entity graph** (сущности и связи), разделить **read path** и **write path**, затем добить вторичные требования: offline, push, deep links, analytics, error/empty/loading. Только после этого — модули и API.
-- **Answer (EN):** Clarify scope, sketch the entity graph, split read vs write paths, then cover secondary requirements (offline, push, deep links, analytics, states). Modules and APIs come after the landscape is stable.
+**RU:** Уточни требования и constraints (offline, scale, platforms). Нарисуй entity graph и два потока — read и write. Потом углубляй storage, API, ошибки.
 
-### Q2
-- **Question (RU):** Чем mobile system design отличается от backend design?
-- **Question (EN):** How is mobile system design different from backend design?
-- **Answer (RU):** Ограничения клиента: **offline**, lifecycle и background limits, battery/memory, бинарная доставка через App Store, UX состояний (skeleton, empty). Backend фокусируется на throughput и consistency; mobile — на **локальном источнике истины** и синхронизации с сервером.
-- **Answer (EN):** Mobile adds offline behavior, app lifecycle/background limits, battery and memory, App Store delivery, and rich UI states. Backend optimizes throughput and consistency; mobile optimizes local truth plus sync with the server.
+**EN:** Clarify requirements, draw entities and read/write paths, then deepen storage and APIs.
 
-### Q3
-- **Question (RU):** Как встроить analytics в дизайн фичи, не «прикрутив в конце»?
-- **Question (EN):** How do you design analytics into a feature from the start?
-- **Answer (RU):** Задать **product questions** (conversion, retention, failure), определить **event taxonomy** (screen_view, action, outcome), свойства события (entity id, source, experiment variant), privacy (PII, consent, ATT). События привязать к шагам user flow в entity graph.
-- **Answer (EN):** Start from product questions, define an event taxonomy and properties (ids, source, experiment), plan privacy/consent, and map events to steps in the user flow — not as an afterthought.
+**Доп. информация:** [immh-interview-glava-1.md](notes/immh-interview-glava-1.md) _(fill after paste)_
 
-### Q4
-- **Question (RU):** Push или poll — как выбирать?
-- **Question (EN):** Push vs poll — how do you choose?
-- **Answer (RU):** **Push** — когда нужна свежесть без постоянного опроса (chat, заказ в пути); учитывать silent push, budget, доставку не guaranteed. **Poll** — редкие обновления или когда push недоступен; комбинировать: push как триггер + fetch delta при открытии. Не poll каждые N секунд в background без причины.
-- **Answer (EN):** Use push for timely updates without constant polling; account for silent push, budgets, and non-guaranteed delivery. Poll for rare updates or when push is unavailable; often combine push as a trigger with delta fetch on open. Avoid aggressive background polling.
+### Q2. Что такое secondary requirements?
 
-<!-- knowledge-cards-canonical:end -->
+**RU:** То, что не ядро фичи, но ожидают на senior: логи, метрики, аналитика, feature flags, deep links, accessibility.
+
+**EN:** Non-core but senior-level: observability, analytics, flags, navigation, a11y.
+
+**Доп. информация:** [immh-logger.md](notes/immh-logger.md) _(fill after paste)_
+
+### Q3. Как связаны child topics в system-design?
+
+**RU:** `mobile` — зонтик; offline/sync/push/deeplinks/flags/analytics — отдельные подсистемы, которые вставляешь в ответ, когда релевантно.
+
+**EN:** Mobile is the umbrella; child topics are deep dives you attach when the scenario needs them.

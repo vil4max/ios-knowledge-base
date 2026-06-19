@@ -15,6 +15,7 @@
 
 - **iOS SDK**
   - [Foundation & Lifecycle](/ios-sdk/foundation/)
+  - [FormatStyle & Parsing](/ios-sdk/format-style/)
   - [UIKit](/ios-sdk/uikit/)
   - [SwiftUI](/ios-sdk/swiftui/)
   - [App Intents](/ios-sdk/app-intents/)
@@ -30,6 +31,7 @@
 
 - **System Design**
   - [Mobile App Design](/system-design/mobile/)
+  - [Backend-Driven UI](/system-design/bdui/)
   - [Offline First](/system-design/offline-first/)
   - [Sync Engine](/system-design/sync-engine/)
   - [Push Notifications](/system-design/push-notifications/)
@@ -75,6 +77,9 @@
   - [12 · Apple Intelligence](/ai-engineering/apple-intelligence/)
   - [13 · Dynamic Profiles](/ai-engineering/dynamic-profiles/)
   - [14 · Evaluations](/ai-engineering/evaluations/)
+
+- **Curated**
+  - [External Links](/reference/curated/)
 
 - **Reference**
   - [Glossary](/glossary/)

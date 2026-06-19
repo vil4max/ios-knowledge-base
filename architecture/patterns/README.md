@@ -107,6 +107,7 @@
 ### Последние заметки
 
 - `notes/modularizing-swift-apps-with-spm.md`
+- `notes/immh-service-vs-repository.md` — [immh](https://immh.tech/blog/system-design-service-vs-repository), awaiting paste; index [immh-series](/system-design/mobile/notes/immh-series-index.md)
 
 ---
 
@@ -591,3 +592,15 @@
 
 
 <!-- knowledge-cards-canonical:end -->
+
+## Ресурсы
+
+### immh — Service vs Repository
+- **Type:** article
+- **URL:** https://immh.tech/blog/system-design-service-vs-repository
+- **Author:** immh
+- **Why:** Границы Repository, Service, Use Case на mobile
+- **When:** Слои data/domain в SD и architecture interview
+- **Tags:** `architecture`, `repository`, `clean`, `immh`
+- **Note:** [notes/immh-service-vs-repository.md](notes/immh-service-vs-repository.md)
+- **Added:** 2026-06-19

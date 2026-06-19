@@ -6,6 +6,8 @@ from topic_tree import DRAFT_MARKER, STUB_TEMPLATE, TOPIC_TREE
 
 KB = Path(__file__).resolve().parents[1]
 
+SKIP_CLEAN = {KB / "reference" / "curated" / "README.md"}
+
 PLACEHOLDER_LINES = [
     "См. основной раздел темы (**Theme block",
     "См. **Detailed digest** ниже: навигация по теме",
@@ -83,7 +85,7 @@ def substantive_chars(text: str) -> int:
 
 
 def clean_readme(path: Path, title: str) -> None:
-    if not path.exists():
+    if not path.exists() or path in SKIP_CLEAN:
         return
     raw = path.read_text(encoding="utf-8")
     cleaned = fix_title(raw, title)
@@ -115,6 +117,9 @@ def scaffold_and_sidebar() -> None:
                 readme = KB / section_slug / topic_slug / "README.md"
                 url = f"/{section_slug}/{topic_slug}/" if topic_slug != "." else f"/{section_slug}/"
             readme.parent.mkdir(parents=True, exist_ok=True)
+            if readme in SKIP_CLEAN:
+                sidebar_lines.append(f"  - [{topic_title}]({url})")
+                continue
             if not readme.exists():
                 readme.write_text(STUB_TEMPLATE.format(title=topic_title), encoding="utf-8")
                 print(f"stub {readme.relative_to(KB)}")

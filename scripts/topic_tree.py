@@ -25,6 +25,7 @@ TOPIC_TREE = {
         "title": "iOS SDK",
         "topics": {
             "foundation": "Foundation & Lifecycle",
+            "format-style": "FormatStyle & Parsing",
             "uikit": "UIKit",
             "swiftui": "SwiftUI",
             "app-intents": "App Intents",
@@ -46,6 +47,7 @@ TOPIC_TREE = {
         "title": "System Design",
         "topics": {
             "mobile": "Mobile App Design",
+            "bdui": "Backend-Driven UI",
             "offline-first": "Offline First",
             "sync-engine": "Sync Engine",
             "push-notifications": "Push Notifications",
@@ -106,6 +108,12 @@ TOPIC_TREE = {
             "apple-intelligence": "12 · Apple Intelligence",
             "dynamic-profiles": "13 · Dynamic Profiles",
             "evaluations": "14 · Evaluations",
+        },
+    },
+    "reference": {
+        "title": "Curated",
+        "topics": {
+            "curated": "External Links",
         },
     },
     "glossary": {

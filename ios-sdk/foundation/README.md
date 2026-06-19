@@ -46,6 +46,7 @@
 4) `FormatStyle`: 1234.5 -> `1 234,50 ₽`.
   - **Ожидаемый результат**: корректное форматирование под locale через `.formatted(.currency(code: \"RUB\"))`.  
     Docs: `https://developer.apple.com/documentation/foundation/formatstyle`
+  - **Подробнее:** [FormatStyle & Parsing](/ios-sdk/format-style/)
 
 5) Date arithmetic: сколько дней до конца месяца (с учётом timezone).
   - **Ожидаемый результат**: использовать `Calendar` и `dateInterval(of:for:)`/`range(of:in:for:)`, не вычитать секунды “в лоб”.  

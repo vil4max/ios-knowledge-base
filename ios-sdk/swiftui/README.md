@@ -50,6 +50,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 - `notes/migrating-to-observable-without-breaking-your-app.md`
 - `notes/swiftui-toast-in-5-steps.md`
 - `notes/creating-maps-in-swiftui-with-mapkit.md`
+- `notes/codakuma-floating-safe-area-bar.md` — [floating safeAreaBar](https://codakuma.com/floating-safe-area-bar/), playground [FloatingSafeAreaBar.playground](FloatingSafeAreaBar.playground)
 
 ---
 
@@ -531,3 +532,15 @@ struct DetailView: View {
 - **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
 
 ---
+
+## Ресурсы
+
+### Floating card using safeAreaBar (Codakuma)
+- **Type:** article + code
+- **URL:** https://codakuma.com/floating-safe-area-bar/
+- **Author:** Codakuma
+- **Why:** CTA-карточка внизу: safeAreaInset → floating card → safeAreaBar (26) / material fallback (18)
+- **When:** Checkout bar, summary + Save, bottom CTA over ScrollView/List
+- **Tags:** `swiftui`, `safe-area`, `ios-26`, `layout`, `pattern`
+- **Playground:** [FloatingSafeAreaBar.playground](FloatingSafeAreaBar.playground)
+- **Added:** 2026-06-19

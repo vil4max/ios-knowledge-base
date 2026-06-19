@@ -1,17 +1,73 @@
 import Foundation
 
-/*
- Q&A cards — Q40 complex decision (STAR narrative skeleton)
+struct MobileSystemDesignOutline {
+    let product: String
+    let constraints: [String]
+    let entities: [String]
+    let readPath: [String]
+    let writePath: [String]
+    let secondary: [String]
+}
 
- STAR — Situation, Task, Action, Result: говорить контекст → цель → что сделал → измеримый эффект.
- Mobile system design — всегда фиксируй источник истины offline/online, конфликты версий,
- наблюдаемость (логи/метрики), и компромисс latency vs consistency.
+let outline = MobileSystemDesignOutline(
+    product: "_(e.g. social feed, chat, checkout)_",
+    constraints: [
+        "Platforms: iOS / Android",
+        "Offline: yes / no",
+        "Scale: DAU, payload size",
+        "Background: push, sync",
+    ],
+    entities: [
+        "User",
+        "Post / Message / Order",
+        "Session",
+        "Local cache",
+    ],
+    readPath: [
+        "1. UI requests page",
+        "2. Repository: memory → disk → network",
+        "3. Map DTO → domain → UI model",
+    ],
+    writePath: [
+        "1. User action",
+        "2. Validate + optimistic UI (optional)",
+        "3. API + queue if offline",
+        "4. Reconcile / error surface",
+    ],
+    secondary: [
+        "Logging (no PII)",
+        "Analytics events",
+        "Feature flags",
+        "Deep links",
+    ]
+)
 
- Example outline (replace with your production story):
- - Situation: рост ошибок синка при нестабильной сети.
- - Task: сделать офлайн-first без дубликатов записей.
- - Action: локальная очередь + idempotency keys + явная merge policy.
- - Result: −X% клиентских ошибок, стабильный UX без двойных созданий.
-*/
+func starAnswer(situation: String, task: String, action: String, result: String) -> String {
+    """
+    Situation: \(situation)
+    Task: \(task)
+    Action: \(action)
+    Result: \(result)
+    """
+}
 
-print("STAR + trade-offs template loaded — plug in your real metrics.")
+print("=== Mobile System Design — interview outline ===")
+print("Product:", outline.product)
+print("\nConstraints:")
+outline.constraints.forEach { print("  -", $0) }
+print("\nEntities:")
+outline.entities.forEach { print("  -", $0) }
+print("\nRead path:")
+outline.readPath.forEach { print("  -", $0) }
+print("\nWrite path:")
+outline.writePath.forEach { print("  -", $0) }
+print("\nSecondary:")
+outline.secondary.forEach { print("  -", $0) }
+
+print("\n=== STAR example (customize) ===")
+print(starAnswer(
+    situation: "Senior mobile SD interview, 45 min",
+    task: "Design feed with offline read",
+    action: "Clarified constraints → entity graph → read/write → cache policy",
+    result: "Trade-offs documented; secondary: logs + analytics"
+))

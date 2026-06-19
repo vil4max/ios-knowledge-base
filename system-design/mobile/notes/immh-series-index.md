@@ -1,0 +1,66 @@
+# Mobile System Design — immh series index
+
+- **Author:** [immh](https://immh.tech/) (IT Makes Me Hate)
+- **Series:** Mobile System Design (миграция с Boosty / Notion)
+- **Updated:** 2026-06-19
+- **Owner note:** полного текста статей пока нет — заполнить notes, когда появится копипаст или доступ
+
+---
+
+## Articles
+
+| # | Title | URL | Topic folder | Note file | README integrated |
+|---|-------|-----|--------------|-----------|-------------------|
+| 1 | Interview — глава 1 | https://immh.tech/blog/mobile-system-design-interview-glava-1 | `system-design/mobile/` | [immh-interview-glava-1.md](immh-interview-glava-1.md) | pending paste |
+| 2 | Service vs Repository | https://immh.tech/blog/system-design-service-vs-repository | `architecture/patterns/` | [immh-service-vs-repository.md](../../architecture/patterns/notes/immh-service-vs-repository.md) | card in patterns README |
+| 3 | BDUI | https://immh.tech/blog/system-design-bdui | `system-design/bdui/` | [immh-bdui.md](../bdui/notes/immh-bdui.md) | card in bdui README |
+| 4 | Logger | https://immh.tech/blog/system-design-logger | `system-design/mobile/` | [immh-logger.md](immh-logger.md) | pending paste |
+
+---
+
+## Integration checklist (per article)
+
+When you paste article text into the matching `notes/immh-*.md`:
+
+1. Fill **TL;DR** and **Ключевые идеи** in the note.
+2. Set note `**Status:**` to `digest` or `integrated`.
+3. Mark the table row above as integrated.
+4. Pull unique interview phrases into topic `README.md` → Q&A cards (do not duplicate whole note).
+5. Add or extend exercises if the article has a practice case.
+6. Run `python3 scripts/resources_index.py`.
+7. Update [mobile_system_design.playground](../mobile_system_design.playground) if the article adds a diagram or template.
+
+### Glava 1 — planned README updates (after paste)
+
+- [ ] **За 30 секунд** — framing: что такое mobile SD interview vs backend
+- [ ] **Ключевые понятия** — entity graph, read/write paths, constraints, 45-min flow
+- [ ] **Q1** — «С чего начать ответ на mobile system design?»
+- [ ] **Q2** — «Чем mobile SD отличается от backend SD?»
+- [ ] **Exercise 1** — разобрать заданный продукт: сущности + API + offline
+- [ ] Playground — STAR blocks под конкретные bullet из главы 1
+
+### Service vs Repository — planned updates
+
+- [ ] `architecture/patterns/README.md` — Q-card: граница Service / Repository / Use Case
+- [ ] Cross-link from `system-design/mobile` (data layer on interview)
+
+### BDUI — planned updates
+
+- [ ] `system-design/bdui/README.md` — concepts from paste
+- [ ] Cross-link: `feature-flags`, `analytics`, `ios-sdk/swiftui`
+
+### Logger — planned updates
+
+- [ ] `immh-logger.md` digest
+- [ ] Cross-link: `quality/debug`, `devops/monitoring`, observability bullet in `sync-engine`
+
+---
+
+## Workflow
+
+```
+Paste in chat or into notes/immh-*.md
+        → agent or you fill digest
+        → README Q&A / exercises
+        → resources_index.py
+```

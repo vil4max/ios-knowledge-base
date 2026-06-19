@@ -7,7 +7,8 @@
 - Статья (bookmark): [Actors vs Queues vs Locks в Swift](https://livsycode.com/best-practices/actors-vs-queues-vs-locks-in-swift/) — Livsy Code: защита shared state, плюсы/минусы, практика за пределами собеседований
 - Конспект: [Stateless Actors (Matt Massicotte)](notes/Stateless-Actors-Massicotte.md) — [stateless actors](https://www.massicotte.org/stateless-actors/): actor без полей, `@globalActor` BackgroundActor, custom executor, FS как внешнее state; карточка **Q49**
 - Конспект: [Swift 6 runtime concurrency crashes](notes/Swift-6-Runtime-Concurrency-Crashes.md) — [onmyway133](https://onmyway133.com/posts/how-to-avoid-swift-6-concurrency-crashes/): inherited isolation, `@Sendable` closures, Combine/delegate traps, crash symbols; карточка **Q50**
-- Playground: [ImageLoadingConcurrencyLab.playground](ImageLoadingConcurrencyLab.playground/Contents.swift) — N картинок, лимит параллелизма; теория кэша/decode — [Image Caching UIKit/SwiftUI](../../V.%20Данные%20и%20сеть/22%20Кэширование%20и%20offline-first/notes/Image-Caching-UIKit-SwiftUI.md) (**Q35**)
+- Intro digest (social, URL позже): [notes/Swift-Concurrency-Intro-Social.md](notes/Swift-Concurrency-Intro-Social.md) — playground [SwiftConcurrencyPrimer.playground](SwiftConcurrencyPrimer.playground)
+- Playground: [ImageLoadingConcurrencyLab.playground](ImageLoadingConcurrencyLab.playground/Contents.swift)
 
 ### Actors vs Queues vs Locks (shared state)
 
@@ -1294,3 +1295,14 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
 - **Notes:** [notes/Swift-6-Runtime-Concurrency-Crashes.md](notes/Swift-6-Runtime-Concurrency-Crashes.md)
 
 <!-- knowledge-cards-canonical:end -->
+
+## Ресурсы
+
+### Swift Concurrency in iOS — Explained Simply
+- **Type:** article / social
+- **URL:** _(add when available)_
+- **Why:** Линейный intro: callbacks → async/await → Task → MainActor → actor → async let
+- **When:** Быстро освежить основы перед интервью
+- **Tags:** `concurrency`, `async-await`, `mainactor`, `actor`, `primer`
+- **Playground:** [SwiftConcurrencyPrimer.playground](SwiftConcurrencyPrimer.playground)
+- **Added:** 2026-06-19
