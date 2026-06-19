@@ -12,6 +12,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 - [UIViewRepresentable](https://developer.apple.com/documentation/swiftui/uiviewrepresentable) — UIKit bridge.
 - [Image](https://developer.apple.com/documentation/swiftui/image) — `AsyncImage`; caching — [Image Caching note](../../data-and-network/caching-offline-first/notes/Image-Caching-UIKit-SwiftUI.md) (**Q35**)
 - [Accessibility](https://developer.apple.com/documentation/swiftui/view-accessibility) — labels, traits, VoiceOver.
+- [List](https://developer.apple.com/documentation/swiftui/list) — dynamic rows, sections, edit mode; note [swiftui-list-dynamic-data.md](notes/swiftui-list-dynamic-data.md)
 
 ## SwiftUI components — quick map
 
@@ -23,7 +24,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 |------|-----------------|------------------------|
 | **Layout & structure** | `VStack` / `HStack` / `ZStack`, `Spacer`, `Divider`, `ScrollView`, `ScrollViewReader`, `LazyVStack` / `LazyHStack` / `LazyVGrid` / `LazyHGrid`, `Grid` / `GridRow`, `Group`, `Section`, `Form`, `GeometryReader`, alignment guides | **Defer** ниже (`GeometryReader`, custom `Layout`); [Auto Layout](../auto-layout/README.md) |
 | **Navigation & app structure** | `NavigationStack`, `NavigationSplitView`, `NavigationLink`, `navigationDestination`, `TabView`, `PageTabViewStyle`, `toolbar`, `searchable`, `refreshable` | [Navigation & Deep Links](../../architecture/navigation/README.md); Q9 (multilevel dismiss) |
-| **Lists & collections** | `List`, `ForEach`, `OutlineGroup`, `swipeActions`, `listStyle`, row insets / separators | [Performance](../../quality/performance/README.md) (stable `id`, lazy containers); Q11 (view identity) |
+| **Lists & collections** | `List`, `ForEach`, `OutlineGroup`, `swipeActions`, `listStyle`, row insets / separators | [List & dynamic data](notes/swiftui-list-dynamic-data.md); [Performance](../../quality/performance/README.md); Q11 (view identity) |
 | **Text & media** | `Text`, `TextEditor`, `AttributedString`, `Image`, `AsyncImage`, SF Symbols, `ProgressView`, `Gauge`, Swift Charts, `Map`, `VideoPlayer` | Map TL;DR ниже; [Image Caching](../../data-and-network/caching-offline-first/notes/Image-Caching-UIKit-SwiftUI.md) |
 | **Input controls** | `Button`, `Link`, `Toggle`, `Slider`, `Stepper`, `Picker` (segmented / wheel / menu), `ColorPicker`, `DatePicker`, `TextField`, `SecureField`, `Menu`, `ContextMenu`, `ControlGroup`, `Label`, `GroupBox`, `DisclosureGroup` | Form + state — Q-cards **Observation** / `@Bindable` |
 
@@ -61,6 +62,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 
 ### Последние заметки
 
+- `notes/swiftui-list-dynamic-data.md` — `List`, sections, swipe, edit mode, empty state, stable `id`
 - `notes/migrating-to-observable-without-breaking-your-app.md`
 - `notes/swiftui-toast-in-5-steps.md`
 - `notes/creating-maps-in-swiftui-with-mapkit.md`
