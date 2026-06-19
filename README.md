@@ -1,7 +1,7 @@
-# iOS Interview Prep
+# iOS Bento
 
-Personal knowledge base for Senior iOS interviews — Swift, iOS SDK, architecture, system design, networking, AI.
+A bento box of iOS knowledge — Swift, SDK, architecture, system design, networking, AI. Each topic is a compartment you can open, skim, and close.
 
-Use the **sidebar** or **search** to open a topic and refresh before an interview.
+Use the **sidebar** or **search** to pick a box.
 
-Each topic includes a **30-second summary**, **Apple documentation links**, **Focus vs Defer**, **key concepts**, **exercises**, **WWDC / external references**, and **interview Q&A cards** (RU/EN where applicable).
+Every topic has a **30-second summary**, **Apple documentation links**, **Focus vs Defer**, **key concepts**, **exercises**, **WWDC / external references**, and **Q&A cards** (RU/EN where applicable).

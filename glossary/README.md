@@ -1,4 +1,4 @@
-# Глоссарий Interview Prep
+# Glossary
 
 Раздел **XI · Резюме** на [iosiq roadmap](https://iosiq.ru/roadmap.html): термины и короткие определения.
 
