@@ -99,6 +99,7 @@ TOPIC_TREE = {
             "structured-output": "07 · Structured Output",
             "tool-calling": "08 · Tool Calling",
             "agents": "09 · Agents",
+            "agent-patterns": "Agent Patterns",
             "mcp": "10 · MCP",
             "foundation-models": "11 · Foundation Models",
             "apple-intelligence": "12 · Apple Intelligence",

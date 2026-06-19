@@ -2,7 +2,7 @@
 
 ## За 30 секунд
 
-**AI agents** run a loop: model plans → calls [tools](../tool-calling/) → observes results → repeats until done or a step limit. Unlike a single chat completion, an agent **persists state** across turns and may chain multiple tool calls. **Guardrails** (allowlists, human approval, timeouts) matter on mobile where side effects touch user data and battery. For transport and IDE integration see [MCP](../mcp/); for on-device tool wiring see [Foundation Models](../foundation-models/).
+**AI agents** run a loop: model plans → calls [tools](../tool-calling/) → observes results → repeats until done or a step limit. Unlike a single chat completion, an agent **persists state** across turns and may chain multiple tool calls. **Guardrails** (allowlists, human approval, timeouts) matter on mobile where side effects touch user data and battery. Production-style orchestration patterns (search-first, think-before-act, single agent + many tools) → [Agent Patterns](../agent-patterns/). For transport and IDE integration see [MCP](../mcp/); for on-device tool wiring see [Foundation Models](../foundation-models/).
 
 ## Apple docs
 

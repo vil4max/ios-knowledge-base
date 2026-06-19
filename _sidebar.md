@@ -68,6 +68,7 @@
   - [07 · Structured Output](/ai-engineering/structured-output/)
   - [08 · Tool Calling](/ai-engineering/tool-calling/)
   - [09 · Agents](/ai-engineering/agents/)
+  - [Agent Patterns](/ai-engineering/agent-patterns/)
   - [10 · MCP](/ai-engineering/mcp/)
   - [11 · Foundation Models](/ai-engineering/foundation-models/)
   - [12 · Apple Intelligence](/ai-engineering/apple-intelligence/)

@@ -13,6 +13,7 @@ Curated track for **LLM systems on Apple platforms** — from tokens and context
 | 07 | [Structured Output](structured-output/) | Schema, `@Generable`, validation |
 | 08 | [Tool Calling](tool-calling/) | Function schemas, execution, errors |
 | 09 | [Agents](agents/) | Multi-step loops, guardrails |
+| — | [Agent Patterns](agent-patterns/) | Search-first, think-before-act, tools (from production agents) |
 | 10 | [MCP](mcp/) | Tool/resource protocol for hosts |
 | 11 | [Foundation Models](foundation-models/) | On-device LLM API (iOS 26+) |
 | 12 | [Apple Intelligence](apple-intelligence/) | Product + app integration patterns |
