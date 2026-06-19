@@ -7,3 +7,5 @@ Use the **sidebar** or **search** to pick a box.
 **New:** curated **[AI Engineering](ai-engineering/)** track (14 topics) — LLM fundamentals through Foundation Models, agents, MCP, and evals on Apple platforms.
 
 Every topic has a **30-second summary**, **Apple documentation links**, **Focus vs Defer**, **key concepts**, **exercises**, **WWDC / external references**, and **Q&A cards** (RU/EN where applicable).
+
+For **senior+ interviews**, start with [Interview answer depth](/reference/curated/notes/interview-answer-depth.md) — how to tier the same answer from Candidate to Staff+.

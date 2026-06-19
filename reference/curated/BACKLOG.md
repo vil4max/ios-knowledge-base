@@ -4,6 +4,7 @@ Materials kept in the repo without a migrated article body or without a canonica
 
 | Item | Location | Blocker |
 |------|----------|---------|
+| Mike Salari — The iOS Interview Blueprint (Elite Edition 2026) | [interview-answer-depth.md](/reference/curated/notes/interview-answer-depth.md) | no stable public purchase URL; Leanpub companion: [Senior iOS Interview Playbook](https://leanpub.com/senior-ios-playbook) |
 | immh — Interview glava 1 | [immh-interview-glava-1.md](/system-design/mobile/notes/immh-interview-glava-1.md) | no article text |
 | immh — Logger | [immh-logger.md](/system-design/mobile/notes/immh-logger.md) | no article text |
 | immh — Service vs Repository | [immh-service-vs-repository.md](/architecture/patterns/notes/immh-service-vs-repository.md) | no article text |
