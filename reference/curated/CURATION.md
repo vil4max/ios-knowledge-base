@@ -44,6 +44,20 @@ New material
 3. Ask the user before creating files unless they explicitly requested the add.
 4. Never fan out one social post into multiple topic folders if a single existing page already covers it.
 
+## Diagrams (dependencies & architecture)
+
+When material describes **layers, module graphs, data flow, or ownership**, add a **visual** — not text alone.
+
+| Prefer | When |
+|--------|------|
+| **Mermaid** in the note/README | Layer stacks, `import` edges, request flows, state machines — lives in git, diff-friendly |
+| **PNG in `topic/assets/`** | Infographics, HIG screenshots, dense posters (see `algorithms/design-patterns/assets/`) |
+| **ASCII fallback** | Optional under mermaid for plain-text / GitHub raw view |
+
+**Rule:** architecture / modularization / navigation / networking notes → at least **one diagram** if the page mentions who-imports-whom or who-calls-whom.
+
+Site renders mermaid via Docsify plugin (`index.html`). Keep diagrams **small** (≤15 nodes); link to a note for the full graph.
+
 ## Examples from this repo
 
 | Input | Verdict |

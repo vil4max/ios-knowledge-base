@@ -49,6 +49,26 @@
 
 **Dependency rules (typical)**
 
+```mermaid
+flowchart TB
+    App[App target]
+    FC[FeatureCheckout]
+    FCat[FeatureCatalog]
+    CD[CoreDomain]
+    CN[CoreNetworking]
+    DS[DesignSystem]
+
+    App --> FC
+    App --> FCat
+    App --> CD
+    App --> CN
+    App --> DS
+    FC --> CD
+    FC --> DS
+    FCat --> CD
+    FCat --> DS
+```
+
 ```text
 App
  ├─ FeatureCheckout

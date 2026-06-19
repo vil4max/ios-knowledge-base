@@ -25,19 +25,29 @@
 
 ## Граф слоёв
 
+```mermaid
+flowchart TB
+    subgraph Features["Features (SwiftUI)"]
+        F[Feature modules]
+    end
+    subgraph Services["Services"]
+        D[Domain]
+        A[API]
+    end
+    C[Common]
+
+    F --> D
+    F --> C
+    D --> A
+    D --> C
+    A --> C
+```
+
 ```text
-Features (SwiftUI)
-    │  import Domain, Common
-    │  ✗ import API
-    ▼
-Domain (models, mapping, services, mocks)
-    │  import API, Common
-    ▼
-API (DTO, endpoints, transport)
-    │  import Common
-    ▼
-Common (extensions, logging helpers, shared utils)
-    │  no internal project deps
+Features → Domain, Common  (✗ API)
+Domain   → API, Common
+API      → Common
+Common   → (no internal deps)
 ```
 
 **Правило:** модуль зависит только от того, что **ниже** него. Циклы и «feature → API» — ошибка сборки, не стиль.
@@ -105,6 +115,16 @@ let package = Package(
 ## ServiceEnvironment (массовая инъекция)
 
 Когда сервисов > 2, собрать их в одну структуру и прокинуть в SwiftUI **одной** строкой:
+
+```mermaid
+flowchart LR
+    App[App root] -->|serviceEnvironment .live| Root[SwiftUI tree]
+    Preview[Preview] -->|serviceEnvironment .mock| Root
+    Root --> V[Feature views]
+    V -->|EnvironmentValues.services| SE[ServiceEnvironment]
+    SE --> Live[Live closures]
+    SE --> Mock[Mock closures]
+```
 
 ```swift
 struct ServiceEnvironment {

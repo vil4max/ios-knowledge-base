@@ -28,6 +28,51 @@
 - **WebSocket / SSE:** долгоживущие каналы, heartbeat, реконнект и батарея.
 - **Certificate pinning:** доверие к пинам vs ротация сертификатов и доставка ключей.
 
+## Diagrams
+
+### App stack (typical)
+
+```mermaid
+flowchart TB
+    VM[ViewModel / Feature]
+    Svc[Repository or Service]
+    Client[APIClient]
+    Session[URLSession]
+    Net[Network]
+
+    VM --> Svc
+    Svc --> Client
+    Client --> Session
+    Session --> Net
+```
+
+Feature **не** держит `URLSession` напрямую — один клиент, единые правила (timeouts, auth, errors).
+
+### Request pipeline (inside APIClient)
+
+```mermaid
+flowchart LR
+    EP[Typed endpoint] --> REQ[URLRequest]
+    REQ --> Task[URLSession task async]
+    Task --> HTTP[Status + body]
+    HTTP --> Map[Error mapping]
+    Map --> Dec[Decode DTO]
+    Dec --> Dom[Domain model]
+```
+
+См. карточку **Q29** ниже.
+
+### Throughput (cross-layer) {#throughput-cross-layer}
+
+```mermaid
+flowchart LR
+    N[Network download] --> D[JSON decode]
+    D --> S[Cache / storage]
+    S --> U[UI render lists]
+```
+
+Узкое место может быть **на любом** шаге — мерить по стадиям, не только «latency API».
+
 ## 🏋️ Exercises
 
 1. Настроить `ephemeral` vs `default` configuration и сравнить кеш/cookies на одном endpoint.
@@ -138,7 +183,7 @@ Chunk parsing особенно полезен в feed/каталогах и пр
 
 ## Что это значит для архитектуры
 
-Throughput-проблемы почти всегда кросс-слойные:
+Throughput-проблемы почти всегда кросс-слойные (см. [throughput diagram](#throughput-cross-layer) выше):
 
 - сеть → декодирование → storage → UI.
 

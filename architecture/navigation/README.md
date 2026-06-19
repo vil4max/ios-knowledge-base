@@ -48,7 +48,36 @@ Navigation is **who owns the stack** and **how screens are composed**. UIKit use
 - UIKit: coordinator holds `UINavigationController`, factory methods return configured VCs.
 - SwiftUI: coordinator (or `@Observable` router) mutates `NavigationPath` / presentation bindings; views stay declarative.
 
+### Coordinator owns the stack
+
+```mermaid
+flowchart TB
+    C[Coordinator / Router]
+    Nav[UINavigationController or NavigationPath]
+    A[Screen A]
+    B[Screen B]
+
+    C --> Nav
+    Nav --> A
+    Nav --> B
+    A -->|intent showDetail| C
+    C -->|push append route| B
+```
+
+Экраны сообщают **intent**, не вызывают `push` на соседние фичи напрямую.
+
 **Deep link flow**
+
+```mermaid
+flowchart LR
+    In[URL Universal Link Push tap]
+    Parse[Parser host path query]
+    Route[Route enum]
+    Router[Router Coordinator]
+    State[Tab stack modals]
+
+    In --> Parse --> Route --> Router --> State
+```
 
 ```text
 URL / Universal Link / Push payload

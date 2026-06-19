@@ -24,6 +24,79 @@
 - **Clean Architecture (Uncle Bob):** слои Entities → Use Cases → Interface Adapters; не путать с VIPER-«Clean» одного экрана.
 - **Composition root:** единственное место сборки графа зависимостей (DI container / AppDelegate / `@main`).
 
+## Pattern flows (diagrams)
+
+### MVC (UIKit reality)
+
+```mermaid
+flowchart LR
+    V[View UIKit views]
+    C[Controller UIViewController]
+    M[Model]
+
+    V <-->|outlets actions| C
+    C <-->|read write| M
+```
+
+На iOS `View` и `Controller` часто сливаются в одном **UIViewController** → Massive View Controller.
+
+### MVVM (+ Coordinator)
+
+```mermaid
+sequenceDiagram
+    participant V as View
+    participant VM as ViewModel
+    participant M as Model / UseCase
+    participant Nav as Coordinator optional
+
+    V->>VM: user action
+    VM->>M: command
+    M-->>VM: result
+    VM-->>V: published state
+    VM->>Nav: navigate intent
+```
+
+View **владеет** ViewModel; VM **не** держит strong на View.
+
+### VIPER (one scene)
+
+```mermaid
+flowchart LR
+    V[View] -->|events| P[Presenter]
+    P -->|use case| I[Interactor]
+    I -->|entities| P
+    P -->|display model| V
+    P -->|route| R[Router]
+    R -->|push present| V
+```
+
+### Clean Architecture (app layers)
+
+```mermaid
+flowchart TB
+    P[Presentation View VM]
+    U[Use Cases]
+    E[Entities]
+    D[Data adapters DTO API DB]
+    P --> U
+    U --> E
+    P --> D
+    U --> D
+```
+
+Зависимости **внутрь** — UI и инфраструктура зависят от домена, не наоборот.
+
+### TCA (unidirectional)
+
+```mermaid
+flowchart LR
+    V[View] -->|Action| Red[Reducer]
+    Red --> St[State]
+    Red --> Eff[Effect]
+    Eff -->|Action| Red
+    St --> V
+```
+
 ## Распространённость на рынке (ориентир для собеса)
 
 Типичное распределение по ответам iOS-команд / опросам (не «канон Apple», а **что реально встречается в проде**):
