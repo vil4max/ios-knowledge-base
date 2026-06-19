@@ -1,9 +1,7 @@
 # Swift Concurrency in iOS — Explained Simply
 
 - **Source:** social post (LinkedIn-style intro; URL to be added)
-- **Series:** primer
-- **Migrated:** 2026-06-19
-- **Status:** digest
+- **Status:** local digest — исходный URL поста неизвестен; материал в базе без внешней карточки
 - **Playground:** [SwiftConcurrencyPrimer.playground](../SwiftConcurrencyPrimer.playground)
 
 ---

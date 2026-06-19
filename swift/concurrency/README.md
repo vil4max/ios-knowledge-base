@@ -1296,14 +1296,3 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
 - **Notes:** [notes/Swift-6-Runtime-Concurrency-Crashes.md](notes/Swift-6-Runtime-Concurrency-Crashes.md)
 
 <!-- knowledge-cards-canonical:end -->
-
-## Ресурсы
-
-### Swift Concurrency in iOS — Explained Simply
-- **Type:** article / social
-- **URL:** _(add when available)_
-- **Why:** Линейный intro: callbacks → async/await → Task → MainActor → actor → async let
-- **When:** Быстро освежить основы перед интервью
-- **Tags:** `concurrency`, `async-await`, `mainactor`, `actor`, `primer`
-- **Playground:** [SwiftConcurrencyPrimer.playground](SwiftConcurrencyPrimer.playground)
-- **Added:** 2026-06-19

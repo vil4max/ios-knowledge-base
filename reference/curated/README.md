@@ -10,6 +10,8 @@ python3 scripts/resources_index.py
 
 Add a resource: edit the topic README → `## Ресурсы` → run the script above.
 
+**Local stubs (no migrated source):** [BACKLOG.md](BACKLOG.md)
+
 | Name | Type | Tags | Topic | URL |
 |------|------|------|-------|-----|
 | [immh — Service vs Repository](https://immh.tech/blog/system-design-service-vs-repository) | article | architecture, repository, clean, immh | [MVVM → TCA](/architecture/patterns/) | https://immh.tech/blog/system-design-service-vs-repository |

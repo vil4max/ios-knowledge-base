@@ -107,6 +107,8 @@ def build_markdown(cards: list[ResourceCard]) -> str:
         "",
         "Add a resource: edit the topic README → `## Ресурсы` → run the script above.",
         "",
+        "**Local stubs (no migrated source):** [BACKLOG.md](BACKLOG.md)",
+        "",
         "| Name | Type | Tags | Topic | URL |",
         "|------|------|------|-------|-----|",
     ]

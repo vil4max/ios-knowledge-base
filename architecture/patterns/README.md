@@ -107,7 +107,7 @@
 ### Последние заметки
 
 - `notes/modularizing-swift-apps-with-spm.md`
-- `notes/immh-service-vs-repository.md` — [immh](https://immh.tech/blog/system-design-service-vs-repository), awaiting paste; index [immh-series](/system-design/mobile/notes/immh-series-index.md)
+- `notes/immh-service-vs-repository.md` — [immh](https://immh.tech/blog/system-design-service-vs-repository), finalized stub; [BACKLOG](/reference/curated/BACKLOG.md)
 
 ---
 

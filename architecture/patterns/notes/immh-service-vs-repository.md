@@ -4,7 +4,7 @@
 - **Author:** immh (IT Makes Me Hate)
 - **Series:** [immh-series-index.md](../../system-design/mobile/notes/immh-series-index.md)
 - **Migrated:** 2026-06-19
-- **Status:** awaiting paste — **текста нет у автора базы**; искать позже (Boosty / Notion / immh.tech)
+- **Status:** finalized stub — **текста нет у автора базы**; см. [BACKLOG](/reference/curated/BACKLOG.md)
 
 ---
 

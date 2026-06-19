@@ -4,7 +4,7 @@
 
 **BDUI** (backend-driven UI): сервер отдаёт описание экрана или блоков (JSON / protobuf), клиент **рендерит** по контракту. Отличается от «просто API»: меняется не только data, но и **composition** UI. Тесно связан с feature flags, analytics и versioning.
 
-**Статус:** skeleton — полный конспект после paste [immh-bdui.md](notes/immh-bdui.md).
+**Статус:** skeleton — полный конспект immh не мигрирован (нет исходного текста). См. [immh-series-index.md](../mobile/notes/immh-series-index.md).
 
 ## 🎯 Focus vs Defer
 
@@ -34,7 +34,7 @@
 
 | Material | Status |
 |----------|--------|
-| [immh-bdui.md](notes/immh-bdui.md) | awaiting paste |
+| [immh-bdui.md](notes/immh-bdui.md) | stub only (hub: [mobile/notes/immh-series-index.md](/system-design/mobile/notes/immh-series-index.md)) |
 | [immh-series-index.md](../mobile/notes/immh-series-index.md) | full series |
 
 ## Ресурсы

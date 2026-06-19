@@ -3,24 +3,22 @@
 - **Author:** [immh](https://immh.tech/) (IT Makes Me Hate)
 - **Series:** Mobile System Design (миграция с Boosty / Notion)
 - **Updated:** 2026-06-19
-- **Owner note:** полного текста статей пока нет — заполнить notes, когда появится копипаст или доступ
+- **Finalized:** 2026-06-19 — каркас и ссылки в базе; **полного текста статей нет и не планируется искать** до появления доступа. Stub-файлы и URL в [Curated](/reference/curated/) остаются как закладки.
 
 ---
 
 ## Articles
 
-| # | Title | URL | Topic folder | Note file | README integrated |
-|---|-------|-----|--------------|-----------|-------------------|
-| 1 | Interview — глава 1 | https://immh.tech/blog/mobile-system-design-interview-glava-1 | `system-design/mobile/` | [immh-interview-glava-1.md](immh-interview-glava-1.md) | pending paste |
-| 2 | Service vs Repository | https://immh.tech/blog/system-design-service-vs-repository | `architecture/patterns/` | [immh-service-vs-repository.md](../../architecture/patterns/notes/immh-service-vs-repository.md) | card in patterns README |
-| 3 | BDUI | https://immh.tech/blog/system-design-bdui | `system-design/bdui/` | [immh-bdui.md](../bdui/notes/immh-bdui.md) | card in bdui README |
-| 4 | Logger | https://immh.tech/blog/system-design-logger | `system-design/mobile/` | [immh-logger.md](immh-logger.md) | pending paste |
+| # | Title | URL | Topic folder | Note file | Status |
+|---|-------|-----|--------------|-----------|--------|
+| 1 | Interview — глава 1 | https://immh.tech/blog/mobile-system-design-interview-glava-1 | `system-design/mobile/` | [immh-interview-glava-1.md](immh-interview-glava-1.md) | stub only |
+| 2 | Service vs Repository | https://immh.tech/blog/system-design-service-vs-repository | `architecture/patterns/` | [immh-service-vs-repository.md](../../architecture/patterns/notes/immh-service-vs-repository.md) | stub + README card |
+| 3 | BDUI | https://immh.tech/blog/system-design-bdui | `system-design/bdui/` | [immh-bdui.md](../bdui/notes/immh-bdui.md) | stub + README card |
+| 4 | Logger | https://immh.tech/blog/system-design-logger | `system-design/mobile/` | [immh-logger.md](immh-logger.md) | stub only |
 
 ---
 
-## Integration checklist (per article)
-
-When you paste article text into the matching `notes/immh-*.md`:
+## Integration checklist (if source appears later)
 
 1. Fill **TL;DR** and **Ключевые идеи** in the note.
 2. Set note `**Status:**` to `digest` or `integrated`.
