@@ -11,6 +11,7 @@ iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / 
 - [Core Data concurrency](https://developer.apple.com/documentation/coredata/using_core_data_in_the_background) — background contexts, `perform`.
 - [Migrating your data model automatically](https://developer.apple.com/documentation/coredata/using_a_lightweight_migration) — lightweight vs heavyweight migration.
 - [SwiftData](https://developer.apple.com/documentation/swiftdata) — model macros, `@Query`, CloudKit sync path.
+- [Observation](https://developer.apple.com/documentation/observation) — property-level reactivity для SwiftUI (iOS 17+).
 - [Keychain Services](https://developer.apple.com/documentation/security/keychain_services) — secrets, access groups.
 - [FileManager](https://developer.apple.com/documentation/foundation/filemanager) — sandbox directories, App Groups.
 - [UserDefaults](https://developer.apple.com/documentation/foundation/userdefaults) — small preferences only.
@@ -24,6 +25,7 @@ iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / 
 - **Context hierarchy:** main (UI) + private background child; `save` child → merge to parent; set **`mergePolicy`** explicitly.
 - **Migration:** lightweight (additive) vs mapping model; versioned `.xcdatamodeld`; test migrations in CI with fixture stores.
 - **SwiftData vs Core Data:** SwiftData for greenfield SwiftUI; Core Data for mature stacks, complex migrations, existing ObjC bridges.
+- **Core Data + Observation:** SwiftData — native property-level UI updates; Core Data — `@ObservedObject` split или мост (CDE); см. [`notes/Core-Data-Observation.md`](notes/Core-Data-Observation.md).
 
 ### Defer
 
@@ -67,6 +69,10 @@ iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / 
 - Assets: `assets/`
 - Playgrounds: `playgrounds/`
 
+### Последние заметки
+
+- [`notes/Core-Data-Observation.md`](notes/Core-Data-Observation.md) — property-level Observation на `NSManagedObject`, CDE, границы reactivity (Fatbobman)
+
 ---
 
 ## Карточки знаний (Q&A)
@@ -102,5 +108,16 @@ iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / 
 - **Answer (EN):** SwiftData for new SwiftUI apps; Core Data for complex migrations and existing stacks. Know concurrency and migration either way.
 
 - **Доп. информация:** [SwiftData](https://developer.apple.com/documentation/swiftdata); WWDC23 Meet SwiftData.
+
+### Q50
+- **Question (RU):** Core Data + SwiftUI: как добиться property-level updates без split views?
+- **Question (EN):** Core Data + SwiftUI: how to get property-level updates without splitting views?
+- **Answer (RU):** **SwiftData** — relationship reads в `body` автоматически в Observation. **Core Data (native)** — `@ObservedObject` на каждый `NSManagedObject` в цепочке или coarse refresh. **CDE** — `@PersistentModel(observation: .mainActor)` + `CDEObservationDomain`: read регистрирует dependency, save/merge публикует keyPath changes; background updates через `saveObservedChanges()`. Property-level только когда известны changed fields — CloudKit/batch → object-level fallback.
+- **Answer (EN):** SwiftData integrates Observation natively. Core Data needs `@ObservedObject` per MO or a bridge like CDE: subscribe on read, publish after save; `saveObservedChanges()` for background field snapshots; honest degradation when metadata is objectID-only.
+
+- **Follow-up (RU):** CDE vs миграция на SwiftData?
+- **Follow-up answer (RU):** CDE для legacy Core Data с migrations/CloudKit/custom stack, где SwiftData ещё не покрывает сценарий. SwiftData — когда можно перенести model и принять его limits.
+
+- **Доп. информация:** [`notes/Core-Data-Observation.md`](notes/Core-Data-Observation.md); [WWDC23 — Discover Observation in SwiftUI](https://developer.apple.com/videos/play/wwdc2023/10149/); [CoreDataEvolution](https://github.com/fatbobman/CoreDataEvolution).
 
 <!-- knowledge-cards-canonical:end -->

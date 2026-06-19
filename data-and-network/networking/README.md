@@ -12,6 +12,9 @@
 - [Network](https://developer.apple.com/documentation/network) — `NWPathMonitor`, `NWConnection` ниже HTTP.
 - [WWDC26 — gRPC and Swift (265)](https://developer.apple.com/videos/play/wwdc2026/265/) — gRPC Swift, Protobuf codegen, streaming RPC, client lifecycle.
 - [grpc-swift (GitHub)](https://github.com/grpc/grpc-swift) — open-source runtime и tutorials.
+- [Swift — Announcing the Networking Workgroup](https://www.swift.org/blog/announcing-the-networking-workgroup/) — community governance для cross-platform networking.
+- [A Vision for Networking in Swift](https://forums.swift.org/t/prospective-vision-networking/85235) — единый layered stack, currency types, modern HTTP client API.
+- [Designing an HTTP Client API for Swift](https://forums.swift.org/t/designing-an-http-client-api-for-swift/85254) — abstract `HTTPClient`, platform default (`URLSession` на Apple).
 
 ## 🎯 Focus vs Defer
 
@@ -35,6 +38,7 @@
 - **Alamofire / Moya:** third-party HTTP-слой; в новом проекте чаще свой тонкий `NetworkClient` на `URLSession` (см. **Q48**).
 - **Socket.IO vs WebSocket:** WebSocket — протокол; Socket.IO — свой протокол поверх transport; обычный WS-клиент к Socket.IO backend не подойдёт.
 - **gRPC / Protobuf:** контракт в `.proto`, codegen клиента, HTTP/2, unary и streaming RPC; см. **Q48**, [`notes/GRPC-Swift-WWDC26.md`](notes/GRPC-Swift-WWDC26.md).
+- **Swift Networking Workgroup:** не замена `URLSession` завтра — долгосрочная унификация слоёв (SwiftNIO, swift-http-types, AsyncHTTPClient, gRPC Swift) под structured concurrency и cross-platform currency types.
 
 ## Libraries & lower-level APIs
 
@@ -56,6 +60,34 @@
 **Socket.IO trap:** к Socket.IO-серверу нельзя подключиться `URLSessionWebSocketTask` «как к обычному WebSocket» — нужен клиент под протокол Socket.IO (events, reconnect, fallback transport).
 
 **Network vs URLSession:** `URLSession` — HTTP-уровень приложения; `NWPathMonitor` — наблюдение за путём (offline banner, отложить sync); `NWConnection` — когда HTTP недостаточно (raw TCP/UDP, custom framing).
+
+### Swift networking ecosystem (direction)
+
+```mermaid
+flowchart TB
+    subgraph platform [Apple platforms]
+        US[URLSession]
+        NW[Network.framework]
+    end
+    subgraph oss [Swift OSS]
+        NIO[SwiftNIO]
+        HTTPT[swift-http-types]
+        AHC[AsyncHTTPClient]
+        GRPC[gRPC Swift]
+    end
+    subgraph future [Workgroup direction]
+        CUR[Currency types]
+        HTTPAPI[Unified HTTP client API]
+    end
+    US --> CUR
+    NIO --> AHC
+    NIO --> GRPC
+    HTTPT --> CUR
+    CUR --> HTTPAPI
+    AHC --> HTTPAPI
+```
+
+Сегодня iOS REST — **`URLSession`**. gRPC/SwiftNIO — когда контракт или server-side stack того требует. Workgroup выравнивает типы и HTTP API между платформами, не отменяя platform defaults overnight.
 
 ### Transport choice (typical)
 
