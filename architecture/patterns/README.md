@@ -106,7 +106,7 @@
 
 ### Последние заметки
 
-- `notes/modularizing-swift-apps-with-spm.md`
+- [Modularization — SPM шпаргалка](/architecture/modularization/notes/spm-common-services-features-cheatsheet.md) — Common / Services / Features
 - `notes/immh-service-vs-repository.md` — [immh](https://immh.tech/blog/system-design-service-vs-repository), finalized stub; [BACKLOG](/reference/curated/BACKLOG.md)
 
 ---
@@ -114,7 +114,7 @@
 ## TL;DR
 
 - При росте iOS-монолита главные боли — время сборки, связность зависимостей и сложность параллельной разработки.
-- Базовая структура: `Domain` (контракты/модели/use cases) → `API` (инфраструктура, сеть) → `Features` (экраны и фича-логика).
+- Базовая структура: `Common` → `Services` (`API`, `Domain`) → `Features`. Подробнее: [Modularization — SPM шпаргалка](/architecture/modularization/notes/spm-common-services-features-cheatsheet.md).
 - В legacy-проекте лучше идти поэтапно: сначала `Domain`, потом `API`, затем выносить feature-модули.
 
 ## Почему монолит тормозит команду
@@ -151,9 +151,9 @@
 
 ### 3) Features
 
-- Экраны и бизнес-логика конкретной фичи.
-- Зависимости: `Domain` + нужные инфраструктурные модули (в статье — `API`).
-- Каждая фича как самостоятельный пакет с тестами.
+- Экраны и UI-состояние фичи.
+- Зависимости: **`Domain` + `Common` только** — **не** `API` (DTO и транспорт остаются ниже).
+- Каждая фича как самостоятельный пакет с тестами и previews на domain-моках.
 
 ## Ключевые правила зависимостей
 

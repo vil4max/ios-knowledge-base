@@ -1,5 +1,9 @@
 # Modularization
 
+## Материалы
+
+- **Шпаргалка (Common → API → Domain → Features):** [notes/spm-common-services-features-cheatsheet.md](notes/spm-common-services-features-cheatsheet.md) — [AppSell digest](https://appsell.su/blog/den-apps-1/swift-razrabotka/modulyarizaciya-ios-prilozheniy-cherez-spm-kak-navesti-poryadok-v-zavisimostyah-489): SPM-граф, Features ↛ API, `ServiceEnvironment` (.live / .mock)
+
 ## Apple docs
 
 - [Organizing your code with local packages](https://developer.apple.com/documentation/xcode/organizing-your-code-with-local-packages) — SPM inside the workspace.
@@ -78,6 +82,7 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 ## Artifacts
 
 - Notes: `notes/`
+  - [spm-common-services-features-cheatsheet.md](notes/spm-common-services-features-cheatsheet.md)
 - Exercises: `exercises/`
 - Assets: `assets/`
 - Playgrounds: `playgrounds/`
@@ -109,3 +114,14 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 - **Question (EN):** Does modularization always improve build times?
 - **Answer (RU):** Не всегда. Слишком мелкие модули → overhead линковки и planning; слишком крупные → лишний recompile. **God module** с SwiftUI + сеть + domain в одном target тянет всё при любом изменении. Измерять **Build Timing Summary**, дробить «горячие» модули, стабильные интерфейсы (`public` только нужное).
 - **Answer (EN):** Not automatically—tiny modules add overhead; huge ones rebuild too much. Profile incremental builds and split hot, frequently edited code with stable public APIs.
+
+## Ресурсы
+
+### AppSell — SPM Common / Services / Features
+- **Type:** article (digest)
+- **URL:** https://appsell.su/blog/den-apps-1/swift-razrabotka/modulyarizaciya-ios-prilozheniy-cherez-spm-kak-navesti-poryadok-v-zavisimostyah-489
+- **Why:** Практический SPM-граф для растущих SwiftUI-проектов; compile-time границы
+- **When:** Старт модульности, onboarding, CI/build time
+- **Tags:** `spm`, `modularization`, `architecture`, `swiftui`
+- **Note:** [notes/spm-common-services-features-cheatsheet.md](notes/spm-common-services-features-cheatsheet.md)
+- **Added:** 2026-06-19

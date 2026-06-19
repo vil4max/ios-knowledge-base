@@ -10,10 +10,13 @@ python3 scripts/resources_index.py
 
 Add a resource: edit the topic README → `## Ресурсы` → run the script above.
 
+**Before adding anything:** [CURATION.md](CURATION.md) — usefulness gate (reject / bookmark / enhance / new note).
+
 **Local stubs (no migrated source):** [BACKLOG.md](BACKLOG.md)
 
 | Name | Type | Tags | Topic | URL |
 |------|------|------|-------|-----|
+| [AppSell — SPM Common / Services / Features](https://appsell.su/blog/den-apps-1/swift-razrabotka/modulyarizaciya-ios-prilozheniy-cherez-spm-kak-navesti-poryadok-v-zavisimostyah-489) | article (digest) | spm, modularization, architecture, swiftui | [Modularization](/architecture/modularization/) | https://appsell.su/blog/den-apps-1/swift-razrabotka/modulyarizaciya-ios-prilozheniy-cherez-spm-kak-navesti-poryadok-v-zavisimostyah-489 |
 | [immh — Service vs Repository](https://immh.tech/blog/system-design-service-vs-repository) | article | architecture, repository, clean, immh | [MVVM → TCA](/architecture/patterns/) | https://immh.tech/blog/system-design-service-vs-repository |
 | [formatstyle.guide](https://formatstyle.guide) | interactive reference (Swift WASM) | foundation, swiftui, localization | [FormatStyle & Parsing](/ios-sdk/format-style/) | https://formatstyle.guide |
 | [Gosh Darn Format Style](https://goshdarnformatstyle.com) | static reference | foundation, parsing, reference | [FormatStyle & Parsing](/ios-sdk/format-style/) | https://goshdarnformatstyle.com |

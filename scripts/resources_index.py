@@ -107,6 +107,8 @@ def build_markdown(cards: list[ResourceCard]) -> str:
         "",
         "Add a resource: edit the topic README → `## Ресурсы` → run the script above.",
         "",
+        "**Before adding anything:** [CURATION.md](CURATION.md) — usefulness gate (reject / bookmark / enhance / new note).",
+        "",
         "**Local stubs (no migrated source):** [BACKLOG.md](BACKLOG.md)",
         "",
         "| Name | Type | Tags | Topic | URL |",
