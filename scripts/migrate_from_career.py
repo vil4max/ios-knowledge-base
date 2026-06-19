@@ -3,7 +3,7 @@ import re
 import shutil
 from pathlib import Path
 
-CAREER = Path.home() / "Developer/GitHub/Career"
+CAREER = Path.home() / "Developer/GitHub/Profile/career"
 KB = Path.home() / "Developer/GitHub/ios-knowledge-base"
 
 MIGRATIONS = [
