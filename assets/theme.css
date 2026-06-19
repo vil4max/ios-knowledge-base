@@ -1,0 +1,210 @@
+:root {
+  --gh-accent: #007aff;
+  --gh-canvas: #ffffff;
+  --gh-canvas-subtle: #f6f8fa;
+  --gh-border: #d0d7de;
+  --gh-fg: #1f2328;
+  --gh-fg-muted: #656d76;
+  --gh-code-bg: #f6f8fa;
+  --gh-pre-bg: #f6f8fa;
+  --gh-link: #0969da;
+  --gh-toggle-bg: #f6f8fa;
+  --gh-toggle-border: #d0d7de;
+  --gh-toggle-hover: #eef1f4;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --gh-accent: #4493f8;
+  --gh-canvas: #0d1117;
+  --gh-canvas-subtle: #161b22;
+  --gh-border: #30363d;
+  --gh-fg: #e6edf3;
+  --gh-fg-muted: #7d8590;
+  --gh-code-bg: #161b22;
+  --gh-pre-bg: #161b22;
+  --gh-link: #4493f8;
+  --gh-toggle-bg: #21262d;
+  --gh-toggle-border: #30363d;
+  --gh-toggle-hover: #30363d;
+}
+
+html[data-theme="dark"] body {
+  background-color: var(--gh-canvas);
+  color: var(--gh-fg);
+}
+
+html[data-theme="dark"] .sidebar {
+  background-color: var(--gh-canvas-subtle);
+  border-right: 1px solid var(--gh-border);
+}
+
+html[data-theme="dark"] .sidebar .app-name {
+  color: var(--gh-fg);
+}
+
+html[data-theme="dark"] .sidebar-nav li a {
+  color: var(--gh-fg-muted);
+}
+
+html[data-theme="dark"] .sidebar-nav li a:hover,
+html[data-theme="dark"] .sidebar-nav li.active > a {
+  color: var(--gh-link);
+}
+
+html[data-theme="dark"] .sidebar-nav > ul > li > p,
+html[data-theme="dark"] .sidebar-nav > ul > li > strong {
+  color: var(--gh-fg);
+}
+
+html[data-theme="dark"] .markdown-section {
+  color: var(--gh-fg);
+}
+
+html[data-theme="dark"] .markdown-section h1,
+html[data-theme="dark"] .markdown-section h2,
+html[data-theme="dark"] .markdown-section h3,
+html[data-theme="dark"] .markdown-section h4,
+html[data-theme="dark"] .markdown-section h5,
+html[data-theme="dark"] .markdown-section h6 {
+  color: var(--gh-fg);
+  border-bottom-color: var(--gh-border);
+}
+
+html[data-theme="dark"] .markdown-section a {
+  color: var(--gh-link);
+}
+
+html[data-theme="dark"] .markdown-section blockquote {
+  border-left-color: var(--gh-border);
+  color: var(--gh-fg-muted);
+}
+
+html[data-theme="dark"] .markdown-section code {
+  background-color: var(--gh-code-bg);
+  color: var(--gh-fg);
+  border: 1px solid var(--gh-border);
+}
+
+html[data-theme="dark"] .markdown-section pre {
+  background-color: var(--gh-pre-bg);
+  border: 1px solid var(--gh-border);
+}
+
+html[data-theme="dark"] .markdown-section pre code {
+  background-color: transparent;
+  border: none;
+}
+
+html[data-theme="dark"] .markdown-section table {
+  border-color: var(--gh-border);
+}
+
+html[data-theme="dark"] .markdown-section tr {
+  border-color: var(--gh-border);
+}
+
+html[data-theme="dark"] .markdown-section th,
+html[data-theme="dark"] .markdown-section td {
+  border-color: var(--gh-border);
+}
+
+html[data-theme="dark"] .markdown-section tr:nth-child(2n) {
+  background-color: var(--gh-canvas-subtle);
+}
+
+html[data-theme="dark"] .markdown-section hr {
+  border-color: var(--gh-border);
+}
+
+html[data-theme="dark"] .search input {
+  background-color: var(--gh-canvas);
+  border: 1px solid var(--gh-border);
+  color: var(--gh-fg);
+}
+
+html[data-theme="dark"] .search input::placeholder {
+  color: var(--gh-fg-muted);
+}
+
+html[data-theme="dark"] .search .clear-button {
+  color: var(--gh-fg-muted);
+}
+
+html[data-theme="dark"] .sidebar-toggle {
+  background-color: var(--gh-canvas-subtle);
+  border-color: var(--gh-border);
+  color: var(--gh-fg);
+}
+
+html[data-theme="dark"] .content {
+  background-color: var(--gh-canvas);
+}
+
+html[data-theme="dark"] .app-nav li a {
+  color: var(--gh-fg-muted);
+}
+
+html[data-theme="dark"] .app-nav li a:hover,
+html[data-theme="dark"] .app-nav li a.active {
+  color: var(--gh-link);
+}
+
+html[data-theme="dark"] .github-corner svg {
+  color: var(--gh-canvas-subtle);
+  fill: var(--gh-fg);
+}
+
+html[data-theme="dark"] .github-corner:hover .octo-arm {
+  animation: none;
+}
+
+#theme-toggle {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--gh-toggle-border);
+  border-radius: 6px;
+  background: var(--gh-toggle-bg);
+  color: var(--gh-fg);
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(27, 31, 36, 0.04);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+#theme-toggle:hover {
+  background: var(--gh-toggle-hover);
+}
+
+#theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+#theme-toggle .icon-sun {
+  display: none;
+}
+
+html[data-theme="dark"] #theme-toggle .icon-moon {
+  display: none;
+}
+
+html[data-theme="dark"] #theme-toggle .icon-sun {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  #theme-toggle {
+    top: auto;
+    bottom: 16px;
+    right: 16px;
+  }
+}
