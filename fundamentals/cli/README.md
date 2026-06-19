@@ -25,6 +25,9 @@ The terminal is how you automate iOS work outside the Xcode GUI: build and test 
 - **simctl** — create/boot simulators, install `.app`, open URL, privacy grants.
   - **Ответ:** `xcrun simctl list devices`, `boot <UDID>`, `install booted path/to/App.app`, `launch booted com.example.app`, `privacy booted grant photos com.example.app`. Faster than GUI for CI screenshots and deep-link tests.
 
+- **Simulator camera** — no native real camera; host-side injection for local QA.
+  - **Ответ:** iOS Simulator не отдаёт живой `AVCaptureDevice` — только stub. `simctl privacy … grant camera` лишь разрешает permission, не подставляет кадры. **[SimCam](https://simcam.swmansion.com/)** регистрирует виртуальную камеру: **front** → webcam Mac, **back** → окна **за** окном Simulator (live desktop). В таком режиме на симуляторе можно гонять face detection, QR/barcode, Vision pipelines без физического iPhone. Запуск: SimCam.app → boot simulator → app. CLI `simcamctl` — смена source (image, QR, webcam) для скриптов и AI agents. Альтернативы: RocketSim Simulator Camera, open-source [serve-sim](https://github.com/EvanBacon/serve-sim). Caveats: часть Vision/WebRTC сценариев ограничена; release gates — всё равно device.
+
 - **LLDB CLI essentials** — backtrace, frame vars, po, breakpoint, continue.
   - **Ответ:** Attach: `lldb --attach-name App` or launch under lldb. `bt`, `frame variable`, `po object`, `br set -n function`, `c`. Swift expressions need `-enable-objc-interop` context; `@MainActor` code attach on paused main thread.
 
@@ -50,6 +53,7 @@ The terminal is how you automate iOS work outside the Xcode GUI: build and test 
 - **Scheme:** Build/test/run configuration; must be **shared** (`xcshareddata`) for CI CLI access.
 - **Destination:** `-destination` string selecting simulator, device, or generic platform for build.
 - **simctl:** Subcommand of `xcrun` controlling iOS/watchOS/tvOS simulators from terminal.
+- **Virtual simulator camera:** Host Mac app injects frames into AVFoundation inside the simulator process; front/back map to different sources (webcam vs desktop behind Simulator window).
 - **xcrun:** Runs tool from active developer directory (`xcrun simctl`, `xcrun swift`, `xcrun lldb`).
 - **LLDB:** Debugger backing Xcode; inspect threads, memory, Swift/ObjC expressions at breakpoint.
 - **Backtrace (`bt`):** Call stack of current thread; first stop for crash investigation.
@@ -62,7 +66,7 @@ The terminal is how you automate iOS work outside the Xcode GUI: build and test 
 ## 🏋️ Exercises
 
 1. **Build simulator:** Write commands to list schemes and build `MyApp` for iPhone 16 simulator without opening Xcode. **Expected:** `-list`, then `build` with `-workspace`/`-project`, `-scheme`, `-destination`.
-2. **simctl install & launch:** Install a `.app` to booted simulator and launch by bundle ID; grant camera permission. **Expected:** `boot`, `install booted`, `launch booted`, `privacy ... grant camera`.
+2. **simctl install & launch:** Install a `.app` to booted simulator and launch by bundle ID; grant camera permission. **Expected:** `boot`, `install booted`, `launch booted`, `privacy ... grant camera`. Note: grant ≠ real feed — see SimCam / RocketSim for injection.
 3. **LLDB crash:** Given EXC_BAD_ACCESS on main, list four lldb commands to run first. **Expected:** `bt`, `frame info`, `register read`, `po`/`memory read` on fault address if valid.
 4. **Repo search:** Find all `@MainActor` types under `Sources/` excluding tests. **Expected:** `rg '@MainActor' Sources --glob '!*Test*'`.
 5. **CI script sketch:** Bash script: SwiftLint → unit tests → exit non-zero on failure. **Expected:** `set -euo pipefail`, `swiftlint`, `xcodebuild test ...`, propagate exit code.
@@ -76,6 +80,8 @@ Doc link: [Building from the command line with xcodebuild](https://developer.app
 - [TN2339: Xcode Build System Guide](https://developer.apple.com/library/archive/technotes/tn2339/_index.html)
 - [LLDB terminal workflow (Archive)](https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/gdb_to_lldb_transition_guide/document/lldb-terminal-workflow-tutorial.html)
 - External: [ripgrep User Guide](https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md) — fast search in large repos
+- [SimCam](https://simcam.swmansion.com/) — Mac webcam + desktop-as-rear-camera in iOS Simulator ([GitHub](https://github.com/software-mansion/simcam.app))
+- [serve-sim camera](https://github.com/EvanBacon/serve-sim) — open-source webcam/file injection via `simctl`-adjacent CLI
 
 ---
 
@@ -126,5 +132,16 @@ Doc link: [Building from the command line with xcodebuild](https://developer.app
 - **Follow-up:** зачем `set -u` в CI script?
 - **Follow-up answer:** fail early на unset variable вместо silent wrong `xcodebuild` path.
 - **Доп. информация:** [Environment variable reference](https://developer.apple.com/documentation/xcode/environment-variable-reference)
+
+### Q5
+- **Question (RU):** Как тестировать камеру (QR, лица, Vision) на iOS Simulator?
+- **Question (EN):** How do you test camera features (QR, face detection, Vision) on the iOS Simulator?
+- **Answer (RU):** Нативно — **нельзя**: `AVCaptureDevice` в симуляторе пустой; `simctl privacy grant camera` только permission. Для локальной разработки — **host injection**: [SimCam](https://simcam.swmansion.com/) (front = webcam Mac, back = рабочий стол за окном Simulator), RocketSim, или `serve-sim camera`. Приложение без изменений кода — стандартный AVFoundation. QR: programmatic inject в SimCam. Ограничения: не все Vision/WebRTC пути; перед релизом — **device**. CI обычно stub/mock или UI без live camera.
+- **Answer (EN):** The Simulator has no real camera hardware—only permission grants via simctl. Use host-side tools (SimCam: front = Mac webcam, back = desktop behind the Simulator window; RocketSim; serve-sim) that inject into AVFoundation. Good for QR, face detection, and Vision locally; validate on device before release; CI often stubs camera.
+- **Устная заготовка (RU):** Stub в симуляторе → injection tool → device для релиза.
+- **Устная заготовка (EN):** No native feed—injection locally, device for ship.
+- **Follow-up:** нужны ли правки в коде приложения?
+- **Follow-up answer:** SimCam/RocketSim — нет, если нет `targetEnvironment(simulator)` guard, отключающего камеру. Свой stub — `#if targetEnvironment(simulator)` + fake `FrameSource`.
+- **Доп. информация:** [SimCam](https://simcam.swmansion.com/) · [Running your app in Simulator](https://developer.apple.com/documentation/xcode/running-your-app-in-simulator-or-on-a-device)
 
 <!-- knowledge-cards-canonical:end -->
