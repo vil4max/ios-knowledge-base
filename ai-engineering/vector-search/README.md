@@ -124,3 +124,11 @@ Pre-filter when cardinality small; post-filter when index lacks composite suppor
 - **Follow-up answer:** Depends on gap and threshold; steep drop-off after rank 3 may mean only top-2 relevant — use **minimum similarity threshold** + max k; don't fill context with weak matches.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 04 · Embeddings](../embeddings/) · [06 · RAG →](../rag/)
+
+<!-- ai-engineering-nav:end -->

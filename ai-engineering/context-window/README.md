@@ -119,3 +119,11 @@ The **context window** is the maximum number of **tokens** a model can attend to
 - **Follow-up answer:** Зависит от profile: scouting может `.droppingCompletedToolCalls()` после save в app; trail guide может нуждаться в tool output в prompt — per-profile transforms (WWDC26 Crafts demo).
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 02 · Tokens](../tokens/) · [04 · Embeddings →](../embeddings/)
+
+<!-- ai-engineering-nav:end -->

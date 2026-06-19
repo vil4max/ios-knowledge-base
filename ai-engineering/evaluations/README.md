@@ -148,3 +148,11 @@ struct BookSearchToolEval: Evaluation {
 - **Follow-up answer:** Challenging — needs Apple Intelligence device/simulator in CI; often **manual pre-release gate** + smaller heuristic unit tests for parsing; run full eval locally and on TestFlight dogfood builds.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 13 · Dynamic Profiles](../dynamic-profiles/)
+
+<!-- ai-engineering-nav:end -->

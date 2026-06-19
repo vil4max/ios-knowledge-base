@@ -124,3 +124,11 @@ For production RAG on mobile: **precompute embeddings at build time** or on serv
 - **Follow-up answer:** **Threshold depends on corpus and model** — calibrate on golden questions; high score on tiny corpus can be misleading; always combine with metadata filters and empty-result handling.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 03 · Context Window](../context-window/) · [05 · Vector Search →](../vector-search/)
+
+<!-- ai-engineering-nav:end -->

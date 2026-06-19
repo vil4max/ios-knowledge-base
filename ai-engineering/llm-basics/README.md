@@ -124,3 +124,11 @@ Apple Intelligence routes some workloads to **Private Cloud Compute** when on-de
 - **Follow-up answer:** Citation снижает доверие к unsupported claims, но chunk может быть irrelevant — нужны retrieval quality + «answer only from context» prompt + empty-retrieval handling.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [02 · Tokens →](../tokens/)
+
+<!-- ai-engineering-nav:end -->

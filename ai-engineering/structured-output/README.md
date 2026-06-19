@@ -140,3 +140,11 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 - **Follow-up answer:** Yes — `Tool` output can be `Generable` types so model reasons over structured tool results in next turn; keeps pipeline typed end-to-end.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 06 · RAG](../rag/) · [08 · Tool Calling →](../tool-calling/)
+
+<!-- ai-engineering-nav:end -->

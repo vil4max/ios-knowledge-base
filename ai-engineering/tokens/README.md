@@ -118,3 +118,11 @@
 - **Follow-up answer:** Модель multilingual, но token efficiency **не равна** across languages — проверять transcript size на target locales, не только English QA.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 01 · LLM Basics](../llm-basics/) · [03 · Context Window →](../context-window/)
+
+<!-- ai-engineering-nav:end -->

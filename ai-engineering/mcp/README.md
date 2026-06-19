@@ -396,3 +396,11 @@ Skill превращает “попросил тесты” в воспроиз
 - Фиксируются ли неудачные кейсы в правила/skills, чтобы не повторять ошибки.
 
 ---
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 09 · Agents](../agents/) · [11 · Foundation Models →](../foundation-models/)
+
+<!-- ai-engineering-nav:end -->

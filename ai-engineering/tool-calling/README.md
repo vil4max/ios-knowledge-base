@@ -156,3 +156,11 @@ Model can apologize or ask clarifying question — better than silent failure. L
 - **Follow-up answer:** When retrieval/action **must** happen before answer (e.g. search notes before summarizing) — prevents model from answering from memory alone; use with eval to verify tool is actually invoked.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 07 · Structured Output](../structured-output/) · [09 · Agents →](../agents/)
+
+<!-- ai-engineering-nav:end -->

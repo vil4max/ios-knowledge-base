@@ -110,3 +110,11 @@ let response = try await session.respond(to: userText)
 - **Answer (EN):** On-device offers privacy, latency, and offline use with capacity limits. PCC extends capability on Apple-controlled infrastructure with privacy protections — prefer over third-party clouds for sensitive Apple Intelligence workflows.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 10 · MCP](../mcp/) · [12 · Apple Intelligence →](../apple-intelligence/)
+
+<!-- ai-engineering-nav:end -->

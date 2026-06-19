@@ -98,3 +98,11 @@ User question: ...
 - **Answer (EN):** Small corpora can ship with a local index and on-device embeddings. Large knowledge bases usually need server retrieval; combine on-device LLMs with tools that fetch from local or remote indexes — mind size, battery, and freshness.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 05 · Vector Search](../vector-search/) · [07 · Structured Output →](../structured-output/)
+
+<!-- ai-engineering-nav:end -->

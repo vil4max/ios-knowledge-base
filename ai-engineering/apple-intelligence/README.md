@@ -108,3 +108,11 @@ UI (SwiftUI)
 - **Answer (EN):** Accurate privacy manifests and labels; on-device processing reduces collection disclosure. For cloud AI use encryption, minimal retention, and consent. Do not hide AI behavior from App Review; disclose third-party ML SDKs.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 11 · Foundation Models](../foundation-models/) · [13 · Dynamic Profiles →](../dynamic-profiles/)
+
+<!-- ai-engineering-nav:end -->

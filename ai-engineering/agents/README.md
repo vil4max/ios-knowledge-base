@@ -101,3 +101,11 @@ User goal
 - **Answer (EN):** Tool allowlists, step/time limits, schema validation, human confirmation for destructive actions, logging, PII redaction, rate limits. On iOS keep work off the main thread with clear UI error states.
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 08 · Tool Calling](../tool-calling/) · [10 · MCP →](../mcp/)
+
+<!-- ai-engineering-nav:end -->

@@ -153,3 +153,11 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 - **Follow-up answer:** Yes — implement `historyTransform` manually; utilities save boilerplate; pin package version; monitor API changes as "emerging patterns."
 
 <!-- knowledge-cards-canonical:end -->
+
+<!-- ai-engineering-nav:start -->
+
+---
+
+**AI Engineering:** [Track overview](../README.md) · [← 12 · Apple Intelligence](../apple-intelligence/) · [14 · Evaluations →](../evaluations/)
+
+<!-- ai-engineering-nav:end -->
