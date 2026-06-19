@@ -2,7 +2,8 @@
 
 ## Материалы
 
-- Playgrounds:
+- Playgrounds: [ARCAdvanced.playground](ARCAdvanced.playground) (retain cycles, `Task`, Combine) · [ARCCompileTimeVsRuntime.playground](ARCCompileTimeVsRuntime.playground) · [HHMemoryLayout.playground](HHMemoryLayout.playground)
+- **SwiftUI ownership** (`@State` / `@StateObject`, `.task`, VM в `body`) — Q-card в [SwiftUI README](../../ios-sdk/swiftui/README.md) (*Memory & ownership — ARC in SwiftUI*)
 
 ## Структура топика
 

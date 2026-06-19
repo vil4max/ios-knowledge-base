@@ -2,7 +2,7 @@
 
 ## За 30 секунд
 
-SwiftUI is **declarative UI**: views are values, state drives body recomputation, modifiers build a render tree. Interview depth: **`@State` / `@Binding` / `@Observable`**, view identity (`id`, `ForEach`), navigation (`NavigationStack`), performance (unnecessary body work), and **UIKit interop** (`UIViewRepresentable`). Know when SwiftUI is wrong tool (complex gestures, legacy UIKit investment).
+SwiftUI is **declarative UI**: views are values, state drives body recomputation, modifiers build a render tree. **ARC still applies** — pick the right ownership wrapper (`@State` / `@Bindable` / `@Environment` on iOS 17+; `@StateObject` / `@ObservedObject` / `@EnvironmentObject` for legacy). Interview depth: view identity (`id`, `ForEach`), navigation (`NavigationStack`), async tied to lifetime (`.task`), performance (unnecessary body work), and **UIKit interop** (`UIViewRepresentable`). Know when SwiftUI is wrong tool (complex gestures, legacy UIKit investment).
 
 ## Apple docs
 
@@ -39,6 +39,7 @@ SwiftUI is **declarative UI**: views are values, state drives body recomputation
 - Переиспользуемые немодальные UI-паттерны обратной связи (toast) в SwiftUI.
 - Практические паттерны MapKit в SwiftUI: состояние карты, поиск и аннотации.
 - **View identity:** стабильные `id` в `ForEach`; избегать лишних пересозданий stateful child views.
+- **Memory & ownership:** ARC + правильный wrapper; не создавать VM в `body`; async через `.task` — Q-card *Memory & ownership*.
 - **Data loading:** `.task` / `.task(id:)` + FSM в `@Observable` VM; не API в `.onAppear` + неструктурированный `Task`.
 - **Time-driven UI:** `TimelineView` + schedule (`everyMinute`, `periodic`, `animation`) и `context.cadence`; не `Timer` + `@State` tick для часов на экране.
 
@@ -419,6 +420,63 @@ struct DetailView: View {
 **Follow-up:** Заменяет ли Observation **Combine**?
 
 **Доп. информация:** Внутри `@Observable` нужный SwiftUI-ховер на чтение реализован через `withObservationTracking { read } onChange: { … }` — этот же API можно использовать вручную вне SwiftUI (например, в логировании/аналитике), но в обычной View им пользоваться не приходится. `@Bindable` нужен только когда дочерней View нужны **биндинги** (`$counter.value`); иначе достаточно передать `let counter: Counter`.
+
+---
+
+### Q-card: Memory & ownership — ARC in SwiftUI
+
+**Вопрос (RU):** SwiftUI «сам управляет памятью»? Какой property wrapper выбрать и где типичные утечки?
+
+**Ответ (RU):** Зацепка: **SwiftUI не заменяет ARC** — ViewModel и сервисы остаются reference types; wrapper задаёт **кто владеет** объектом и **когда** он пересоздаётся.
+
+```mermaid
+flowchart LR
+    V["View (struct)"] --> W["Ownership wrapper"]
+    W --> M["ViewModel / model (class)"]
+    M --> ARC["ARC retain/release"]
+    ARC --> D["deinit when no strong refs"]
+```
+
+| Кто владеет | iOS 17+ (`@Observable`) | Legacy (`ObservableObject`) |
+|-------------|-------------------------|-----------------------------|
+| View создаёт и держит VM | `@State private var vm = VM()` | `@StateObject private var vm = VM()` |
+| VM пришёл снаружи (родитель владеет) | `@Bindable var vm` или `let vm: VM` | `@ObservedObject var vm` |
+| Общий на поддерево | `@Environment(Type.self)` | `@EnvironmentObject` |
+
+**Три правила (interview hook):**
+
+- View **владеет** объектом → `@State` / `@StateObject`
+- Объект **владеет кто-то ещё** → `@Bindable` / `@ObservedObject`
+- **App-wide** shared state → `@Environment` / `@EnvironmentObject`
+
+**Типичные баги:**
+
+1. **`ViewModel()` в `body`** или `ObservedObject(wrappedValue: VM())` — новый экземпляр на каждый recompute → потеря state, дубли запросов. Фикс: владение через `@State` / `@StateObject`.
+2. **`Task { await load() }` в `.onAppear`** — задача не привязана к lifetime view; VM может жить дольше экрана. Фикс: [`.task`](notes/swiftui-data-loading-task.md) + cooperative cancel.
+3. **Retain cycle в VM** — closure / `sink` / вложенный `Task` с strong `self`. Фикс: `[weak self]`; отмена подписок в `deinit`.
+4. **«View исчез» ≠ «объект освободился»** — navigation stack, parent VM или cache всё ещё держат class. Проверка: `deinit` на **модели**, Memory Graph, Instruments Leaks.
+
+**Ответ (EN):** SwiftUI does not replace ARC. Wrappers express **ownership**, not automatic memory management. View-owned models use `@State` (Observation) or `@StateObject` (legacy); externally owned models use `@Bindable`/`@ObservedObject`; shared hierarchy state uses `@Environment`/`@EnvironmentObject`. Common pitfalls: creating VMs inside `body`, unstructured `Task` in `.onAppear`, strong-self cycles in closures, confusing view disappearance with model deallocation.
+
+**Устная заготовка (RU):**
+
+1. ARC на месте; wrapper = владение.
+2. View владеет → `@State` / `@StateObject`.
+3. Не создавать VM в `body`.
+4. Async → `.task`; циклы → `[weak self]`.
+
+**Устная заготовка (EN):**
+
+1. SwiftUI works with ARC; wrappers express ownership.
+2. View-owned → `@State` / `@StateObject`.
+3. Never instantiate VMs in `body`.
+4. Bind async to view lifetime; break cycles with weak captures.
+
+**Follow-up (RU):** ViewModel не вызывает `deinit` после pop — что проверять?
+
+**Follow-up answer (RU):** Memory Graph → цепочка strong refs (parent coordinator, singleton, неотменённый `Task`, `Set<AnyCancellable>`). Не путать struct `View` с class VM.
+
+**Глубже:** [Memory & ARC](../../swift/memory-arc/README.md) · playground [ARCAdvanced.playground](../../swift/memory-arc/ARCAdvanced.playground) · MVVM ownership — [architecture/patterns](../../architecture/patterns/README.md)
 
 ---
 
