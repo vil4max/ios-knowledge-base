@@ -2,7 +2,7 @@
 
 - **Sources:** *AI Driven Swift Architecture*; iOS unit testing practice (Jon Reid / Quality Coding lineage); [The Transformation Priority Premise](https://blog.cleancoder.com/uncle-bob/2013/05/27/TheTransformationPriorityPremise.html) — Robert C. Martin
 - **Topic README:** [Testing](../README.md)
-- **Related:** [Evaluations](../../../ai-engineering/evaluations/README.md) — golden sets for **LLM features in the product**, not a substitute for unit tests on generated Swift code
+- **Related:** [TDD-Basics-RU](TDD-Basics-RU.md) · [Evaluations](../../../ai-engineering/evaluations/README.md) — golden sets for **LLM features in the product**, not a substitute for unit tests on generated Swift code
 
 ---
 

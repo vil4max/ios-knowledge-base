@@ -2,7 +2,7 @@
 
 **Назначение:** закрыть пробел после собеса — **понимать**, **проектировать** и **писать** unit-тесты как сеньор: границы, детерминизм, моки, асинхронность, изоляция, отсутствие флейков.
 
-**Связь с репозиторием:** общий файл темы — [Testing-Unit-UI-Snapshot.md](../Testing-Unit-UI-Snapshot.md); сеть в unit — [V/20 Q46](../../../V.%20Данные%20и%20сеть/20%20Networking%20—%20URLSession%2C%20REST%2C%20WebSocket%2C%20GraphQL%2C%20gRPC/Networking-URLSession-REST-WebSocket.md#q46).
+**Связь с репозиторием:** фундамент — [Testing-Fundamentals-RU](Testing-Fundamentals-RU.md); фреймворки — [Swift-Testing-vs-XCTest-RU](Swift-Testing-vs-XCTest-RU.md); сеть — [Testing-Network-Stub-RU](Testing-Network-Stub-RU.md); topic README — [Testing](../README.md).
 
 ---
 
@@ -22,6 +22,8 @@
 
 ## 2. Пирамида и границы unit
 
+Классическое соотношение **~70 / 20 / 10** (unit / integration / UI) — см. [Testing-Fundamentals-RU](Testing-Fundamentals-RU.md).
+
 - **Unit:** чистая логика, **use case**, **mapper**, **policy** (retry, валидация), **view model** без UIKit-дерева.
 - **Интеграция:** реальный `URLSession` к локальному серверу, Core Data stack, несколько модулей вместе.
 - **UI:** XCUITest, снапшоты layout (если принято в команде).
@@ -37,7 +39,8 @@
 | **Stub** | Возвращает заранее заданные данные | Результат вызова SUT |
 | **Spy** | Запоминает **вызовы** (имя метода, аргументы, счётчики) | Взаимодействие с зависимостью |
 | **Fake** | Упрощённая **рабочая** реализация (in-memory store) | Поведение + иногда вызовы |
-| **Mock** | В книгах — общее слово; в iOS-командах часто = **Spy** или **Stub** | Договориться в команде |
+| **Dummy** | Заполняет параметр, **не используется** SUT | — |
+| **Mock** | Верификация **поведения** (вызов, args, count); на собесе: mock ≠ stub | Взаимодействие |
 
 **Именование:** `UserServiceSpy`, `ClockStub`, не «`MockEverything`».
 
