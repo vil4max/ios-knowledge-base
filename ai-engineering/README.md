@@ -2,6 +2,8 @@
 
 Curated track for **LLM systems on Apple platforms** — from tokens and context to RAG, agents, Foundation Models, and evals.
 
+**Start with the visual [Roadmap](roadmap/)** — industry stack, skill levels, 12-month plan, and what to skip.
+
 | # | Topic | Focus |
 |---|--------|--------|
 | 01 | [LLM Basics](llm-basics/) | ML vs LLM, transformers, on-device vs cloud |
@@ -20,6 +22,6 @@ Curated track for **LLM systems on Apple platforms** — from tokens and context
 | 13 | [Dynamic Profiles](dynamic-profiles/) | Swap model/tools in one session |
 | 14 | [Evaluations](evaluations/) | Golden sets, regression, ToolCallEvaluator |
 
-Start at **01 · LLM Basics**, then **02–03** before RAG and agents.
+Start at **[Roadmap](roadmap/)**, then **01 · LLM Basics** and **02–03** before RAG and agents.
 
 Use **← prev | next →** links at the bottom of each topic page.

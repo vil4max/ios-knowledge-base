@@ -5,6 +5,7 @@
   - [OS & Networks](/fundamentals/os-and-networks/)
   - [Git & Code Review](/fundamentals/git/)
   - [CLI & Terminal](/fundamentals/cli/)
+  - [Development Principles](/fundamentals/development-principles/)
 
 - **Swift**
   - [Syntax & Idioms](/swift/syntax/)
@@ -64,6 +65,7 @@
   - [Design Patterns](/algorithms/design-patterns/)
 
 - **AI Engineering**
+  - [Roadmap](/ai-engineering/roadmap/)
   - [01 · LLM Basics](/ai-engineering/llm-basics/)
   - [02 · Tokens](/ai-engineering/tokens/)
   - [03 · Context Window](/ai-engineering/context-window/)

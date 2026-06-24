@@ -28,7 +28,9 @@ MARKER_END = "<!-- ai-engineering-nav:end -->"
 
 def build_nav(index: int) -> str:
     parts = [f"[Track overview](../README.md)"]
-    if index > 0:
+    if index == 0:
+        parts.append(f"[← Roadmap](../roadmap/)")
+    elif index > 0:
         slug, title = TRACK[index - 1]
         parts.append(f"[← {title}](../{slug}/)")
     if index < len(TRACK) - 1:

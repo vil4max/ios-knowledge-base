@@ -95,6 +95,7 @@ TOPIC_TREE = {
     "ai-engineering": {
         "title": "AI Engineering",
         "topics": {
+            "roadmap": "Roadmap",
             "llm-basics": "01 · LLM Basics",
             "tokens": "02 · Tokens",
             "context-window": "03 · Context Window",
