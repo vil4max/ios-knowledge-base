@@ -64,6 +64,8 @@
 | **unowned (safe)** | нет | crash | счётчик unowned; может задержать тело без side table → «зомби» |
 | **unowned (unsafe)** | нет | UB | без счётчика |
 
+**Objective-C `assign`** (атрибут `@property`) — не Swift-ссылка: для примитивов копируется значение; для объектов — только адрес без retain, **dangling pointer** после dealloc. Для делегатов — **`weak`**, не `assign`. Подробнее — **Q47**.
+
 По умолчанию у объекта **2 inline-счётчика** в метаданных: **strong** и **unowned (safe)**. При первой **weak** или переполнении inline — учёт в **side table** (**3** счётчика: strong, unowned safe, weak).
 
 ### Side table
@@ -513,6 +515,29 @@ Live → (strong == 0) → Deiniting [deinit]
 - **Follow-up answer (RU):** **глубокая рекурсия**, огромные **value** на стеке; для больших данных — **куча** / **indirection**.
 
 - **Доп. информация:** [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.43; **I/01 Type-system** (value vs reference).
+
+
+### Q47
+- **Question (RU):** Что делает **`weak`** в Objective-C (`@property`)? Чем отличается от **`assign`**?
+- **Question (EN):** Objective-C `weak` vs `assign`—what do they do?
+- **Answer (RU):** **`weak`** (только для **объектов**): не увеличивает **retain count**; не создаёт **retain cycle**; после dealloc ссылки — **zeroing** (**автоматически `nil`**). **`assign`**: копирует только **адрес**; после удаления объекта остаётся **dangling pointer**; типично для **примитивов** (`int`, `BOOL`, `CGFloat`). Делегаты и обратные ссылки на владельца — **`weak`**, не `assign`.
+- **Answer (EN):** `weak` does not retain; zeroes to `nil` after deallocation—objects only. `assign` stores the address without ownership—safe for primitives, dangling for objects after dealloc. Use `weak` for delegates.
+- **Устная заготовка (RU):**
+
+    1. `weak` — не держит объект, после dealloc → `nil`; только reference types.
+    2. `assign` — адрес без retain; для `int`/`BOOL`; для объектов — crash при use-after-free.
+    3. Delegate → `weak`, не `assign`.
+
+- **Устная заготовка (EN):**
+
+    1. `weak` — no retain, zeroing to `nil` for objects.
+    2. `assign` — raw address; primitives only; objects → dangling.
+    3. Delegates use `weak`.
+
+- **Follow-up (RU):** почему не `assign` у delegate?
+- **Follow-up answer (RU):** после dealloc владельца delegate-указатель указывает в невалидную память → **crash** при обращении; `weak` обнуляется безопасно.
+
+- **Доп. информация:** Swift `weak` vs `unowned` — **Q4**; [ARC (Swift Book)](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/); flashcards — [Value-Types-Actors-Concurrency-Quiz §7](../concurrency/notes/Value-Types-Actors-Concurrency-Quiz.md#7-быстрые-ответы-flashcards)
 
 
 <!-- knowledge-cards-canonical:end -->

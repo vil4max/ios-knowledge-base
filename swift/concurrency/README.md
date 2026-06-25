@@ -9,6 +9,7 @@
 - Конспект: [Swift 6 runtime concurrency crashes](notes/Swift-6-Runtime-Concurrency-Crashes.md) — [onmyway133](https://onmyway133.com/posts/how-to-avoid-swift-6-concurrency-crashes/): inherited isolation, `@Sendable` closures, Combine/delegate traps, crash symbols; карточка **Q50**
 - Intro digest (social, URL позже): [notes/Swift-Concurrency-Intro-Social.md](notes/Swift-Concurrency-Intro-Social.md) — playground [SwiftConcurrencyPrimer.playground](SwiftConcurrencyPrimer.playground)
 - Structured concurrency: [notes/Structured-Concurrency-What-Structured-Means.md](notes/Structured-Concurrency-What-Structured-Means.md) — [macguru.dev](https://macguru.dev/whats-that-structured-in-structured-concurrency/); playground [StructuredConcurrencyLab.playground](StructuredConcurrencyLab.playground)
+- Quiz (draft): [notes/Value-Types-Actors-Concurrency-Quiz.md](notes/Value-Types-Actors-Concurrency-Quiz.md) — value types vs class в массиве, actor reentrancy, `@MainActor`, performance 10k models; **§6** — value type vs stack/heap; **§7** — flashcards (weak, tuple, heap)
 - Playground: [ImageLoadingConcurrencyLab.playground](ImageLoadingConcurrencyLab.playground/Contents.swift)
 
 ### Actors vs Queues vs Locks (shared state)

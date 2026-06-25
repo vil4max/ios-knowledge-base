@@ -736,4 +736,34 @@ let sections = [Section] {
 - **Follow-up answer (RU):** нет **хранимого состояния** в протоколе (до **extension** с ограничениями); нет единой иерархии инициализации как у `class`; гибче миксовать поведение.
 - **Доп. информация:** [Habr H40](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.40.
 
+### Q59
+- **Question (RU):** Что такое **tuple** и когда его использовать / не использовать?
+- **Question (EN):** Tuples in Swift—when should you use them?
+- **Answer (RU):** **Tuple** — несколько значений, объединённых **без отдельного именованного типа**; **value type** (value semantics). Доступ по меткам: `person.name`, `person.age`. Удобен для **временных** данных, **локальной** логики и **нескольких возвращаемых значений**:
+
+    ```swift
+    func minMax(_ numbers: [Int]) -> (min: Int, max: Int) {
+        guard let first = numbers.first else { return (0, 0) }
+        return numbers.reduce((first, first)) { acc, n in
+            (Swift.min(acc.0, n), Swift.max(acc.1, n))
+        }
+    }
+
+    let result = minMax([3, 1, 4])
+    print(result.min, result.max)
+    ```
+
+    **Когда не использовать:** модели приложения, **публичный API**, типы с **собственным поведением** — лучше **`struct`**.
+
+- **Answer (EN):** A tuple groups unnamed values with value semantics—good for ad-hoc multi-return (`minMax`) and local tuples. Prefer `struct` for domain models, public APIs, and types with behavior.
+
+- **Устная заготовка (RU):** «Tuple — value type без своего типа; ок для пары из `min`/`max` и локального кода; для API и моделей — `struct`.»
+
+- **Устная заготовка (EN):** «Tuple for quick multi-return; struct when the shape is part of your API or domain.»
+
+- **Follow-up (RU):** tuple может оказаться в **heap**?
+- **Follow-up answer (RU):** **Да** — как любой value type: stored property `class`, escaping closure, CoW-буфер. См. [quiz §6](../concurrency/notes/Value-Types-Actors-Concurrency-Quiz.md#6-value-type-vs-stack-vs-heap-interview).
+
+- **Доп. информация:** value vs reference — **Q45**; [Tuples (playground)](SwiftInSixtySeconds.playgroundbook/Contents/Chapters/Complex%20types.playgroundchapter/Pages/Tuples.playgroundpage/Contents.swift); flashcards — [quiz §7](../concurrency/notes/Value-Types-Actors-Concurrency-Quiz.md#7-быстрые-ответы-flashcards)
+
 <!-- knowledge-cards-canonical:end -->
