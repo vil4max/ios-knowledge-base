@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 iOS push flows through **APNs**: your server sends to Apple, Apple delivers to device. The app registers for a **device token**, handles permission via **UNUserNotificationCenter**, and may use **Notification Service Extension** for rich media and **silent push** (`content-available`) to wake the app for background fetch — within strict budgets. Design covers token lifecycle, payload size limits, categories/actions, and never assuming guaranteed delivery.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Push через **APNs**: сервер → Apple → устройство. Payload, silent push, notification service extension, permission, delivery guarantees (нет 100%).
+
+</details>
+
+
 
 ## Apple docs
 
@@ -81,27 +92,60 @@ Backend → APNs (HTTP/2) → Device
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Как устроен путь push от сервера до UI?
 - **Question (EN):** How does a push travel from server to UI?
-- **Answer (RU):** Backend шлёт HTTP/2 запрос в **APNs** с device token и payload. APNs доставляет на устройство. **UNUserNotificationCenter** показывает alert или будит app (silent). App обрабатывает tap через delegate / scene, маршрутизирует deep link и при необходимости тянет данные с API.
+
 - **Answer (EN):** Your server POSTs to APNs with the device token and payload. APNs delivers to the device. UNUserNotificationCenter presents the notification or wakes the app for silent pushes. The app handles taps via delegates and routes deep links, often fetching fresh data from your API.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как устроен путь push от сервера до UI?
+
+- **Answer (RU):** Backend шлёт HTTP/2 запрос в **APNs** с device token и payload. APNs доставляет на устройство. **UNUserNotificationCenter** показывает alert или будит app (silent). App обрабатывает tap через delegate / scene, маршрутизирует deep link и при необходимости тянет данные с API.
+
+</details>
 ### Q2
-- **Question (RU):** Silent push — что можно и нельзя?
 - **Question (EN):** Silent push — what is allowed and what is not?
-- **Answer (RU):** Payload с `content-available: 1` без alert — **background wake** для короткой работы (sync). Доставка **не guaranteed**, система **throttle** по battery/usage. Нельзя использовать для рекламы или обхода background limits; нужен `remote-notification` background mode и бережное использование.
+
 - **Answer (EN):** `content-available` wakes the app briefly for work like sync. Delivery is not guaranteed and the OS throttles usage. Do not use for ads or to bypass limits; enable the remote-notification background mode and keep work minimal.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Silent push — что можно и нельзя?
+
+- **Answer (RU):** Payload с `content-available: 1` без alert — **background wake** для короткой работы (sync). Доставка **не guaranteed**, система **throttle** по battery/usage. Нельзя использовать для рекламы или обхода background limits; нужен `remote-notification` background mode и бережное использование.
+
+</details>
 ### Q3
-- **Question (RU):** Зачем Notification Service Extension?
 - **Question (EN):** Why use a Notification Service Extension?
-- **Answer (RU):** Выполняется **до показа** уведомления: скачать медиа, расшифровать, изменить title/body. Ограничения по времени и памяти; при timeout — показ исходного payload. Нужен для rich notifications без огромного payload в APNs (лимит ~4 KB).
+
 - **Answer (EN):** Runs before display to download media, decrypt, or mutate content. Time- and memory-limited; on timeout the original payload shows. Use it because APNs payload size is small (~4 KB).
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем Notification Service Extension?
+
+- **Answer (RU):** Выполняется **до показа** уведомления: скачать медиа, расшифровать, изменить title/body. Ограничения по времени и памяти; при timeout — показ исходного payload. Нужен для rich notifications без огромного payload в APNs (лимит ~4 KB).
+
+</details>
 ### Q4
-- **Question (RU):** Что делать с device token на backend?
 - **Question (EN):** How should the backend manage device tokens?
-- **Answer (RU):** Хранить связку **userId ↔ token ↔ app version**; обновлять при каждом `didRegister`; удалять при logout и при **410/invalid** от APNs. Один пользователь — несколько токенов (iPhone + iPad). Не использовать token как stable device id — он меняется.
+
 - **Answer (EN):** Store userId ↔ token mappings; refresh on registration callbacks; remove on logout and when APNs reports invalid tokens. Users may have multiple tokens; tokens change — they are not stable device identifiers.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что делать с device token на backend?
+
+- **Answer (RU):** Хранить связку **userId ↔ token ↔ app version**; обновлять при каждом `didRegister`; удалять при logout и при **410/invalid** от APNs. Один пользователь — несколько токенов (iPhone + iPad). Не использовать token как stable device id — он меняется.
+
+</details>

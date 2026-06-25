@@ -8,11 +8,30 @@
 
 ## За 30 секунд
 
+
+
+
+
+_English summary — expand «По-русски» for the full Russian text._
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `List` — ленивый контейнер строк из **коллекции с стабильной identity** (`Identifiable` / явный `id`). Источник правды — массив или модель **снаружи** `List`; delete, reorder и swipe меняют тот же state. На собесе: **стабильные `id`**, `List` vs `ScrollView` + `LazyVStack`, владение edit mode, пустой экран (`ContentUnavailableView`), тяжёлый `body` строки.
 
 ---
 
+</details>
+
+
+
 ## Поток данных
+
+_English summary — expand «По-русски» for full text (Поток данных)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```mermaid
 flowchart LR
@@ -28,7 +47,14 @@ flowchart LR
 
 ---
 
+</details>
+
 ## Концепты
+
+_English summary — expand «По-русски» for full text (Концепты)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### 1) Базовый List
 
@@ -164,7 +190,14 @@ Group {
 
 ---
 
+</details>
+
 ## List vs ScrollView + LazyVStack
+
+_English summary — expand «По-русски» for full text (List vs ScrollView + LazyVStack)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | | `List` | `ScrollView` + `LazyVStack` |
 |--|--------|------------------------------|
@@ -175,7 +208,14 @@ Group {
 
 ---
 
+</details>
+
 ## Полезные модификаторы
+
+_English summary — expand «По-русски» for full text (Полезные модификаторы)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Модификатор | Назначение |
 |-------------|------------|
@@ -188,7 +228,14 @@ Group {
 
 ---
 
+</details>
+
 ## Best practices & mistakes
+
+_English summary — expand «По-русски» for full text (Best practices & mistakes)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | ✅ Делай | ❌ Не делай |
 |----------|------------|
@@ -200,7 +247,14 @@ Group {
 
 ---
 
+</details>
+
 ## Карточки знаний (Q&A)
+
+_English summary — expand «По-русски» for full text (Карточки знаний (Q&A))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Q: List мигает или сбрасывает state в строке после update / delete
 
@@ -231,7 +285,11 @@ Group {
 
 ---
 
+</details>
+
 ## Apple docs
+
+
 
 - [List](https://developer.apple.com/documentation/swiftui/list)
 - [ForEach](https://developer.apple.com/documentation/swiftui/foreach)
@@ -243,6 +301,14 @@ Group {
 
 ## Связь с базой
 
+_English summary — expand «По-русски» for full text (Связь с базой)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - [SwiftUI README](../README.md) — view identity (Q11), multilevel dismiss (Q9), performance exercise
 - [Performance](../../quality/performance/README.md) — профилирование скролла
 - [Navigation & Deep Links](../../architecture/navigation/README.md) — `NavigationLink` внутри строк
+
+</details>
+

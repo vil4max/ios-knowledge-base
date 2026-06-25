@@ -10,9 +10,19 @@
 - [Building from the command line](https://developer.apple.com/documentation/xcode/building-from-the-command-line) — schemes, destinations.
 - [Environment variable reference](https://developer.apple.com/documentation/xcode/environment-variable-reference) — CI secrets and flags.
 
-## In 30 seconds
+## За 30 секунд
 
 **CI/CD** for iOS runs **build + test + archive** on every change. **Xcode Cloud** integrates with App Store Connect, manages macOS runners and signing; **Fastlane** automates lanes (test, beta, release) on any Mac CI. Locally and in CI, **`xcodebuild test`** drives simulators with a **shared scheme** and **Test Plan** (`.xctestplan`) to split PR vs nightly tests. Keys: reproducible schemes (`shared`), locked simulator OS, parallel test execution, and artifacts (`.xcresult`, dSYM) retained for failures.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**CI/CD** для iOS: **build + test + archive** на каждое изменение. **Xcode Cloud**, GitHub Actions, Fastlane — выбор по команде. Test Plans, кэш DerivedData, артефакты.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -90,25 +100,58 @@ ReleaseCandidate.xctestplan → full matrix before tag
 ## Interview Q&A (Knowledge cards)
 
 ### Q1
-- **Question (RU):** Xcode Cloud vs Fastlane — когда что?
 - **Question (EN):** Xcode Cloud vs Fastlane—when to use which?
-- **Answer (RU):** **Xcode Cloud** — нативная интеграция Apple (signing, TestFlight, macOS runners), минимум infra. **Fastlane** — гибкость на **любом** CI (GitHub Actions, GitLab), богатые lanes, `match`, кастомные шаги. Часто: Cloud для Apple-centric team; Fastlane там, где уже enterprise CI или multi-platform pipeline.
+
 - **Answer (EN):** Xcode Cloud is integrated and low-ops; Fastlane fits custom CI and complex release automation—many teams combine both.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Xcode Cloud vs Fastlane — когда что?
+
+- **Answer (RU):** **Xcode Cloud** — нативная интеграция Apple (signing, TestFlight, macOS runners), минимум infra. **Fastlane** — гибкость на **любом** CI (GitHub Actions, GitLab), богатые lanes, `match`, кастомные шаги. Часто: Cloud для Apple-centric team; Fastlane там, где уже enterprise CI или multi-platform pipeline.
+
+</details>
 ### Q2
-- **Question (RU):** Как ускорить тесты в CI?
 - **Question (EN):** How do you speed up CI tests?
-- **Answer (RU):** **Test Plans** с подмножествами для PR; `-parallel-testing-enabled`; шардирование по классам; stub network; без лишних UI tests на каждый commit. Фиксированный simulator OS; кэш SPM/DerivedData где поддерживается. Quarantine flaky tests в отдельный plan с retry policy, не игнорировать красный CI.
+
 - **Answer (EN):** Subset Test Plans for PRs, parallel testing, shard slow suites, stub I/O, quarantine flaky tests with explicit policy—keep feedback under ~10 minutes for PR gates.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как ускорить тесты в CI?
+
+- **Answer (RU):** **Test Plans** с подмножествами для PR; `-parallel-testing-enabled`; шардирование по классам; stub network; без лишних UI tests на каждый commit. Фиксированный simulator OS; кэш SPM/DerivedData где поддерживается. Quarantine flaky tests в отдельный plan с retry policy, не игнорировать красный CI.
+
+</details>
 ### Q3
-- **Question (RU):** Зачем shared scheme и Test Plan в репозитории?
 - **Question (EN):** Why commit shared schemes and Test Plans?
-- **Answer (RU):** CI и разработчики должны собирать **одинаково**; user-specific scheme не виден на runner. Test Plan версионирует **какие** тесты и **какие** env (язык, args) — PR vs release без дублирования YAML. Изменение набора тестов — code review вместе с фичей.
+
 - **Answer (EN):** Shared schemes and Test Plans make local and CI runs identical and reviewable—test selection lives in git, not tribal CI knowledge.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем shared scheme и Test Plan в репозитории?
+
+- **Answer (RU):** CI и разработчики должны собирать **одинаково**; user-specific scheme не виден на runner. Test Plan версионирует **какие** тесты и **какие** env (язык, args) — PR vs release без дублирования YAML. Изменение набора тестов — code review вместе с фичей.
+
+</details>
 ### Q4
-- **Question (RU):** Как дебажить падение только в CI?
 - **Question (EN):** How do you debug failures that only happen in CI?
-- **Answer (RU):** Скачать **`.xcresult`**, логи `xcodebuild`, скриншоты UI tests. Сравнить destination OS, locale, env vars, `CODE_SIGNING_*`. Reproduce locally with same `-destination` и Test Plan. Включить `-showBuildTimingSummary` для timeout vs test failure. Flaky — стабилизировать async (`await`), изолировать данные, не `sleep`.
+
 - **Answer (EN):** Pull result bundles and logs, match simulator OS and env to local runs, fix timing/data isolation—treat flaky tests as product bugs, not CI noise.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как дебажить падение только в CI?
+
+- **Answer (RU):** Скачать **`.xcresult`**, логи `xcodebuild`, скриншоты UI tests. Сравнить destination OS, locale, env vars, `CODE_SIGNING_*`. Reproduce locally with same `-destination` и Test Plan. Включить `-showBuildTimingSummary` для timeout vs test failure. Flaky — стабилизировать async (`await`), изолировать данные, не `sleep`.
+
+</details>

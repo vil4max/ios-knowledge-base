@@ -1,6 +1,6 @@
 # Swift Testing vs XCTest
 
-**Назначение:** когда какой фреймворк, миграция async-тестов, теги и Test Plans. Связь: [event-stream pattern](../README.md#идея-тестировать-не-callback-а-поток-событий), [Senior-Unit-Testing-Mastery-RU](Senior-Unit-Testing-Mastery-RU.md).
+**Назначение:** когда какой фреймворк, миграция async-тестов, теги и Test Plans. Связь: [event-stream pattern](../README.md#идея-тестировать-не-callback-а-поток-событий), [Senior-Unit-Testing-Mastery-RU](Senior-Unit-Testing-Mastery.md).
 
 **Topic README:** [Testing](../README.md)
 
@@ -8,11 +8,23 @@
 
 ## TL;DR
 
+_English summary — expand «По-русски» for full text (TL;DR)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 **XCTest** — дефолт legacy и UI (`XCUITest`). **Swift Testing** (`import Testing`) — `@Test`, `#expect`, нативный `async`/`await`, теги, параметризация. В одном test bundle могут сосуществовать. Новые unit-тесты на поддерживаемых OS — предпочитать Swift Testing; UI и часть CI-интеграций — XCTest.
 
 ---
 
+</details>
+
 ## Сравнение
+
+_English summary — expand «По-русски» for full text (Сравнение)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | | **XCTest** | **Swift Testing** |
 |---|------------|-------------------|
@@ -25,7 +37,14 @@
 
 ---
 
+</details>
+
 ## Когда Swift Testing
+
+_English summary — expand «По-русски» for full text (Когда Swift Testing)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Новый **unit** / **integration** таргет, iOS 17+ / macOS 14+ (проверь deployment target проекта).
 - **Async** сценарии без цепочек expectations.
@@ -51,7 +70,14 @@ struct DiscountTests {
 
 ---
 
+</details>
+
 ## Когда оставить XCTest
+
+_English summary — expand «По-русски» for full text (Когда оставить XCTest)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **XCUITest** (UI automation) — только XCTest.
 - Legacy таргет, миграция не в приоритете.
@@ -60,7 +86,14 @@ struct DiscountTests {
 
 ---
 
+</details>
+
 ## Миграция с XCTestExpectation
+
+_English summary — expand «По-русски» for full text (Миграция с XCTestExpectation)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | XCTest | Swift Testing |
 |--------|---------------|
@@ -73,7 +106,14 @@ struct DiscountTests {
 
 ---
 
+</details>
+
 ## `@Suite` и изоляция
+
+_English summary — expand «По-русски» for full text (`@Suite` и изоляция)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - `@Suite(.serialized)` — тесты suite по очереди (общий ресурс, Keychain, файл).
 - Отдельные suite по модулю: `AuthServiceTests`, `CartViewModelTests`.
@@ -81,7 +121,14 @@ struct DiscountTests {
 
 ---
 
+</details>
+
 ## Тестирование ViewModel / `@Observable`
+
+_English summary — expand «По-русски» for full text (Тестирование ViewModel / `@Observable`)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Граница: **VM в unit**, **тапы в UI**.
 
@@ -106,7 +153,14 @@ func addItem_incrementsCount() {
 
 ---
 
+</details>
+
 ## Сосуществование в проекте
+
+_English summary — expand «По-русски» for full text (Сосуществование в проекте)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. Один test target может содержать и `XCTestCase`, и `@Test`.
 2. Test Plan выбирает **targets** и **configurations**, не фреймворк.
@@ -114,7 +168,14 @@ func addItem_incrementsCount() {
 
 ---
 
+</details>
+
 ## Вопросы–ответы (собес)
+
+_English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Q. Почему Swift Testing для async?**  
 **A.** Нет обязательного `wait(for:timeout:)`; меньше флейков от коротких таймаутов; `#expect` с лучшими сообщениями об ошибке.
@@ -127,7 +188,11 @@ func addItem_incrementsCount() {
 
 ---
 
+</details>
+
 ## Официально
+
+
 
 - [Swift Testing](https://developer.apple.com/documentation/testing)
 - [Migrating a test from XCTest](https://developer.apple.com/documentation/testing/migratingfromxctest)

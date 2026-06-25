@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Embeddings** map text (or other data) to **dense vectors** in high-dimensional space — similar meaning → **nearby vectors**, measurable by **cosine similarity** or dot product. They power semantic search, clustering, and RAG retrieval. On iOS: **`NLEmbedding`** (Natural Language) for lightweight on-device word/sentence vectors; cloud **embedding models** (OpenAI, Cohere, etc.) for higher quality at scale. **Dimensions** must match between index and query embedder. Downstream: [05 · Vector Search](../vector-search/README.md) and [06 · RAG](../rag/README.md).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Embeddings** — плотные векторы смысла текста. Основа semantic search и RAG.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -92,35 +103,66 @@ For production RAG on mobile: **precompute embeddings at build time** or on serv
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Embedding — что это?
 - **Question (EN):** What is an embedding?
-- **Answer (RU):** **Плотный вектор** (массив floats) фиксированной длины, кодирующий смысл текста. Близкий смысл → близкие векторы (**cosine similarity**). Используется для semantic search, clustering, RAG retrieval — не для generation напрямую.
+
 - **Answer (EN):** A fixed-length dense float vector encoding text meaning. Similar meaning maps to nearby vectors measured by cosine similarity. Used for search and retrieval, not direct text generation.
+
 - **Follow-up:** embedding vs one-hot encoding?
+
 - **Follow-up answer:** One-hot — sparse, no similarity between words. Embedding — learned dense space where semantic relations become geometry (e.g. king − man + woman ≈ queen in classic examples).
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Embedding — что это?
+
+- **Answer (RU):** **Плотный вектор** (массив floats) фиксированной длины, кодирующий смысл текста. Близкий смысл → близкие векторы (**cosine similarity**). Используется для semantic search, clustering, RAG retrieval — не для generation напрямую.
+
+</details>
 ### Q2
-- **Question (RU):** NLEmbedding — когда достаточно на iOS?
 - **Question (EN):** When is NLEmbedding enough on iOS?
-- **Answer (RU):** **Small offline corpora** (FAQ, glossary), prototype semantic match, privacy-critical без network. Недостаточно для large RAG, multilingual production search, или когда нужен state-of-art retrieval — тогда server embedding model или Core ML sentence encoder.
+
 - **Answer (EN):** Fine for small offline corpora, prototypes, and privacy-sensitive local matching. Insufficient for large RAG or best-in-class retrieval — use server or Core ML sentence encoders.
+
 - **Follow-up:** NLEmbedding для Ukrainian/Russian?
+
 - **Follow-up answer:** Check `NLEmbedding.wordEmbedding(for:)` language availability; quality varies — test golden queries per locale; may need multilingual cloud embedder for production.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** NLEmbedding — когда достаточно на iOS?
+
+- **Answer (RU):** **Small offline corpora** (FAQ, glossary), prototype semantic match, privacy-critical без network. Недостаточно для large RAG, multilingual production search, или когда нужен state-of-art retrieval — тогда server embedding model или Core ML sentence encoder.
+
+</details>
 ### Q3
-- **Question (RU):** Зачем следить за dimensions?
 - **Question (EN):** Why do dimensions matter?
-- **Answer (RU):** Index и query **must match** model + dimension (e.g. 768). Mixing models = random similarity scores. Store `modelId` + `dimensions` in index metadata; re-embed entire corpus on model change.
+
 - **Answer (EN):** Index and query vectors must come from the same model with the same dimensionality. Store model metadata with the index and re-embed everything when the model changes.
+
 - **Follow-up:** больше dimensions = лучше?
+
 - **Follow-up answer:** Not always — higher dims = more storage and compute; diminishing returns. Pick model for quality/size trade-off; measure recall@k on golden set, don't assume.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем следить за dimensions?
+
+- **Answer (RU):** Index и query **must match** model + dimension (e.g. 768). Mixing models = random similarity scores. Store `modelId` + `dimensions` in index metadata; re-embed entire corpus on model change.
+
+</details>
 ### Q4
-- **Question (RU):** Cosine similarity vs Euclidean distance?
 - **Question (EN):** Cosine similarity vs Euclidean distance?
-- **Answer (RU):** **Cosine** — угол между векторами; robust когда magnitude less important (normalized embeddings). **Euclidean** — straight-line distance in space. RAG indexes usually **cosine** or dot product on **normalized** vectors. Interview: explain cosine as "same direction = similar meaning."
+
 - **Answer (EN):** Cosine measures angle between vectors and works well for normalized embeddings. Euclidean measures straight-line distance. RAG typically uses cosine or dot product on normalized vectors.
+
 - **Follow-up:** similarity 0.85 — always good match?
+
 - **Follow-up answer:** **Threshold depends on corpus and model** — calibrate on golden questions; high score on tiny corpus can be misleading; always combine with metadata filters and empty-result handling.
 
 <!-- knowledge-cards-canonical:end -->
@@ -132,3 +174,13 @@ For production RAG on mobile: **precompute embeddings at build time** or on serv
 **AI Engineering:** [Track overview](../README.md) · [← 03 · Context Window](../context-window/) · [05 · Vector Search →](../vector-search/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Cosine similarity vs Euclidean distance?
+
+- **Answer (RU):** **Cosine** — угол между векторами; robust когда magnitude less important (normalized embeddings). **Euclidean** — straight-line distance in space. RAG indexes usually **cosine** or dot product on **normalized** vectors. Interview: explain cosine as "same direction = similar meaning."
+
+</details>

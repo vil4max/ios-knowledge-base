@@ -221,53 +221,116 @@
 ## Карточки знаний (Q&A)
 
 ### Q6
-- **Question (RU):** Паттерны проектирования — это про «чистый код»? Зачем они на iOS?
 - **Question (EN):** Are design patterns about clean code? Why do they matter on iOS?
-- **Answer (RU):** Нет — это **именованные решения типовых проблем** (делегирование поведения, источник данных для списка, реакция на события, единая точка создания объектов). На iOS они **уже в SDK**: `UITableViewDelegate`, `NotificationCenter`, `URLSession.shared`. На собесе важнее **какую проблему снимает паттерн**, а не определение из книги.
+
 - **Answer (EN):** Patterns name recurring solutions to recurring problems—not a clean-code badge. iOS APIs embody many of them; interview value is stating the problem solved and trade-offs.
+
 - **Устный канон:** «Паттерн = **проблема → проверенный приём**; не вводить, если только усложняет.»
+
+- **Playground:** [open](design_patterns.playground/Contents.swift)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Паттерны проектирования — это про «чистый код»? Зачем они на iOS?
+
+- **Answer (RU):** Нет — это **именованные решения типовых проблем** (делегирование поведения, источник данных для списка, реакция на события, единая точка создания объектов). На iOS они **уже в SDK**: `UITableViewDelegate`, `NotificationCenter`, `URLSession.shared`. На собесе важнее **какую проблему снимает паттерн**, а не определение из книги.
+
+</details>
+
 - **Доп. информация:** [problem-first map](#ios-design-patterns-problem-first); [Swift under the hood](#swift-patterns-under-the-hood); [`assets/ios-design-patterns-overview.png`](assets/ios-design-patterns-overview.png).
-- **Playground:** [open](design_patterns.playground/Contents.swift)
-
 ### Q7
-- **Question (RU):** **Delegate** vs **DataSource** vs **Observer** — в чём разница?
 - **Question (EN):** Delegate vs DataSource vs Observer?
-- **Answer (RU):** **Delegate** — «как вести себя» (можно ли редактировать, высота, тап); обычно **1:1**, `weak`. **DataSource** — «что показать» (sections/rows/cells). **Observer** — «что изменилось» → реакция у **многих** подписчиков (NotificationCenter, Combine, `@Published`). Не смешивать: список **не хранит** модель — спрашивает DataSource; **не оповещает** через delegate всех о смене темы — Observer/store.
+
 - **Answer (EN):** Delegate answers behavior questions one-to-one; DataSource supplies data for lists; Observer broadcasts or streams changes to subscribers.
+
 - **Устный канон:** «**DataSource** — данные; **Delegate** — поведение; **Observer** — события/состояние многим.»
+
+- **Playground:** [open](design_patterns.playground/Contents.swift)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Delegate** vs **DataSource** vs **Observer** — в чём разница?
+
+- **Answer (RU):** **Delegate** — «как вести себя» (можно ли редактировать, высота, тап); обычно **1:1**, `weak`. **DataSource** — «что показать» (sections/rows/cells). **Observer** — «что изменилось» → реакция у **многих** подписчиков (NotificationCenter, Combine, `@Published`). Не смешивать: список **не хранит** модель — спрашивает DataSource; **не оповещает** через delegate всех о смене темы — Observer/store.
+
+</details>
+
 - **Доп. информация:** [II/08](../../II.%20Swift/08%20Swift%20Concurrency%20—%20async-await,%20actor,%20isolation/Swift-Concurrency.md) (сравнение async API); [Cocoa Design Patterns](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaDesignPatterns/CocoaDesignPatterns.html).
-- **Playground:** [open](design_patterns.playground/Contents.swift)
-
 ### Q8
-- **Question (RU):** **Singleton** — когда ок и когда вреден?
 - **Question (EN):** When is Singleton appropriate vs harmful?
-- **Answer (RU):** **Ок:** системные shared (`UserDefaults.standard`, `URLSession.shared`), truly global resource с чётким lifecycle. **Вреден:** свой `NetworkManager.shared` на каждый сервис — скрытые зависимости, сложные тесты, глобальное mutable state. Альтернатива — **DI** + composition root ([IV/16 Q51](../../IV.%20Архитектура/16%20MVC%20→%20MVVM%20→%20VIPER%20→%20Clean%20→%20TCA/Architecture-MVC-MVVM-VIPER-Clean-TCA.md)).
+
 - **Answer (EN):** Use system singletons knowingly; avoid sprinkling custom `.shared`—inject dependencies instead for testability and explicit boundaries.
+
 - **Устный канон:** «Системный `shared` — да; **всё приложение в singleton** — нет, лучше **init injection**.»
+
 - **Playground:** [open](design_patterns.playground/Contents.swift)
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Singleton** — когда ок и когда вреден?
+
+- **Answer (RU):** **Ок:** системные shared (`UserDefaults.standard`, `URLSession.shared`), truly global resource с чётким lifecycle. **Вреден:** свой `NetworkManager.shared` на каждый сервис — скрытые зависимости, сложные тесты, глобальное mutable state. Альтернатива — **DI** + composition root ([IV/16 Q51](../../IV.%20Архитектура/16%20MVC%20→%20MVVM%20→%20VIPER%20→%20Clean%20→%20TCA/Architecture-MVC-MVVM-VIPER-Clean-TCA.md)).
+
+</details>
 ### Q9
-- **Question (RU):** **Adapter** vs **Facade** — не одно и то же?
 - **Question (EN):** Adapter vs Facade?
-- **Answer (RU):** **Adapter** — **один** несовместимый интерфейс/модель → удобный для app (DTO → Entity, SDK wrapper). **Facade** — **простой вход** в **подсистему** из нескольких частей (network + cache + DB) без знания деталей. Adapter — про **совместимость**; Facade — про **упрощение границы**.
+
 - **Answer (EN):** Adapter translates one foreign interface; Facade offers a narrow API over many internal collaborators.
+
 - **Устный канон:** «**Adapter** — перевод API; **Facade** — один метод вместо трёх сервисов.»
+
 - **Playground:** [open](design_patterns.playground/Contents.swift)
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Adapter** vs **Facade** — не одно и то же?
+
+- **Answer (RU):** **Adapter** — **один** несовместимый интерфейс/модель → удобный для app (DTO → Entity, SDK wrapper). **Facade** — **простой вход** в **подсистему** из нескольких частей (network + cache + DB) без знания деталей. Adapter — про **совместимость**; Facade — про **упрощение границы**.
+
+</details>
 ### Q10
-- **Question (RU):** Зачем **Coordinator** если есть **MVVM**?
 - **Question (EN):** Why Coordinator if you already use MVVM?
-- **Answer (RU):** **MVVM** разводит UI и state экрана; **Coordinator** выносит **навигацию и сборку** следующих экранов — VM не должен знать `UINavigationController` и конкретный следующий VC. Вместе: **MVVM-C** ([IV/16](../../IV.%20Архитектура/16%20MVC%20→%20MVVM%20→%20VIPER%20→%20Clean%20→%20TCA/Architecture-MVC-MVVM-VIPER-Clean-TCA.md), детали flow — [IV/17](../../IV.%20Архитектура/17%20Навигация,%20координаторы,%20deep%20links/Navigation-Coordinators-Deep-Links.md).
+
 - **Answer (EN):** MVVM handles screen state; Coordinator owns routing and module assembly so view models stay navigation-agnostic.
+
 - **Устный канон:** «**MVVM** — экран; **Coordinator** — куда дальше и из чего собрать следующий модуль.»
+
 - **Playground:** [open](design_patterns.playground/Contents.swift)
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем **Coordinator** если есть **MVVM**?
+
+- **Answer (RU):** **MVVM** разводит UI и state экрана; **Coordinator** выносит **навигацию и сборку** следующих экранов — VM не должен знать `UINavigationController` и конкретный следующий VC. Вместе: **MVVM-C** ([IV/16](../../IV.%20Архитектура/16%20MVC%20→%20MVVM%20→%20VIPER%20→%20Clean%20→%20TCA/Architecture-MVC-MVVM-VIPER-Clean-TCA.md), детали flow — [IV/17](../../IV.%20Архитектура/17%20Навигация,%20координаторы,%20deep%20links/Navigation-Coordinators-Deep-Links.md).
+
+</details>
 ### Q11
-- **Question (RU):** Какие паттерны **вшиты в Swift**, а не только в UIKit/SwiftUI?
 - **Question (EN):** Which design patterns are built into Swift itself—not only the iOS SDK?
-- **Answer (RU):** **Iterator** — `Sequence` / `for-in`; **Decorator** — `@propertyWrapper` (`@State`, `@Published`); **Observer** — `didSet`, notifications, `@Published`; **Builder** — `@resultBuilder` / `ViewBuilder`; **Prototype** — Copy-on-Write у `Array`/`String`; **Strategy** — протоколы и generics; **Facade** — stdlib (`sorted`, `JSONDecoder`); **Command** — closures, `Task`, `UIAction`. Смысл: ты уже пишешь на паттернах — важно **называть** проблему и не изобретать обёртку, если язык уже даёт механизм.
+
 - **Answer (EN):** Swift embeds Iterator (`Sequence`), Decorator (`@propertyWrapper`), Observer, Builder (`@resultBuilder`), Prototype (CoW), Strategy (protocols/generics), Facade (stdlib), and Command (closures/async work items). Recognize them to use the language intentionally.
+
 - **Устный канон:** «Паттерн в Swift — не всегда класс с именем *Strategy*; часто это **языковая фича**.»
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Какие паттерны **вшиты в Swift**, а не только в UIKit/SwiftUI?
+
+- **Answer (RU):** **Iterator** — `Sequence` / `for-in`; **Decorator** — `@propertyWrapper` (`@State`, `@Published`); **Observer** — `didSet`, notifications, `@Published`; **Builder** — `@resultBuilder` / `ViewBuilder`; **Prototype** — Copy-on-Write у `Array`/`String`; **Strategy** — протоколы и generics; **Facade** — stdlib (`sorted`, `JSONDecoder`); **Command** — closures, `Task`, `UIAction`. Смысл: ты уже пишешь на паттернах — важно **называть** проблему и не изобретать обёртку, если язык уже даёт механизм.
+
+</details>
+
 - **Доп. информация:** [Swift under the hood](#swift-patterns-under-the-hood); [Syntax CoW](../../swift/syntax/README.md); [SwiftUI `@ViewBuilder`](../../ios-sdk/swiftui/README.md).
 
 <!-- knowledge-cards-canonical:end -->

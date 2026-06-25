@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 The terminal is how you automate iOS work outside the Xcode GUI: build and test on CI, boot simulators, inspect crashes with LLDB, search a large codebase, and glue scripts into repeatable workflows. Interviewers and senior engineers expect you to recover when Xcode UI is slow or unavailable—run `xcodebuild`, list devices with `simctl`, attach LLDB to a repro, or grep for a symbol across modules. Environment variables and shell scripts tie into Fastlane, Xcode Cloud, and local debugging. Comfort on the CLI separates “I click Run” from “I can ship and diagnose in any environment.”
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Терминал автоматизирует iOS-работу вне Xcode: сборка и тесты через `xcodebuild`, симулятор через `xcrun simctl`, зависимости, скрипты CI. Senior уверенно комбинирует CLI с GUI.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -90,58 +101,124 @@ Doc link: [Building from the command line with xcodebuild](https://developer.app
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Базовый **`xcodebuild`** workflow для CI?
 - **Question (EN):** Basic xcodebuild workflow for CI?
-- **Answer (RU):** 1) Убедиться, что **scheme shared** в git. 2) `xcodebuild -list` — schemes и destinations. 3) Build/test: `xcodebuild -workspace App.xcworkspace -scheme App -destination 'platform=iOS Simulator,name=iPhone 16' -configuration Debug test -resultBundlePath TestResults.xcresult`. 4) CI использует `-quiet` или `xcbeautify` для логов. 5) Код выхода ≠ 0 — fail pipeline. Archive для IPA: `-archivePath` + `-exportArchive`. Частые ошибки: simulator name, signing on device builds, не тот workspace.
+
 - **Answer (EN):** Share the scheme, list targets, run `xcodebuild test` with a simulator destination and result bundle, fail CI on non-zero exit. Use archive/export for release IPAs; watch signing and destination strings.
-- **Устная заготовка (RU):** Shared scheme → list → test с destination → exit code.
+
 - **Устная заготовка (EN):** Shared scheme, explicit destination, fail on non-zero.
+
 - **Follow-up:** workspace vs project flag?
+
 - **Follow-up answer:** CocoaPods/multi-project → `-workspace`; single `.xcodeproj` without workspace → `-project`.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Базовый **`xcodebuild`** workflow для CI?
+
+- **Answer (RU):** 1) Убедиться, что **scheme shared** в git. 2) `xcodebuild -list` — schemes и destinations. 3) Build/test: `xcodebuild -workspace App.xcworkspace -scheme App -destination 'platform=iOS Simulator,name=iPhone 16' -configuration Debug test -resultBundlePath TestResults.xcresult`. 4) CI использует `-quiet` или `xcbeautify` для логов. 5) Код выхода ≠ 0 — fail pipeline. Archive для IPA: `-archivePath` + `-exportArchive`. Частые ошибки: simulator name, signing on device builds, не тот workspace.
+
+- **Устная заготовка (RU):** Shared scheme → list → test с destination → exit code.
+
+</details>
+
 - **Доп. информация:** [Building from the command line](https://developer.apple.com/documentation/xcode/building-from-the-command-line-with-xcodebuild)
-
 ### Q2
-- **Question (RU):** Что умеет **`simctl`** для автоматизации?
 - **Question (EN):** What can simctl automate?
-- **Answer (RU):** `xcrun simctl list` — devices/runtimes. `create`/`delete`/`boot`/`shutdown`. `install booted <App.app>`, `launch booted <bundle id>`, `terminate`. `openurl booted myapp://path` — deep links. `io booted screenshot out.png`. `privacy booted grant|revoke <service> <bundle>` — permissions без Settings UI. `spawn booted log stream` — логи. На CI: boot нужный runtime, install artifact из `xcodebuild`, UI tests или maestro/скрипты.
+
 - **Answer (EN):** simctl manages simulator lifecycle, app install/launch, URLs, screenshots, privacy grants, and log streaming—core to headless iOS automation.
-- **Устная заготовка (RU):** boot → install → launch → privacy/screenshot по необходимости.
+
 - **Устная заготовка (EN):** Boot, install, launch—then URLs, privacy, screenshots.
+
 - **Follow-up:** как узнать UDID booted simulator?
+
 - **Follow-up answer:** `xcrun simctl list devices booted` или `xcrun simctl getenv booted SIMULATOR_UDID` (environment); многие команды принимают `booted` alias.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что умеет **`simctl`** для автоматизации?
+
+- **Answer (RU):** `xcrun simctl list` — devices/runtimes. `create`/`delete`/`boot`/`shutdown`. `install booted <App.app>`, `launch booted <bundle id>`, `terminate`. `openurl booted myapp://path` — deep links. `io booted screenshot out.png`. `privacy booted grant|revoke <service> <bundle>` — permissions без Settings UI. `spawn booted log stream` — логи. На CI: boot нужный runtime, install artifact из `xcodebuild`, UI tests или maestro/скрипты.
+
+- **Устная заготовка (RU):** boot → install → launch → privacy/screenshot по необходимости.
+
+</details>
+
 - **Доп. информация:** [Running your app in Simulator](https://developer.apple.com/documentation/xcode/running-your-app-in-simulator-or-on-a-device)
-
 ### Q3
-- **Question (RU):** **LLDB** из терминала — минимум для crash?
 - **Question (EN):** LLDB from the terminal—minimum for crash triage?
-- **Answer (RU):** Подключение: Xcode уже остановил на exception, или `lldb -p <pid>`. **`bt`** — стек всех frames; **`frame select N`**, **`frame variable`**. **`po expr`** — Swift/ObjC объект (на paused thread). **`br set`**, **`c`** — continue. **`thread list`**, **`register read`**. Для Swift concurrency смотреть правильный thread (main vs background). Symbolicate dSYM — Xcode Organizer или `atos`. CLI полезен когда нет GUI на CI device logs — symbolicated crash report + source line.
+
 - **Answer (EN):** Start with backtrace, select frame, inspect variables, use `po` on the stopped thread, then breakpoints/continue. Match the failing thread (often main for UI). Symbolicate with dSYM/atos when crashes come from devices.
-- **Устная заготовка (RU):** bt → frame → po; правильный thread; dSYM.
+
 - **Устная заготовка (EN):** Backtrace, frame, po—right thread, symbolicate.
+
 - **Follow-up:** `po` vs `p`?
+
 - **Follow-up answer:** `po` — print object description (ObjC `description`/Swift debug); `p` — typed formatter; для Swift часто `po` проще.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **LLDB** из терминала — минимум для crash?
+
+- **Answer (RU):** Подключение: Xcode уже остановил на exception, или `lldb -p <pid>`. **`bt`** — стек всех frames; **`frame select N`**, **`frame variable`**. **`po expr`** — Swift/ObjC объект (на paused thread). **`br set`**, **`c`** — continue. **`thread list`**, **`register read`**. Для Swift concurrency смотреть правильный thread (main vs background). Symbolicate dSYM — Xcode Organizer или `atos`. CLI полезен когда нет GUI на CI device logs — symbolicated crash report + source line.
+
+- **Устная заготовка (RU):** bt → frame → po; правильный thread; dSYM.
+
+</details>
+
 - **Доп. информация:** [Debugging with LLDB](https://developer.apple.com/documentation/xcode/debugging)
-
 ### Q4
-- **Question (RU):** **grep/find**, env vars и **scripts** в iOS workflow?
 - **Question (EN):** grep/find, environment variables, and scripts in iOS workflow?
-- **Answer (RU):** **Search:** `rg "fatalError" --type swift`, `find . -path '*/DerivedData' -prune -o -name '*.plist' -print`. Исключать build artifacts. **Env:** scheme variables для API endpoints; `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` на CI; не хранить secrets в git — Keychain/CI secrets + `.xcconfig`. **Scripts:** `scripts/ci-test.sh` with `set -euo pipefail`, вызывает `swiftlint`, `xcodebuild test`. Pre-commit: format/lint staged files. Документировать команды для повторяемости локально и в Xcode Cloud/GitHub Actions.
-- **Answer (EN):** Use ripgrep/find with ignores for DerivedData; inject config via scheme env and xcconfig; keep secrets in CI. Wrap lint/build/test in strict bash scripts for local and CI parity.
-- **Устная заготовка (RU):** rg + ignore; env через xcconfig; scripts с set -e.
-- **Устная заготовка (EN):** Fast search, xcconfig env, strict scripts.
-- **Follow-up:** зачем `set -u` в CI script?
-- **Follow-up answer:** fail early на unset variable вместо silent wrong `xcodebuild` path.
-- **Доп. информация:** [Environment variable reference](https://developer.apple.com/documentation/xcode/environment-variable-reference)
 
+- **Answer (EN):** Use ripgrep/find with ignores for DerivedData; inject config via scheme env and xcconfig; keep secrets in CI. Wrap lint/build/test in strict bash scripts for local and CI parity.
+
+- **Устная заготовка (EN):** Fast search, xcconfig env, strict scripts.
+
+- **Follow-up:** зачем `set -u` в CI script?
+
+- **Follow-up answer:** fail early на unset variable вместо silent wrong `xcodebuild` path.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **grep/find**, env vars и **scripts** в iOS workflow?
+
+- **Answer (RU):** **Search:** `rg "fatalError" --type swift`, `find . -path '*/DerivedData' -prune -o -name '*.plist' -print`. Исключать build artifacts. **Env:** scheme variables для API endpoints; `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` на CI; не хранить secrets в git — Keychain/CI secrets + `.xcconfig`. **Scripts:** `scripts/ci-test.sh` with `set -euo pipefail`, вызывает `swiftlint`, `xcodebuild test`. Pre-commit: format/lint staged files. Документировать команды для повторяемости локально и в Xcode Cloud/GitHub Actions.
+
+- **Устная заготовка (RU):** rg + ignore; env через xcconfig; scripts с set -e.
+
+</details>
+
+- **Доп. информация:** [Environment variable reference](https://developer.apple.com/documentation/xcode/environment-variable-reference)
 ### Q5
-- **Question (RU):** Как тестировать камеру (QR, лица, Vision) на iOS Simulator?
 - **Question (EN):** How do you test camera features (QR, face detection, Vision) on the iOS Simulator?
-- **Answer (RU):** Нативно — **нельзя**: `AVCaptureDevice` в симуляторе пустой; `simctl privacy grant camera` только permission. Для локальной разработки — **host injection**: [SimCam](https://simcam.swmansion.com/) (front = webcam Mac, back = рабочий стол за окном Simulator), RocketSim, или `serve-sim camera`. Приложение без изменений кода — стандартный AVFoundation. QR: programmatic inject в SimCam. Ограничения: не все Vision/WebRTC пути; перед релизом — **device**. CI обычно stub/mock или UI без live camera.
+
 - **Answer (EN):** The Simulator has no real camera hardware—only permission grants via simctl. Use host-side tools (SimCam: front = Mac webcam, back = desktop behind the Simulator window; RocketSim; serve-sim) that inject into AVFoundation. Good for QR, face detection, and Vision locally; validate on device before release; CI often stubs camera.
-- **Устная заготовка (RU):** Stub в симуляторе → injection tool → device для релиза.
+
 - **Устная заготовка (EN):** No native feed—injection locally, device for ship.
+
 - **Follow-up:** нужны ли правки в коде приложения?
+
 - **Follow-up answer:** SimCam/RocketSim — нет, если нет `targetEnvironment(simulator)` guard, отключающего камеру. Свой stub — `#if targetEnvironment(simulator)` + fake `FrameSource`.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как тестировать камеру (QR, лица, Vision) на iOS Simulator?
+
+- **Answer (RU):** Нативно — **нельзя**: `AVCaptureDevice` в симуляторе пустой; `simctl privacy grant camera` только permission. Для локальной разработки — **host injection**: [SimCam](https://simcam.swmansion.com/) (front = webcam Mac, back = рабочий стол за окном Simulator), RocketSim, или `serve-sim camera`. Приложение без изменений кода — стандартный AVFoundation. QR: programmatic inject в SimCam. Ограничения: не все Vision/WebRTC пути; перед релизом — **device**. CI обычно stub/mock или UI без live camera.
+
+- **Устная заготовка (RU):** Stub в симуляторе → injection tool → device для релиза.
+
+</details>
+
 - **Доп. информация:** [SimCam](https://simcam.swmansion.com/) · [Running your app in Simulator](https://developer.apple.com/documentation/xcode/running-your-app-in-simulator-or-on-a-device)
 
 <!-- knowledge-cards-canonical:end -->

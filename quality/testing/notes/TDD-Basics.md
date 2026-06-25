@@ -1,6 +1,6 @@
 # TDD — основы (без AI)
 
-**Назначение:** red–green–refactor, triangulation, TDD vs test-after. Продолжение: [AI-assisted TDD](ai-assisted-tdd.md), [Testing-Fundamentals-RU](Testing-Fundamentals-RU.md).
+**Назначение:** red–green–refactor, triangulation, TDD vs test-after. Продолжение: [AI-assisted TDD](ai-assisted-tdd.md), [Testing-Fundamentals-RU](Testing-Fundamentals.md).
 
 **Topic README:** [Testing](../README.md)
 
@@ -8,11 +8,23 @@
 
 ## TL;DR
 
+_English summary — expand «По-русски» for full text (TL;DR)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 **TDD** — цикл: **красный** тест → **зелёный** минимальный код → **refactor**. Тест — спецификация. **Test-after** допустим под дедлайн, если приоритет — риск ([Q37](../README.md)). AI ускоряет цикл, но не снимает ответственность за triangulation — см. [AI-assisted TDD](ai-assisted-tdd.md).
 
 ---
 
+</details>
+
 ## Цикл red – green – refactor
+
+_English summary — expand «По-русски» for full text (Цикл red – green – refactor)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```mermaid
 flowchart LR
@@ -30,7 +42,14 @@ flowchart LR
 
 ---
 
+</details>
+
 ## Triangulation
+
+_English summary — expand «По-русски» for full text (Triangulation)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Три (или больше) **конкретных** примера уточняют обобщение:
 
@@ -42,7 +61,14 @@ flowchart LR
 
 ---
 
+</details>
+
 ## TDD vs test-after
+
+_English summary — expand «По-русски» for full text (TDD vs test-after)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | | **TDD** | **Test-after** |
 |---|---------|----------------|
@@ -54,7 +80,14 @@ flowchart LR
 
 ---
 
+</details>
+
 ## Что TDD не решает
+
+_English summary — expand «По-русски» for full text (Что TDD не решает)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - UI pixel-perfect, полный E2E.
 - LLM-ответы в продукте → [Evaluations](../../../ai-engineering/evaluations/README.md).
@@ -62,7 +95,14 @@ flowchart LR
 
 ---
 
+</details>
+
 ## Мини-пример (Swift Testing)
+
+_English summary — expand «По-русски» for full text (Мини-пример (Swift Testing))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```swift
 import Testing
@@ -86,7 +126,14 @@ Red: функция не существует или возвращает 0. Gre
 
 ---
 
+</details>
+
 ## Вопросы–ответы (собес)
+
+_English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Q. Зачем TDD если есть QA?**  
 **A.** Автоматическая регрессия на каждый commit; QA — исследовательское и сценарии, не замена unit.
@@ -99,7 +146,11 @@ Red: функция не существует или возвращает 0. Gre
 
 ---
 
+</details>
+
 ## Читать дальше
+
+
 
 - [The Cycles of TDD](https://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html)
 - [Transformation Priority Premise](https://blog.cleancoder.com/uncle-bob/2013/05/27/TheTransformationPriorityPremise.html) — в [AI-assisted TDD](ai-assisted-tdd.md)

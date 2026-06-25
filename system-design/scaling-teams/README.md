@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 Scaling mobile engineering is about **module ownership**, clear **RFCs** for cross-cutting changes, enforced **coding standards**, and a branching strategy that matches release cadence — often **trunk-based development** with short-lived branches for apps that ship weekly, vs **GitFlow** when release trains are long and hotfix isolation matters. Interview answers connect org design to build times, merge conflicts, and quality gates (CI, feature flags).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Масштабирование mobile-команды: **ownership модулей**, RFC, coding standards, CI gates, onboarding, уменьшение bus factor.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -83,27 +94,60 @@ develop → release/x.y → main + hotfix/*
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Trunk-based vs GitFlow для mobile?
 - **Question (EN):** Trunk-based vs GitFlow for mobile teams?
-- **Answer (RU):** **Trunk-based** — частые мержи в main, незавершённое за **feature flags**, CI держит main green; подходит частым App Store релизам. **GitFlow** — долгие release/hotfix ветки; оправдан при длинных stabilization и нескольких supported версиях. Mobile industry сдвинулся к trunk + flags.
+
 - **Answer (EN):** Trunk-based favors frequent merges to main, feature flags, and strong CI — fits frequent mobile releases. GitFlow suits long stabilization and multiple supported versions. Most mobile orgs use trunk plus flags.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Trunk-based vs GitFlow для mobile?
+
+- **Answer (RU):** **Trunk-based** — частые мержи в main, незавершённое за **feature flags**, CI держит main green; подходит частым App Store релизам. **GitFlow** — долгие release/hotfix ветки; оправдан при длинных stabilization и нескольких supported версиях. Mobile industry сдвинулся к trunk + flags.
+
+</details>
 ### Q2
-- **Question (RU):** Зачем RFC в mobile команде?
 - **Question (EN):** Why use RFCs on a mobile team?
-- **Answer (RU):** Кросс-модульные решения (новый sync layer, смена DI, breaking API) нуждаются в **письменном consensus** до кода: проблема, альтернативы, decision, plan. Снижает rework и bus factor; особенно важно при modularization.
+
 - **Answer (EN):** Cross-cutting changes need written consensus before code: problem, options, decision, rollout. Reduces rework and documents why — critical during modularization.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем RFC в mobile команде?
+
+- **Answer (RU):** Кросс-модульные решения (новый sync layer, смена DI, breaking API) нуждаются в **письменном consensus** до кода: проблема, альтернативы, decision, plan. Снижает rework и bus factor; особенно важно при modularization.
+
+</details>
 ### Q3
-- **Question (RU):** Module ownership — что входит?
 - **Question (EN):** What does module ownership include?
-- **Answer (RU):** **DRI** за roadmap модуля, review PR, on-call за crashes в зоне, документация public API, deprecation policy. Platform modules (UI kit, network) — отдельная команда с SLA для internal customers.
+
 - **Answer (EN):** A DRI owns roadmap, reviews, production quality in scope, public API docs, and deprecations. Platform modules often have a dedicated team with SLAs for internal consumers.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Module ownership — что входит?
+
+- **Answer (RU):** **DRI** за roadmap модуля, review PR, on-call за crashes в зоне, документация public API, deprecation policy. Platform modules (UI kit, network) — отдельная команда с SLA для internal customers.
+
+</details>
 ### Q4
-- **Question (RU):** Coding standards — как enforce без споров?
 - **Question (EN):** How do you enforce coding standards without endless debates?
-- **Answer (RU):** **Automate:** SwiftLint/SwiftFormat, CI required checks, templates, ARCHITECTURE.md per module. Спорные стилевые вещи — один RFC и freeze. Human review фокус на design, не табы. Обновлять standards после postmortem, не ad hoc в каждом PR.
+
 - **Answer (EN):** Automate with linters, formatters, and required CI. Resolve stylistic debates once in an RFC. Reserve review for design; update standards from postmortems, not ad hoc in every PR.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Coding standards — как enforce без споров?
+
+- **Answer (RU):** **Automate:** SwiftLint/SwiftFormat, CI required checks, templates, ARCHITECTURE.md per module. Спорные стилевые вещи — один RFC и freeze. Human review фокус на design, не табы. Обновлять standards после postmortem, не ad hoc в каждом PR.
+
+</details>

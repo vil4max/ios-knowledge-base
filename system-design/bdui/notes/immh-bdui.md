@@ -10,11 +10,18 @@
 
 ## TL;DR
 
+
+
 _(paste article summary here)_
 
 ---
 
 ## Ключевые идеи
+
+_English summary — expand «По-русски» for full text (Ключевые идеи)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### SDUI vs BDUI
 
@@ -34,7 +41,11 @@ _(to be added)_
 
 ---
 
+</details>
+
 ## Связь с базой
+
+
 
 - [Backend-Driven UI README](../README.md)
 - [Feature Flags](/system-design/feature-flags/)
@@ -42,5 +53,7 @@ _(to be added)_
 - [SwiftUI](/ios-sdk/swiftui/)
 
 ## Что добавить после paste
+
+
 
 See [immh-series-index.md — BDUI](../mobile/notes/immh-series-index.md#bdui--planned-updates)

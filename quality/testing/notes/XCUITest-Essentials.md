@@ -1,6 +1,6 @@
 # XCUITest — essentials
 
-**Назначение:** стабильные UI-тесты на критических потоках; граница с unit. Фундамент: [Testing-Fundamentals-RU](Testing-Fundamentals-RU.md).
+**Назначение:** стабильные UI-тесты на критических потоках; граница с unit. Фундамент: [Testing-Fundamentals-RU](Testing-Fundamentals.md).
 
 **Topic README:** [Testing](../README.md)
 
@@ -8,11 +8,23 @@
 
 ## TL;DR
 
+_English summary — expand «По-русски» for full text (TL;DR)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 XCUITest — **black-box** через **accessibility tree**: запускает приложение, ищет элементы, симулирует тапы. Медленно и хрупко — **мало**, только критические потоки. Стабильность: `accessibilityIdentifier`, launch arguments, изоляция данных, `waitForExistence` вместо `sleep`.
 
 ---
 
+</details>
+
 ## Что тестировать в UI vs unit
+
+_English summary — expand «По-русски» for full text (Что тестировать в UI vs unit)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | UI (XCUITest) | Unit (VM / domain) |
 |---------------|-------------------|
@@ -39,7 +51,14 @@ flowchart LR
 
 ---
 
+</details>
+
 ## Стабильные селекторы
+
+_English summary — expand «По-русски» for full text (Стабильные селекторы)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Способ | Когда |
 |--------|--------|
@@ -58,7 +77,14 @@ app.buttons["cart.addButton"].tap()
 
 ---
 
+</details>
+
 ## Launch arguments и тестовый режим
+
+_English summary — expand «По-русски» for full text (Launch arguments и тестовый режим)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Передача из UI-теста:
 
@@ -75,7 +101,14 @@ app.launch()
 
 ---
 
+</details>
+
 ## Ожидания без sleep
+
+_English summary — expand «По-русски» for full text (Ожидания без sleep)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```swift
 let button = app.buttons["cart.addButton"]
@@ -89,7 +122,14 @@ button.tap()
 
 ---
 
+</details>
+
 ## Изоляция между тестами
+
+_English summary — expand «По-русски» for full text (Изоляция между тестами)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Каждый тест **не** рассчитывает на состояние предыдущего.
 - `setUp`: `app.launch()` с чистыми args; сброс UserDefaults/Keychain в тестовом режиме.
@@ -97,7 +137,14 @@ button.tap()
 
 ---
 
+</details>
+
 ## Типичные антипаттерны
+
+_English summary — expand «По-русски» for full text (Типичные антипаттерны)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Плохо | Лучше |
 |-------|--------|
@@ -108,20 +155,31 @@ button.tap()
 
 ---
 
+</details>
+
 ## Вопросы–ответы (собес)
 
+_English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 **Q. Почему не всё покрыть UI?**  
-**A.** Медленно, дорого в поддержке, сложно локализовать падение. Пирамида — см. [Testing-Fundamentals-RU](Testing-Fundamentals-RU.md).
+**A.** Медленно, дорого в поддержке, сложно локализовать падение. Пирамида — см. [Testing-Fundamentals-RU](Testing-Fundamentals.md).
 
 **Q. Как ускорить UI в CI?**  
 **A.** Отдельный Nightly Test Plan; параллельные симуляторы; минимум тестов; stub backend.
 
 **Q. UI test vs snapshot?**  
-**A.** UI — поведение и навигация; snapshot — визуальный регресс компонента ([Snapshot-Testing-Discipline-RU](Snapshot-Testing-Discipline-RU.md)).
+**A.** UI — поведение и навигация; snapshot — визуальный регресс компонента ([Snapshot-Testing-Discipline-RU](Snapshot-Testing-Discipline.md)).
 
 ---
 
+</details>
+
 ## Официально
+
+
 
 - [UI Testing (XCUITest)](https://developer.apple.com/documentation/xcuiautomation)
 - [Adding UI tests to your project](https://developer.apple.com/documentation/xcode/adding-ui-tests-to-your-project)

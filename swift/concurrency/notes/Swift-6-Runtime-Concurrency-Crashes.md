@@ -6,13 +6,25 @@
 
 ## Главная мысль
 
+_English summary — expand «По-русски» for full text (Главная мысль)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `SWIFT_STRICT_CONCURRENCY = complete` ловит **data races на compile time**, но **не закрывает runtime**. Компилятор вставляет **динамические проверки изоляции** на границах actor / GCD. Сборка может быть **без warnings**, crash — **в проде**.
 
 **Swift 5:** нарушение потоков часто **молча** выполнялось «не там». **Swift 6:** runtime **trap** вместо продолжения в потенциально unsafe state.
 
 ---
 
+</details>
+
 ## Crash symbols в отчёте
+
+_English summary — expand «По-русски» for full text (Crash symbols в отчёте)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Symbol | Смысл |
 |--------|--------|
@@ -25,7 +37,14 @@
 
 ---
 
+</details>
+
 ## 1. Closures наследуют actor isolation
+
+_English summary — expand «По-русски» for full text (1. Closures наследуют actor isolation)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Closure внутри `@MainActor`-метода **наследует `@MainActor`**. Компилятор помечает его main-actor-isolated и вставляет assertion.
 
@@ -103,7 +122,14 @@ searchPublisher
 
 ---
 
+</details>
+
 ## 2. `@MainActor` delegate methods с wrong thread
+
+_English summary — expand «По-русски» for full text (2. `@MainActor` delegate methods с wrong thread)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Весь класс `@MainActor` → **все методы**, включая delegate overrides, наследуют main isolation. SDK часто зовёт их **не с main**.
 
@@ -148,7 +174,14 @@ nonisolated func locationManager(_: CLLocationManager, didUpdateLocations locati
 
 ---
 
+</details>
+
 ## 3. Прочие сценарии
+
+_English summary — expand «По-русски» for full text (3. Прочие сценарии)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### `MainActor.assumeIsolated`
 
@@ -160,7 +193,14 @@ Crash **сразу**, если код **не на main**. Только legacy-br
 
 ---
 
+</details>
+
 ## Устные заготовки (собес)
+
+_English summary — expand «По-русски» for full text (Устные заготовки (собес))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **RU:**
 
@@ -180,8 +220,18 @@ Crash **сразу**, если код **не на main**. Только legacy-br
 
 ---
 
+</details>
+
 ## Swift 5 vs Swift 6 (одной строкой)
+
+_English summary — expand «По-русски» for full text (Swift 5 vs Swift 6 (одной строкой))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Swift 5 | Swift 6 |
 |---------|---------|
 | Wrong thread → часто тихо | Wrong thread → **trap** (`_swift_task_checkIsolatedSwift` / `_dispatch_assert_queue_fail`) |
+
+</details>
+

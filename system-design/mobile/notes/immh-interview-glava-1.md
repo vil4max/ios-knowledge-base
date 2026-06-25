@@ -10,11 +10,18 @@
 
 ## TL;DR
 
+
+
 _(paste article summary here)_
 
 ---
 
 ## Ключевые идеи
+
+_English summary — expand «По-русски» for full text (Ключевые идеи)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 _(structure sections to match the article after paste)_
 
@@ -36,7 +43,11 @@ _(to be added)_
 
 ---
 
+</details>
+
 ## Формулировки для собеса
+
+
 
 **RU:** _(to be added)_
 
@@ -46,11 +57,15 @@ _(to be added)_
 
 ## Диаграммы
 
+
+
 _(mermaid / ascii from article)_
 
 ---
 
 ## Связь с базой
+
+
 
 - [Mobile App Design README](../README.md)
 - [mobile_system_design.playground](../mobile_system_design.playground)
@@ -58,5 +73,7 @@ _(mermaid / ascii from article)_
 - [Sync Engine](/system-design/sync-engine/)
 
 ## Что добавить в README после paste
+
+
 
 See [immh-series-index.md — Glava 1 checklist](immh-series-index.md#glava-1--planned-readme-updates-after-paste)

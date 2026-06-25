@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Evaluations** measure whether AI features behave correctly after **prompt**, **model**, or **tool** changes — beyond traditional unit tests that can't catch fluent-but-wrong answers. Apple's **Evaluations framework** (WWDC26) runs **golden datasets** in Xcode with **quantitative evaluators** and **Model Judge** for qualitative traits. For agentic apps: **`ToolCallEvaluator`** verifies **tool trajectories** (which tools, args, order). Essential for regression when iOS updates ship new Foundation Models weights.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Evaluations** проверяют AI-фичи после смены prompt, модели или данных. Golden sets, regression, human review.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -117,35 +128,66 @@ struct BookSearchToolEval: Evaluation {
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Зачем Evaluations, если есть unit tests?
 - **Question (EN):** Why Evaluations when you have unit tests?
-- **Answer (RU):** LLM output **non-deterministic** и **fluent-but-wrong**. Unit tests ломаются на wording. Evaluations проверяют **properties**: schema, tag count, tool trajectory, judge scores — regression при смене prompt/model/iOS.
+
 - **Answer (EN):** LLM outputs vary in wording and can be fluently wrong. Evaluations check properties — schema, counts, tool trajectories, judge scores — and catch regressions when prompts, models, or iOS versions change.
+
 - **Follow-up:** assert exact string ever?
+
 - **Follow-up answer:** Rarely — only fixed templates (legal disclaimer). Prefer contains-keywords or structured fields; exact match too brittle.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем Evaluations, если есть unit tests?
+
+- **Answer (RU):** LLM output **non-deterministic** и **fluent-but-wrong**. Unit tests ломаются на wording. Evaluations проверяют **properties**: schema, tag count, tool trajectory, judge scores — regression при смене prompt/model/iOS.
+
+</details>
 ### Q2
-- **Question (RU):** Golden dataset — как строить?
 - **Question (EN):** How do you build a golden dataset?
-- **Answer (RU):** Start **20–30 real** cases (redacted logs) + edge cases: empty input, injection attempt, wrong locale, offline context. Each sample: prompt + **expectation** (struct fields or trajectory). Grow via **SampleGenerator** with human review — не blind synthetic only.
+
 - **Answer (EN):** Start with 20–30 real redacted cases plus edge cases. Each sample has a prompt and expectation. Expand with SampleGenerator but review synthetic rows.
+
 - **Follow-up:** сколько samples для App Store feature?
+
 - **Follow-up answer:** Enough to cover **top user paths + known failures** — often 50–100 before major AI launch; continuous add from support tickets post-release.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Golden dataset — как строить?
+
+- **Answer (RU):** Start **20–30 real** cases (redacted logs) + edge cases: empty input, injection attempt, wrong locale, offline context. Each sample: prompt + **expectation** (struct fields or trajectory). Grow via **SampleGenerator** with human review — не blind synthetic only.
+
+</details>
 ### Q3
-- **Question (RU):** ToolCallEvaluator — что проверяет?
 - **Question (EN):** What does ToolCallEvaluator verify?
-- **Answer (RU):** **Trajectory**: какие **tools** вызваны, **arguments**, **order**. Model может дать правдоподобный ответ **без** tool — eval ловит. Essential для RAG/search agents после prompt/model change.
+
 - **Answer (EN):** Tool names, arguments, and call order against TrajectoryExpectation. Catches plausible answers that skipped required tool calls.
+
 - **Follow-up:** trajectory vs final answer quality?
+
 - **Follow-up answer:** Both matter — wrong tools → wrong data even if prose sounds good; combine ToolCallEvaluator + output property checks + Model Judge.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** ToolCallEvaluator — что проверяет?
+
+- **Answer (RU):** **Trajectory**: какие **tools** вызваны, **arguments**, **order**. Model может дать правдоподобный ответ **без** tool — eval ловит. Essential для RAG/search agents после prompt/model change.
+
+</details>
 ### Q4
-- **Question (RU):** Regression на update модели Apple — process?
 - **Question (EN):** Regression process on Apple model updates?
-- **Answer (RU):** На **iOS beta seed**: re-run full eval suite in Xcode on device. Compare metrics to baseline; triage failures (prompt vs schema vs true model behavior change). Hill-climb prompt/tools; gate release on **percentage pass** threshold. WWDC26-241 ties Evaluations to FM updates.
+
 - **Answer (EN):** Re-run the eval suite on device for each iOS beta seed. Compare to baseline, triage failures, iterate prompts and tools, gate release on pass-rate thresholds.
+
 - **Follow-up:** CI для FM evals realistic?
+
 - **Follow-up answer:** Challenging — needs Apple Intelligence device/simulator in CI; often **manual pre-release gate** + smaller heuristic unit tests for parsing; run full eval locally and on TestFlight dogfood builds.
 
 <!-- knowledge-cards-canonical:end -->
@@ -157,3 +199,13 @@ struct BookSearchToolEval: Evaluation {
 **AI Engineering:** [Track overview](../README.md) · [← 13 · Dynamic Profiles](../dynamic-profiles/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Regression на update модели Apple — process?
+
+- **Answer (RU):** На **iOS beta seed**: re-run full eval suite in Xcode on device. Compare metrics to baseline; triage failures (prompt vs schema vs true model behavior change). Hill-climb prompt/tools; gate release on **percentage pass** threshold. WWDC26-241 ties Evaluations to FM updates.
+
+</details>

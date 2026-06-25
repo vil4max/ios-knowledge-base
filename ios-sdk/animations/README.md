@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 iOS animation spans **UIKit view animations**, **UIViewPropertyAnimator** (interruptible, scrubbable, gesture-driven), and **Core Animation** on **`CALayer`** (transform, opacity, `CAAnimation` family). **`withAnimation`** in SwiftUI drives state-driven implicit animations on view properties. **Spring** curves (UIKit `usingSpringWithDamping`, property animator `UISpringTimingParameters`, SwiftUI `.spring`) model natural motion with damping and velocity. **Interruptible** animations let user gestures take over mid-flight without visual jumps — property animators + `fractionComplete` are the UIKit tool. **`CADisplayLink`** fires aligned to display refresh (~60/120 Hz) for frame-synced updates — custom physics, progress scrubbing, or game loops; distinct from `Timer`. Senior interviews expect you to pick the layer (view vs layer vs SwiftUI), explain runloop timing, and avoid animating layout-heavy properties on the main thread without `layoutIfNeeded`.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Анимации iOS: **UIKit view animations**, **UIViewPropertyAnimator**, **Core Animation** (layers), **SwiftUI** `withAnimation`. Важны duration, curve, interruptibility и производительность (off main, не анимировать тяжёлый layout).
+
+</details>
+
+
 
 ## Apple docs
 
@@ -144,59 +155,92 @@ withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** **`UIViewPropertyAnimator`** vs **`UIView.animate`** — когда property animator?
 - **Question (EN):** UIViewPropertyAnimator vs UIView.animate — when property animator?
-- **Answer (RU):** **`UIView.animate`** — простые one-shot transitions. **`UIViewPropertyAnimator`** — **pause/scrub** (`fractionComplete`), **продолжение с velocity**, **interruptible** handoff с gesture, кастомные **`UITimingCurveProvider`**. Interactive dismiss, drag-to-reveal, scrubbing progress — property animator; простой fade — block API достаточно.
 
 - **Answer (EN):** Block API for simple transitions; property animators for pausing, scrubbing, spring continuation, and gesture-driven interruptible motion.
-
-- **Устная заготовка (RU):** block — просто; property animator — pause, scrub, жест, spring continue.
 
 - **Устная заготовка (EN):** Simple → animate; interactive → property animator.
 
 - **Follow-up:** что такое `fractionComplete`?
+
 - **Follow-up answer:** 0…1 прогресс анимации; можно выставить вручную при pause для scrubbing.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **`UIViewPropertyAnimator`** vs **`UIView.animate`** — когда property animator?
+
+- **Answer (RU):** **`UIView.animate`** — простые one-shot transitions. **`UIViewPropertyAnimator`** — **pause/scrub** (`fractionComplete`), **продолжение с velocity**, **interruptible** handoff с gesture, кастомные **`UITimingCurveProvider`**. Interactive dismiss, drag-to-reveal, scrubbing progress — property animator; простой fade — block API достаточно.
+
+- **Устная заготовка (RU):** block — просто; property animator — pause, scrub, жест, spring continue.
+
+</details>
 ### Q2
-- **Question (RU):** **Core Animation:** model layer vs **presentation layer** — зачем знать?
 - **Question (EN):** Core Animation model vs presentation layer — why it matters?
-- **Answer (RU):** Во время анимации **presentation** показывает промежуточные значения на экране; **model** может уже быть финальным. Hit-testing и reading `layer.position` без presentation дадут “прыжок”. **`isRemovedOnCompletion`**, **`fillMode`**, **`CATransaction.setDisableActions`** управляют implicit animation. Explicit `CABasicAnimation` не меняет model до completion, если так настроено.
 
 - **Answer (EN):** Presentation layer shows in-flight values; model may already be final. Matters for hit-testing, sampling animated position, and implicit vs explicit animation control.
-
-- **Устная заготовка (RU):** на экране presentation; model — истина после commit; hit-test осторожно mid-flight.
 
 - **Устная заготовка (EN):** Presentation = on-screen; model = committed state; know both during animation.
 
 - **Follow-up:** как отключить implicit animation?
+
 - **Follow-up answer:** `UIView.performWithoutAnimation`, `CATransaction.setDisableActions(true)`.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Core Animation:** model layer vs **presentation layer** — зачем знать?
+
+- **Answer (RU):** Во время анимации **presentation** показывает промежуточные значения на экране; **model** может уже быть финальным. Hit-testing и reading `layer.position` без presentation дадут “прыжок”. **`isRemovedOnCompletion`**, **`fillMode`**, **`CATransaction.setDisableActions`** управляют implicit animation. Explicit `CABasicAnimation` не меняет model до completion, если так настроено.
+
+- **Устная заготовка (RU):** на экране presentation; model — истина после commit; hit-test осторожно mid-flight.
+
+</details>
 ### Q3
-- **Question (RU):** **Spring animations** — damping, response, velocity в UIKit и SwiftUI?
 - **Question (EN):** Spring animations — damping, response, velocity in UIKit and SwiftUI?
-- **Answer (RU):** **UIKit:** `usingSpringWithDamping:initialSpringVelocity:` (legacy block) или **`UISpringTimingParameters`** / **`UICubicTimingParameters`** у property animator. **SwiftUI:** `.spring(response:dampingFraction:blendDuration:)` — response ≈ duration scale, dampingFraction 0…1 (1 = no oscillation). **Initial velocity** из gesture передаётся в `continueAnimation` / `UISpringTimingParameters(initialVelocity:)`. Один `duration: 0.3` linear на всё — анти-паттерн для natural UI.
 
 - **Answer (EN):** UIKit springs via timing parameters on property animators; SwiftUI via `.spring(response:dampingFraction:)`. Feed gesture velocity on continuation for physical handoff.
-
-- **Устная заготовка (RU):** spring = damping + response; velocity с жеста; не linear 0.3 везде.
 
 - **Устная заготовка (EN):** Tune damping/response; pass gesture velocity; avoid one linear duration.
 
 - **Follow-up:** interruptible spring — что ломается без property animator?
+
 - **Follow-up answer:** новый block animate с zero delay может snap; нужен continue/scrub API.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Spring animations** — damping, response, velocity в UIKit и SwiftUI?
+
+- **Answer (RU):** **UIKit:** `usingSpringWithDamping:initialSpringVelocity:` (legacy block) или **`UISpringTimingParameters`** / **`UICubicTimingParameters`** у property animator. **SwiftUI:** `.spring(response:dampingFraction:blendDuration:)` — response ≈ duration scale, dampingFraction 0…1 (1 = no oscillation). **Initial velocity** из gesture передаётся в `continueAnimation` / `UISpringTimingParameters(initialVelocity:)`. Один `duration: 0.3` linear на всё — анти-паттерн для natural UI.
+
+- **Устная заготовка (RU):** spring = damping + response; velocity с жеста; не linear 0.3 везде.
+
+</details>
 ### Q4
-- **Question (RU):** **`CADisplayLink`** vs **`Timer`** vs **`withAnimation`** — когда display link?
 - **Question (EN):** CADisplayLink vs Timer vs withAnimation — when display link?
-- **Answer (RU):** **`withAnimation`** — декларативные изменения SwiftUI view state. **`Timer`** — периодические события, **не** привязаны к refresh (drift, jitter). **`CADisplayLink`** — **vsync-aligned**, один callback на кадр: custom physics, manual progress ring, game loop, sampling animation. Инвалидировать при deinit; тяжёлую работу не в callback. Для стандартного UI motion — animators/SwiftUI, не display link.
 
 - **Answer (EN):** Display link for per-frame, vsync-synced work; timers for coarse periodic tasks; withAnimation for SwiftUI state transitions. Don't use display link for ordinary button fades.
-
-- **Устная заготовка (RU):** display link = каждый кадр; timer — не vsync; SwiftUI — state animation.
 
 - **Устная заготовка (EN):** Display link = frame sync; not a replacement for standard UI animators.
 
 - **Follow-up:** main run loop mode `.common`?
+
 - **Follow-up answer:** display link fires during tracking/UI interaction, not only default mode — важно для scrubbing во время scroll.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **`CADisplayLink`** vs **`Timer`** vs **`withAnimation`** — когда display link?
+
+- **Answer (RU):** **`withAnimation`** — декларативные изменения SwiftUI view state. **`Timer`** — периодические события, **не** привязаны к refresh (drift, jitter). **`CADisplayLink`** — **vsync-aligned**, один callback на кадр: custom physics, manual progress ring, game loop, sampling animation. Инвалидировать при deinit; тяжёлую работу не в callback. Для стандартного UI motion — animators/SwiftUI, не display link.
+
+- **Устная заготовка (RU):** display link = каждый кадр; timer — не vsync; SwiftUI — state animation.
+
+</details>

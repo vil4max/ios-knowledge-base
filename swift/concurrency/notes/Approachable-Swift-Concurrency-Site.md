@@ -6,6 +6,11 @@
 
 ## 1. Зачем `async`/`await`
 
+_English summary — expand «По-русски» for full text (1. Зачем `async`/`await`)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Приложение много **ждёт**: сеть, диск, БД. Раньше — callbacks, делегаты, Combine. **`async`/`await`** даёт код, который **выглядит последовательным**, но **приостанавливается** на `await` и **возобновляется** после готовности; пока ждёшь, runtime может занять поток другой работой. Это не отменяет вопрос **где** исполняется тяжёлая CPU-работа (см. ниже).
 
 - **`await` только внутри `async`**-контекста.
@@ -13,7 +18,14 @@
 
 ---
 
+</details>
+
 ## 2. `Task` и структура работы
+
+_English summary — expand «По-русски» for full text (2. `Task` и структура работы)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **[Task](https://developer.apple.com/documentation/swift/task)** — единица асинхронной работы: запуск `async` из синхронного кода, ожидание результата (`.value`), отмена, фон.
 
@@ -23,7 +35,14 @@
 
 ---
 
+</details>
+
 ## 3. От потоков к изоляции
+
+_English summary — expand «По-русски» for full text (3. От потоков к изоляции)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Старый стек: **Thread**, **GCD**, **OperationQueue**, **Combine** — работало, но **безопасность конкурентного доступа к памяти** была на разработчике.
 
@@ -35,7 +54,14 @@
 
 ---
 
+</details>
+
 ## 4. Три домена изоляции (как на сайте)
+
+_English summary — expand «По-русски» for full text (4. Три домена изоляции (как на сайте))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. **`@MainActor`** — глобальный актор **главного потока** для UI (UIKit / AppKit / SwiftUI). Не синоним «просто `dispatch` на main»: это **домен изоляции**; чужой код должен пересекать границу через `await`, где нужно.
 2. **`actor`** — **свой** домен для изменяемого состояния; снаружи доступ через `await`; актор ≠ «отдельный поток навсегда» — поток выбирает runtime.
@@ -45,7 +71,14 @@
 
 ---
 
+</details>
+
 ## 5. Approachable Concurrency и `@concurrent` (Swift 6.2+)
+
+_English summary — expand «По-русски» for full text (5. Approachable Concurrency и `@concurrent` (Swift 6.2+))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 По материалу сайта (см. [Swift 6.2 — Approachable Concurrency](https://www.swift.org/blog/swift-6.2-released/#approachable-concurrency)):
 
@@ -57,7 +90,14 @@
 
 ---
 
+</details>
+
 ## 6. `Sendable`
+
+_English summary — expand «По-русски» for full text (6. `Sendable`)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **[[Sendable](../../../XI. Резюме/Глоссарий/Glossary.md#glossary-sendable)](https://developer.apple.com/documentation/swift/sendable)** — маркер «тип можно **безопасно передавать** между доменами изоляции». Value-типы с `Sendable`-полями, акторы, иммутабельные `final class` — типичные случаи; **`@unchecked Sendable`** — обещание разработчика, ошибка → снова data race.
 
@@ -65,7 +105,14 @@
 
 ---
 
+</details>
+
 ## 7. Как «течёт» изоляция
+
+_English summary — expand «По-русски» for full text (7. Как «течёт» изоляция)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Вызов функции — изоляция **вызываемой** сущности (`@MainActor`, `actor`, наследование от вызывающего при Approachable defaults).
 - **Замыкания** наследуют изоляцию **места определения** (почему `Button` в SwiftUI может трогать `@State` без лишнего танца).
@@ -76,7 +123,14 @@
 
 ---
 
+</details>
+
 ## 8. Сводная модель (центральная мысль сайта)
+
+_English summary — expand «По-русски» for full text (8. Сводная модель (центральная мысль сайта))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 С **Approachable Concurrency** стартовая точка — **`MainActor`**, дальше изоляция **распространяется** (функции, замыкания, `Task { }`), пока ты **явно** не выберешь:
 
@@ -88,7 +142,14 @@
 
 ---
 
+</details>
+
 ## 9. Типичные ошибки (чеклист с сайта)
+
+_English summary — expand «По-русски» for full text (9. Типичные ошибки (чеклист с сайта))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Ошибка | Суть |
 |--------|------|
@@ -101,7 +162,14 @@
 
 ---
 
+</details>
+
 ## 10. Шпаргалка ключевых слов (как на сайте)
+
+_English summary — expand «По-русски» for full text (10. Шпаргалка ключевых слов (как на сайте))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Ключевое слово | Смысл |
 |----------------|--------|
@@ -121,7 +189,14 @@
 
 ---
 
+</details>
+
 ## 11. Куда дальше (ссылки с сайта)
+
+_English summary — expand «По-русски» for full text (11. Куда дальше (ссылки с сайта))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Matt Massicotte: [Concurrency Glossary](https://www.massicotte.org/concurrency-glossary), [Intro to isolation](https://www.massicotte.org/intro-to-isolation/), [When should you use an actor?](https://www.massicotte.org/actors/), [Non-Sendable types are cool too](https://www.massicotte.org/non-sendable/)
 - Apple: [Meet async/await (WWDC21)](https://developer.apple.com/videos/play/wwdc2021/10132/), [Actors (WWDC21)](https://developer.apple.com/videos/play/wwdc2021/10133/)
@@ -129,7 +204,17 @@
 
 ---
 
+</details>
+
 ## Связь с этим репозиторием
+
+_English summary — expand «По-русски» for full text (Связь с этим репозиторием)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Развёрнутый вводный каркас и Q&A: [Swift-Concurrency.md](../Swift-Concurrency.md) (**Вводный конспект**, **Q11–Q20**).
 - Плейграунды: `TaskVersatility.playground`, `ActorsQueuesLocksInterview.playground`.
+
+</details>
+

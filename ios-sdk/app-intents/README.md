@@ -2,17 +2,30 @@
 
 ## За 30 секунд
 
+
 **App Intents** expose an app feature to the system — Siri, Shortcuts, Spotlight, and the Action button can invoke it without opening your UI first. An **`AppIntent`** describes an action; **`@Parameter`** declares inputs; **`AppEntity`** maps your model for the system; **`AppShortcutsProvider`** registers voice phrases.
 
 Customization beyond the defaults: **`requestValueDialog`** for prompt text, explicit yes/no for optional parameters, and **`ShowsSnippetView`** + **`ProvidesDialog`** for a rich result with spoken feedback.
 
 | | |
+
 |---|---|
+
 | **Уровни** | Middle, Senior |
-| **Трек** | iOS SDK |
+
 | **Must** | Siri/Shortcuts integration, parameter dialogs, optional-parameter UX |
 
 **Related topics:** [SwiftUI](../swiftui/README.md) (snippet views), [Navigation & Deep Links](/architecture/navigation/) (in-app routing from intents), [Deep Links](/system-design/deep-links/) (URL vs intent entry points).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+| **Трек** | iOS SDK |
+
+</details>
+
+
 
 ## Структура топика
 

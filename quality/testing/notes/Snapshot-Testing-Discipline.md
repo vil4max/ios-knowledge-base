@@ -8,11 +8,23 @@
 
 ## TL;DR
 
+_English summary — expand «По-русски» for full text (TL;DR)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Snapshot сравнивает **эталон** (изображение или описание view) с текущим рендером. Уместен для **стабильных компонентов** при фиксированном device/OS. Не заменяет unit (логика) и не должен покрывать **весь экран** при живом дизайне.
 
 ---
 
+</details>
+
 ## Когда да / когда нет
+
+_English summary — expand «По-русски» for full text (Когда да / когда нет)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Делать | Не делать (пока) |
 |--------|------------------|
@@ -25,7 +37,14 @@ Snapshot сравнивает **эталон** (изображение или о
 
 ---
 
+</details>
+
 ## Дисциплина эталонов
+
+_English summary — expand «По-русски» for full text (Дисциплина эталонов)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. **Один** reference device (например iPhone 16, iOS 18.2) в CI и локально.
 2. Эталоны в git; обновление — отдельный PR «update snapshots».
@@ -35,7 +54,14 @@ Snapshot сравнивает **эталон** (изображение или о
 
 ---
 
+</details>
+
 ## Место в пирамиде
+
+_English summary — expand «По-русски» for full text (Место в пирамиде)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```mermaid
 flowchart TB
@@ -50,7 +76,14 @@ Snapshot **между** unit и UI: дороже unit, дешевле полно
 
 ---
 
+</details>
+
 ## Сторонние библиотеки
+
+_English summary — expand «По-русски» for full text (Сторонние библиотеки)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Apple не поставляет snapshot testing в SDK. Команды выбирают OSS (например snapshot-библиотеки для UIView/SwiftUI) и **фиксируют политику** в README команды: что снимаем, где лежат эталоны, кто апрувит diff.
 
@@ -58,7 +91,14 @@ Apple не поставляет snapshot testing в SDK. Команды выби
 
 ---
 
+</details>
+
 ## Вопросы–ответы (собес)
+
+_English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Q. Snapshot vs UI test?**  
 **A.** Snapshot — пиксель/лейаут компонента; UI test — тапы, навигация, accessibility flow.
@@ -71,12 +111,22 @@ Apple не поставляет snapshot testing в SDK. Команды выби
 
 ---
 
+</details>
+
 ## Связанное
 
-- [XCUITest-Essentials-RU](XCUITest-Essentials-RU.md)
-- [Testing-Fundamentals-RU](Testing-Fundamentals-RU.md) — пирамида
+_English summary — expand «По-русски» for full text (Связанное)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- [XCUITest-Essentials-RU](XCUITest-Essentials.md)
+- [Testing-Fundamentals-RU](Testing-Fundamentals.md) — пирамида
 - [Testing README — Focus vs Defer](../README.md)
 
 ---
 
 **Версия:** 1.0 · **Язык:** RU
+
+</details>
+

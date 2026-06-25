@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 A **sync engine** moves data between client and server with **versioning**, **delta updates**, **tombstones**, a **durable queue**, and **idempotent** operations. Interview answers explain how the client knows what changed (cursor, vector clock, or revision), how deletes propagate, how retries avoid duplicates, and how the UI stays consistent while sync runs in the background.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Sync engine**: версионирование, delta sync, конфликты (last-write-wins, CRDT, merge rules), idempotency, backoff.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -76,27 +87,60 @@ A **sync engine** moves data between client and server with **versioning**, **de
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Зачем tombstones в sync engine?
 - **Question (EN):** Why are tombstones needed in a sync engine?
-- **Answer (RU):** Удаление — тоже изменение. Без tombstone клиент, пропустивший delete event, **оставит запись навсегда**. Tombstone (`deletedAt` + id + revision) в delta feed говорит всем клиентам убрать объект локально.
+
 - **Answer (EN):** Deletes must replicate like updates. Without tombstones, clients that miss a delete event keep stale records forever. Tombstones in the change feed tell every client to remove the entity locally.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем tombstones в sync engine?
+
+- **Answer (RU):** Удаление — тоже изменение. Без tombstone клиент, пропустивший delete event, **оставит запись навсегда**. Tombstone (`deletedAt` + id + revision) в delta feed говорит всем клиентам убрать объект локально.
+
+</details>
 ### Q2
-- **Question (RU):** Delta sync vs full sync?
 - **Question (EN):** Delta sync vs full sync?
-- **Answer (RU):** **Delta** — только изменения с cursor (быстро, мало трафика). **Full** — вся коллекция заново (после corruption, смены schema, или первого login). Production: delta по умолчанию, full как recovery path.
+
 - **Answer (EN):** Delta sync fetches only changes since a cursor — fast and bandwidth-friendly. Full sync reloads everything — used for first login, schema changes, or recovery after corruption.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Delta sync vs full sync?
+
+- **Answer (RU):** **Delta** — только изменения с cursor (быстро, мало трафика). **Full** — вся коллекция заново (после corruption, смены schema, или первого login). Production: delta по умолчанию, full как recovery path.
+
+</details>
 ### Q3
-- **Question (RU):** Как обеспечить идемпотентность при retry?
 - **Question (EN):** How do you ensure idempotency on retry?
-- **Answer (RU):** Клиент генерирует **стабильный id** (UUID) на мутацию; сервер хранит результат первого успешного применения и при повторе с тем же ключом возвращает тот же ответ без дубля в БД. Timeout на клиенте ≠ «операция не выполнена» — нужен safe retry.
+
 - **Answer (EN):** Assign a stable idempotency key per mutation; the server stores the first successful result and returns it on duplicates. Client timeouts do not mean the operation failed — design safe retries.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как обеспечить идемпотентность при retry?
+
+- **Answer (RU):** Клиент генерирует **стабильный id** (UUID) на мутацию; сервер хранит результат первого успешного применения и при повторе с тем же ключом возвращает тот же ответ без дубля в БД. Timeout на клиенте ≠ «операция не выполнена» — нужен safe retry.
+
+</details>
 ### Q4
-- **Question (RU):** Как UI узнаёт о завершении sync?
 - **Question (EN):** How should the UI learn about sync completion?
-- **Answer (RU):** Локальная БД — источник для UI; sync engine пишет в БД в **транзакции**, UI подписан через **FRC / observation / async stream**. Отдельно: индикатор `syncState` (idle/syncing/error) и счётчик pending в outbox — для settings/support, не для блокировки каждого экрана.
+
 - **Answer (EN):** The UI observes local DB changes after transactional applies. Expose sync state (idle/syncing/error) and pending counts for status surfaces — do not block every screen on network.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как UI узнаёт о завершении sync?
+
+- **Answer (RU):** Локальная БД — источник для UI; sync engine пишет в БД в **транзакции**, UI подписан через **FRC / observation / async stream**. Отдельно: индикатор `syncState` (idle/syncing/error) и счётчик pending в outbox — для settings/support, не для блокировки каждого экрана.
+
+</details>

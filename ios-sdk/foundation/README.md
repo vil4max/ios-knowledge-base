@@ -71,8 +71,20 @@
 <!-- knowledge-cards-canonical:start -->
 
 ### Q11
-- **Question (RU):** `Application lifecycle` — какие состояния и колбэки; зачем отдельно **`UISceneDelegate`** от **`UIApplicationDelegate`**?
 - **Question (EN):** Application lifecycle: states and callbacks; why `UISceneDelegate` vs `UIApplicationDelegate`?
+
+- **Answer (EN):** `UIApplication.State` is only `.active`, `.inactive`, `.background`. Scene-based apps split process hooks (`UIApplicationDelegate`) from per-window session hooks (`UISceneDelegate`) so each `UIScene` can move independently.
+
+- **Устный канон (опросник п.11 / H11, drill):** «`UIApplication.State`: **active, inactive, background**; not running / suspended — отдельно от тройки enum. **`AppDelegate`** — процесс и конфиг сцен; **`SceneDelegate`** — одна **`UIScene`**, окно и **scene** foreground/background.»
+
+- **Playground:** [open](09_foundation_app_lifecycle.playground/Contents.swift)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** `Application lifecycle` — какие состояния и колбэки; зачем отдельно **`UISceneDelegate`** от **`UIApplicationDelegate`**?
+
 - **Answer (RU):** Зацепка: у **`UIApplication`** публичное **`UIApplication.State`** — только **три** значения: **`.active`**, **`.inactive`**, **`.background`**. **`notRunning`** в этом enum не лежит — это «процесса нет». После ухода в **`.background`** система может **приостановить выполнение** (**suspended** в терминологии документации про последовательность в фоне); у **`applicationState`** при этом по-прежнему фиксируют именно **`.background`**, пока приложение не выгрузят.
 
     **Колбэки процесса (`UIApplicationDelegate`):** ранний старт — `application(_:willFinishLaunchingWithOptions:)`, `application(_:didFinishLaunchingWithOptions:)`; для scene-based ещё **`application(_:configurationForConnecting:options:)`** — отдаёт **`UISceneConfiguration`** и класс **`UISceneDelegate`** для новой сцены.
@@ -81,35 +93,40 @@
 
     **Зачем разделение:** несколько сцен (**multi-window iPadOS** и т.п.) → у разных **`UIScene`** разный foreground/background; это нельзя выразить одним глобальным делегатом. Итого: **`UIApplicationDelegate`** — **app-wide / process**, **`UISceneDelegate`** — **per-`UIScene`**.
 
-- **Answer (EN):** `UIApplication.State` is only `.active`, `.inactive`, `.background`. Scene-based apps split process hooks (`UIApplicationDelegate`) from per-window session hooks (`UISceneDelegate`) so each `UIScene` can move independently.
-
-- **Устный канон (опросник п.11 / H11, drill):** «`UIApplication.State`: **active, inactive, background**; not running / suspended — отдельно от тройки enum. **`AppDelegate`** — процесс и конфиг сцен; **`SceneDelegate`** — одна **`UIScene`**, окно и **scene** foreground/background.»
-
 - **Follow-up (RU):** `scenePhase` в SwiftUI / `UIApplication.didBecomeActiveNotification` — к чему относится?
+
 - **Follow-up answer (RU):** **`scenePhase`** привязан к **`Scene`** в SwiftUI и отражает жизненный цикл **этой** сцены. **`UIApplication.didBecomeActiveNotification`** — **app-level** уведомление; в scene-based приложении для UI логики предпочтительнее привязка к **сцене** или **`scenePhase`**, чтобы не путать глобальное и per-scene.
 
+</details>
+
 - **Доп. информация:** [Habr H11](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.11; Apple — [Managing your app’s life cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle), [`UIApplication.State`](https://developer.apple.com/documentation/uikit/uiapplication/state), [`UISceneDelegate`](https://developer.apple.com/documentation/uikit/uiscenedelegate).
-
-- **Playground:** [open](09_foundation_app_lifecycle.playground/Contents.swift)
 - **Notes:** [Foundation-App-Lifecycle-Scenes.md](Foundation-App-Lifecycle-Scenes.md)
-
 ### Q12
-- **Question (RU):** **п.45 / J05 (drill)** — **состояния приложения** в формулировке джуниорского собеса: «not running → … → suspended» и как это стыкуется с **`UIApplication.State`**?
 - **Question (EN):** Junior interview “app states” narrative vs `UIApplication.State`?
-- **Answer (RU):** Зацепка: в учебниках часто перечисляют **пять** стадий процесса: **не запущено** → **inactive** → **active** → **inactive** → **background**, после чего система может **приостановить** процесс (**suspended** — выполнение остановлено, процесс ещё в памяти). У **`UIApplication.shared.applicationState`** в enum только **`.active` / `.inactive` / `.background`**: **«не запущено»** и **suspended** туда **не входят** — это состояние **процесса**, а не значения enum.
-
-    **Сцены:** foreground/background для **UI** удобнее вязать к **`UISceneDelegate`** / **`scenePhase`** (см. **Q11**).
 
 - **Answer (EN):** Interview “five states” includes not running and suspended; `UIApplication.State` only exposes `.active`, `.inactive`, `.background`. Per-UI session transitions belong with `UISceneDelegate` / `scenePhase`—see **Q11**.
 
 - **Устный канон (опросник п.45 / J05, drill):** «**Пять стадий** — про **процесс**; **`applicationState`** — только **тройка**; **suspended** после фона — **не отдельный** case enum. Детали колбэков — **Q11**.»
 
+- **Playground:** [open](09_foundation_app_lifecycle.playground/Contents.swift)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **п.45 / J05 (drill)** — **состояния приложения** в формулировке джуниорского собеса: «not running → … → suspended» и как это стыкуется с **`UIApplication.State`**?
+
+- **Answer (RU):** Зацепка: в учебниках часто перечисляют **пять** стадий процесса: **не запущено** → **inactive** → **active** → **inactive** → **background**, после чего система может **приостановить** процесс (**suspended** — выполнение остановлено, процесс ещё в памяти). У **`UIApplication.shared.applicationState`** в enum только **`.active` / `.inactive` / `.background`**: **«не запущено»** и **suspended** туда **не входят** — это состояние **процесса**, а не значения enum.
+
+    **Сцены:** foreground/background для **UI** удобнее вязать к **`UISceneDelegate`** / **`scenePhase`** (см. **Q11**).
+
 - **Follow-up (RU):** чем **`sceneDidBecomeActive`** отличается от **`applicationDidBecomeActive`**?
+
 - **Follow-up answer (RU):** первое — **конкретная `UIScene`**, второе — **процесс целиком**; при multi-window важна **per-scene** логика.
 
-- **Доп. информация:** [ios-interview Junior](https://ios-interview.ru/top-20-junior-ios-interview-questions/) (типичный список состояний); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.45; **Q11** (колбэки и `SceneDelegate`).
+</details>
 
-- **Playground:** [open](09_foundation_app_lifecycle.playground/Contents.swift)
+- **Доп. информация:** [ios-interview Junior](https://ios-interview.ru/top-20-junior-ios-interview-questions/) (типичный список состояний); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.45; **Q11** (колбэки и `SceneDelegate`).
 - **Notes:** [Foundation-App-Lifecycle-Scenes.md](Foundation-App-Lifecycle-Scenes.md)
 
 <!-- knowledge-cards-canonical:end -->

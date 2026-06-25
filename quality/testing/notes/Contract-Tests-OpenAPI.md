@@ -1,6 +1,6 @@
 # Contract tests и OpenAPI
 
-**Назначение:** клиент ↔ API контракт до продакшена — фикстуры, схема, codegen. Сеть в unit: [Testing-Network-Stub-RU](Testing-Network-Stub-RU.md). REST/gRPC выбор: [Networking README](../../../data-and-network/networking/README.md).
+**Назначение:** клиент ↔ API контракт до продакшена — фикстуры, схема, codegen. Сеть в unit: [Testing-Network-Stub-RU](Testing-Network-Stub.md). REST/gRPC выбор: [Networking README](../../../data-and-network/networking/README.md).
 
 **Topic README:** [Testing](../README.md)
 
@@ -8,11 +8,23 @@
 
 ## TL;DR
 
+_English summary — expand «По-русски» for full text (TL;DR)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 **Contract test** проверяет, что **мобильный клиент** и **backend** согласованы: пути, статусы, форма JSON. Лёгкий уровень — **JSON fixtures** из примеров спеки + `Decodable` в integration. Сильнее — **OpenAPI** как source of truth + **Swift OpenAPI Generator** и тесты на декодинг/маппинг. Не заменяет unit домена и не требует реального HTTP на каждый commit.
 
 ---
 
+</details>
+
 ## Зачем
+
+_English summary — expand «По-русски» for full text (Зачем)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Без контракта | С контрактом |
 |---------------|--------------|
@@ -24,7 +36,14 @@
 
 ---
 
+</details>
+
 ## Уровни зрелости
+
+_English summary — expand «По-русски» for full text (Уровни зрелости)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```mermaid
 flowchart LR
@@ -48,7 +67,14 @@ flowchart LR
 
 ---
 
+</details>
+
 ## Fixture-based contract (минимум)
+
+_English summary — expand «По-русски» for full text (Fixture-based contract (минимум))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. Backend публикует пример ответа (или fragment из OpenAPI `example`).
 2. Файл в **test bundle**: `Fixtures/user_profile_200.json`.
@@ -76,7 +102,14 @@ struct UserDTO: Decodable {
 
 ---
 
+</details>
+
 ## OpenAPI как source of truth
+
+_English summary — expand «По-русски» for full text (OpenAPI как source of truth)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **`openapi.yaml` в git** — ревью вместе с клиентом.
 - CI: lint/validate spec (spectral, openapi-diff на PR backend).
@@ -96,7 +129,14 @@ openapi.yaml  →  swift-openapi-generator  →  Generated Client + Types
 
 ---
 
+</details>
+
 ## Что проверять в contract-тесте
+
+_English summary — expand «По-русски» for full text (Что проверять в contract-тесте)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Проверка | Unit / integration |
 |----------|-------------------|
@@ -110,18 +150,32 @@ openapi.yaml  →  swift-openapi-generator  →  Generated Client + Types
 
 ---
 
+</details>
+
 ## Consumer vs provider (кратко)
+
+_English summary — expand «По-русски» for full text (Consumer vs provider (кратко))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Consumer-driven** (Pact-стиль): клиент описывает ожидания, backend верифицирует — реже на чистом iOS без platform team.
 - **Provider spec + fixtures:** backend владеет OpenAPI; iOS тестирует против **зафиксированных** примеров — типичный мобильный вариант.
 
 ---
 
+</details>
+
 ## CI
+
+_English summary — expand «По-русски» for full text (CI)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Gate | Содержимое |
 |------|------------|
-| **PR** | Decode всех fixtures; unit mappers; `URLProtocol` на path/query ([Testing-Network-Stub-RU](Testing-Network-Stub-RU.md)) |
+| **PR** | Decode всех fixtures; unit mappers; `URLProtocol` на path/query ([Testing-Network-Stub-RU](Testing-Network-Stub.md)) |
 | **Nightly** | Опционально staging smoke; openapi-diff если backend repo linked |
 | **Release** | Полный набор fixtures + критические endpoints |
 
@@ -129,7 +183,14 @@ openapi.yaml  →  swift-openapi-generator  →  Generated Client + Types
 
 ---
 
+</details>
+
 ## Вопросы–ответы (собес)
+
+_English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Q. Contract test vs unit?**  
 **A.** Unit — логика без привязки к JSON backend. Contract — «этот JSON из API всё ещё парсится и маппится как ожидаем».
@@ -145,7 +206,11 @@ openapi.yaml  →  swift-openapi-generator  →  Generated Client + Types
 
 ---
 
+</details>
+
 ## Официально
+
+
 
 - [Swift OpenAPI Generator](https://developer.apple.com/documentation/swift-openapi-generator)
 - [WWDC23 — Meet Swift OpenAPI Generator](https://developer.apple.com/videos/play/wwdc2023/10171/)

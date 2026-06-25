@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 Operating systems and networking explain how an iOS app lives inside a sandboxed process, schedules work on threads and RunLoop, reacts to memory pressure, and talks to servers over TCP/TLS/HTTP. Interviewers connect this layer to symptoms you see daily: main-thread jank, background task limits, certificate errors, stale DNS, and crashes after jetsam. You do not need to draw the full OS kernel, but you should explain why URLSession callbacks may hop queues, what happens on a memory warning, and how TLS fits between HTTP and TCP. This topic bridges CS fundamentals to Foundation, URLSession, and app lifecycle.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+ОС и сети объясняют жизнь iOS-приложения в sandbox: процессы, потоки, TCP/UDP, DNS, TLS. Нужно для networking, background modes и отладки «зависаний» и таймаутов.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -85,47 +96,100 @@ Doc link: [Responding to memory warnings](https://developer.apple.com/documentat
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Как устроена **модель процесса** iOS-приложения и **sandbox**?
 - **Question (EN):** How does the iOS app process model and sandbox work?
-- **Answer (RU):** Каждое приложение — **отдельный process** с изолированной виртуальной памятью. **Sandbox** ограничивает доступ к файлам других apps, большинству IPC и ресурсам без entitlement. Данные — в container (`Documents`, `Library`, `tmp`); общий доступ — через **App Group** или Keychain при настройке. Extension (Share, Widget, NSE) — **свой process**, часто общий group container. Background — процесс может быть **suspended**; CPU не «крутится бесконечно». App Store review смотрит entitlements.
+
 - **Answer (EN):** Each iOS app runs in its own sandboxed process with a private container. Extensions are separate processes; shared storage requires App Groups or Keychain. Background apps are suspended unless using approved background modes.
-- **Устная заготовка (RU):** Один app = один process; чужие файлы недоступны; extension — отдельно.
+
 - **Устная заготовка (EN):** One app, one sandboxed process; extensions are separate.
+
 - **Follow-up:** где хранить пользовательские файлы vs кэш?
+
 - **Follow-up answer:** Documents (backup) vs Library/Caches (может чиститься системой); tmp — эфемерно.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как устроена **модель процесса** iOS-приложения и **sandbox**?
+
+- **Answer (RU):** Каждое приложение — **отдельный process** с изолированной виртуальной памятью. **Sandbox** ограничивает доступ к файлам других apps, большинству IPC и ресурсам без entitlement. Данные — в container (`Documents`, `Library`, `tmp`); общий доступ — через **App Group** или Keychain при настройке. Extension (Share, Widget, NSE) — **свой process**, часто общий group container. Background — процесс может быть **suspended**; CPU не «крутится бесконечно». App Store review смотрит entitlements.
+
+- **Устная заготовка (RU):** Один app = один process; чужие файлы недоступны; extension — отдельно.
+
+</details>
+
 - **Доп. информация:** [Managing your app's life cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle)
-
 ### Q2
-- **Question (RU):** Зачем **RunLoop** на main и связь с **GCD**?
 - **Question (EN):** Why does the main thread need a RunLoop, and how does GCD relate?
-- **Answer (RU):** **RunLoop** на main обрабатывает sources: UI events, timers, `performSelector`, display link. Пока loop крутится — UI живой. Долгая синхронная работа на main **блокирует** RunLoop. **GCD** ставит blocks в очереди; **main queue** drain’ится RunLoop’ом. `DispatchQueue.main.async` — выполнить на следующем turn. GCD ≠ RunLoop, но main queue интегрирован с main RunLoop. Для фона — concurrent/serial background queues или Swift `Task` с executor.
+
 - **Answer (EN):** The main RunLoop drives UI and input; blocking it freezes the UI. GCD schedules blocks; the main queue runs on the main RunLoop turn. Background work uses other queues or Swift tasks.
-- **Устная заготовка (RU):** Main RunLoop = UI; не блокируй; тяжёлое — off main.
+
 - **Устная заготовка (EN):** Main RunLoop powers UI—offload heavy work.
+
 - **Follow-up:** чем опасен `DispatchQueue.main.sync` с background?
+
 - **Follow-up answer:** deadlock если background ждёт main, а main ждёт background; prefer async + callback/continuation.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем **RunLoop** на main и связь с **GCD**?
+
+- **Answer (RU):** **RunLoop** на main обрабатывает sources: UI events, timers, `performSelector`, display link. Пока loop крутится — UI живой. Долгая синхронная работа на main **блокирует** RunLoop. **GCD** ставит blocks в очереди; **main queue** drain’ится RunLoop’ом. `DispatchQueue.main.async` — выполнить на следующем turn. GCD ≠ RunLoop, но main queue интегрирован с main RunLoop. Для фона — concurrent/serial background queues или Swift `Task` с executor.
+
+- **Устная заготовка (RU):** Main RunLoop = UI; не блокируй; тяжёлое — off main.
+
+</details>
+
 - **Доп. информация:** [RunLoop](https://developer.apple.com/documentation/foundation/runloop), [Dispatch](https://developer.apple.com/documentation/dispatch)
-
 ### Q3
-- **Question (RU):** Объясни путь **HTTP-запроса**: DNS → TCP → TLS → HTTP.
 - **Question (EN):** Walk through an HTTP request path: DNS → TCP → TLS → HTTP.
-- **Answer (RU):** **DNS** переводит hostname в IP. **TCP** — установление соединения (handshake), надёжная доставка байт. **TLS** — шифрование и проверка сертификата (ATS на iOS требует strong TLS по умолчанию). **HTTP** — метод, URL, заголовки, тело; ответ — status + headers + body. **URLSession** orchestrates stack; ошибки: DNS fail, timeout, cert untrusted, 401/5xx. Keep-alive переиспользует TCP для нескольких запросов.
-- **Answer (EN):** DNS resolves the host; TCP connects; TLS encrypts and authenticates; HTTP carries request/response semantics. URLSession manages the stack; ATS enforces secure defaults on iOS.
-- **Устная заготовка (RU):** DNS → TCP → TLS → HTTP; URLSession закрывает детали.
-- **Устная заготовка (EN):** Layer stack ending in HTTP; URLSession wraps it.
-- **Follow-up:** что такое **certificate pinning** и риск?
-- **Follow-up answer:** жёсткое доверие к конкретному ключу/серту; ломается при ротации без update app; альтернатива — trust system + short-lived certs.
-- **Доп. информация:** [URL Loading System](https://developer.apple.com/documentation/foundation/url_loading_system), [ATS](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity)
 
+- **Answer (EN):** DNS resolves the host; TCP connects; TLS encrypts and authenticates; HTTP carries request/response semantics. URLSession manages the stack; ATS enforces secure defaults on iOS.
+
+- **Устная заготовка (EN):** Layer stack ending in HTTP; URLSession wraps it.
+
+- **Follow-up:** что такое **certificate pinning** и риск?
+
+- **Follow-up answer:** жёсткое доверие к конкретному ключу/серту; ломается при ротации без update app; альтернатива — trust system + short-lived certs.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Объясни путь **HTTP-запроса**: DNS → TCP → TLS → HTTP.
+
+- **Answer (RU):** **DNS** переводит hostname в IP. **TCP** — установление соединения (handshake), надёжная доставка байт. **TLS** — шифрование и проверка сертификата (ATS на iOS требует strong TLS по умолчанию). **HTTP** — метод, URL, заголовки, тело; ответ — status + headers + body. **URLSession** orchestrates stack; ошибки: DNS fail, timeout, cert untrusted, 401/5xx. Keep-alive переиспользует TCP для нескольких запросов.
+
+- **Устная заготовка (RU):** DNS → TCP → TLS → HTTP; URLSession закрывает детали.
+
+</details>
+
+- **Доп. информация:** [URL Loading System](https://developer.apple.com/documentation/foundation/url_loading_system), [ATS](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity)
 ### Q4
-- **Question (RU):** **Memory pressure** и **jetsam** — что делает приложение?
 - **Question (EN):** Memory pressure and jetsam—what should the app do?
-- **Answer (RU):** При нехватке памяти система шлёт **memory warning** → сбросить in-memory caches, отменить prefetch, уменьшить decoded image size. **Jetsam** убивает process без graceful shutdown — пользователь видит cold start. Снижать **peak footprint**: streaming decode, downsampling images, не держать giant `[Model]` на main. Мониторинг: Xcode Memory Debugger, `os_proc_available_memory` (осторожно с порогами). После kill — восстановить state из disk/network.
+
 - **Answer (EN):** On memory warnings, purge caches and release large buffers. Jetsam terminates the process under system pressure—design for lower peak memory and fast recovery after relaunch.
-- **Устная заготовка (RU):** Warning — чистим RAM; jetsam — нас убили; держим peak низким.
+
 - **Устная заготовка (EN):** Purge on warning; avoid high peaks to survive jetsam.
+
 - **Follow-up:** чем memory warning отличается от `didEnterBackground`?
+
 - **Follow-up answer:** warning = системе не хватает RAM сейчас; background — lifecycle; оба могут требовать cache eviction, но причины разные.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Memory pressure** и **jetsam** — что делает приложение?
+
+- **Answer (RU):** При нехватке памяти система шлёт **memory warning** → сбросить in-memory caches, отменить prefetch, уменьшить decoded image size. **Jetsam** убивает process без graceful shutdown — пользователь видит cold start. Снижать **peak footprint**: streaming decode, downsampling images, не держать giant `[Model]` на main. Мониторинг: Xcode Memory Debugger, `os_proc_available_memory` (осторожно с порогами). После kill — восстановить state из disk/network.
+
+- **Устная заготовка (RU):** Warning — чистим RAM; jetsam — нас убили; держим peak низким.
+
+</details>
+
 - **Доп. информация:** [applicationDidReceiveMemoryWarning](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622957-applicationdidreceivememorywarning)
 
 <!-- knowledge-cards-canonical:end -->

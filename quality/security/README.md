@@ -10,9 +10,19 @@
 - [Adding a privacy manifest to your app or third-party SDK](https://developer.apple.com/documentation/xcode/adding-a-privacy-manifest-to-your-app-or-third-party-sdk)
 - [Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements) — capabilities tied to provisioning.
 
-## In 30 seconds
+## За 30 секунд
 
 iOS security layers: **Keychain** for tokens and keys (not UserDefaults), **ATS** enforcing HTTPS by default, optional **certificate pinning** for high-threat apps, **privacy manifests** declaring sensitive API use, and **entitlements** gating capabilities (Keychain access groups, associated domains, push). **Jailbreak detection** is heuristic—useful for risk scoring, not as sole protection; assume secrets in the client can be extracted. Design: minimize stored secrets, short-lived tokens, server-side authorization, and no sensitive data in logs.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Безопасность iOS: **Keychain** для секретов, **ATS**, jailbreak detection (осторожно), certificate pinning, privacy manifests, минимизация PII в логах.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -83,25 +93,58 @@ PII cache              → encrypted or avoid; never log
 ## Interview Q&A (Knowledge cards)
 
 ### Q1
-- **Question (RU):** Где хранить access token — UserDefaults или Keychain?
 - **Question (EN):** Store access tokens in UserDefaults or Keychain?
-- **Answer (RU):** **Keychain** для секретов и refresh/access tokens: шифрование, контроль доступности (`kSecAttrAccessible*`), опционально access group для extensions. UserDefaults — plist, бэкапится, читается на compromised device проще. Дополнительно: короткий TTL, refresh на сервере, не логировать token.
+
 - **Answer (EN):** Keychain for secrets with appropriate accessibility; UserDefaults is not confidential. Pair with short-lived tokens and no logging.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Где хранить access token — UserDefaults или Keychain?
+
+- **Answer (RU):** **Keychain** для секретов и refresh/access tokens: шифрование, контроль доступности (`kSecAttrAccessible*`), опционально access group для extensions. UserDefaults — plist, бэкапится, читается на compromised device проще. Дополнительно: короткий TTL, refresh на сервере, не логировать token.
+
+</details>
 ### Q2
-- **Question (RU):** Что такое ATS и когда нужны exceptions?
 - **Question (EN):** What is ATS and when are exceptions justified?
-- **Answer (RU):** **App Transport Security** требует безопасный TLS по умолчанию. Exceptions (`NSExceptionDomains`) — только для legacy/dev endpoints с планом миграции. `NSAllowsArbitraryLoads = true` в проде — red flag. Лучше поднять сервер до HTTPS, чем ослаблять ATS глобально.
+
 - **Answer (EN):** ATS enforces secure connections by default; domain-specific exceptions should be temporary and documented—fix the server rather than disabling ATS globally.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое ATS и когда нужны exceptions?
+
+- **Answer (RU):** **App Transport Security** требует безопасный TLS по умолчанию. Exceptions (`NSExceptionDomains`) — только для legacy/dev endpoints с планом миграции. `NSAllowsArbitraryLoads = true` в проде — red flag. Лучше поднять сервер до HTTPS, чем ослаблять ATS глобально.
+
+</details>
 ### Q3
-- **Question (RU):** Certificate pinning — плюсы и минусы?
 - **Question (EN):** Pros and cons of certificate pinning?
-- **Answer (RU):** **Плюс:** защита от MITM с подменой CA (корп. proxy, malicious cert). **Минусы:** операционная боль при ротации cert, риск outage, не заменяет server auth. Нужны backup pins и мониторинг expiry. Для многих consumer apps достаточно ATS + правильный TLS на сервере.
+
 - **Answer (EN):** Pinning mitigates MITM with rogue CAs but complicates rotation and outages; use with backup pins and a clear threat model.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Certificate pinning — плюсы и минусы?
+
+- **Answer (RU):** **Плюс:** защита от MITM с подменой CA (корп. proxy, malicious cert). **Минусы:** операционная боль при ротации cert, риск outage, не заменяет server auth. Нужны backup pins и мониторинг expiry. Для многих consumer apps достаточно ATS + правильный TLS на сервере.
+
+</details>
 ### Q4
-- **Question (RU):** Privacy manifest — зачем Apple это требует?
 - **Question (EN):** Why does Apple require privacy manifests?
-- **Answer (RU):** Декларировать **Required Reason APIs** (UserDefaults, disk space, sysboottime, etc.) и сбор данных SDK — чтобы App Store и пользователи видели агрегированную картину. При archive Xcode merges manifests; missing reasons → rejection. Это не замена Privacy Nutrition Label, а технический аудит API use.
+
 - **Answer (EN):** Manifests document sensitive API usage and SDK data practices; Xcode merges them at archive—missing required reasons cause rejection.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Privacy manifest — зачем Apple это требует?
+
+- **Answer (RU):** Декларировать **Required Reason APIs** (UserDefaults, disk space, sysboottime, etc.) и сбор данных SDK — чтобы App Store и пользователи видели агрегированную картину. При archive Xcode merges manifests; missing reasons → rejection. Это не замена Privacy Nutrition Label, а технический аудит API use.
+
+</details>

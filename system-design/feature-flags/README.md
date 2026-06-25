@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Feature flags** and **remote config** decouple release from exposure: ship code dark, enable per user/segment, run **gradual rollout**, and flip a **kill switch** without App Store delay. Client-side evaluation reads cached config at launch; server-side gates sensitive or paid features. Interview answers cover flag lifecycle, consistency, analytics linkage, and avoiding flag spaghetti.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Feature flags** и **remote config** отделяют релиз от включения фичи. Kill switch, gradual rollout, type-safe resolver на клиенте.
+
+</details>
+
+
 
 ## Материалы
 
@@ -92,33 +103,74 @@ Launch → fetch config (CDN/API)
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Remote config vs feature flag?
 - **Question (EN):** Remote config vs feature flag?
-- **Answer (RU):** **Remote config** — параметры (строки, числа, JSON): тексты, лимиты, URLs. **Feature flag** — gate поведения (вкл/выкл, variant). На практике один сервис часто делает и то и другое; важно разделить **kill switch** (безопасность) и **experiments** (продукт).
+
 - **Answer (EN):** Remote config tunes parameters (strings, numbers, JSON). Feature flags gate behavior on/off or variants. One service often provides both; separate kill switches from experiments operationally.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Remote config vs feature flag?
+
+- **Answer (RU):** **Remote config** — параметры (строки, числа, JSON): тексты, лимиты, URLs. **Feature flag** — gate поведения (вкл/выкл, variant). На практике один сервис часто делает и то и другое; важно разделить **kill switch** (безопасность) и **experiments** (продукт).
+
+</details>
 ### Q2
-- **Question (RU):** Как делать gradual rollout на клиенте?
 - **Question (EN):** How do you implement gradual rollout on the client?
-- **Answer (RU):** Стабильный **bucket**: `hash(userId) % 100 < rolloutPercent`. Пользователь остаётся в группе между запусками. Добавить фильтры: версия app, OS, locale. Сервер отдаёт процент или готовый boolean per user — оба valid; главное — **sticky** assignment и логирование exposure.
+
 - **Answer (EN):** Use stable bucketing (e.g. hash userId mod 100) plus filters for app version/OS. Server can send percent or per-user booleans; sticky assignment and exposure logging matter most.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как делать gradual rollout на клиенте?
+
+- **Answer (RU):** Стабильный **bucket**: `hash(userId) % 100 < rolloutPercent`. Пользователь остаётся в группе между запусками. Добавить фильтры: версия app, OS, locale. Сервер отдаёт процент или готовый boolean per user — оба valid; главное — **sticky** assignment и логирование exposure.
+
+</details>
 ### Q3
-- **Question (RU):** Kill switch — что должно произойти в UI?
 - **Question (EN):** What should happen in the UI when a kill switch fires?
-- **Answer (RU):** Feature **исчезает или degrades gracefully**: скрыть entry point, показать legacy flow, disable только risky sub-step. Не crash и не пустой экран. Config refresh на launch + периодически; при off — локальный cache обновляется. Критичные флаги — **default safe** (off) если config недоступен, если риск высокий.
+
 - **Answer (EN):** Hide or degrade gracefully — legacy flow, disabled sub-step, no crashes or blank screens. Refresh config on launch; for high-risk features default safe (off) when config is unavailable.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Kill switch — что должно произойти в UI?
+
+- **Answer (RU):** Feature **исчезает или degrades gracefully**: скрыть entry point, показать legacy flow, disable только risky sub-step. Не crash и не пустой экран. Config refresh на launch + периодически; при off — локальный cache обновляется. Критичные флаги — **default safe** (off) если config недоступен, если риск высокий.
+
+</details>
 ### Q4
-- **Question (RU):** Client-side evaluation — риски?
 - **Question (EN):** What are the risks of client-side evaluation?
-- **Answer (RU):** Пользователь может подменить cached config на jailbreak (редко критично для UI experiments). **Платные/безопасные** gates — проверять на **server**. Клиентские флаги — для UX rollout и performance; не для авторизации. Минимизировать вложенность флагов и удалять мёртвые.
+
 - **Answer (EN):** Client cache can be tampered with on jailbroken devices — fine for UX rollouts, not for authorization or paid gates (verify server-side). Remove stale flags to limit complexity.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Client-side evaluation — риски?
+
+- **Answer (RU):** Пользователь может подменить cached config на jailbreak (редко критично для UI experiments). **Платные/безопасные** gates — проверять на **server**. Клиентские флаги — для UX rollout и performance; не для авторизации. Минимизировать вложенность флагов и удалять мёртвые.
+
+</details>
 ### Q5
-- **Question (RU):** Как устроить type-safe feature flags на клиенте?
 - **Question (EN):** How do you structure type-safe feature flags on the client?
-- **Answer (RU):** Enum + `Feature` protocol (`key`, `defaultValue`). Значения из **источников с приоритетом** (`business` → `testing` → overrides); resolver возвращает первое non-`nil`, иначе default. Remote config — отдельный source, не строки в UI. Playground: [feature_flags_resolver.playground](feature_flags_resolver.playground/Contents.swift).
+
 - **Answer (EN):** String-backed enum conforming to `Feature`; merge prioritized sources (business, testing, overrides); first non-nil wins, else default. Remote config maps into a source — no string keys in views. See playground link above.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как устроить type-safe feature flags на клиенте?
+
+- **Answer (RU):** Enum + `Feature` protocol (`key`, `defaultValue`). Значения из **источников с приоритетом** (`business` → `testing` → overrides); resolver возвращает первое non-`nil`, иначе default. Remote config — отдельный source, не строки в UI. Playground: [feature_flags_resolver.playground](feature_flags_resolver.playground/Contents.swift).
+
+</details>

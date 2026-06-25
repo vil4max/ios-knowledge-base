@@ -1,6 +1,6 @@
 # Testing — exercises
 
-Задачи **без готового решения**. Критерий: AAA, один сценарий на тест, без `sleep`. Подсказки: [Senior-Unit-Testing-Mastery-RU](../notes/Senior-Unit-Testing-Mastery-RU.md), [Testing-Fundamentals-RU](../notes/Testing-Fundamentals-RU.md).
+Задачи **без готового решения**. Критерий: AAA, один сценарий на тест, без `sleep`. Подсказки: [Senior-Unit-Testing-Mastery-RU](../notes/Senior-Unit-Testing-Mastery.md), [Testing-Fundamentals-RU](../notes/Testing-Fundamentals.md).
 
 ---
 
@@ -18,8 +18,8 @@
 ## Integration
 
 6. **JSON fixture** — `user_ok.json` в bundle → mapper в domain model; отсутствующий ключ → ошибка.
-7. **URLProtocol** — stub 200 + body; assert path и decoded model (см. [Testing-Network-Stub-RU](../notes/Testing-Network-Stub-RU.md), [playground](../testing.playground/Contents.swift)).
-8. **Contract fixture** — `user_ok.json` из OpenAPI example → DTO + mapper; сломанное поле в fixture → красный тест (см. [Contract-Tests-OpenAPI-RU](../notes/Contract-Tests-OpenAPI-RU.md)).
+7. **URLProtocol** — stub 200 + body; assert path и decoded model (см. [Testing-Network-Stub-RU](../notes/Testing-Network-Stub.md), [playground](../testing.playground/Contents.swift)).
+8. **Contract fixture** — `user_ok.json` из OpenAPI example → DTO + mapper; сломанное поле в fixture → красный тест (см. [Contract-Tests-OpenAPI-RU](../notes/Contract-Tests-OpenAPI.md)).
 
 ## UI (опционально)
 
@@ -31,4 +31,4 @@
 
 ---
 
-После решения — сверь с [чеклистом ревью](../notes/Senior-Unit-Testing-Mastery-RU.md#11-чеклист-ревью-тестов-как-лид).
+После решения — сверь с [чеклистом ревью](../notes/Senior-Unit-Testing-Mastery.md#11-чеклист-ревью-тестов-как-лид).

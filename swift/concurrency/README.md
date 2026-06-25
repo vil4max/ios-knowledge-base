@@ -483,7 +483,7 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
 
 Официальная база: [Concurrency](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/) в Swift Language Guide.
 
-Параллельное чтение «в одну идею» (изоляция, офисная метафора, Approachable Concurrency, типичные ошибки): [notes/Approachable-Swift-Concurrency-Site-RU.md](notes/Approachable-Swift-Concurrency-Site-RU.md).
+Параллельное чтение «в одну идею» (изоляция, офисная метафора, Approachable Concurrency, типичные ошибки): [notes/Approachable-Swift-Concurrency-Site.md](notes/Approachable-Swift-Concurrency-Site.md).
 
 ---
 
@@ -616,19 +616,11 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
 <!-- knowledge-cards-canonical:start -->
 
 ### Q11
-- **Question (RU):** **structured `Task { }`** vs **`Task.detached { }`**?
 - **Question (EN):** `Task {}` vs `Task.detached`?
-- **Answer (RU):** `Task { }` (structured task / дочерняя задача в иерархии) наследует контекст места создания: изоляцию (`actor` / `@MainActor`), значения `TaskLocal`, связь с родительским `Task` (отмена и ошибки распространяются по дереву упрощённо). `Task.detached { }` стартует без этого наследования — «чистый лист» по перечисленным вещам.
 
-    Важно: речь не про «внешний мир приложения», а про наследуемый concurrency-context родительской задачи; из‑за `detached` код часто оказывается не там, где ожидал разработчик (см. follow-up).
 - **Answer (EN):** `Task { }` is a structured child task that inherits context from where it was created: `actor` / `MainActor` isolation, `TaskLocal` values, and the relationship to the parent `Task` (cancellation and errors propagate through the hierarchy in broad strokes). `Task.detached { }` starts without inheriting that bundle—it’s a fresh slate for those inherited attributes.
 
     “Context” here means inherited concurrency context, not “anything external”; `detached` is easy to misuse because execution may leave the isolation or locals you relied on.
-- **Устная заготовка (RU):**
-
-    1. `Task` — наследует контекст родителя: `MainActor`, `TaskLocal`, дерево задач.
-    2. `detached` — без наследования; типичный баг — UI не на main или потерян request-id из `TaskLocal`.
-    3. `detached` осознанно — когда нужен работник вне текущего контекста.
 
 - **Устная заготовка (EN):**
 
@@ -637,23 +629,34 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     3. Use `detached` only when you want that clean break.
 
 - **Follow-up:** пример бага из-за потери **inherited task context** (наследуемого контекста задачи)?
+
 - **Follow-up answer:** `Task.detached` после вызова с `@MainActor` или из актора: внутри detached нет наследования `MainActor` — прямое изменение `UIKit`/`SwiftUI` state может дать предупреждения рантайма, артефакты или crash; лечение — `await MainActor.run { … }` или не использовать `detached` для UI-bridge. Второй пример: потерян `TaskLocal` (например request ID / correlation id) — логи и метрики перестают склеиваться с цепочкой запроса. Третий угол: ожидали связанную отмену родителя — поведение для `detached` иное, задача «оторвана» от structured отмены (детали зависят от кода, но на собесе достаточно назвать риск).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **structured `Task { }`** vs **`Task.detached { }`**?
+
+- **Answer (RU):** `Task { }` (structured task / дочерняя задача в иерархии) наследует контекст места создания: изоляцию (`actor` / `@MainActor`), значения `TaskLocal`, связь с родительским `Task` (отмена и ошибки распространяются по дереву упрощённо). `Task.detached { }` стартует без этого наследования — «чистый лист» по перечисленным вещам.
+
+    Важно: речь не про «внешний мир приложения», а про наследуемый concurrency-context родительской задачи; из‑за `detached` код часто оказывается не там, где ожидал разработчик (см. follow-up).
+
+- **Устная заготовка (RU):**
+
+    1. `Task` — наследует контекст родителя: `MainActor`, `TaskLocal`, дерево задач.
+    2. `detached` — без наследования; типичный баг — UI не на main или потерян request-id из `TaskLocal`.
+    3. `detached` осознанно — когда нужен работник вне текущего контекста.
+
+</details>
+
 - **Доп. информация:** приоритеты и тонкие эффекты планировщика — вторичны для короткого ответа; если уводят глубже — см. [§ 3.1 (Task и context)](#concurrency-primer-s3-1) и TaskVersatility (detached vs `TaskLocal`). Когда `detached` оправдан: долгоживущий фон без привязки к UI-актору, явная изоляция своим `actor`, сознательный обход наследования `MainActor`.
-
 ### Q12
-- **Question (RU):** что такое **actor isolation** (изоляция актора)?
 - **Question (EN):** What is actor isolation?
-- **Answer (RU):** actor isolation (изоляция актора) — правило языка и рантайма: код и данные актора доступны извне через его интерфейс так, что мутации состояния актора не выполняются параллельно — доступ сериализован (serialized / выстроен в очередь), в один момент времени обрабатывается один изолированный вызов, который может менять `mutable state` (изменяемое состояние). Это убирает data races (гонки данных) на состоянии этого актора.
 
-    Интуиция: не «один HTTP-запрос», а одна очередь исполнения (executor) для изолированных методов актора; `await` внутри метода может отпустить актор для другого вызова — см. Q13 (reentrancy).
 - **Answer (EN):** Actor isolation means the language/runtime ensures serialized access to an actor’s mutable state: isolated calls run one at a time on the actor’s executor, so two mutations can’t race inside that actor. That prevents data races on the actor’s own storage.
 
     Note: `await` inside an actor method can suspend and let another actor call run—reentrancy is a separate caveat (see Q13).
-- **Устная заготовка (RU):**
-
-    1. Изоляция актора — сериализованный доступ к его **mutable state** (изменяемому состоянию), одна мутация за раз.
-    2. Цель — убрать data race на состоянии этого актора.
-    3. `await` не отменяет изоляцию навсегда — между `await` состояние могло измениться (Q13).
 
 - **Устная заготовка (EN):**
 
@@ -662,23 +665,34 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     3. `await` can allow interleaving—state may change across suspension (Q13).
 
 - **Follow-up:** какие проблемы actor не решает?
+
 - **Follow-up answer:** актор не делает «всё приложение безопасным»: **data races** возможны между разными акторами, между `actor isolation` и `nonisolated`-участками (`nonisolated` — см. блок Пояснения к атрибутам выше), и при передаче ссылок без `Sendable` / без копирования value-снимков. `@MainActor` — отдельный глобальный актор для UI; ошибочно думать, что любой `actor` «автоматически про UI». Актор не отменяет долгий синхронный CPU (центральный процессор) сам по себе — нужна кооперативная отмена (Q14). Диск/сеть и внешние ресурсы остаются отдельными контрактами (идемпотентность, транзакции, ошибки). Два актора + общий reference type без дисциплины — классический источник гонок вне одного актора.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** что такое **actor isolation** (изоляция актора)?
+
+- **Answer (RU):** actor isolation (изоляция актора) — правило языка и рантайма: код и данные актора доступны извне через его интерфейс так, что мутации состояния актора не выполняются параллельно — доступ сериализован (serialized / выстроен в очередь), в один момент времени обрабатывается один изолированный вызов, который может менять `mutable state` (изменяемое состояние). Это убирает data races (гонки данных) на состоянии этого актора.
+
+    Интуиция: не «один HTTP-запрос», а одна очередь исполнения (executor) для изолированных методов актора; `await` внутри метода может отпустить актор для другого вызова — см. Q13 (reentrancy).
+
+- **Устная заготовка (RU):**
+
+    1. Изоляция актора — сериализованный доступ к его **mutable state** (изменяемому состоянию), одна мутация за раз.
+    2. Цель — убрать data race на состоянии этого актора.
+    3. `await` не отменяет изоляцию навсегда — между `await` состояние могло измениться (Q13).
+
+</details>
+
 - **Доп. информация:** формально изоляция — в Swift Book (Concurrency); связка с `Sendable` — Q16. Карта терминов — [§§ 4–5](#concurrency-primer-s4) (actor / `@MainActor`).
-
 ### Q13
-- **Question (RU):** почему опасна **actor reentrancy** (повторный вход в актор)?
 - **Question (EN):** Why is actor reentrancy dangerous?
-- **Answer (RU):** reentrancy (повторный вход) у актора — это не «второй поток внутри одной мутации», а следствие suspension (приостановки) на `await`: текущий изолированный метод отпускает актор, пока ждёт внешнюю `async` работу. За это время другой изолированный вызов к тому же актору может выполниться и изменить `mutable state`. Когда первый метод продолжается, его локальные предположения об инвариантах могут быть уже ложными — классический источник логических багов при том, что data race на одном хранилище актора по-прежнему запрещён правилами изоляции (Q12).
 
-    Иными словами: изоляция сериализует входы, но не замораживает состояние на время `await`.
 - **Answer (EN):** Actor reentrancy is tied to `await`: while an isolated method is suspended waiting on async work, the actor can process other isolated calls. Those calls may mutate the actor’s state. When the first method resumes, assumptions checked before the suspension may no longer hold—even though you still don’t get an intra-actor data race on that storage (Q12).
 
     Isolation serializes entry, but it does not freeze state across `await`.
-- **Устная заготовка (RU):**
-
-    1. На `await` метод отпускает актор — другой вызов может поменять состояние.
-    2. Инвариант «проверил до `await`» после `await` может быть сломан — перепроверить или работать со снимком.
-    3. Reentrancy ≠ deadlock: у актора часто нет mutual deadlock на своём методе, но состояние «плывёт» между `await`.
 
 - **Устная заготовка (EN):**
 
@@ -686,27 +700,39 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     2. Re-check invariants after suspension—or use value snapshots.
     3. Contrast reentrancy vs deadlock: state can drift across `await` even without classic deadlock.
 
-- **Итог одной фразой (RU):** на `await` актор отпускается, другой изолированный вызов может изменить state; инварианты после `await` перепроверяю или работаю со снимком значений.
 - **Итог одной фразой (EN):** on `await` the actor is released; another isolated call may change state; after `await` I re-check invariants or work from a value snapshot.
 
 - **Follow-up:** как проектировать **invariants** вокруг **suspension point** (точки приостановки)?
+
 - **Follow-up answer:** паттерн «проверил инвариант → `await` → перепроверить или работать на снимке значений»; разбить алгоритм на фазы и хранить минимум shared mutable между фазами. Учитывать вложенные пути к тому же актору (другой метод или косвенный вызов), которые могут выполниться во время вашего `await`. На собесе полезно явно сказать reentrancy vs deadlock: изоляция не даёт «блокировки навсегда» — она сериализует входы, но не замораживает состояние между `await`; для долгих операций добавляют отмену (Q14).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** почему опасна **actor reentrancy** (повторный вход в актор)?
+
+- **Answer (RU):** reentrancy (повторный вход) у актора — это не «второй поток внутри одной мутации», а следствие suspension (приостановки) на `await`: текущий изолированный метод отпускает актор, пока ждёт внешнюю `async` работу. За это время другой изолированный вызов к тому же актору может выполниться и изменить `mutable state`. Когда первый метод продолжается, его локальные предположения об инвариантах могут быть уже ложными — классический источник логических багов при том, что data race на одном хранилище актора по-прежнему запрещён правилами изоляции (Q12).
+
+    Иными словами: изоляция сериализует входы, но не замораживает состояние на время `await`.
+
+- **Устная заготовка (RU):**
+
+    1. На `await` метод отпускает актор — другой вызов может поменять состояние.
+    2. Инвариант «проверил до `await`» после `await` может быть сломан — перепроверить или работать со снимком.
+    3. Reentrancy ≠ deadlock: у актора часто нет mutual deadlock на своём методе, но состояние «плывёт» между `await`.
+
+- **Итог одной фразой (RU):** на `await` актор отпускается, другой изолированный вызов может изменить state; инварианты после `await` перепроверяю или работаю со снимком значений.
+
+</details>
+
 - **Доп. информация:** связка с Q12 (изоляция) и Q14 (отмена между фазами). Подробнее о терминах — [вводный конспект](#concurrency-primer).
-
 ### Q14
-- **Question (RU):** как работает **cancellation** (отмена) в Swift Concurrency?
 - **Question (EN):** How does cancellation work in Swift concurrency?
-- **Answer (RU):** отмена в Swift Concurrency в первую очередь выставляет флаг (запрос на отмену) у `Task` и не обрывает выполнение задачи насильно — не процесс приложения, а именно исполнение этой задачи продолжается, пока код сам не «увидит» отмену. Это кооперативная (cooperative) модель, не преемптивная (не вытесняющая: рантайм не прерывает насильно выполнение посередине произвольного синхронного куска). `Task.cancel()` или отмена родителя в structured concurrency именно помечают задачу; код задачи должен явно проверять отмену: `Task.isCancelled`, `try Task.checkCancellation()` (кидает `CancellationError`), часть `async` точек на `await` учитывает отмену в зависимости от API (например `try await Task.sleep`).
 
-    В structured задачах отмена родителя обычно доходит до дочерних задач в том же дереве; `Task.detached` и долгоживущие задачи без проверок могут «не заметить» отмену долго.
 - **Answer (EN):** Cancellation sets a flag (cancellation request) on the `Task` and does not forcibly abort that task’s execution—the app process keeps running; work continues until the task observes cancellation. That makes it cooperative, not preemptive (the runtime does not forcibly interrupt arbitrary synchronous work mid-instruction). `Task.cancel()` / parent cancellation marks the task; your code checks `Task.isCancelled`, calls `try Task.checkCancellation()` (throws `CancellationError`), and many `await` APIs observe cancellation when implemented that way.
 
     In structured tasks, parent cancellation typically propagates to child tasks; `Task.detached` and tight synchronous loops without checks can ignore cancellation until they `await` or poll.
-- **Устная заготовка (RU):**
-
-    1. Отмена — флаг / запрос, код сам проверяет `isCancelled` / `checkCancellation`.
-    2. Без проверок цикл на CPU (центральном процессоре) может закончиться полностью — отмена не «убивает поток».
-    3. Перед дорогим шагом — `try Task.checkCancellation()` как явная cancellation point.
 
 - **Устная заготовка (EN):**
 
@@ -714,32 +740,41 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     2. A tight sync loop won’t stop by itself—still cooperative.
     3. `try Task.checkCancellation()` before expensive work is a common explicit cancellation point.
 
-- **Итог одной фразой (RU):** выставляется флаг отмены у задачи, выполнение не обрывается само по себе — кооперативно выходим через `await` / `checkCancellation`.
 - **Итог одной фразой (EN):** cancellation sets a flag on the `Task`—execution doesn’t stop by itself; the task cooperatively exits via `checkCancellation` / `await`.
 
 - **Follow-up:** где добавлять **explicit cancellation point** (явную точку отмены)?
+
 - **Follow-up answer:** перед тяжёлым шагом (сеть, большой парсинг, пакетная обработка): `try Task.checkCancellation()`; в циклах — периодическая проверка `Task.isCancelled` или `checkCancellation`, чтобы не крутить миллионы итераций после отмены. Для `async let` и `TaskGroup` важно понимать, как отмена родителя взаимодействует с дочерними задачами (structured propagation). Отмена не заменяет таймауты на уровне `URLSession` и не гарантирует мгновенный stop произвольного `defer`/cleanup без `Task`-aware логики — на собесе достаточно назвать кооперативность и явные точки. Связка с Q13: между фазами с `await` состояние могло измениться и задача могла быть отменена — проверять перед следующей мутацией.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** как работает **cancellation** (отмена) в Swift Concurrency?
+
+- **Answer (RU):** отмена в Swift Concurrency в первую очередь выставляет флаг (запрос на отмену) у `Task` и не обрывает выполнение задачи насильно — не процесс приложения, а именно исполнение этой задачи продолжается, пока код сам не «увидит» отмену. Это кооперативная (cooperative) модель, не преемптивная (не вытесняющая: рантайм не прерывает насильно выполнение посередине произвольного синхронного куска). `Task.cancel()` или отмена родителя в structured concurrency именно помечают задачу; код задачи должен явно проверять отмену: `Task.isCancelled`, `try Task.checkCancellation()` (кидает `CancellationError`), часть `async` точек на `await` учитывает отмену в зависимости от API (например `try await Task.sleep`).
+
+    В structured задачах отмена родителя обычно доходит до дочерних задач в том же дереве; `Task.detached` и долгоживущие задачи без проверок могут «не заметить» отмену долго.
+
+- **Устная заготовка (RU):**
+
+    1. Отмена — флаг / запрос, код сам проверяет `isCancelled` / `checkCancellation`.
+    2. Без проверок цикл на CPU (центральном процессоре) может закончиться полностью — отмена не «убивает поток».
+    3. Перед дорогим шагом — `try Task.checkCancellation()` как явная cancellation point.
+
+- **Итог одной фразой (RU):** выставляется флаг отмены у задачи, выполнение не обрывается само по себе — кооперативно выходим через `await` / `checkCancellation`.
+
+</details>
+
 - **Доп. информация:** [§ 7 (отмена)](#concurrency-primer-s7); детали API — Swift Language Guide (Concurrency). Пересечение с Q11 (`detached` и дерево отмены).
-
 ### Q15
-- **Question (RU):** когда ставить `@MainActor`?
 - **Question (EN):** When do you use `@MainActor`?
-- **Answer (RU):** `@MainActor` помечает тип / метод / свойство так, чтобы выполнение шло в изоляции `MainActor` (глобальный актор для main actor). На Apple-платформах это стык к UI: обновление `UIKit` / `SwiftUI` и `Observable` / моделей, напрямую читаемых UI, держат на `MainActor`, потому что визуальный контур ожидается на главном потоке (практически тот же смысл, что «UI — с main»). `@MainActor` — не ручной `Thread.isMainThread`, а контракт изоляции, который компилятор и рантайм соблюдают вместе с `async`/`await`.
 
-    `MainActor` — про связку с UI: на нём держат то, что напрямую кормит интерфейс (`UIKit` / `SwiftUI`, `Observable`, состояние экрана). Задачи не про UI (сеть, парсинг, диск, тяжёлая работа на **CPU** (центральном процессоре)) выносят из-под глобальной изоляции `MainActor` — отдельный `actor`, сервис без `@MainActor` на типе, `Task` вне `MainActor` — а результат подтягивают на `MainActor`, когда нужно обновить UI-состояние (`await MainActor.run { … }`, вызов `@MainActor`-метода и т.п.): это не только **redraw** (перерисовка), но и любая легальная мутация того, что UI читает.
-
-    Не размещают на `MainActor` тяжёлую работу CPU (центрального процессора) / IO — иначе главный актор (и главный поток для UI) захламляется, растёт latency и фризы.
 - **Answer (EN):** Use `@MainActor` to isolate UI-touching code on the `MainActor` global actor. On Apple platforms that aligns with main-thread UI work for `UIKit` / `SwiftUI` (and models the UI reads/writes directly). It’s actor isolation, not “sprinkle `Thread.isMainThread` everywhere”—the compiler/runtime enforce hopping via `async`/`await`.
 
     `MainActor` is the UI boundary: keep direct UI work there; run non-UI work elsewhere (own `actor`, non-`MainActor` services, `Task` off the main actor), then hop back (`await MainActor.run`, `@MainActor` methods) to publish results into UI-visible state—not only “redraw”, but any mutation the UI observes.
 
     Don’t park heavy synchronous work on `MainActor` or you’ll block UI responsiveness.
-- **Устная заготовка (RU):**
-
-    1. `@MainActor` — **main actor**, для UI и состояния, с которым UI в одном **concurrency domain** (домене конкурентности).
-    2. На iOS это по сути **main thread** (главный поток) для интерфейса, но формулировка «изоляция `MainActor`» точнее для экзаменатора.
-    3. Тяжёлое — в фон (отдельный `actor`, `Task` не на `MainActor`), потом `await MainActor.run { … }` для апдейта UI.
-    4. Связка: не-UI считаем вне `MainActor`, на `MainActor` — только то, что UI должен увидеть (состояние, вызовы `UIKit`/`SwiftUI`).
 
 - **Устная заготовка (EN):**
 
@@ -748,27 +783,42 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     3. Offload heavy work, hop back with `await MainActor.run` / isolated `Task`.
     4. Non-UI off `MainActor`; `MainActor` only for what the UI observes (`UIKit`/`SwiftUI` state).
 
-- **Итог одной фразой (RU):** `@MainActor` — чтобы UI и связанное состояние жили на **`MainActor`** (на практике — **main thread** для UI), без тяжёлой работы там же.
 - **Итог одной фразой (EN):** `@MainActor` keeps UI-bound work on `MainActor` (main-thread UI on Apple)—never heavy work there.
 
 - **Follow-up:** как избежать **over-serialization** (чрезмерной сериализации)?
+
 - **Follow-up answer:** `nonisolated` (для `@MainActor`-типа — см. блок Пояснения к атрибутам выше: член вне `MainActor`) там, где к `MainActor` не нужно привязывать каждый метод; разрезать тип: фасад UI `@MainActor`, сервис/репозиторий без глобальной пометки; тяжёлое — в своём `actor` или вне `MainActor`, затем узкий `await MainActor.run` для мутации UI. Антипаттерн — весь `APIService` `@MainActor`, хотя сеть и парсинг не про UI.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** когда ставить `@MainActor`?
+
+- **Answer (RU):** `@MainActor` помечает тип / метод / свойство так, чтобы выполнение шло в изоляции `MainActor` (глобальный актор для main actor). На Apple-платформах это стык к UI: обновление `UIKit` / `SwiftUI` и `Observable` / моделей, напрямую читаемых UI, держат на `MainActor`, потому что визуальный контур ожидается на главном потоке (практически тот же смысл, что «UI — с main»). `@MainActor` — не ручной `Thread.isMainThread`, а контракт изоляции, который компилятор и рантайм соблюдают вместе с `async`/`await`.
+
+    `MainActor` — про связку с UI: на нём держат то, что напрямую кормит интерфейс (`UIKit` / `SwiftUI`, `Observable`, состояние экрана). Задачи не про UI (сеть, парсинг, диск, тяжёлая работа на **CPU** (центральном процессоре)) выносят из-под глобальной изоляции `MainActor` — отдельный `actor`, сервис без `@MainActor` на типе, `Task` вне `MainActor` — а результат подтягивают на `MainActor`, когда нужно обновить UI-состояние (`await MainActor.run { … }`, вызов `@MainActor`-метода и т.п.): это не только **redraw** (перерисовка), но и любая легальная мутация того, что UI читает.
+
+    Не размещают на `MainActor` тяжёлую работу CPU (центрального процессора) / IO — иначе главный актор (и главный поток для UI) захламляется, растёт latency и фризы.
+
+- **Устная заготовка (RU):**
+
+    1. `@MainActor` — **main actor**, для UI и состояния, с которым UI в одном **concurrency domain** (домене конкурентности).
+    2. На iOS это по сути **main thread** (главный поток) для интерфейса, но формулировка «изоляция `MainActor`» точнее для экзаменатора.
+    3. Тяжёлое — в фон (отдельный `actor`, `Task` не на `MainActor`), потом `await MainActor.run { … }` для апдейта UI.
+    4. Связка: не-UI считаем вне `MainActor`, на `MainActor` — только то, что UI должен увидеть (состояние, вызовы `UIKit`/`SwiftUI`).
+
+- **Итог одной фразой (RU):** `@MainActor` — чтобы UI и связанное состояние жили на **`MainActor`** (на практике — **main thread** для UI), без тяжёлой работы там же.
+
+</details>
+
 - **Доп. информация:** связка с Q11 (`Task` vs `detached` и потеря `MainActor`). См. [§ 5 (`@MainActor`)](#concurrency-primer-s5).
-
 ### Q16
-- **Question (RU):** что гарантирует `Sendable`?
 - **Question (EN):** What does `Sendable` guarantee?
-- **Answer (RU):** `Sendable` говорит, что тип безопасен для использования в конкурентности в смысле пересечения границ: значение можно передавать между concurrency domains (другая задача, другой актор, `MainActor` и т.д.) так, что это не вносит data races — компилятор связывает это с изоляцией и проверками в строгом режиме.
 
-    Это не «волшебная неизменяемость» любого `class`: для ссылочных типов conform часто явный (`final`, иммутабельность, изоляция на `actor`) или спорный (`@unchecked Sendable` — ответственность на авторе).
 - **Answer (EN):** `Sendable` means values of the type can cross concurrency domains (tasks, actors, `MainActor`, …) without introducing data races—the compiler uses that in isolation checking.
 
     It is not automatic immutability for arbitrary classes; reference types often need an explicit story (`final` + immutable state, `actor` wrapping, or `@unchecked Sendable` with manual proof).
-- **Устная заготовка (RU):**
-
-    1. `Sendable` — тип можно безопасно передавать между **concurrency domains** (доменами конкурентности).
-    2. Цель — не наделать **data races** при передаче значений.
-    3. У классов без дисциплины — либо рефакторинг, либо `@unchecked` с риском.
 
 - **Устная заготовка (EN):**
 
@@ -776,28 +826,39 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     2. It’s about avoiding data races when sharing across domains.
     3. For legacy classes: refactor, wrap in an `actor`, or `@unchecked` with care.
 
-- **Итог одной фразой (RU):** `Sendable` — тип безопасен для передачи между **concurrency domains** (частями конкурентной программы), чтобы не ловить **data races**.
 - **Итог одной фразой (EN):** `Sendable` means the type is safe to share across Swift concurrency domains without data races.
 
 - **Follow-up:** как мигрировать **legacy reference type** (легаси ссылочный тип)?
+
 - **Follow-up answer:** по шагам: сузить мутабельность и сделать состояние **thread-safe** (иммутабельный `final` класс, **value**-снимки вместо «шареного» экземпляра); вынести **mutable state** в `actor`; где нельзя быстро доказать — `@unchecked Sendable` только с явным аргументом «почему здесь нет **data race**», иначе ложное спокойствие. На собесе полезно назвать риск `@unchecked` и альтернативу `actor`-обёрткой / копированием **struct**.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** что гарантирует `Sendable`?
+
+- **Answer (RU):** `Sendable` говорит, что тип безопасен для использования в конкурентности в смысле пересечения границ: значение можно передавать между concurrency domains (другая задача, другой актор, `MainActor` и т.д.) так, что это не вносит data races — компилятор связывает это с изоляцией и проверками в строгом режиме.
+
+    Это не «волшебная неизменяемость» любого `class`: для ссылочных типов conform часто явный (`final`, иммутабельность, изоляция на `actor`) или спорный (`@unchecked Sendable` — ответственность на авторе).
+
+- **Устная заготовка (RU):**
+
+    1. `Sendable` — тип можно безопасно передавать между **concurrency domains** (доменами конкурентности).
+    2. Цель — не наделать **data races** при передаче значений.
+    3. У классов без дисциплины — либо рефакторинг, либо `@unchecked` с риском.
+
+- **Итог одной фразой (RU):** `Sendable` — тип безопасен для передачи между **concurrency domains** (частями конкурентной программы), чтобы не ловить **data races**.
+
+</details>
+
 - **Доп. информация:** формально — Swift Book (Concurrency) и раздел про `Sendable`; см. [§ 6 (`Sendable`)](#concurrency-primer-s6). Связка с Q12 — общие ссылки между акторами без дисциплины.
-
 ### Q17
-- **Question (RU):** `TaskGroup` vs `async let`?
 - **Question (EN):** `TaskGroup` vs `async let`?
-- **Answer (RU):** `TaskGroup` — когда число дочерних задач динамическое (например цикл по массиву id — каждый раз `addTask`). `async let` — когда набор подзадач фиксирован заранее и задаётся явно в коде как несколько привязок (условно «статическая» развилка: два-три параллельных `async let`, а не «сколько элементов — столько задач» из переменной коллекции).
 
-    Интуиция: группа — для «запустить N штук», где N из рантайма; `async let` — для «параллельно сделать эти известные шаги».
 - **Answer (EN):** Use `TaskGroup` when the child-task count is dynamic (e.g. loop over inputs and `addTask` per item). Use `async let` for a fixed, explicitly written fan-out—a small set of parallel bindings known up front, not a variable-length blast of tasks.
 
     Rule of thumb: group for “however many items”; `async let` for “these specific concurrent steps”.
-- **Устная заготовка (RU):**
-
-    1. `TaskGroup` — динамическое число задач (цикл, список).
-    2. `async let` — фиксированное число параллельных подзадач в тексте функции.
-    3. Динамика из коллекции без группы — неудобно и неидиоматично.
-    4. Follow-up (частичные результаты): `TaskGroup` — много задач и что делать при ошибке посередине; `async let` — мало шагов в одном scope.
 
 - **Устная заготовка (EN):**
 
@@ -806,31 +867,44 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     3. Don’t fake a dynamic fan-out with many `async let`s—use a group.
     4. Follow-up (partial results): `TaskGroup` when many tasks + you care about failure policy; `async let` when few parallel steps in one scope.
 
-- **Итог одной фразой (RU):** `TaskGroup` — динамическое N задач; `async let` — заранее известное небольшое число параллельных подзадач.
 - **Итог одной фразой (EN):** `TaskGroup` for dynamic fan-out; `async let` for a fixed small fan-out.
 
 - **Follow-up:** когда важна обработка **partial results** (частичных результатов)?
+
 - **Follow-up answer:** когда задач много и они из списка — берут `TaskGroup`: можно по очереди забирать уже готовые и решить, что делать, если одна упала (прервать всё или оставить то, что успело). Когда шагов немного и они известны заранее — чаще `async let`: один scope, все привязки рядом; «тащить результаты по мере готовости из длинного списка» там обычно не нужно.
 
     Устно коротко: группа — много элементов и политика при ошибке; `async let` — мало параллельных шагов в одном блоке.
-- **Доп. информация:** технически — async iterator группы и `throwing TaskGroup` (первая ошибка может отменить остальных); см. [§ 8 (`async let` / `TaskGroup`)](#concurrency-primer-s8). Связка с Q14 — отмена родителя и дочерние задачи в группе.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** `TaskGroup` vs `async let`?
+
+- **Answer (RU):** `TaskGroup` — когда число дочерних задач динамическое (например цикл по массиву id — каждый раз `addTask`). `async let` — когда набор подзадач фиксирован заранее и задаётся явно в коде как несколько привязок (условно «статическая» развилка: два-три параллельных `async let`, а не «сколько элементов — столько задач» из переменной коллекции).
+
+    Интуиция: группа — для «запустить N штук», где N из рантайма; `async let` — для «параллельно сделать эти известные шаги».
+
+- **Устная заготовка (RU):**
+
+    1. `TaskGroup` — динамическое число задач (цикл, список).
+    2. `async let` — фиксированное число параллельных подзадач в тексте функции.
+    3. Динамика из коллекции без группы — неудобно и неидиоматично.
+    4. Follow-up (частичные результаты): `TaskGroup` — много задач и что делать при ошибке посередине; `async let` — мало шагов в одном scope.
+
+- **Итог одной фразой (RU):** `TaskGroup` — динамическое N задач; `async let` — заранее известное небольшое число параллельных подзадач.
+
+</details>
+
+- **Доп. информация:** технически — async iterator группы и `throwing TaskGroup` (первая ошибка может отменить остальных); см. [§ 8 (`async let` / `TaskGroup`)](#concurrency-primer-s8). Связка с Q14 — отмена родителя и дочерние задачи в группе.
 ### Q18
-- **Question (RU):** какое главное правило у **`withCheckedContinuation`** (на собесе часто **invariant** / «инвариант»)?
 - **Question (EN):** What rule must `withCheckedContinuation` satisfy (often phrased as its “invariant”)?
+
 - **Вводные данные:** слово «инвариант» (invariant) здесь — не магия: это правило вида «всегда должно выполняться», если ты хочешь, чтобы код работал правильно. Его нельзя нарушать; иначе контракт API ломается (как «нельзя делить на ноль» для деления — условие, которое держим всегда). На собесе про continuation спрашивают не определение слова из словаря, а какое именно правило нельзя сломать при мосте колбэк → `await`.
 
     Дальше — контекст API: многие старые API не `async`: они говорят «вызови completion, когда закончишь». Чтобы внутри своего кода написать `await` и ждать этот результат, Swift даёт обёртку `withCheckedContinuation { continuation in … }`: внутри блока ты сохраняешь `continuation` и позже, когда сработал legacy-колбэк, вызываешь `continuation.resume(...)` — будто «пробудить» ожидающий `await`. Интуиция: это мост «closure-колбэк ↔ async-код». Слово «инвариант» на собесе = одно формальное правило этого моста, которое нельзя нарушать (см. ответ ниже).
 
-- **Answer (RU):** картина верная: API нужен, чтобы связать колбэки в замыканиях с `async`/`await`. Сам инвариант при этом формулируют узко: на каждый заход в `withCheckedContinuation` нужно вызвать `resume` ровно один раз — не ноль раз (иначе `await` повиснет навсегда), не два и больше (иначе состояние задачи сломано; в checked-сборке это часто ловится как ошибка).
-
 - **Answer (EN):** Call `resume` exactly once per continuation—never forget it (hang) and never call it twice (undefined behavior / trap in checked builds).
-
-- **Устная заготовка (RU):**
-
-    1. Это мост: callback → `await`.
-    2. `resume` строго один раз: ни забыл, ни дважды.
-    3. Два раза — слом; ноль раз — вечное ожидание.
 
 - **Устная заготовка (EN):**
 
@@ -838,27 +912,37 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     2. `resume` exactly once.
     3. Zero resumes hang; double resume breaks the task.
 
-- **Итог одной фразой (RU):** мост колбэка в `await`; инвариант — один `resume` на один такой мост.
 - **Итог одной фразой (EN):** One `resume` per continuation—exactly once.
 
 - **Follow-up:** что при **double resume** (двойном **resume**) / **missing resume** (пропущенном **resume**)?
+
 - **Follow-up answer:** два `resume` — нарушение контракта, задача уже «завершена» первым вызовом; повтор ломает машину состояний (в debug checked это видно). Ноль `resume` — колбэк не пришёл или забыли вызвать — ожидающий код никогда не продолжится. На практике все ветки completion (успех, ошибка, отмена) должны сходиться в ровно один `resume`.
-- **Доп. информация:** `withCheckedContinuation` в debug помогает поймать нарушение; `withUnsafeContinuation` проверки не делает, но контракт «один раз» тот же. Имена `withCheckedThrowingContinuation` / `resume(throwing:)` — вариант с ошибкой, правило «ровно один раз» не меняется.
 
-### Q19
-- **Question (RU):** что такое **priority inversion** (инверсия приоритетов)?
-- **Question (EN):** What is priority inversion?
-- **Вводные данные:** приоритеты/QoS действительно задают, какую работу планировщик предпочитает: выше приоритет обычно получает время CPU (центрального процессора) раньше, низкий может подождать — это нормальная «иерархия». Термин priority inversion описывает не саму иерархию, а сбой: работа с высоким приоритетом вынуждена ждать, пока освободится ресурс (блокировка, синхронный вызов, общий объект), удерживаемый работой с низким приоритетом. Итог против интуиции: «важный» поток стоит из‑за «медленного» — это и есть инверсия.
 
-- **Answer (RU):** классическая формулировка: высокоприоритетная задача ждёт ресурс, который держит низкоприоритетная (или пока та не успеет отпустить lock / закончить критический участок). Частый усилитель проблемы — ещё потоки среднего приоритета вытесняют низкий, поэтому высокий ждёт дольше, чем кажется «по приоритету».
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Answer (EN):** High-priority work blocks on a shared resource held by lower-priority work (often worsened by intermediate-priority threads starving the low-priority holder).
+- **Question (RU):** какое главное правило у **`withCheckedContinuation`** (на собесе часто **invariant** / «инвариант»)?
+
+- **Answer (RU):** картина верная: API нужен, чтобы связать колбэки в замыканиях с `async`/`await`. Сам инвариант при этом формулируют узко: на каждый заход в `withCheckedContinuation` нужно вызвать `resume` ровно один раз — не ноль раз (иначе `await` повиснет навсегда), не два и больше (иначе состояние задачи сломано; в checked-сборке это часто ловится как ошибка).
 
 - **Устная заготовка (RU):**
 
-    1. Приоритеты — про порядок конкурирования за CPU (центральный процессор) в штатном случае.
-    2. Inversion — высокий ждёт низкий из‑за lock/ресурса.
-    3. На UI: главный контур ждёт фон — возможен фриз.
+    1. Это мост: callback → `await`.
+    2. `resume` строго один раз: ни забыл, ни дважды.
+    3. Два раза — слом; ноль раз — вечное ожидание.
+
+- **Итог одной фразой (RU):** мост колбэка в `await`; инвариант — один `resume` на один такой мост.
+
+</details>
+
+- **Доп. информация:** `withCheckedContinuation` в debug помогает поймать нарушение; `withUnsafeContinuation` проверки не делает, но контракт «один раз» тот же. Имена `withCheckedThrowingContinuation` / `resume(throwing:)` — вариант с ошибкой, правило «ровно один раз» не меняется.
+### Q19
+- **Question (EN):** What is priority inversion?
+
+- **Вводные данные:** приоритеты/QoS действительно задают, какую работу планировщик предпочитает: выше приоритет обычно получает время CPU (центрального процессора) раньше, низкий может подождать — это нормальная «иерархия». Термин priority inversion описывает не саму иерархию, а сбой: работа с высоким приоритетом вынуждена ждать, пока освободится ресурс (блокировка, синхронный вызов, общий объект), удерживаемый работой с низким приоритетом. Итог против интуиции: «важный» поток стоит из‑за «медленного» — это и есть инверсия.
+
+- **Answer (EN):** High-priority work blocks on a shared resource held by lower-priority work (often worsened by intermediate-priority threads starving the low-priority holder).
 
 - **Устная заготовка (EN):**
 
@@ -866,29 +950,37 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     2. Inversion—high waits because low holds a needed lock/resource.
     3. Tie to UI when main code waits on background work.
 
-- **Итог одной фразой (RU):** инверсия — когда высокий приоритет вынужден ждать низкий из‑за общего ресурса, не просто «низкий реже получает CPU (центральный процессор)».
 - **Итог одной фразой (EN):** Priority inversion—high-priority work waits on lower-priority work holding a resource.
 
 - **Follow-up:** как это проявляется в **UI freeze** (фризе интерфейса)?
+
 - **Follow-up answer:** **`MainActor`** / UI-код ждёт результат или **lock**, который держит фон с более низким **QoS** (или цепочка через общий сервис); кадры не обновляются — кажется «приложение зависло». Лечение на уровне идей: не блокировать **`main thread`** долгим синхронным ожиданием, разносить ресурсы, укорачивать **critical sections**, асинхронные границы; на платформе частично помогают механизмы вроде **priority donation** — это уже углубление.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** что такое **priority inversion** (инверсия приоритетов)?
+
+- **Answer (RU):** классическая формулировка: высокоприоритетная задача ждёт ресурс, который держит низкоприоритетная (или пока та не успеет отпустить lock / закончить критический участок). Частый усилитель проблемы — ещё потоки среднего приоритета вытесняют низкий, поэтому высокий ждёт дольше, чем кажется «по приоритету».
+
+- **Устная заготовка (RU):**
+
+    1. Приоритеты — про порядок конкурирования за CPU (центральный процессор) в штатном случае.
+    2. Inversion — высокий ждёт низкий из‑за lock/ресурса.
+    3. На UI: главный контур ждёт фон — возможен фриз.
+
+- **Итог одной фразой (RU):** инверсия — когда высокий приоритет вынужден ждать низкий из‑за общего ресурса, не просто «низкий реже получает CPU (центральный процессор)».
+
+</details>
+
 - **Доп. информация:** классический пример с mutex и тремя уровнями приоритета — в учебниках по ОС; на iOS собес связывают с GCD QoS, блокировками и перегрузом `MainActor`. Playground по теме — ниже.
-
 ### Q20
-- **Question (RU):** как тестировать **async** code (асинхронный код)?
 - **Question (EN):** How do you test async code?
-- **Answer (RU):** принципы те же: детерминированные (предсказуемые: тест задаёт ввод и время, без случайности реальной сети и «живых» задержек) зависимости — часы, клиенты, очереди под контролем; отдельные сценарии отмены и ошибок; без «магических» реальных sleep как единственной синхронизации.
-
-    Современный слой инструментов — Swift Testing (`import Testing`): тест помечают `@Test`, функция может быть `async throws`, внутри спокойно `await` и проверки через `#expect` / `#require` без обязательной связки expectation + wait для простых случаев. В проектах на XCTest по-прежнему типичны `XCTestExpectation` и `wait(for:timeout:)` с явным таймаутом либо async-методы тестов там, где версия стека это поддерживает; выбор рамки зависит от проекта, на собесе полезно назвать оба подхода.
 
 - **Answer (EN):** Same principles: deterministic dependencies (repeatable: controlled inputs/time—no flaky real network or wall-clock luck), explicit cancellation/error coverage, avoid relying on real time delays.
 
     Modern Swift Testing (`import Testing`) uses `@Test`, `async`/`await`-friendly test functions, and `#expect`/`#require`. XCTest-heavy codebases still lean on expectations/`wait` or async-capable test methods—name both and explain trade-offs.
-
-- **Устная заготовка (RU):**
-
-    1. Детерминированность (предсказуемость теста): подменяем время и внешний мир — те же входы дают тот же результат.
-    2. Swift Testing: `@Test`, async тест, `#expect`.
-    3. XCTest: expectation + wait или async тест; без вечного sleep.
 
 - **Устная заготовка (EN):**
 
@@ -896,39 +988,95 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     2. Swift Testing: `@Test`, async, `#expect`.
     3. XCTest: expectations or async tests; don’t sleep blindly.
 
-- **Итог одной фразой (RU):** детерминированные (предсказуемые) зависимости + явные ветки отмены/ошибки; инструментально — Swift Testing для async «из коробки», иначе XCTest с expectation/wait.
 - **Итог одной фразой (EN):** Deterministic (repeatable) deps plus cancellation/error paths; Swift Testing for first-class async tests, XCTest patterns where legacy demands.
 
 - **Follow-up:** как убрать **flaky tests** (нестабильные тесты)?
+
 - **Follow-up answer:** убрать гонки реального времени: фейковые часы/диспетчеры, стабильные фикстуры, явные таймауты только там, где контракт это допускает. `MainActor.assumeIsolated` — только если изоляция главного актора гарантирована средой теста. Разделить unit (моки протоколов) и integration (`URLProtocol`, локальный сервер) — разный источник флаков. В Swift Testing следить за изоляцией параллельных тестов и общими синглтонами так же, как в XCTest.
-- **Доп. информация:** детали и примеры по Swift Testing — [VI. Качество/23 Тестирование — Unit, UI, Snapshot, Test Plans/Testing-Unit-UI-Snapshot.md](VI. Качество/23 Тестирование — Unit, UI, Snapshot, Test Plans/Testing-Unit-UI-Snapshot.md) (в т.ч. потоки событий, `confirmation`). На CI полезно помнить про параллельный запуск и общие глобальные состояния.
+
 - **Playground:** [open](ActorsQueuesLocksInterview.playground/Contents.swift)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** как тестировать **async** code (асинхронный код)?
+
+- **Answer (RU):** принципы те же: детерминированные (предсказуемые: тест задаёт ввод и время, без случайности реальной сети и «живых» задержек) зависимости — часы, клиенты, очереди под контролем; отдельные сценарии отмены и ошибок; без «магических» реальных sleep как единственной синхронизации.
+
+    Современный слой инструментов — Swift Testing (`import Testing`): тест помечают `@Test`, функция может быть `async throws`, внутри спокойно `await` и проверки через `#expect` / `#require` без обязательной связки expectation + wait для простых случаев. В проектах на XCTest по-прежнему типичны `XCTestExpectation` и `wait(for:timeout:)` с явным таймаутом либо async-методы тестов там, где версия стека это поддерживает; выбор рамки зависит от проекта, на собесе полезно назвать оба подхода.
+
+- **Устная заготовка (RU):**
+
+    1. Детерминированность (предсказуемость теста): подменяем время и внешний мир — те же входы дают тот же результат.
+    2. Swift Testing: `@Test`, async тест, `#expect`.
+    3. XCTest: expectation + wait или async тест; без вечного sleep.
+
+- **Итог одной фразой (RU):** детерминированные (предсказуемые) зависимости + явные ветки отмены/ошибки; инструментально — Swift Testing для async «из коробки», иначе XCTest с expectation/wait.
+
+</details>
+
+- **Доп. информация:** детали и примеры по Swift Testing — [VI. Качество/23 Тестирование — Unit, UI, Snapshot, Test Plans/Testing-Unit-UI-Snapshot.md](VI. Качество/23 Тестирование — Unit, UI, Snapshot, Test Plans/Testing-Unit-UI-Snapshot.md) (в т.ч. потоки событий, `confirmation`). На CI полезно помнить про параллельный запуск и общие глобальные состояния.
 - **Notes:** [VI. Качество/23 Тестирование — Unit, UI, Snapshot, Test Plans/Testing-Unit-UI-Snapshot.md](VI. Качество/23 Тестирование — Unit, UI, Snapshot, Test Plans/Testing-Unit-UI-Snapshot.md)
 
 ---
-
 ### Q43
-- **Question (RU):** GCD basics (база GCD): что важно про DispatchQueue.main (главную очередь)?
 - **Question (EN):** GCD basics—what about the main queue?
-- **Answer (RU):** Зацепка: **main queue = main thread** для UI; работа с интерфейсом — с main; тяжёлое — в сторону, обратно через **`main.async`**, не **`sync`** без крайней нужды.
-
-    UIKit/SwiftUI состояние, привязанное к главному потоку, обновляют с main queue; долгие задачи — на фоновый `DispatchQueue` или async API. С фона на UI — `DispatchQueue.main.async`.
 
 - **Answer (EN):** Main queue drives UI; offload heavy work; return with `main.async`—avoid `main.sync` unless you fully understand reentrancy/deadlock risk.
-
-- **Устная заготовка (RU):** UI на main; с фона — `async` на main; `sync` на main от main — deadlock.
 
 - **Устная заготовка (EN):** Background compute, `main.async` for UI updates.
 
 - **Follow-up:** чем опасен sync на DispatchQueue.main (синхронный вызов в главную очередь)?
+
 - **Follow-up answer:** если текущий поток уже main — deadlock при `sync`; с фона `sync` на main блокирует фон до завершения UI-работы — риск инверсии приоритетов и зависаний.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** GCD basics (база GCD): что важно про DispatchQueue.main (главную очередь)?
+
+- **Answer (RU):** Зацепка: **main queue = main thread** для UI; работа с интерфейсом — с main; тяжёлое — в сторону, обратно через **`main.async`**, не **`sync`** без крайней нужды.
+
+    UIKit/SwiftUI состояние, привязанное к главному потоку, обновляют с main queue; долгие задачи — на фоновый `DispatchQueue` или async API. С фона на UI — `DispatchQueue.main.async`.
+
+- **Устная заготовка (RU):** UI на main; с фона — `async` на main; `sync` на main от main — deadlock.
+
+</details>
+
 - **Доп. информация:** в новом коде часто `@MainActor` вместо ручного GCD для UI state.
-
-
 ### Q44
-- **Question (RU):** Что такое **`AsyncStream`**, для чего он нужен и как его создавать?
 - **Question (EN):** What is `AsyncStream`, when do you reach for it, and how is it produced?
+
+    - WebSocket / network events;
+
+    - GPS/CoreLocation;
+
+    - события UI/жесты;
+
+    - прогресс загрузки;
+
+    - любой legacy callback API → async.
+
+- **Answer (EN):** `AsyncStream` is the bridge from push-style sources (callbacks, delegates, `Timer`, sockets) into `AsyncSequence` and `for await`. You construct it with a closure that captures a `Continuation`; the producer calls `continuation.yield(value)` and `continuation.finish()`. Always set `continuation.onTermination` to tear down the underlying source when the consumer goes away. It’s the standard tool to convert callback-based iOS APIs into Swift Concurrency.
+
+- **Устная заготовка (EN):**
+
+    1. `AsyncStream` exposes a push source as `AsyncSequence`.
+    2. Build with a `Continuation`: `yield`, `finish`, `onTermination`.
+    3. Use it to bridge callback APIs into async.
+
+- **Follow-up:** В чём разница между `AsyncStream` и `AsyncThrowingStream`, и какие у `AsyncStream` есть `BufferingPolicy`?
+
+- **Follow-up answer:** `AsyncThrowingStream` отличается тем, что итерация может **бросить** ошибку: `continuation.finish(throwing:)` завершает поток ошибкой, `for try await` её ловит. Полезно для сетевых/IO-источников. **Buffering policy** задаётся при создании: `.unbounded` (по умолчанию — копит всё, риск памяти), `.bufferingNewest(n)` (хранить только последние `n`, выкидывать старые), `.bufferingOldest(n)` (хранить первые `n`). Для частых событий (touch-моушены, биржа) почти всегда `.bufferingNewest(1)`, иначе хвост событий растёт быстрее, чем читается.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое **`AsyncStream`**, для чего он нужен и как его создавать?
+
 - **Answer (RU):** Зацепка: **`AsyncStream` — мост из push-источника событий (callback, делегат, `Timer`, `WebSocket`) в `for await`**.
 
     Это конкретная реализация `AsyncSequence`, у которой значения **производятся извне** через объект `Continuation`. Получатель читает их обычным `for await`. Базовая форма:
@@ -977,42 +1125,24 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
 
     Где применяется в iOS:
 
-    - WebSocket / network events;
-    - GPS/CoreLocation;
-    - события UI/жесты;
-    - прогресс загрузки;
-    - любой legacy callback API → async.
-
-- **Answer (EN):** `AsyncStream` is the bridge from push-style sources (callbacks, delegates, `Timer`, sockets) into `AsyncSequence` and `for await`. You construct it with a closure that captures a `Continuation`; the producer calls `continuation.yield(value)` and `continuation.finish()`. Always set `continuation.onTermination` to tear down the underlying source when the consumer goes away. It’s the standard tool to convert callback-based iOS APIs into Swift Concurrency.
-
 - **Устная заготовка (RU):**
 
     1. `AsyncStream` — push-источник, который читают через `for await`.
     2. Создаёшь через `Continuation`: `yield`, `finish`, `onTermination`.
     3. Идеален для `Timer`, сокетов, делегатов, GPS.
 
-- **Устная заготовка (EN):**
-
-    1. `AsyncStream` exposes a push source as `AsyncSequence`.
-    2. Build with a `Continuation`: `yield`, `finish`, `onTermination`.
-    3. Use it to bridge callback APIs into async.
-
-- **Follow-up:** В чём разница между `AsyncStream` и `AsyncThrowingStream`, и какие у `AsyncStream` есть `BufferingPolicy`?
-- **Follow-up answer:** `AsyncThrowingStream` отличается тем, что итерация может **бросить** ошибку: `continuation.finish(throwing:)` завершает поток ошибкой, `for try await` её ловит. Полезно для сетевых/IO-источников. **Buffering policy** задаётся при создании: `.unbounded` (по умолчанию — копит всё, риск памяти), `.bufferingNewest(n)` (хранить только последние `n`, выкидывать старые), `.bufferingOldest(n)` (хранить первые `n`). Для частых событий (touch-моушены, биржа) почти всегда `.bufferingNewest(1)`, иначе хвост событий растёт быстрее, чем читается.
+</details>
 
 - **Доп. информация:** `AsyncStream` это **cold stream**: `Continuation` не запустится, пока кто-то не подпишется через `for await`. Многократного broadcast «из коробки» нет — для нескольких потребителей нужен ручной мультиплексер или `AsyncChannel` из swift-async-algorithms. Сравнение с другими экосистемами: **Combine `Publisher`**, **Kotlin Flow**, **JS AsyncIterator**.
-
-
 ### Q45
-- **Question (RU):** Может ли **Swift Concurrency** полностью заменить **Combine**?
 - **Question (EN):** Can Swift Concurrency fully replace Combine?
-- **Answer (RU):** Зацепка: **частично — да; полностью — нет**. Это инструменты разного уровня абстракции.
-
-    Что Concurrency покрывает уверенно (и за счёт чего Combine стал нужен реже):
 
     - запросы вида «спросил → получил результат» (networking, БД, файлы) — `async/await` чище любого `sink`;
+
     - последовательная асинхронность — `Task`, `async let`, `withTaskGroup`;
+
     - один источник событий → один читатель — `AsyncStream` / `AsyncSequence`;
+
     - защита состояния — `actor`, `@MainActor`.
 
     Пример, где async/await явно лучше:
@@ -1032,9 +1162,13 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     Где **Combine** всё ещё сильнее (до появления стабильных `swift-async-algorithms` в проекте):
 
     - сложные пайплайны: `debounce`, `throttle`, `merge`, `combineLatest`, `zip`;
+
     - реактивный UI с несколькими источниками событий;
+
     - живой поиск с задержкой ввода;
+
     - валидация формы по нескольким полям;
+
     - бекплейн на UIKit-привязках через `assign(to:on:)`.
 
     `AsyncSequence` уже умеет `map`/`filter`/`compactMap`/`prefix`/`drop`, но **экосистема операторов слабее**, и комбинаторы вроде `combineLatest` живут в отдельном пакете `swift-async-algorithms`.
@@ -1042,16 +1176,12 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     Что используют в реальных iOS-проектах сейчас:
 
     - **networking** → `async/await`;
+
     - **streams/events** → `AsyncStream` / `AsyncSequence`;
+
     - **UI bindings / реактивность** → `Combine` (легаси) или **Observation** (`@Observable`) для state;
 
 - **Answer (EN):** Partially yes, fully no. Swift Concurrency replaces most of what people used Combine for: request/response networking, sequential async, single-source event streams (`AsyncStream`), and shared-state protection (`actor`/`@MainActor`). Combine still wins on **rich operator pipelines**: `debounce`, `merge`, `combineLatest`, multi-source reactive UI like type-ahead search or form validation. `AsyncSequence` covers basic operators; advanced ones live in `swift-async-algorithms`. In modern iOS projects, the typical split is: networking with async/await, events with `AsyncStream`, UI state with **Observation** (or Combine in legacy). Combine isn’t dead — Apple keeps it; it’s just no longer the default for async work.
-
-- **Устная заготовка (RU):**
-
-    1. Concurrency и Combine — **разный уровень абстракции**, не конкуренты 1:1.
-    2. async/await отлично закрывает «спросил-получил» и одиночные стримы.
-    3. Combine силён на multi-source реактиве (`debounce`, `combineLatest`, …).
 
 - **Устная заготовка (EN):**
 
@@ -1060,19 +1190,33 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     3. Combine still wins on multi-source operator pipelines.
 
 - **Follow-up:** Когда осознанно выбираешь Combine в новом коде в 2025+?
+
 - **Follow-up answer:** Если команда уже на Combine и есть зрелый набор операторов — переписывать ради «новизны» нет смысла. Если фича действительно про **реактивные потоки**: live search с `debounce`, объединение нескольких источников через `combineLatest`/`merge`, цепочки трансформаций над событиями UI — Combine компактнее, чем эквивалент через `AsyncStream` + ручные комбинаторы. В чисто request/response слоях, наоборот, Combine — оверкилл, async/await проще.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Может ли **Swift Concurrency** полностью заменить **Combine**?
+
+- **Answer (RU):** Зацепка: **частично — да; полностью — нет**. Это инструменты разного уровня абстракции.
+
+    Что Concurrency покрывает уверенно (и за счёт чего Combine стал нужен реже):
+
+- **Устная заготовка (RU):**
+
+    1. Concurrency и Combine — **разный уровень абстракции**, не конкуренты 1:1.
+    2. async/await отлично закрывает «спросил-получил» и одиночные стримы.
+    3. Combine силён на multi-source реактиве (`debounce`, `combineLatest`, …).
+
+</details>
+
 - **Доп. информация:** Apple явно двигает стек в сторону Swift Concurrency: даже `URLSession` сегодня async/await-first. Для `@Published`-style state-management официальная замена — **Observation** (`@Observable`), не Combine. Поэтому корректнее формулировать: Concurrency не заменяет Combine, а **Observation + Concurrency вместе** покрывают большую часть бывших задач Combine.
-
-
 ### Q46
-- **Question (RU):** Сравни **Combine**, **async/await + AsyncStream** и **старые нативные подходы** (callback, delegate, NotificationCenter, KVO, GCD, Operation). Когда что выбирать на собесе и в проде?
 - **Question (EN):** Compare Combine, Swift Concurrency (async/await + AsyncStream) and older native iOS async/event APIs (callbacks, delegate, NotificationCenter, KVO, GCD, Operation). When do you reach for what?
-- **Answer (RU):** Зацепка: **на оси «один результат ↔ много результатов» × «push ↔ pull» эти подходы покрывают разные клетки**. Никто не «заменяет всё».
-
-    **Краткая ось — что про что:**
 
     - **Один результат, async** → исторически callback / completion handler → сейчас **`async/await`**.
+
     - **Параллелизм/диспетчеризация** → исторически GCD/Operation → сейчас **`Task` / `TaskGroup` / `actor`**.
 
     **Сводная таблица:**
@@ -1091,19 +1235,29 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     **Ключевые отличия по семантике:**
 
     - **Push vs pull.** Combine, делегаты, NotificationCenter, KVO, AsyncStream — push (источник кладёт значения). `async/await` — pull (потребитель «тянет» одно значение через `await`). Это влияет на естественную модель **backpressure**: у Combine нужно явно управлять `Demand`, у `AsyncSequence` потребитель сам решает скорость, у NotificationCenter backpressure нет вообще.
+
     - **Cancellation.** В `async/await` отмена — **первоклассная** часть модели (`Task.cancel()` + кооперативные точки). У Combine отмена через `Cancellable`. У GCD/Operation/делегатов — вручную, легко забыть. У NotificationCenter «отмена» = `removeObserver`, что часто и приводит к утечкам.
+
     - **Композиция.** Combine силён операторами для **multi-source** реактива (`combineLatest`, `merge`, `zip`, `debounce`, `throttle`). `AsyncSequence` штатно покрывает базу; продвинутые операторы — отдельный пакет [`swift-async-algorithms`](https://github.com/apple/swift-async-algorithms). Нативные API (`delegate`, `Notification`, `KVO`) операторов не имеют — каждый раз пишешь руками.
+
     - **Threading / isolation.** GCD — ручной `DispatchQueue`. Operation — `qualityOfService`. Combine — `subscribe(on:)`/`receive(on:)`. Concurrency — на уровне типов (`@MainActor`, `actor`), компилятор проверяет `Sendable`. У старых API безопасности на компиляции нет.
+
     - **Compile-time safety.** Только Swift Concurrency даёт **компиляторные** гарантии против data race. У Combine, GCD, Operation, делегатов — гонки ловишь TSan-ом или ревью.
 
     **Что из старого реально использовать сейчас:**
 
     - **Delegate** — да, для системных API: `URLSessionDelegate`, `MKMapViewDelegate`, `AVCaptureSession`, многие UIKit-контроллеры. В своём коде новый event API делать через `AsyncStream` или Combine.
+
     - **Target-Action** — да, для UIKit-control'ов и жестов. В SwiftUI его роль занимает биндинг через `@Bindable` / замыкания.
+
     - **NotificationCenter** — оставить для **системных** нотификаций (keyboard frame, app lifecycle, low memory). Для своих доменных событий — `AsyncStream` / Combine, потому что NotificationCenter — это глобальная шина без типов, без отмены и без backpressure.
+
     - **GCD** — для низкоуровневых вещей (свои сериализованные очереди подсистем, `DispatchSource`, таймеры). Для бизнес-логики — `Task`, `actor`.
+
     - **OperationQueue** — для пайплайнов с **явным графом зависимостей** и приоритетов; в новых сценариях чаще достаточно `TaskGroup` + `actor`.
+
     - **Completion handlers** — только как **граница** с легаси: оборачивать через `withCheckedContinuation` / `withCheckedThrowingContinuation` и идти дальше в `async`.
+
     - **Combine** — там, где он уже принят командой и нужны **multi-source реактивные пайплайны**; в новом проекте без таких сценариев в 2025+ можно обходиться парой Concurrency + Observation.
 
     **Скелетные примеры одной задачи в трёх стилях.** «Загрузить пользователя по id и обновить UI»:
@@ -1165,14 +1319,6 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
 
     Combine компактнее в multi-source реактиве; async-вариант линейнее и не требует `Cancellable`/`store(in:)`, но тянет внешний пакет операторов.
 
-
-- **Устная заготовка (RU):**
-
-    1. Это разные клетки: один-результат vs много-значений, push vs pull.
-    2. async/await — request/response и параллелизм с компиляторной безопасностью.
-    3. Combine — multi-source реактив с операторами; AsyncStream — мост для push-источников.
-    4. Старое (delegate, KVO, NotificationCenter, GCD, Operation) живёт там, где это API системы или нужный низкий уровень.
-
 - **Устная заготовка (EN):**
 
     1. Frame the axes: single/many × push/pull.
@@ -1181,46 +1327,91 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
 
 - **Follow-up:** Что из этого даёт **компиляторные** гарантии против data race?
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Сравни **Combine**, **async/await + AsyncStream** и **старые нативные подходы** (callback, delegate, NotificationCenter, KVO, GCD, Operation). Когда что выбирать на собесе и в проде?
+
+- **Answer (RU):** Зацепка: **на оси «один результат ↔ много результатов» × «push ↔ pull» эти подходы покрывают разные клетки**. Никто не «заменяет всё».
+
+    **Краткая ось — что про что:**
+
+- **Устная заготовка (RU):**
+
+    1. Это разные клетки: один-результат vs много-значений, push vs pull.
+    2. async/await — request/response и параллелизм с компиляторной безопасностью.
+    3. Combine — multi-source реактив с операторами; AsyncStream — мост для push-источников.
+    4. Старое (delegate, KVO, NotificationCenter, GCD, Operation) живёт там, где это API системы или нужный низкий уровень.
+
+</details>
+
 - **Доп. информация:** Reactive-инструменты разных эпох делятся на «реактивный pull» (`AsyncSequence`), «реактивный push с операторами» (Combine, RxSwift), «push без операторов» (delegate, KVO, Notification). Понимание этой оси важнее, чем «Combine быстрее или медленнее». В дискуссиях с командой полезно проговаривать: «нам нужен богатый комбинатор сразу нескольких источников» → Combine; «нам нужен мост одного push-источника в линейный код с отменой» → `AsyncStream`; «у нас системный API с делегатом, который мы не контролируем» → оставляем delegate, при необходимости поверх него строим `AsyncStream`.
-
-
 ### Q47
-- **Question (RU):** **п.28 / H28** — асинхронность в Swift: **GCD**, **Operation**, **Combine**, **async/await / Task / actor** — одним заходом для собеса?
 - **Question (EN):** Swift async landscape—GCD, Operation, Combine, Swift Concurrency—in one interview pass?
-- **Answer (RU):** Зацепка: это **не одна ось «только потоки»**: есть **диспетчеризация** (GCD/Operation), **реактивные потоки** (Combine), **структурированная асинхронность и изоляция** (`async`/`await`, `Task`, `actor`, `@MainActor`). Полная сводная таблица и примеры — в **Q46** этом же файле.
-
-    **Уточнения к частым формулировкам:** **GCD** всё ещё массово в легаси, но для **новой** бизнес-логики чаще **`Task` + изоляция**; **Combine** — не «про потоки», а про **`Publisher`/`Subscriber`**, операторы и отмену через **`Cancellable`**. **`OperationQueue`** даёт **граф зависимостей** и **`cancel()`**, на Apple-платформах исторически стоит на GCD-подобной диспетчеризации. **`actor`** — **reference type** с **сериализацией доступа** к mutable state **на уровне компилятора** (не «просто класс», отдельная модель изоляции + `Sendable`).
 
 - **Answer (EN):** See **Q46** for the full matrix. GCD/Operation = scheduling; Combine = reactive streams; Swift Concurrency = async/await + structured tasks + actor isolation for data-race safety.
 
 - **Устный канон (опросник п.28 / H28, drill):** «**GCD/Operation** — **очереди и задачи**; **Combine** — **реактивные потоки**; **async/await + Task + actor** — **структурированная асинхронность** и **изоляция**; новый код — **Concurrency**, легаси и система — **GCD/делегаты**; см. **Q46**.»
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **п.28 / H28** — асинхронность в Swift: **GCD**, **Operation**, **Combine**, **async/await / Task / actor** — одним заходом для собеса?
+
+- **Answer (RU):** Зацепка: это **не одна ось «только потоки»**: есть **диспетчеризация** (GCD/Operation), **реактивные потоки** (Combine), **структурированная асинхронность и изоляция** (`async`/`await`, `Task`, `actor`, `@MainActor`). Полная сводная таблица и примеры — в **Q46** этом же файле.
+
+    **Уточнения к частым формулировкам:** **GCD** всё ещё массово в легаси, но для **новой** бизнес-логики чаще **`Task` + изоляция**; **Combine** — не «про потоки», а про **`Publisher`/`Subscriber`**, операторы и отмену через **`Cancellable`**. **`OperationQueue`** даёт **граф зависимостей** и **`cancel()`**, на Apple-платформах исторически стоит на GCD-подобной диспетчеризации. **`actor`** — **reference type** с **сериализацией доступа** к mutable state **на уровне компилятора** (не «просто класс», отдельная модель изоляции + `Sendable`).
+
 - **Follow-up (RU):** что даёт **компиляторную** защиту от data race?
+
 - **Follow-up answer (RU):** **`actor` / `@MainActor` / `Sendable`** при строгой concurrency; не Combine и не GCD сами по себе.
 
+</details>
+
 - **Доп. информация:** [Habr H28](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.28; **Q46** (таблица).
-
-
 ### Q48
-- **Question (RU):** **п.48 / J08** — в **GCD**: **`DispatchQueue.async`** vs **`sync`** — семантика и типичный риск?
 - **Question (EN):** GCD `DispatchQueue.async` vs `sync`—semantics and pitfalls?
-- **Answer (RU):** **`async(execute:)`** — поставить блок **в очередь** и **сразу вернуться**; выполнение **позже** (на том потоке/executor’е, который обслуживает очередь). **`sync(execute:)`** — **дождаться**, пока блок **выполнится на целевой очереди**, и только потом продолжить вызывающий поток — это **барьер по отношению к порядку** на той очереди относительно уже поставленной работы.
-
-    **Риск:** **`sync`** на **ту же** очередь, на которой уже выполняешься (или цикл ожиданий через несколько очередей) → **взаимная блокировка** (**deadlock**). На **`main`** почти всегда предпочитают **`async`** к UI-работе, а не **`sync`** с главного.
 
 - **Answer (EN):** `async` schedules and returns; `sync` runs the block on the target queue before returning—handy for “read consistent snapshot on that queue” but deadly if you `sync` onto the queue you’re already running on.
 
 - **Устный канон (опросник п.48 / J08, drill):** «**`async`** — **в очередь и дальше**; **`sync`** — **ждём выполнения на целевой**; **`sync` на себя** — **deadlock**; не путать с **`async`/`await`** Swift.»
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **п.48 / J08** — в **GCD**: **`DispatchQueue.async`** vs **`sync`** — семантика и типичный риск?
+
+- **Answer (RU):** **`async(execute:)`** — поставить блок **в очередь** и **сразу вернуться**; выполнение **позже** (на том потоке/executor’е, который обслуживает очередь). **`sync(execute:)`** — **дождаться**, пока блок **выполнится на целевой очереди**, и только потом продолжить вызывающий поток — это **барьер по отношению к порядку** на той очереди относительно уже поставленной работы.
+
+    **Риск:** **`sync`** на **ту же** очередь, на которой уже выполняешься (или цикл ожиданий через несколько очередей) → **взаимная блокировка** (**deadlock**). На **`main`** почти всегда предпочитают **`async`** к UI-работе, а не **`sync`** с главного.
+
 - **Follow-up (RU):** это про **`URLSession`**?
+
 - **Follow-up answer (RU):** в этом слоте опросника — именно **GCD**; для сети — отдельно completion / **`async`/`await`** поверх URLSession (**V/20**).
 
+</details>
+
 - **Доп. информация:** [ios-interview Junior](https://ios-interview.ru/top-20-junior-ios-interview-questions/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.48; опросник **п.61** (код + GCD); **Q47** (ландшафт асинхронности).
-
-
 ### Q49
-- **Question (RU):** Имеет ли смысл **actor без mutable state** (stateless actor)?
 - **Question (EN):** When is a stateless actor justified?
+
+- **Answer (EN):** A property-less actor is odd unless you can articulate why synchronization matters. Valid: Sendable network service (sync work off main, but serializes sync sections), custom-executor bridge, filesystem as external state. Prefer `Sendable struct` + `@concurrent` for parallel CPU work without shared mutable state. Avoid a global background actor—it serializes and spreads isolation.
+
+- **Устная заготовка (EN):**
+
+    1. Stateless actor needs a clear sync/isolation reason—not a Sendable shortcut.
+    2. Compare actor service vs `@concurrent struct` for parallel heavy work.
+    3. Custom executors and external state are fine; global background actors are not.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Имеет ли смысл **actor без mutable state** (stateless actor)?
+
 - **Answer (RU):** Зацепка: actor без свойств **странен по умолчанию**, но **не всегда ошибка** — нужно назвать **зачем** нужна изоляция (**first rule of actors**).
 
     **Легитимные случаи:**
@@ -1231,35 +1422,25 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     4. **Внешнее state** — файловая система / on-disk cache: state вне процесса, actor сериализует доступ (компилятор не проверяет FS).
     5. **`@globalActor` «BackgroundActor»** — Massicotte **не рекомендует**: та же сериализация + viral isolation, как у `@MainActor`.
 
-- **Answer (EN):** A property-less actor is odd unless you can articulate why synchronization matters. Valid: Sendable network service (sync work off main, but serializes sync sections), custom-executor bridge, filesystem as external state. Prefer `Sendable struct` + `@concurrent` for parallel CPU work without shared mutable state. Avoid a global background actor—it serializes and spreads isolation.
-
 - **Устная заготовка (RU):**
 
     1. Без полей — подозрительно; объясни **зачем** actor, не «чтобы Sendable».
     2. NetworkClient-actor vs **`struct` + `@concurrent`** — trade-off сериализации vs параллелизма.
     3. Custom executor и FS — ок; **`@BackgroundActor`** — антипаттерн.
 
-- **Устная заготовка (EN):**
-
-    1. Stateless actor needs a clear sync/isolation reason—not a Sendable shortcut.
-    2. Compare actor service vs `@concurrent struct` for parallel heavy work.
-    3. Custom executors and external state are fine; global background actors are not.
-
 - **Follow-up (RU):** почему actor-`NetworkClient` может быть **медленнее**, чем `@concurrent struct`?
+
 - **Follow-up answer (RU):** actor **сериализует синхронный код** на своём executor: N параллельных `loadCart()` → decode **по одному**. `@concurrent` снимает это ограничение для CPU-heavy без shared mutable state.
 
-- **Доп. информация:** [Stateless Actors — Matt Massicotte](notes/Stateless-Actors-Massicotte.md); Q12 (isolation); [Approachable Concurrency](notes/Approachable-Swift-Concurrency-Site-RU.md) (`@concurrent`).
+</details>
 
+- **Доп. информация:** [Stateless Actors — Matt Massicotte](notes/Stateless-Actors-Massicotte.md); Q12 (isolation); [Approachable Concurrency](notes/Approachable-Swift-Concurrency-Site.md) (`@concurrent`).
 - **Notes:** [notes/Stateless-Actors-Massicotte.md](notes/Stateless-Actors-Massicotte.md)
-
 ### Q50
-- **Question (RU):** Почему после включения **Swift 6 strict concurrency** возможны **runtime crash** без compile warnings?
 - **Question (EN):** Why can Swift 6 strict concurrency still crash at runtime with a clean build?
-- **Answer (RU):** Зацепка: compile-time ловит **data races**, но compiler **вставляет runtime isolation checks** там, где поток closure **не доказан статически**. Нарушение → **trap** (Swift 6), не «тихий wrong thread» (Swift 5).
-
-    **Символы в crash report:**
 
     - `_swift_task_checkIsolatedSwift` — ожидали `@MainActor`/actor, выполнили **вне** isolation.
+
     - `_dispatch_assert_queue_fail` — ожидали **конкретную queue**, выполнили на другой.
 
     **Типичные callsites:**
@@ -1272,13 +1453,6 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
 
 - **Answer (EN):** Strict concurrency catches many races at compile time, but the compiler injects dynamic isolation checks when thread provenance is unclear. Mismatch traps with `_swift_task_checkIsolatedSwift` or `_dispatch_assert_queue_fail`. Common cases: MainActor-inherited closures run on background (Core Data perform, Combine before receive(on), notifications), MainActor classes with SDK delegates on private queues, misuse of assumeIsolated. Fixes: `@Sendable` closures, reorder receive(on), nonisolated delegates with explicit MainActor hop.
 
-- **Устная заготовка (RU):**
-
-    1. Clean build ≠ safe runtime — injected checks на actor/GCD границах.
-    2. Closure в `@MainActor` **наследует** isolation — Core Data / Combine / notifications.
-    3. Delegate у `@MainActor` class → `nonisolated` + `Task { @MainActor in }`.
-    4. `@Sendable` closure или `receive(on:)` **раньше** — снять ложное наследование.
-
 - **Устная заготовка (EN):**
 
     1. Runtime traps exist beyond compile-time race checks.
@@ -1286,14 +1460,34 @@ Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-lan
     3. nonisolated delegates with explicit MainActor hop for UI.
     4. @Sendable or receive(on) first to break inheritance.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Почему после включения **Swift 6 strict concurrency** возможны **runtime crash** без compile warnings?
+
+- **Answer (RU):** Зацепка: compile-time ловит **data races**, но compiler **вставляет runtime isolation checks** там, где поток closure **не доказан статически**. Нарушение → **trap** (Swift 6), не «тихий wrong thread» (Swift 5).
+
+    **Символы в crash report:**
+
+- **Устная заготовка (RU):**
+
+    1. Clean build ≠ safe runtime — injected checks на actor/GCD границах.
+    2. Closure в `@MainActor` **наследует** isolation — Core Data / Combine / notifications.
+    3. Delegate у `@MainActor` class → `nonisolated` + `Task { @MainActor in }`.
+    4. `@Sendable` closure или `receive(on:)` **раньше** — снять ложное наследование.
+
 - **Follow-up (RU):** Core Data — почему `{ @Sendable in }` в `perform`?
+
 - **Follow-up answer (RU):** Без `@Sendable` closure **наследует `@MainActor`** от метода ViewModel, а `perform` вызывает блок на **своей background queue** → `_dispatch_assert_queue_fail`. `@Sendable` = нет implied actor context → runtime assertion не вставляется.
 
 - **Follow-up (RU):** Combine — почему `receive(on:)` **после** `map` опасен?
+
 - **Follow-up answer (RU):** `map`-closure унаследовал `@MainActor`, publisher emit'ит с **background** → `map` выполняется там **до** hop на main → crash. Переставить `receive(on: .main)` **перед** `map`/`sink` или пометить closure `@Sendable`.
 
-- **Доп. информация:** [Swift 6 runtime concurrency crashes](notes/Swift-6-Runtime-Concurrency-Crashes.md); Q13 (reentrancy); [Combine-Interview-Roadmap](notes/Combine-Interview-Roadmap.md); Q20 (`assumeIsolated` в тестах).
+</details>
 
+- **Доп. информация:** [Swift 6 runtime concurrency crashes](notes/Swift-6-Runtime-Concurrency-Crashes.md); Q13 (reentrancy); [Combine-Interview-Roadmap](notes/Combine-Interview-Roadmap.md); Q20 (`assumeIsolated` в тестах).
 - **Notes:** [notes/Swift-6-Runtime-Concurrency-Crashes.md](notes/Swift-6-Runtime-Concurrency-Crashes.md)
 
 <!-- knowledge-cards-canonical:end -->

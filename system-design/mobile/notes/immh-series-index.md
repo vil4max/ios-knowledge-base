@@ -9,6 +9,8 @@
 
 ## Articles
 
+
+
 | # | Title | URL | Topic folder | Note file | Status |
 |---|-------|-----|--------------|-----------|--------|
 | 1 | Interview — глава 1 | https://immh.tech/blog/mobile-system-design-interview-glava-1 | `system-design/mobile/` | [immh-interview-glava-1.md](immh-interview-glava-1.md) | stub only |
@@ -19,6 +21,11 @@
 ---
 
 ## Integration checklist (if source appears later)
+
+_English summary — expand «По-русски» for full text (Integration checklist (if source appears later))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. Fill **TL;DR** and **Ключевые идеи** in the note.
 2. Set note `**Status:**` to `digest` or `integrated`.
@@ -54,7 +61,11 @@
 
 ---
 
+</details>
+
 ## Workflow
+
+
 
 ```
 Paste in chat or into notes/immh-*.md

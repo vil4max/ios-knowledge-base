@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 Auto Layout is a **constraint-based layout engine**: you declare relationships between views (edges, centers, sizes), and the solver computes frames for a given size. On iOS you express constraints with **NSLayoutConstraint** / **anchor API**, often grouped in **UIStackView**. Each view contributes an **intrinsic content size**; **content hugging** and **compression resistance** priorities resolve conflicts when space is tight. **Ambiguous** or **unsatisfiable** layouts produce warnings or crashes at runtime — senior interviews expect you to diagnose them with Xcode's constraint debugger. **UILayoutGuide** (safe area, layout margins, custom spacers) replaces “padding views.” In SwiftUI, the **`Layout`** protocol and built-in stacks solve a similar problem declaratively; UIKit remains the reference for understanding priorities, ambiguity, and UIKit ↔ SwiftUI sizing bridges.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Auto Layout** — constraint-based движок: отношения между view, intrinsic size, priority, ambiguity. `UIStackView`, anchors, SwiftUI layout — разные API, одна идея.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -139,61 +150,94 @@ UIView.animate(withDuration: 0.3) {
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Что такое **intrinsic content size** и как **content hugging** / **compression resistance** влияют на layout?
 - **Question (EN):** What is intrinsic content size, and how do hugging and compression resistance affect layout?
-- **Answer (RU):** **Intrinsic content size** — естественный размер view по контенту (`UILabel`, `UIImageView`, `UIStackView`). Когда места мало или много, движок не “угадывает” — **compression resistance** (сопротивление сжатию, default 750) и **content hugging** (не растягиваться, default 250) с **priority** решают, кто сожмётся, обрежется или растянется. На собесе: конфликт двух label с resistance 1000 в узком `HStack` → unsatisfiable или truncation после понижения priority.
 
 - **Answer (EN):** Intrinsic content size is a view's natural size from its content. Hugging resists growing; compression resistance resists shrinking. Priorities break ties when space is tight — interview classic: two labels both demanding full width in a narrow row.
-
-- **Устная заготовка (RU):** intrinsic — “хочу такой размер”; hugging — не растягивай; compression — не сжимай; priority решает спор.
 
 - **Устная заготовка (EN):** Intrinsic = natural size; hugging vs compression + priorities resolve fights.
 
 - **Follow-up:** что если intrinsic size `(UIView.noIntrinsicMetric, …)`?
+
 - **Follow-up answer:** view не задаёт размер по одной оси — нужны явные constraints или размер от superview/stack.
 
-- **Доп. информация:** [intrinsicContentSize](https://developer.apple.com/documentation/uikit/uiview/1622600-intrinsiccontentsize), [setContentHuggingPriority](https://developer.apple.com/documentation/uikit/uiview/1622480-setcontenthuggingpriority).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое **intrinsic content size** и как **content hugging** / **compression resistance** влияют на layout?
+
+- **Answer (RU):** **Intrinsic content size** — естественный размер view по контенту (`UILabel`, `UIImageView`, `UIStackView`). Когда места мало или много, движок не “угадывает” — **compression resistance** (сопротивление сжатию, default 750) и **content hugging** (не растягиваться, default 250) с **priority** решают, кто сожмётся, обрежется или растянется. На собесе: конфликт двух label с resistance 1000 в узком `HStack` → unsatisfiable или truncation после понижения priority.
+
+- **Устная заготовка (RU):** intrinsic — “хочу такой размер”; hugging — не растягивай; compression — не сжимай; priority решает спор.
+
+</details>
+
+- **Доп. информация:** [intrinsicContentSize](https://developer.apple.com/documentation/uikit/uiview/1622600-intrinsiccontentsize), [setContentHuggingPriority](https://developer.apple.com/documentation/uikit/uiview/1622480-setcontenthuggingpriority).
 ### Q2
-- **Question (RU):** **Ambiguous** vs **unsatisfiable** constraints — в чём разница и как дебажить?
 - **Question (EN):** Ambiguous vs unsatisfiable Auto Layout — difference and debugging?
-- **Answer (RU):** **Ambiguous** — недоопределено, несколько решений; Auto Layout выберет одно, возможны “прыгающие” frame. **Unsatisfiable** — противоречие required constraints; в debug — trap/log, система ломает constraint с lowest priority. Дебаг: symbolic log, **identifiers** на constraints, Debug View Hierarchy, `_UILayoutGuide` в сообщениях. Типичная ошибка — scroll view без связи content height с subviews.
 
 - **Answer (EN):** Ambiguous = under-constrained; unsatisfiable = impossible required set. Debug with conflict logs, constraint identifiers, and view hierarchy — scroll views missing contentLayoutGuide height are a classic.
-
-- **Устная заготовка (RU):** ambiguous — мало уравнений; unsatisfiable — слишком много required; читай log, не удаляй constraints наугад.
 
 - **Устная заготовка (EN):** Under vs over constrained; read the conflict graph; fix the root cause.
 
 - **Follow-up:** зачем `identifier` на `NSLayoutConstraint`?
+
 - **Follow-up answer:** в symbolic breakdown видно человекочитаемое имя вместо только адресов объектов.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Ambiguous** vs **unsatisfiable** constraints — в чём разница и как дебажить?
+
+- **Answer (RU):** **Ambiguous** — недоопределено, несколько решений; Auto Layout выберет одно, возможны “прыгающие” frame. **Unsatisfiable** — противоречие required constraints; в debug — trap/log, система ломает constraint с lowest priority. Дебаг: symbolic log, **identifiers** на constraints, Debug View Hierarchy, `_UILayoutGuide` в сообщениях. Типичная ошибка — scroll view без связи content height с subviews.
+
+- **Устная заготовка (RU):** ambiguous — мало уравнений; unsatisfiable — слишком много required; читай log, не удаляй constraints наугад.
+
+</details>
 ### Q3
-- **Question (RU):** Зачем **UILayoutGuide** и чем отличается от **safeAreaLayoutGuide** / **layoutMarginsGuide**?
 - **Question (EN):** Why UILayoutGuide, and how does it differ from safe area and layout margins guides?
-- **Answer (RU):** **UILayoutGuide** — прямоугольник для constraints **без subview** (spacer, колонка, выравнивание). **safeAreaLayoutGuide** — inset под notch, status bar, home indicator. **layoutMarginsGuide** — readable margins (можно `directionalLayoutMargins`, `preservesSuperviewLayoutMargins`). Раньше ставили invisible padding views — guides чище и дешевле.
 
 - **Answer (EN):** Layout guides are non-rendering layout anchors. Safe area avoids system chrome; layout margins define readable inset. Prefer guides over dummy spacer views.
-
-- **Устная заготовка (RU):** guide = layout-only rect; safe area — системные inset; margins — дизайн-система отступов.
 
 - **Устная заготовка (EN):** Guides replace spacer views; safe area vs margins serve different inset purposes.
 
 - **Follow-up:** когда custom guide вместо stack?
+
 - **Follow-up answer:** выравнивание групп, процентная ширина колонки, привязка к “виртуальному” краю без лишних view в иерархии.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем **UILayoutGuide** и чем отличается от **safeAreaLayoutGuide** / **layoutMarginsGuide**?
+
+- **Answer (RU):** **UILayoutGuide** — прямоугольник для constraints **без subview** (spacer, колонка, выравнивание). **safeAreaLayoutGuide** — inset под notch, status bar, home indicator. **layoutMarginsGuide** — readable margins (можно `directionalLayoutMargins`, `preservesSuperviewLayoutMargins`). Раньше ставили invisible padding views — guides чище и дешевле.
+
+- **Устная заготовка (RU):** guide = layout-only rect; safe area — системные inset; margins — дизайн-система отступов.
+
+</details>
 ### Q4
-- **Question (RU):** Auto Layout (UIKit) vs **`Layout`** protocol (SwiftUI) — что сравнивать на собесе?
 - **Question (EN):** UIKit Auto Layout vs SwiftUI Layout protocol — what to compare in interviews?
-- **Answer (RU):** UIKit — **глобальный constraint solver**, priorities, intrinsic size, imperative `layoutIfNeeded`. SwiftUI — **propose → measure → place** на контейнер, state-driven invalidation, `layoutPriority` реже explicit hugging. **`Layout`** — кастомный контейнер как свой mini-engine. Мост: `UIHostingController`, `UIViewRepresentable`, self-sizing cells — sizing часто ломается на границе. Senior: знать обе модели, не “SwiftUI заменил Auto Layout” буквально в гибриде.
 
 - **Answer (EN):** UIKit = constraint solver with priorities; SwiftUI = per-container measurement protocol. Custom `Layout` mirrors writing a stack algorithm. Hybrid apps need explicit sizing at UIKit boundaries.
-
-- **Устная заготовка (RU):** UIKit — уравнения и solver; SwiftUI — proposal и placeSubviews; на границе — явный размер.
 
 - **Устная заготовка (EN):** Solver vs propose/measure/place; hybrid needs explicit bridge sizing.
 
 - **Follow-up:** `setNeedsLayout` vs `layoutIfNeeded` перед анимацией?
+
 - **Follow-up answer:** `layoutIfNeeded()` форсирует pass **сейчас** — нужно внутри animation block для constraint-driven motion.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Auto Layout (UIKit) vs **`Layout`** protocol (SwiftUI) — что сравнивать на собесе?
+
+- **Answer (RU):** UIKit — **глобальный constraint solver**, priorities, intrinsic size, imperative `layoutIfNeeded`. SwiftUI — **propose → measure → place** на контейнер, state-driven invalidation, `layoutPriority` реже explicit hugging. **`Layout`** — кастомный контейнер как свой mini-engine. Мост: `UIHostingController`, `UIViewRepresentable`, self-sizing cells — sizing часто ломается на границе. Senior: знать обе модели, не “SwiftUI заменил Auto Layout” буквально в гибриде.
+
+- **Устная заготовка (RU):** UIKit — уравнения и solver; SwiftUI — proposal и placeSubviews; на границе — явный размер.
+
+</details>

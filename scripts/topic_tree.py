@@ -134,7 +134,14 @@ STUB_TEMPLATE = """# {title}
 
 ## За 30 секунд
 
-_(to be added)_
+_(English summary — to be added)_
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+_(Русский абзац — добавить.)_
+
+</details>
 
 ## Ключевые понятия
 

@@ -13,9 +13,19 @@
 - [Library evolution](https://www.swift.org/documentation/server/guides/library-evolution.html) — `@frozen`, resilience (when shipping binary frameworks).
 - [Testing imported modules](https://developer.apple.com/documentation/xcode/testing-imported-modules) — test targets and visibility.
 
-## In 30 seconds
+## За 30 секунд
 
 **Modularization** splits an app into **SPM packages** (or Xcode frameworks) with explicit **dependencies** and **API surfaces**. Feature modules depend **inward** on domain/interfaces; the app target is the **composition root**. Public API stays minimal (`public`/`package`); internals are `internal`. **`@testable import`** is for unit tests in the same package—not a license to break boundaries in production. Goal: faster incremental builds, parallel ownership, and compile-time enforcement of layer rules.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Модульность** делит приложение на **SPM-пакеты** с явными границами `import`: Features, Services, Core. Цель — изоляция, параллельная разработка, тестируемость и контроль зависимостей.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -112,36 +122,76 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 ## Interview Q&A (Knowledge cards)
 
 ### Q1
-- **Question (RU):** Зачем выносить код в SPM-модули, если один Xcode target «и так работает»?
 - **Question (EN):** Why extract SPM modules if a single Xcode target already works?
-- **Answer (RU):** Один таргет не ограничивает **зависимости** — любой файл может импортировать anything. Модули дают **компиляторную границу**, параллельную сборку и изоляцию изменений. На больших кодовых базах incremental build и ownership по фичам окупают overhead настройки Package.swift.
+
 - **Answer (EN):** A monolith compiles together and allows hidden coupling. Modules enforce boundaries, shorten incremental builds, and clarify ownership—worth it as team size and compile time grow.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем выносить код в SPM-модули, если один Xcode target «и так работает»?
+
+- **Answer (RU):** Один таргет не ограничивает **зависимости** — любой файл может импортировать anything. Модули дают **компиляторную границу**, параллельную сборку и изоляцию изменений. На больших кодовых базах incremental build и ownership по фичам окупают overhead настройки Package.swift.
+
+</details>
 ### Q2
-- **Question (RU):** Как предотвратить импорт Feature A → Feature B?
 - **Question (EN):** How do you prevent Feature A from importing Feature B?
-- **Answer (RU):** Общие контракты — в **Core/Domain** (протоколы, DTO). Навигация между фичами — через **router/coordinator** в app shell или callback/intent, не через `import FeatureB`. CI: script greps forbidden imports. Cross-feature UI — composition в app target, не внутри пакета.
+
 - **Answer (EN):** Shared protocols live in Core; cross-feature navigation goes through the app shell router, not direct imports. CI grep rules catch forbidden edges.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как предотвратить импорт Feature A → Feature B?
+
+- **Answer (RU):** Общие контракты — в **Core/Domain** (протоколы, DTO). Навигация между фичами — через **router/coordinator** в app shell или callback/intent, не через `import FeatureB`. CI: script greps forbidden imports. Cross-feature UI — composition в app target, не внутри пакета.
+
+</details>
 ### Q3
-- **Question (RU):** Когда уместен `@testable import`?
 - **Question (EN):** When is `@testable import` appropriate?
-- **Answer (RU):** В **test target того же package**, когда нужно проверить `internal` логику без расширения public API. Не использовать в app или других packages для «обхода» инкапсуляции. Если часто нужен `@testable` снаружи — возможно, API модуля спроектирован неверно (вынести протокол или factory).
+
 - **Answer (EN):** Same-package tests for internal details—not a production escape hatch. Frequent external `@testable` use signals a boundary smell; expose a protocol instead.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Когда уместен `@testable import`?
+
+- **Answer (RU):** В **test target того же package**, когда нужно проверить `internal` логику без расширения public API. Не использовать в app или других packages для «обхода» инкапсуляции. Если часто нужен `@testable` снаружи — возможно, API модуля спроектирован неверно (вынести протокол или factory).
+
+</details>
 ### Q4
-- **Question (RU):** Модульность всегда ускоряет сборку?
 - **Question (EN):** Does modularization always improve build times?
-- **Answer (RU):** Не всегда. Слишком мелкие модули → overhead линковки и planning; слишком крупные → лишний recompile. **God module** с SwiftUI + сеть + domain в одном target тянет всё при любом изменении. Измерять **Build Timing Summary**, дробить «горячие» модули, стабильные интерфейсы (`public` только нужное).
+
 - **Answer (EN):** Not automatically—tiny modules add overhead; huge ones rebuild too much. Profile incremental builds and split hot, frequently edited code with stable public APIs.
 
 ## Ресурсы
 
 ### AppSell — SPM Common / Services / Features
+
 - **Type:** article (digest)
+
 - **URL:** https://appsell.su/blog/den-apps-1/swift-razrabotka/modulyarizaciya-ios-prilozheniy-cherez-spm-kak-navesti-poryadok-v-zavisimostyah-489
+
 - **Why:** Практический SPM-граф для растущих SwiftUI-проектов; compile-time границы
+
 - **When:** Старт модульности, onboarding, CI/build time
+
 - **Tags:** `spm`, `modularization`, `architecture`, `swiftui`
+
 - **Note:** [notes/spm-common-services-features-cheatsheet.md](notes/spm-common-services-features-cheatsheet.md)
+
 - **Added:** 2026-06-19
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Модульность всегда ускоряет сборку?
+
+- **Answer (RU):** Не всегда. Слишком мелкие модули → overhead линковки и planning; слишком крупные → лишний recompile. **God module** с SwiftUI + сеть + domain в одном target тянет всё при любом изменении. Измерять **Build Timing Summary**, дробить «горячие» модули, стабильные интерфейсы (`public` только нужное).
+
+</details>

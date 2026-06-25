@@ -2,9 +2,20 @@
 
 ## За 30 секунд
 
+
 **BDUI** (backend-driven UI): сервер отдаёт описание экрана или блоков (JSON / protobuf), клиент **рендерит** по контракту. Отличается от «просто API»: меняется не только data, но и **composition** UI. Тесно связан с feature flags, analytics и versioning.
 
 **Статус:** skeleton — полный конспект immh не мигрирован (нет исходного текста). См. [immh-series-index.md](../mobile/notes/immh-series-index.md).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**BDUI**: сервер отдаёт описание экрана (JSON/protobuf); клиент рендерит компонентами. Trade-off: гибкость релизов vs сложность кэша, версионирования и fallback.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -58,10 +69,16 @@
 
 ## Карточки знаний (Q&A)
 
-### Q1. BDUI vs обычный REST API?
+### Q1
+- **Question (EN):** BDUI vs a regular REST API?
+- **Answer (EN):** REST supplies data; BDUI supplies UI structure (blocks, order, actions) mapped to a finite set of native renderers.
 
-**RU:** REST отдаёт данные; BDUI отдаёт **структуру UI** (какие блоки, порядок, actions). Клиент знает ограниченный набор компонентов-рендереров.
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-**EN:** REST supplies data; BDUI supplies UI structure and actions mapped to native components.
+- **Question (RU):** BDUI vs обычный REST API?
+- **Answer (RU):** REST отдаёт данные; BDUI отдаёт **структуру UI** (блоки, порядок, actions). Клиент знает ограниченный набор компонентов-рендереров.
 
-**Доп. информация:** [notes/immh-bdui.md](notes/immh-bdui.md) _(fill after paste)_
+</details>
+
+**Доп. информация:** [notes/immh-bdui.md](notes/immh-bdui.md)

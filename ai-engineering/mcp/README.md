@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Model Context Protocol (MCP)** standardizes how AI hosts (Cursor, agents, IDEs) discover **tools**, **resources**, and **prompts** from servers. On iOS you rarely ship an MCP server in production; you **consume** the pattern when building with agents and when wiring app capabilities as typed tools. Pair with [Tool Calling](../tool-calling/) for the model side and [Agents](../agents/) for multi-step loops.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**MCP** стандартизирует discovery **tools**, **resources**, **prompts** для AI-хостов. На iOS чаще consumer паттерна, не свой MCP-сервер в проде.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -396,6 +407,20 @@ Skill превращает “попросил тесты” в воспроиз
 - Фиксируются ли неудачные кейсы в правила/skills, чтобы не повторять ошибки.
 
 ---
+
+## Карточки знаний (Q&A)
+
+### Q1
+- **Question (EN):** What is MCP in one sentence?
+- **Answer (EN):** Model Context Protocol standardizes how AI hosts discover tools, resources, and prompts from servers—relevant when wiring agent workflows, not typically an in-app production server on iOS.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое MCP одной фразой?
+- **Answer (RU):** Model Context Protocol стандартизирует, как AI-хосты (Cursor, IDE) находят tools, resources и prompts у серверов; на iOS чаще consumer паттерна, чем свой MCP в проде.
+
+</details>
 
 <!-- ai-engineering-nav:start -->
 

@@ -10,9 +10,19 @@
 - [Custom URL schemes](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app) — `myapp://` entry points.
 - [UIApplicationDelegate application(_:open:options:)](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application) — URL / activity delivery at launch and foreground.
 
-## In 30 seconds
+## За 30 секунд
 
 Navigation is **who owns the stack** and **how screens are composed**. UIKit uses `UINavigationController` + push/pop; SwiftUI uses `NavigationStack` + `NavigationPath` or value-based destinations. **Coordinators** (or routers) keep view controllers / views dumb: they emit intents (“user picked item 42”), and a navigation layer decides push, modal, or tab switch. **Deep links** parse an incoming URL or `NSUserActivity` into a route, then the same router builds the stack—never duplicate routing logic in every screen.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Навигация — **кто владеет стеком** и **как собираются экраны**. UIKit: `UINavigationController`, coordinators. SwiftUI: `NavigationStack`, `navigationDestination`. Deep links и state restoration — часть senior-ответа.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -113,25 +123,58 @@ URL / Universal Link / Push payload
 ## Interview Q&A (Knowledge cards)
 
 ### Q1
-- **Question (RU):** Зачем Coordinator, если есть `UINavigationController`?
 - **Question (EN):** Why use a Coordinator when `UINavigationController` already exists?
-- **Answer (RU):** `UINavigationController` — контейнер стека, а не место для бизнес-решений «куда дальше». Coordinator знает **flow** (какие экраны, в каком порядке, modally или push), создаёт модули и держит weak-связи с детьми. VC остаётся тонким: сообщает событие, не знает про соседние фичи.
+
 - **Answer (EN):** `UINavigationController` is a stack container, not app-wide flow logic. A coordinator owns transitions, module assembly, and child lifecycle; view controllers report intents instead of pushing unrelated screens.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем Coordinator, если есть `UINavigationController`?
+
+- **Answer (RU):** `UINavigationController` — контейнер стека, а не место для бизнес-решений «куда дальше». Coordinator знает **flow** (какие экраны, в каком порядке, modally или push), создаёт модули и держит weak-связи с детьми. VC остаётся тонким: сообщает событие, не знает про соседние фичи.
+
+</details>
 ### Q2
-- **Question (RU):** Как устроена навигация в SwiftUI (`NavigationStack`) по сравнению с UIKit?
 - **Question (EN):** How does SwiftUI `NavigationStack` compare to UIKit navigation?
-- **Answer (RU):** В SwiftUI путь — **данные** (`NavigationPath` или `[Route]`), UI реагирует через `navigationDestination`. Программный back/pop = изменить path. В UIKit стек живёт в контроллере; programmatic API — `push/pop/setViewControllers`. Оба подхода выигрывают от **единого router**, который обновляет path или nav controller.
+
 - **Answer (EN):** SwiftUI treats navigation as state (`NavigationPath` + destinations); UIKit mutates a controller stack. Both need a central router so deep links and buttons use the same route model.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как устроена навигация в SwiftUI (`NavigationStack`) по сравнению с UIKit?
+
+- **Answer (RU):** В SwiftUI путь — **данные** (`NavigationPath` или `[Route]`), UI реагирует через `navigationDestination`. Программный back/pop = изменить path. В UIKit стек живёт в контроллере; programmatic API — `push/pop/setViewControllers`. Оба подхода выигрывают от **единого router**, который обновляет path или nav controller.
+
+</details>
 ### Q3
-- **Question (RU):** Где обрабатывать deep link — в AppDelegate или на экране?
 - **Question (EN):** Where should deep links be handled—app delegate or individual screens?
-- **Answer (RU):** Парсинг URL — на **границе приложения** (SceneDelegate / `@main` app), преобразование в `Route` — в **router/coordinator**. Экраны не парсят query сами. Если нужен login, router **откладывает** маршрут и применяет после готовности root. Один pipeline для Universal Links, custom scheme и push tap.
+
 - **Answer (EN):** Parse at the app boundary, map to routes in a router/coordinator, defer until root/auth is ready. Screens never parse URLs; one pipeline for universal links, custom schemes, and notification taps.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Где обрабатывать deep link — в AppDelegate или на экране?
+
+- **Answer (RU):** Парсинг URL — на **границе приложения** (SceneDelegate / `@main` app), преобразование в `Route` — в **router/coordinator**. Экраны не парсят query сами. Если нужен login, router **откладывает** маршрут и применяет после готовности root. Один pipeline для Universal Links, custom scheme и push tap.
+
+</details>
 ### Q4
-- **Question (RU):** Как протестировать навигацию без UI-тестов на каждый переход?
 - **Question (EN):** How do you test navigation without UI-testing every transition?
-- **Answer (RU):** Протокол `Router` с записывающим **spy**: view model вызывает `router.open(.detail(id))`, тест проверяет вызов. Для coordinator — mock factory и проверка, что создан нужный VC/route. UI-тесты оставить для 1–2 критических end-to-end потоков; unit покрывает матрицу маршрутов и deferred links.
+
 - **Answer (EN):** Inject a spy router; view models assert `open(route)` calls. Mock factories for coordinators. Reserve UI tests for critical E2E paths; unit-test route parsing and deferred navigation.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как протестировать навигацию без UI-тестов на каждый переход?
+
+- **Answer (RU):** Протокол `Router` с записывающим **spy**: view model вызывает `router.open(.detail(id))`, тест проверяет вызов. Для coordinator — mock factory и проверка, что создан нужный VC/route. UI-тесты оставить для 1–2 критических end-to-end потоков; unit покрывает матрицу маршрутов и deferred links.
+
+</details>

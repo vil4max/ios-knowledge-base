@@ -2,11 +2,16 @@
 
 **Назначение:** закрыть пробел после собеса — **понимать**, **проектировать** и **писать** unit-тесты как сеньор: границы, детерминизм, моки, асинхронность, изоляция, отсутствие флейков.
 
-**Связь с репозиторием:** фундамент — [Testing-Fundamentals-RU](Testing-Fundamentals-RU.md); фреймворки — [Swift-Testing-vs-XCTest-RU](Swift-Testing-vs-XCTest-RU.md); сеть — [Testing-Network-Stub-RU](Testing-Network-Stub-RU.md); topic README — [Testing](../README.md).
+**Связь с репозиторием:** фундамент — [Testing-Fundamentals-RU](Testing-Fundamentals.md); фреймворки — [Swift-Testing-vs-XCTest-RU](Swift-Testing-vs-XCTest.md); сеть — [Testing-Network-Stub-RU](Testing-Network-Stub.md); topic README — [Testing](../README.md).
 
 ---
 
 ## 1. Что значит «писать тесты как сеньор»
+
+_English summary — expand «По-русски» for full text (1. Что значит «писать тесты как сеньор»)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Junior / Middle | Senior / Lead |
 |-----------------|---------------|
@@ -20,9 +25,16 @@
 
 ---
 
+</details>
+
 ## 2. Пирамида и границы unit
 
-Классическое соотношение **~70 / 20 / 10** (unit / integration / UI) — см. [Testing-Fundamentals-RU](Testing-Fundamentals-RU.md).
+_English summary — expand «По-русски» for full text (2. Пирамида и границы unit)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Классическое соотношение **~70 / 20 / 10** (unit / integration / UI) — см. [Testing-Fundamentals-RU](Testing-Fundamentals.md).
 
 - **Unit:** чистая логика, **use case**, **mapper**, **policy** (retry, валидация), **view model** без UIKit-дерева.
 - **Интеграция:** реальный `URLSession` к локальному серверу, Core Data stack, несколько модулей вместе.
@@ -32,7 +44,14 @@
 
 ---
 
+</details>
+
 ## 3. Словарь test doubles (как на собесе)
+
+_English summary — expand «По-русски» for full text (3. Словарь test doubles (как на собесе))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Термин | Роль | Проверка |
 |--------|------|----------|
@@ -46,7 +65,14 @@
 
 ---
 
+</details>
+
 ## 4. XCTest и Swift Testing (кратко)
+
+_English summary — expand «По-русски» for full text (4. XCTest и Swift Testing (кратко))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **XCTest:** `XCTestCase`, `XCTAssert*`, `XCTestExpectation` + `wait(for:timeout:)` для legacy-колбэков.
 - **Swift Testing:** `@Test`, `#expect`, `#require`, параметризация; **предпочтительно** для новых таргетов на поддерживаемых версиях.
@@ -55,7 +81,14 @@
 
 ---
 
+</details>
+
 ## 5. Асинхронность без флейков
+
+_English summary — expand «По-русски» for full text (5. Асинхронность без флейков)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Плохо:** `sleep(1)`, `RunLoop.current.run`, «подождём пока» без явного условия.
 
@@ -69,14 +102,28 @@
 
 ---
 
+</details>
+
 ## 6. MainActor и UI-логика
+
+_English summary — expand «По-русски» for full text (6. MainActor и UI-логика)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Если SUT помечен **`@MainActor`**, тесты должны **`await MainActor.run`** / тест на **`MainActor`** (в зависимости от стиля), иначе **data race** в Swift 6.
 - **Не** смешивать произвольный `DispatchQueue` и `@MainActor` без явной модели.
 
 ---
 
+</details>
+
 ## 7. Вопросы–ответы (собес / самопроверка)
+
+_English summary — expand «По-русски» for full text (7. Вопросы–ответы (собес / самопроверка))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Q1. Чем unit отличается от integration?**  
 **A:** Unit — **быстро**, **без сети/диска**, **один модуль**; integration — **реальные** границы и окружение.
@@ -110,7 +157,14 @@
 
 ---
 
+</details>
+
 ## 8. Задачки (сделай сам, без готового кода)
+
+_English summary — expand «По-русски» for full text (8. Задачки (сделай сам, без готового кода))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Для каждой: **Arrange–Act–Assert**, **имя теста = сценарий**, **без sleep**.
 
@@ -127,7 +181,14 @@
 
 ---
 
+</details>
+
 ## 9. Мини-шаблоны (идеи кода, без комментариев внутри Swift)
+
+_English summary — expand «По-русски» for full text (9. Мини-шаблоны (идеи кода, без комментариев внутри Swift))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Протокол + Spy (суть):**
 
@@ -162,7 +223,14 @@ func test_refreshToken_success_incrementsCallCount() async throws {
 
 ---
 
+</details>
+
 ## 10. Антипаттерны (частые причины провала на собесе)
+
+_English summary — expand «По-русски» for full text (10. Антипаттерны (частые причины провала на собесе))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Тест **зависит от порядка** запуска других тестов.
 - **Глобальный синглтон** не сбрасывается между тестами.
@@ -173,7 +241,14 @@ func test_refreshToken_success_incrementsCallCount() async throws {
 
 ---
 
+</details>
+
 ## 11. Чеклист ревью тестов (как лид)
+
+_English summary — expand «По-русски» for full text (11. Чеклист ревью тестов (как лид))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - [ ] Имя теста читаетcя как **спецификация**.
 - [ ] Нет **sleep** и «магических» таймаутов без константы и причины.
@@ -185,7 +260,14 @@ func test_refreshToken_success_incrementsCallCount() async throws {
 
 ---
 
+</details>
+
 ## 12. Что читать дальше (официально)
+
+_English summary — expand «По-русски» for full text (12. Что читать дальше (официально))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - [Testing — Apple](https://developer.apple.com/documentation/xcode/testing)
 - [Swift Testing](https://developer.apple.com/documentation/testing) (если таргет позволяет)
@@ -194,3 +276,6 @@ func test_refreshToken_success_incrementsCallCount() async throws {
 ---
 
 **Версия:** 1.0 · **Язык материала:** RU · **Фокус:** unit + мышление сеньора.
+
+</details>
+

@@ -141,20 +141,19 @@ Protocol `P`:
 <!-- knowledge-cards-canonical:start -->
 
 ### Q7
-- **Question (RU):** **`any` P** vs **generics** (`T: P`) — когда что?
 - **Question (EN):** `any Protocol` vs generics?
-- **Answer (RU):** generic чаще быстрее и строже типизирован; existential (экзистенциальный тип) удобнее для абстракций, но может давать boxing (упаковка) и dispatch overhead (накладные расходы диспетчеризации).
-- **Answer (EN):** Generics are usually faster and more type-precise; `any` is flexible but can mean existential boxing and extra dispatch cost.
-- **Вводные данные:** здесь сравнивают не «протокол против дженерика», а **два способа абстрагироваться по типу**, когда уже есть **протокол** `P`.
-    - **Протокол (protocol):** контракт — какие свойства/методы должен иметь тип. Конкретные типы **conform** (подписываются под протокол). Сам по себе протокол — это не «размытая типизация»; размытость появляется, когда ты используешь значение как **«что угодно, что conforms к P»** — это как раз **`any P`** (existential / экзистенциальный тип).
-    - **Generic (обобщённый код):** параметр типа `T` (или несколько), часто с ограничением **`T: P`**. Для **каждого места вызова** компилятор подставляет **конкретный** тип (`String`, `MyModel`, …); один алгоритм работает для разных типов, но в этом месте программы тип **зафиксирован**. Это не «узкая специализация функционала» в бытовом смысле — это **одна реализация на множество типов**, при этом в точке использования тип **строгий**.
-    - **`any P` vs `T: P`:** с **`any P`** в рантайме может понадобиться **boxing** (упаковка «любого conformера» в одну форму) и **динамическая** диспетчеризация — гибко (например массив разнородных conformers). С **`T: P`** компилятор знает фактический тип `T` и может **специализировать** код — обычно **быстрее** и типобезопаснее на границах.
-    - **Частая ошибка:** думать, что «протокол = без строгой типизации», а «дженерики = уже». Наоборот: **generic как раз даёт строгость «какой именно тип здесь»**; **`any`** осознанно допускает «любой conforming тип» и платит за это.
-- **Устная заготовка (RU):**
 
-    1. Сравниваем **`T: P`** (generic) и **`any P`** (existential), не «протокол против дженерика».
-    2. Generic — конкретный тип на месте вызова, часто быстрее.
-    3. `any P` — «любой conforming тип», гибче, возможны boxing и лишний dispatch.
+- **Answer (EN):** Generics are usually faster and more type-precise; `any` is flexible but can mean existential boxing and extra dispatch cost.
+
+- **Вводные данные:** здесь сравнивают не «протокол против дженерика», а **два способа абстрагироваться по типу**, когда уже есть **протокол** `P`.
+
+    - **Протокол (protocol):** контракт — какие свойства/методы должен иметь тип. Конкретные типы **conform** (подписываются под протокол). Сам по себе протокол — это не «размытая типизация»; размытость появляется, когда ты используешь значение как **«что угодно, что conforms к P»** — это как раз **`any P`** (existential / экзистенциальный тип).
+
+    - **Generic (обобщённый код):** параметр типа `T` (или несколько), часто с ограничением **`T: P`**. Для **каждого места вызова** компилятор подставляет **конкретный** тип (`String`, `MyModel`, …); один алгоритм работает для разных типов, но в этом месте программы тип **зафиксирован**. Это не «узкая специализация функционала» в бытовом смысле — это **одна реализация на множество типов**, при этом в точке использования тип **строгий**.
+
+    - **`any P` vs `T: P`:** с **`any P`** в рантайме может понадобиться **boxing** (упаковка «любого conformера» в одну форму) и **динамическая** диспетчеризация — гибко (например массив разнородных conformers). С **`T: P`** компилятор знает фактический тип `T` и может **специализировать** код — обычно **быстрее** и типобезопаснее на границах.
+
+    - **Частая ошибка:** думать, что «протокол = без строгой типизации», а «дженерики = уже». Наоборот: **generic как раз даёт строгость «какой именно тип здесь»**; **`any`** осознанно допускает «любой conforming тип» и платит за это.
 
 - **Устная заготовка (EN):**
 
@@ -163,7 +162,9 @@ Protocol `P`:
     3. `any P` erases to “some conforming type” — flexible; can mean boxing and dynamic dispatch.
 
 - **Follow-up:** где осознанно выбираешь **`any`**?
+
 - **Follow-up answer:** когда нужна **одна сущность** или **heterogeneous collection** вроде **`[any P]`** (разные типы, все **conform** к одному `P`). Когда **public API** проще без второго **generic**-параметра или стыкуешься с уже **existential**-кодом. Когда **`associatedtype`**, **`opaque type`** / **`some P`** или размер типовой сигнатуры толкают к **type erasure** (обёртка / **`any`**) — полный разбор **`associatedtype`** в **Q8**. Когда **performance** не на **hot path** (см. **Q2**, follow-up) и важнее простота.
+
 - **Доп. информация (не свёрнуто в коротком Answer про `any` vs generic):** **dispatch** (**dispatch** / диспетчеризация — как рантайм или компилятор выбирает реализацию метода для конкретного типа) — типичное углубление после ответа про existential vs специализацию. Ниже — разводка, которую в основном **не раскрывают** одной фразой про boxing/overhead.
 
     - **Static dispatch** (**статическая диспетчеризация**): адрес вызываемой функции для **этого места вызова** известен компилятору — часто **прямой вызов** или даже **инлайн**. Нет поиска реализации в runtime. Типично: методы **`struct` / `enum`**, **`final class`**, **`private`** методы без полиморфизма, **специализированные generics** (`func f<T>(_: T)` при конкретном `T` на сайте вызова), часть вызовов после **devirtualization** (компилятор доказал фактический тип).
@@ -181,26 +182,38 @@ Protocol `P`:
     - **Оговорка:** реальный SIL/LLVM может оптимизировать границы; на собесе часто просят именно разводку ниже.
 
     - **Тезисно для собеседования:**
+
         - **Static vs dynamic:** **static** — какую функцию звать известно при компиляции для этого места вызова (прямой вызов / инлайн, без поиска в runtime). **dynamic** — реализацию выбирают в **runtime** по фактическому типу (косвенность: таблица / сообщение).
+
         - **Vtable vs witness:** **vtable** — таблица методов **`class`** и наследования; **`override`** подменяет слоты у подкласса. **Witness table** — таблица «конкретный тип ↔ реализации требований **протокола**»; вызовы через **`any P`** идут через неё.
+
         - **`final`:** запрещает **наследование класса** и **override** методов → компилятор может **static dispatch** и оптимизации; сигнал, что полиморфизм через подклассы не нужен.
 
-### Q8
-- **Question (RU):** зачем в протоколе **`associatedtype`** (**associated type**, placeholder типа; конкретику задаёт каждый **conforming** тип)?
-- **Question (EN):** Why do protocols use **`associatedtype`** (**associated type** — type placeholder declared in the protocol; each conforming type supplies the concrete `typealias` / inference)?
-- **Answer (RU):** связанный тип — placeholder в протоколе; каждый conforming тип фиксирует свои типы данных под контракт — без одного захардкоженного конкретного типа в самом протоколе описывается **семейство** типов.
 
-    Позволяет протоколу описывать семейство типов без фиксированного конкретного типа (примеры: `Element`, `Key`/`Value` у коллекций).
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **`any` P** vs **generics** (`T: P`) — когда что?
+
+- **Answer (RU):** generic чаще быстрее и строже типизирован; existential (экзистенциальный тип) удобнее для абстракций, но может давать boxing (упаковка) и dispatch overhead (накладные расходы диспетчеризации).
+
+- **Устная заготовка (RU):**
+
+    1. Сравниваем **`T: P`** (generic) и **`any P`** (existential), не «протокол против дженерика».
+    2. Generic — конкретный тип на месте вызова, часто быстрее.
+    3. `any P` — «любой conforming тип», гибче, возможны boxing и лишний dispatch.
+
+</details>
+### Q8
+- **Question (EN):** Why do protocols use **`associatedtype`** (**associated type** — type placeholder declared in the protocol; each conforming type supplies the concrete `typealias` / inference)?
+
 - **Answer (EN):** An associated type is a protocol-level placeholder; each conforming type supplies its concrete associated types — the protocol describes a **family** without hard-coding one concrete type.
 
     It lets a protocol describe that family without fixing one concrete type upfront (e.g. collection element/key types).
-- **Примечание:** в **Q7** (follow-up про **`any`**) **`associatedtype`** уже назван как типичная причина упростить тип через **`any`** / **type erasure**; в этом блоке ниже — follow-up про **type erasure** и устные заготовки.
-- **Частая ошибка:** **`associatedtype`** — не «в **runtime** система подставит другой тип». Связанный тип фиксируется для каждого conforming типа на этапе **компиляции**; гибкость — в **семействе** типов без одного захардкоженного типа в протоколе. Динамика «любой conforming тип» ближе к **`any P`** и **type erasure**, не к **`associatedtype`** как источнику рантайм-подстановки.
-- **Устная заготовка (RU):**
 
-    1. **`associatedtype`** — имя типа внутри протокола; конкретику задаёт каждый conforming тип.
-    2. Нужен, чтобы описать API вроде «элемент коллекции связан с типом коллекции», без привязки к одному классу.
-    3. Без фиксированного конкретного типа протокол описывает **семейство** типов, а не один размер в памяти.
+- **Примечание:** в **Q7** (follow-up про **`any`**) **`associatedtype`** уже назван как типичная причина упростить тип через **`any`** / **type erasure**; в этом блоке ниже — follow-up про **type erasure** и устные заготовки.
+
+- **Частая ошибка:** **`associatedtype`** — не «в **runtime** система подставит другой тип». Связанный тип фиксируется для каждого conforming типа на этапе **компиляции**; гибкость — в **семействе** типов без одного захардкоженного типа в протоколе. Динамика «любой conforming тип» ближе к **`any P`** и **type erasure**, не к **`associatedtype`** как источнику рантайм-подстановки.
 
 - **Устная заготовка (EN):**
 
@@ -210,7 +223,42 @@ Protocol `P`:
 
 - **Follow-up:** почему такой протокол нельзя хранить как обычное значение без **type erasure** (стирание типа: один тип API скрывает разные **conforming** типы)?
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** зачем в протоколе **`associatedtype`** (**associated type**, placeholder типа; конкретику задаёт каждый **conforming** тип)?
+
+- **Answer (RU):** связанный тип — placeholder в протоколе; каждый conforming тип фиксирует свои типы данных под контракт — без одного захардкоженного конкретного типа в самом протоколе описывается **семейство** типов.
+
+    Позволяет протоколу описывать семейство типов без фиксированного конкретного типа (примеры: `Element`, `Key`/`Value` у коллекций).
+
+- **Устная заготовка (RU):**
+
+    1. **`associatedtype`** — имя типа внутри протокола; конкретику задаёт каждый conforming тип.
+    2. Нужен, чтобы описать API вроде «элемент коллекции связан с типом коллекции», без привязки к одному классу.
+    3. Без фиксированного конкретного типа протокол описывает **семейство** типов, а не один размер в памяти.
+
+</details>
 ### Q9
+- **Question (EN):** Why does this `some Equatable` function fail to compile, and how does switching to `any` fix it?
+
+- **Answer (EN):** `some P` opaque return must resolve to **one** concrete type known to the compiler across all return paths. `Int` and `String` both conform to `Equatable` but are different types, so the function can’t pick one hidden concrete type → compile error. `any Equatable` is an existential box that can hold any conforming type at runtime, so it accepts both branches at the cost of boxing and dynamic dispatch.
+
+- **Устная заготовка (EN):**
+
+    1. `some P` — one fixed hidden concrete type per function.
+    2. `any P` — existential box, different branches may return different concretes.
+    3. Mnemonic: `some` is hide; `any` is erase.
+
+- **Follow-up:** Когда осознанно выбираешь `some`, а когда `any`?
+
+- **Follow-up answer:** **`some`** — когда фактически возвращается один конкретный тип, и хочется скрыть его в публичном API (классика — SwiftUI `body: some View`, фабрики последовательностей `some Sequence<T>`). Это даёт компилятору шанс на специализацию и снимает overhead existential. **`any`** — когда **нужно** хранить/передавать **разные** реализации под одной переменной (`[any Drawable]`, `var current: any State`), или когда упрощение типов в публичном API важнее микро-перформанса вне hot path.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Question (RU):** Почему такой код **не компилируется**, и как починить через `any`?
     ```swift
     func make(_ flag: Bool) -> some Equatable {
@@ -218,7 +266,7 @@ Protocol `P`:
         return "text"
     }
     ```
-- **Question (EN):** Why does this `some Equatable` function fail to compile, and how does switching to `any` fix it?
+
 - **Answer (RU):** Зацепка: **`some P` фиксирует один скрытый конкретный тип на всю функцию; `any P` — existential-контейнер, в котором конкретный тип может быть разным**.
 
     `some Equatable` означает: «компилятор знает один **конкретный** тип, который я скрываю снаружи». Этот тип должен быть **одинаков на всех ветках возврата**. `Int` и `String` оба conform to `Equatable`, но это **два разных** типа — поэтому `some Equatable` тут собрать нельзя. Допустимо только что-то вроде:
@@ -239,27 +287,14 @@ Protocol `P`:
 
     Потому что `any Equatable` — **existential container**: одна и та же переменная может в рантайме хранить значение **любого** типа, который conforms to `Equatable`. Цена — **boxing** и динамическая диспетчеризация по witness table.
 
-- **Answer (EN):** `some P` opaque return must resolve to **one** concrete type known to the compiler across all return paths. `Int` and `String` both conform to `Equatable` but are different types, so the function can’t pick one hidden concrete type → compile error. `any Equatable` is an existential box that can hold any conforming type at runtime, so it accepts both branches at the cost of boxing and dynamic dispatch.
-
 - **Устная заготовка (RU):**
 
     1. `some P` = «один конкретный скрытый тип», тип фиксирован для функции.
     2. `any P` = existential, разные ветки могут возвращать разные типы.
     3. Ассоциация: `some` = «знаю тип, скрываю»; `any` = «тип заранее неизвестен».
 
-- **Устная заготовка (EN):**
-
-    1. `some P` — one fixed hidden concrete type per function.
-    2. `any P` — existential box, different branches may return different concretes.
-    3. Mnemonic: `some` is hide; `any` is erase.
-
-- **Follow-up:** Когда осознанно выбираешь `some`, а когда `any`?
-- **Follow-up answer:** **`some`** — когда фактически возвращается один конкретный тип, и хочется скрыть его в публичном API (классика — SwiftUI `body: some View`, фабрики последовательностей `some Sequence<T>`). Это даёт компилятору шанс на специализацию и снимает overhead existential. **`any`** — когда **нужно** хранить/передавать **разные** реализации под одной переменной (`[any Drawable]`, `var current: any State`), или когда упрощение типов в публичном API важнее микро-перформанса вне hot path.
-
-
+</details>
 ### Q10
-- **Question (RU):** В чём разница между **opaque type** и **conforming type**? Это противоположности?
-
     - **Conforming type** — это любой реальный тип, который **реализует** протокол. `Int`, `String`, `User: Equatable` — все они conforming types для `Equatable`. Это просто факт «тип соответствует протоколу».
 
     Связка между ними:
@@ -276,17 +311,26 @@ Protocol `P`:
 
 - **Answer (EN):** They’re orthogonal. A **conforming type** is any concrete type that implements a protocol (`Int : Equatable`, `VStack<Text> : View`). An **opaque type** (`some P`) is a syntax that returns one concrete conforming type while hiding which one from callers — the compiler still knows it. The real opposite of opaque is the **existential** (`any P`), which also hides the concrete type but allows different runtime types behind one variable.
 
-- **Устная заготовка (RU):**
-
-    1. Conforming = «тип реализует протокол» (факт о типе).
-    3. Противоположность opaque — **existential** (`any`), не «conforming».
-
 - **Устная заготовка (EN):**
 
     1. Conforming type — a real type that implements the protocol.
 
 - **Follow-up:** Что у `some View` в SwiftUI «под капотом» и почему это важно для перфа?
+
 - **Follow-up answer:** Реальный возвращаемый тип у `body: some View` — раздутая дженерик-структура вроде `_ConditionalContent<…, …>`/`TupleView<…>`/`ModifiedContent<…, …>`. SwiftUI **сравнивает** структуру и решает, что переоснасть. Если бы `body` возвращал `any View`, диффер не мог бы статически опираться на структуру — было бы хуже и для перфа, и для предсказуемости перерисовок.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** В чём разница между **opaque type** и **conforming type**? Это противоположности?
+
+- **Устная заготовка (RU):**
+
+    1. Conforming = «тип реализует протокол» (факт о типе).
+    3. Противоположность opaque — **existential** (`any`), не «conforming».
+
+</details>
 
 - **Доп. информация:** Поэтому правило в SwiftUI: **возвращай `some View` из `body`, не `any View`**. `any View` уместен, когда тебе нужно действительно гетерогенно хранить view-значения (редкий случай), и ты сознательно платишь за existential.
 

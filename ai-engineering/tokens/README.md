@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Tokens** are the atomic units models read and write — not words, but **subword pieces** produced by a **tokenizer** (often BPE). Token count drives **cost**, **latency**, and whether content fits the **context window**. Interviews expect you to distinguish **input vs output tokens**, explain why the same sentence tokenizes differently across languages, and optimize prompts for mobile (shorter system prompts, fewer few-shot examples). Context limits and truncation strategies live in [03 · Context Window](../context-window/README.md).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Tokens** — атомарные единицы для модели (subword, не слова). Влияют на стоимость, latency и размер context window.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -86,35 +97,66 @@
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Что такое token и почему не «слово»?
 - **Question (EN):** What is a token and why isn't it a word?
-- **Answer (RU):** **Token** — subword unit из vocabulary модели после **tokenization**. Частые слова = 1 token; редкие разбиваются (`"internationalization"` → несколько pieces). Модель оперирует **integer IDs**, не Unicode строками напрямую.
+
 - **Answer (EN):** A token is a subword unit from the model vocabulary after tokenization. Frequent words map to one token; rare words split into multiple pieces. The model operates on integer IDs, not raw strings.
+
 - **Follow-up:** почему JSON «дороже» в tokens?
+
 - **Follow-up answer:** Скобки, кавычки, ключи — отдельные tokens; pretty-printed JSON с whitespace ещё хуже. Minify + schema в system, не paste огромного blob в user message.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое token и почему не «слово»?
+
+- **Answer (RU):** **Token** — subword unit из vocabulary модели после **tokenization**. Частые слова = 1 token; редкие разбиваются (`"internationalization"` → несколько pieces). Модель оперирует **integer IDs**, не Unicode строками напрямую.
+
+</details>
 ### Q2
-- **Question (RU):** BPE — идея за 30 секунд?
 - **Question (EN):** BPE in 30 seconds?
-- **Answer (RU):** **Byte Pair Encoding:** начать с символов, iteratively **merge** самые частые пары до target vocabulary size. Результат — subwords: `"ing"`, `"tion"` как отдельные tokens. Баланс между character-level и word-level.
+
 - **Answer (EN):** Start with characters, repeatedly merge the most frequent pairs until vocabulary size is reached. Produces subwords like common suffixes as single tokens — a balance between characters and whole words.
+
 - **Follow-up:** один tokenizer для всех моделей?
+
 - **Follow-up answer:** **Нет** — каждая модель/семейство имеет свой vocabulary и tokenizer. Нельзя считать tokens модели A по tokenizer модели B для billing/limit checks.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** BPE — идея за 30 секунд?
+
+- **Answer (RU):** **Byte Pair Encoding:** начать с символов, iteratively **merge** самые частые пары до target vocabulary size. Результат — subwords: `"ing"`, `"tion"` как отдельные tokens. Баланс между character-level и word-level.
+
+</details>
 ### Q3
-- **Question (RU):** Input vs output tokens — зачем различать?
 - **Question (EN):** Why distinguish input vs output tokens?
-- **Answer (RU):** **Billing:** cloud APIs часто разные rates. **Latency:** input = prefill (parallel); output = decode (sequential, token-by-token). **Limits:** max output отдельно от context size. Production: cap `maximumResponseTokens`, мониторить оба.
+
 - **Answer (EN):** Cloud APIs often price them differently. Input drives prefill cost; output drives sequential decode latency. Cap maximum response tokens and monitor both in production.
+
 - **Follow-up:** что растёт быстрее в long chat — input или output?
+
 - **Follow-up answer:** **Input** (history) растёт каждый turn и eventually hits context window — см. truncation/summary в context-window topic. Output per turn controllable лимитом.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Input vs output tokens — зачем различать?
+
+- **Answer (RU):** **Billing:** cloud APIs часто разные rates. **Latency:** input = prefill (parallel); output = decode (sequential, token-by-token). **Limits:** max output отдельно от context size. Production: cap `maximumResponseTokens`, мониторить оба.
+
+</details>
 ### Q4
-- **Question (RU):** Multilingual — impact на mobile LLM?
 - **Question (EN):** Multilingual impact on mobile LLM?
-- **Answer (RU):** Non-Latin и low-resource языки часто **больше tokens на символ** → меньше content в том же context window, выше latency/cost. Тестировать реальные UI strings; короткие instructions; не дублировать few-shot на каждый locale; on-device — особенно tight budget.
+
 - **Answer (EN):** Non-Latin scripts often need more tokens per character, so the same context window holds less content with higher cost and latency. Test real UI strings per locale and keep prompts concise.
+
 - **Follow-up:** Apple on-device model — один tokenizer для всех языков?
+
 - **Follow-up answer:** Модель multilingual, но token efficiency **не равна** across languages — проверять transcript size на target locales, не только English QA.
 
 <!-- knowledge-cards-canonical:end -->
@@ -126,3 +168,13 @@
 **AI Engineering:** [Track overview](../README.md) · [← 01 · LLM Basics](../llm-basics/) · [03 · Context Window →](../context-window/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Multilingual — impact на mobile LLM?
+
+- **Answer (RU):** Non-Latin и low-resource языки часто **больше tokens на символ** → меньше content в том же context window, выше latency/cost. Тестировать реальные UI strings; короткие instructions; не дублировать few-shot на каждый locale; on-device — особенно tight budget.
+
+</details>

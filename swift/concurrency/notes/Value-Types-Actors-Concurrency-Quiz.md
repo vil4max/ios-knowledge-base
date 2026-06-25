@@ -10,6 +10,11 @@
 
 ## 1. Мутация через копию массива (class vs struct)
 
+_English summary — expand «По-русски» for full text (1. Мутация через копию массива (class vs struct))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 ### Вопрос
 
 ```swift
@@ -116,7 +121,14 @@ entity = ptr₂, entity.id = "e"
 
 ---
 
+</details>
+
 ## 2. Actor reentrancy и `async let`
+
+_English summary — expand «По-русски» for full text (2. Actor reentrancy и `async let`)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Вопрос
 
@@ -206,7 +218,14 @@ Serial queue без `await` внутри блока держит очередь 
 
 ---
 
+</details>
+
 ## 3. Производительность: 10 000 маленьких моделей — struct vs class в массиве
+
+_English summary — expand «По-русски» for full text (3. Производительность: 10 000 маленьких моделей — struct vs class в массиве)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Вопрос
 
@@ -256,7 +275,14 @@ Serial queue без `await` внутри блока держит очередь 
 
 ---
 
+</details>
+
 ## 4. `@MainActor` и вызов из non-isolated `async`
+
+_English summary — expand «По-русски» for full text (4. `@MainActor` и вызов из non-isolated `async`)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Вопрос
 
@@ -328,7 +354,14 @@ func fetchData() async {
 
 ---
 
+</details>
+
 ## 5. Что такое actor и какую проблему решает
+
+_English summary — expand «По-русски» for full text (5. Что такое actor и какую проблему решает)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Краткий ответ (1–2 предложения)
 
@@ -380,7 +413,14 @@ func fetchData() async {
 
 ---
 
+</details>
+
 ## Шпаргалка одной строкой
+
+_English summary — expand «По-русски» for full text (Шпаргалка одной строкой)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Тема | Запомнить |
 |------|-----------|
@@ -393,7 +433,14 @@ func fetchData() async {
 
 ---
 
+</details>
+
 ## 6. Value type vs stack vs heap (interview)
+
+_English summary — expand «По-русски» for full text (6. Value type vs stack vs heap (interview))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Вопрос
 
@@ -432,7 +479,14 @@ func fetchData() async {
 
 ---
 
+</details>
+
 ## 7. Быстрые ответы (flashcards)
+
+_English summary — expand «По-русски» for full text (7. Быстрые ответы (flashcards))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Вопрос | Короткий ответ | Подробнее |
 |--------|----------------|-----------|
@@ -444,7 +498,17 @@ func fetchData() async {
 
 ---
 
+</details>
+
 ## TODO (draft)
+
+_English summary — expand «По-русски» for full text (TODO (draft))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - [ ] Добавить playground с runnable примерами (Q1 array copy, Q2 counter)
 - [ ] Дополнительные вопросы: `Sendable`, `nonisolated`, deadlock двух акторов, bank transfer reentrancy
+
+</details>
+

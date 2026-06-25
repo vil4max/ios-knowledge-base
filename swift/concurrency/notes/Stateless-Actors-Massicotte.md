@@ -1,10 +1,15 @@
 # Stateless Actors (Matt Massicotte)
 
-**Источник:** [Stateless Actors](https://www.massicotte.org/stateless-actors/) — [Matt Massicotte](https://www.massicotte.org/), май 2026. Связанные темы: [Approachable Swift Concurrency](notes/Approachable-Swift-Concurrency-Site-RU.md), `@concurrent`, custom executors.
+**Источник:** [Stateless Actors](https://www.massicotte.org/stateless-actors/) — [Matt Massicotte](https://www.massicotte.org/), май 2026. Связанные темы: [Approachable Swift Concurrency](notes/Approachable-Swift-Concurrency-Site.md), `@concurrent`, custom executors.
 
 ---
 
 ## Главный вопрос
+
+_English summary — expand «По-русски» for full text (Главный вопрос)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Если **actor** защищает **mutable state**, имеет ли смысл **actor без свойств**?
 
@@ -12,7 +17,14 @@
 
 ---
 
+</details>
+
 ## 1. «Stateless» NetworkClient-style actor
+
+_English summary — expand «По-русски» for full text (1. «Stateless» NetworkClient-style actor)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```swift
 actor NetworkClient {
@@ -54,7 +66,14 @@ struct NetworkClient: Sendable {
 
 ---
 
+</details>
+
 ## 2. `@globalActor` BackgroundActor — антипаттерн
+
+_English summary — expand «По-русски» for full text (2. `@globalActor` BackgroundActor — антипаттерн)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```swift
 @globalActor
@@ -74,7 +93,14 @@ Task { @BackgroundActor in ... }
 
 ---
 
+</details>
+
 ## 3. Custom executor actor (легитимный «stateless»)
+
+_English summary — expand «По-русски» for full text (3. Custom executor actor (легитимный «stateless»))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Actor как **мост** к чужой системе очередей — основной use case **custom serial executors**:
 
@@ -97,7 +123,14 @@ actor LandingSite {
 
 ---
 
+</details>
+
 ## 4. Файловая система = внешнее state
+
+_English summary — expand «По-русски» for full text (4. Файловая система = внешнее state)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 On-disk cache / файлы — **state вне процесса**, невидимое компилятору. Actor сериализует доступ → меньше порчи файлов при concurrent writes.
 
@@ -109,7 +142,14 @@ On-disk cache / файлы — **state вне процесса**, невидим
 
 ---
 
+</details>
+
 ## 5. First rule of actors (для собеса)
+
+_English summary — expand «По-русски» for full text (5. First rule of actors (для собеса))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 > Actors over-used. Как любой примитив синхронизации — **объясни, зачем он нужен**.
 
@@ -129,8 +169,18 @@ On-disk cache / файлы — **state вне процесса**, невидим
 
 ---
 
+</details>
+
 ## Связь с roadmap
+
+_English summary — expand «По-русски» for full text (Связь с roadmap)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Q12–Q13 — actor isolation, reentrancy
 - Q49 в `Swift-Concurrency.md` — карточка по этой статье
 - Senior: custom executors (Iosiq snapshot — «экзотика», но на собесе senior+ спрашивают сценарии)
+
+</details>
+

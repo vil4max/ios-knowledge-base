@@ -9,11 +9,27 @@
 
 ## За 30 секунд
 
+
+
+
+
+_English summary — expand «По-русски» for the full Russian text._
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Обычный SwiftUI пересчитывает `body`, когда меняется **state**. **`TimelineView`** пересчитывает content closure по **расписанию** — часы, секундомер, пульсирующий loader, фон без `@State` для фазы анимации. Closure получает **`TimelineView.Context`**: `date` (время текущего тика) и **`cadence`** (как часто система реально обновляет UI). Для **обновления данных** и фоновой логики — **`Timer`** / **`Task` + sleep**; для **отображения, зависящего от времени** — `TimelineView`.
 
 ---
 
+</details>
+
+
+
 ## Поток: schedule → context → view
+
+
 
 ```mermaid
 flowchart LR
@@ -26,6 +42,11 @@ flowchart LR
 ---
 
 ## Концепты
+
+_English summary — expand «По-русски» for full text (Концепты)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### 1) Базовый API
 
@@ -99,7 +120,14 @@ TimelineView(.animation) { context in
 
 ---
 
+</details>
+
 ## Best practices & mistakes
+
+_English summary — expand «По-русски» for full text (Best practices & mistakes)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | ✅ Делай | ❌ Не делай |
 |----------|------------|
@@ -111,7 +139,14 @@ TimelineView(.animation) { context in
 
 ---
 
+</details>
+
 ## Карточки знаний (Q&A)
+
+_English summary — expand «По-русски» for full text (Карточки знаний (Q&A))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Q: `TimelineView` vs `Timer` — когда что?
 
@@ -131,7 +166,11 @@ TimelineView(.animation) { context in
 
 ---
 
+</details>
+
 ## Apple docs
+
+
 
 - [TimelineView](https://developer.apple.com/documentation/swiftui/timelineview)
 - [TimelineSchedule](https://developer.apple.com/documentation/swiftui/timelineschedule)
@@ -143,6 +182,8 @@ TimelineView(.animation) { context in
 ---
 
 ## Связь с базой
+
+
 
 - [SwiftUI README](../README.md) — Q-card TimelineView
 - [TimelineViewDemo.playground](../TimelineViewDemo.playground) — live preview

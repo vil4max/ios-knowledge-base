@@ -2,17 +2,30 @@
 
 ## За 30 секунд
 
+
 **Protocol** in Swift is a **contract**: it declares what properties and methods a type must provide, without prescribing how. Classes, structs, and enums can **conform** to one or many protocols. **Protocol-oriented programming (POP)** builds architecture on composition and extensions instead of deep class hierarchies — delegates, dependency injection, and test doubles all lean on protocols.
 
 Mastering protocols is non-negotiable for every iOS developer: if you truly understand POP, half of your architecture discussions become easier.
 
 | | |
+
 |---|---|
+
 | **Уровни** | Junior, Middle |
-| **Трек** | Язык |
+
 | **Must** | Top 10 interview questions — basics before `some`/`any` in [Types & Generics](../types-generics/README.md) |
 
 **Related topics:** [Memory & ARC](../memory-arc/README.md) (delegates & retain cycles), [Types & Generics](../types-generics/README.md) (`some`/`any`, `associatedtype`).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+| **Трек** | Язык |
+
+</details>
+
+
 
 ## Структура топика
 

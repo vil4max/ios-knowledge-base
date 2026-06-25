@@ -10,9 +10,19 @@
 - [String Catalogs](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog) — `.xcstrings`, pluralization, variants.
 - [Human Interface Guidelines — Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)
 
-## In 30 seconds
+## За 30 секунд
 
 **Accessibility** makes UI usable with VoiceOver, Dynamic Type, Reduce Motion, and other settings—via **labels**, **traits**, **hints**, and logical **focus order**. SwiftUI: `.accessibilityLabel`, `.accessibilityAddTraits`, `accessibilityElement(children:)`; UIKit: `accessibilityLabel` / `accessibilityTraits`. **Localization** externalizes copy; **String Catalogs** (`.xcstrings`) centralize strings, plurals, and device variations with Xcode review tools. Test with Accessibility Inspector and VoiceOver on device—not only after release.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Accessibility**: VoiceOver, Dynamic Type, Reduce Motion, контраст, hit targets. `accessibilityLabel`, traits, группировка. HIG и тестирование с VoiceOver.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -85,25 +95,58 @@ Developer adds key in String Catalog
 ## Interview Q&A (Knowledge cards)
 
 ### Q1
-- **Question (RU):** Чем отличаются accessibility label, hint и trait?
 - **Question (EN):** What is the difference between accessibility label, hint, and trait?
-- **Answer (RU):** **Label** — что это (имя элемента). **Trait** — роль/состояние (кнопка, заголовок, selected). **Hint** — что произойдёт при действии; используй редко, если label неочевиден. Плохой паттерн: дублировать visible text в hint. Декоративные картинки — `accessibilityHidden(true)`.
+
 - **Answer (EN):** Label names the element; traits describe role/state; hints explain action outcomes sparingly. Hide decorative elements from VoiceOver.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Чем отличаются accessibility label, hint и trait?
+
+- **Answer (RU):** **Label** — что это (имя элемента). **Trait** — роль/состояние (кнопка, заголовок, selected). **Hint** — что произойдёт при действии; используй редко, если label неочевиден. Плохой паттерн: дублировать visible text в hint. Декоративные картинки — `accessibilityHidden(true)`.
+
+</details>
 ### Q2
-- **Question (RU):** Как поддержать Dynamic Type без поломки layout?
 - **Question (EN):** How do you support Dynamic Type without breaking layout?
-- **Answer (RU):** Системные text styles / `UIFontMetrics`, multiline labels, **Auto Layout** или SwiftUI stacks с приоритетами, избегать фиксированных высот для текста. Проверять **largest content size** в Simulator и на device. Touch targets ≥ 44pt; при необходимости scroll. Snapshot только как дополнение — живой VoiceOver важнее.
+
 - **Answer (EN):** Use scalable styles, flexible constraints, test at largest sizes, keep hit areas ≥44pt, allow scrolling when content grows.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как поддержать Dynamic Type без поломки layout?
+
+- **Answer (RU):** Системные text styles / `UIFontMetrics`, multiline labels, **Auto Layout** или SwiftUI stacks с приоритетами, избегать фиксированных высот для текста. Проверять **largest content size** в Simulator и на device. Touch targets ≥ 44pt; при необходимости scroll. Snapshot только как дополнение — живой VoiceOver важнее.
+
+</details>
 ### Q3
-- **Question (RU):** String Catalog vs legacy `Localizable.strings`?
 - **Question (EN):** String Catalog vs legacy `Localizable.strings`?
-- **Answer (RU):** **String Catalog** (`.xcstrings`) — единый файл в Xcode: plurals, variants, comments для переводчиков, validation, sync с code. Legacy strings работают, но хуже для plural rules и review. Новые проекты — catalog-first; миграция постепенная через Xcode import.
+
 - **Answer (EN):** String Catalogs centralize plurals, variants, and translator comments with Xcode tooling—preferred for new work over scattered `.strings` files.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** String Catalog vs legacy `Localizable.strings`?
+
+- **Answer (RU):** **String Catalog** (`.xcstrings`) — единый файл в Xcode: plurals, variants, comments для переводчиков, validation, sync с code. Legacy strings работают, но хуже для plural rules и review. Новые проекты — catalog-first; миграция постепенная через Xcode import.
+
+</details>
 ### Q4
-- **Question (RU):** Как тестировать accessibility в CI?
 - **Question (EN):** How do you test accessibility in CI?
-- **Answer (RU):** **Accessibility Inspector** audits (some rules automatable), UI tests asserting `accessibilityLabel`/identifiers on critical controls, snapshot of accessibility tree via `XCUIElement` attributes. VoiceOver — ручной/regression checklist на release. В SwiftUI проверять grouped elements не ломают focus order после рефакторинга.
+
 - **Answer (EN):** Combine Inspector audits, XCUITest assertions on labels/identifiers, and manual VoiceOver passes on key flows; automate stable checks in CI, not full spoken UX.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как тестировать accessibility в CI?
+
+- **Answer (RU):** **Accessibility Inspector** audits (some rules automatable), UI tests asserting `accessibilityLabel`/identifiers on critical controls, snapshot of accessibility tree via `XCUIElement` attributes. VoiceOver — ручной/regression checklist на release. В SwiftUI проверять grouped elements не ломают focus order после рефакторинга.
+
+</details>

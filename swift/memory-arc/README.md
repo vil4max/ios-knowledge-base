@@ -388,14 +388,9 @@ Live → (strong == 0) → Deiniting [deinit]
 <!-- knowledge-cards-canonical:start -->
 
 ### Q3
-- **Question (RU):** ARC работает на этапе компиляции или выполнения?
 - **Question (EN):** Does ARC work at compile time or at runtime?
-- **Answer (RU):** На **обоих**. **Compile-time:** компилятор вставляет и может оптимизировать **retain/release** там, где из времени жизни ссылок и **scope** следуют точки учёта — присваивания, вход/выход из scope, аргументы вызовов, capture list. **Runtime:** эти вызовы меняют **strong reference count**; при **`0`** вызывается **`deinit`** и память освобождается.
-- **Answer (EN):** Both stages. At **compile time** the compiler inserts and may optimize **retain/release** where lifetimes and scope dictate. At **runtime** those updates change the strong refcount; at zero the object is deallocated.
-- **Устная заготовка (RU):**
 
-    2. Compile-time: компилятор вставляет и может оптимизировать retain/release в точках, которые следуют из времени жизни ссылок и scope — присваивания, вход/выход из scope, аргументы вызовов.
-    3. Runtime: эти вызовы меняют strong reference count; при нуле объект деаллоцируется (`deinit`).
+- **Answer (EN):** Both stages. At **compile time** the compiler inserts and may optimize **retain/release** where lifetimes and scope dictate. At **runtime** those updates change the strong refcount; at zero the object is deallocated.
 
 - **Устная заготовка (EN):**
 
@@ -403,17 +398,27 @@ Live → (strong == 0) → Deiniting [deinit]
     3. At runtime those updates change the strong reference count; at zero the object is deallocated.
 
 - **Follow-up:** где появляются скрытые **retain** / **release** в **closure capture list** (списке захвата замыкания)?
+
 - **Follow-up answer:** при захвате **reference types** (ссылочных типов) по умолчанию **strong capture** (сильный захват): компилятор генерирует **retain** при формировании замыкания и парный **release** при его освобождении — не пишется руками, но эквивалентно удержанию каждого захваченного объекта. Типично: захват **`self`** или свойств в списке, вложенные замыкания, передача **escaping closure** (замыкания, уходящего из **scope**). Отсюда цикл **`self` → closure → `self`**, если не ослабить захват.
 
-### Q4
-- **Question (RU):** `weak` vs `unowned`?
-- **Question (EN):** What is the difference between `weak` and `unowned` references?
-- **Answer (RU):** `weak` — optional, после деаллокации объекта становится `nil`; не продлевает lifetime объекта как strong reference. `unowned` — non-optional; предполагает lifetime guarantee (гарантия времени жизни): объект переживёт эту ссылку; иначе риск dangling / crash.
-- **Answer (EN):** `weak` is optional and becomes `nil` after deallocation; it does not keep the referenced object alive like a strong reference. `unowned` is non-optional and assumes the referenced instance **outlives** this reference (lifetime guarantee); breaking that assumption is a dangling reference / crash risk.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** ARC работает на этапе компиляции или выполнения?
+
+- **Answer (RU):** На **обоих**. **Compile-time:** компилятор вставляет и может оптимизировать **retain/release** там, где из времени жизни ссылок и **scope** следуют точки учёта — присваивания, вход/выход из scope, аргументы вызовов, capture list. **Runtime:** эти вызовы меняют **strong reference count**; при **`0`** вызывается **`deinit`** и память освобождается.
+
 - **Устная заготовка (RU):**
 
-    1. `weak` — optional, может стать `nil`; не удерживает объект как strong.
-    2. `unowned` — non-optional; нужна гарантия, что объект переживёт использование ссылки.
+    2. Compile-time: компилятор вставляет и может оптимизировать retain/release в точках, которые следуют из времени жизни ссылок и scope — присваивания, вход/выход из scope, аргументы вызовов.
+    3. Runtime: эти вызовы меняют strong reference count; при нуле объект деаллоцируется (`deinit`).
+
+</details>
+### Q4
+- **Question (EN):** What is the difference between `weak` and `unowned` references?
+
+- **Answer (EN):** `weak` is optional and becomes `nil` after deallocation; it does not keep the referenced object alive like a strong reference. `unowned` is non-optional and assumes the referenced instance **outlives** this reference (lifetime guarantee); breaking that assumption is a dangling reference / crash risk.
 
 - **Устная заготовка (EN):**
 
@@ -421,17 +426,27 @@ Live → (strong == 0) → Deiniting [deinit]
     2. `unowned` is non-optional and needs a guarantee the referenced object outlives this reference.
 
 - **Follow-up:** **production**-кейс, где **`unowned`** безопасен.
+
 - **Follow-up answer:** когда **lifetime** (время жизни) зависимого однозначно короче владельца ссылки: например child → **unowned** parent и parent гарантированно переживает child; обратная ссылка на delegate/storage, где владелец **всегда** живёт дольше замыкания; иногда `[unowned self]` в **синхронном** коде, где замыкание не может выполниться после деаллокации `self`. Небезопасно при async/отложенных completion без жёсткой модели владения — там по умолчанию `weak`.
 
-### Q5
-- **Question (RU):** как ловишь **retain cycle** (цикл удержания) в **closure** (замыкании)?
-- **Question (EN):** How do you catch retain cycles in closures?
-- **Answer (RU):** типичный цикл `self -> closure -> self` (object держит closure, closure держит `self` по strong capture). Разрыв: capture list (список захвата) — часто `[weak self]` / `[unowned self]` + `guard`, либо явно не захватывать `self` сильно; иначе перестройка ownership graph (граф владения).
-- **Answer (EN):** Classic pattern is **self → closure → self** (the object holds the closure; the closure strongly captures `self`). Break it with a **capture list** — often `[weak self]` or `[unowned self]` plus optional binding — or avoid a strong `self` capture; alternatively redesign ownership.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** `weak` vs `unowned`?
+
+- **Answer (RU):** `weak` — optional, после деаллокации объекта становится `nil`; не продлевает lifetime объекта как strong reference. `unowned` — non-optional; предполагает lifetime guarantee (гарантия времени жизни): объект переживёт эту ссылку; иначе риск dangling / crash.
+
 - **Устная заготовка (RU):**
 
-    1. Цикл: объект держит замыкание, замыкание держит `self`.
-    2. Лечение: capture list — чаще `[weak self]`; или перестроить владение.
+    1. `weak` — optional, может стать `nil`; не удерживает объект как strong.
+    2. `unowned` — non-optional; нужна гарантия, что объект переживёт использование ссылки.
+
+</details>
+### Q5
+- **Question (EN):** How do you catch retain cycles in closures?
+
+- **Answer (EN):** Classic pattern is **self → closure → self** (the object holds the closure; the closure strongly captures `self`). Break it with a **capture list** — often `[weak self]` or `[unowned self]` plus optional binding — or avoid a strong `self` capture; alternatively redesign ownership.
 
 - **Устная заготовка (EN):**
 
@@ -439,27 +454,60 @@ Live → (strong == 0) → Deiniting [deinit]
     2. Fix: capture list (`[weak self]` / `[unowned self]`) or redesign ownership.
 
 - **Follow-up:** когда **`weak self`** даёт **silent bug** (тихий баг)?
+
 - **Follow-up answer:** когда **`self`** уже **`nil`**, а код после **`guard let self`** или без него **молча не делает нужную работу**: **completion** после **dismiss** экрана, отложенный **UI update**, «пропавший» **side effect** без лога. Ещё: забытый **`guard`** при опционале, или ветка «ничего не делаем» маскирует ошибку состояния. Лечится явным **`guard let self else { … }`** (log / assertion / user-visible fail), осмысленным **fallback** и тестами на отмену / **deallocation**.
 
-### Q42
-- **Question (RU):** как в двух словах устроен ARC и роли `strong` / `weak` / `unowned`?
-- **Question (EN):** ARC in brief—roles of `strong`, `weak`, and `unowned`?
-- **Answer (RU):** Для reference types компилятор вставляет **retain/release**; пока есть **strong**-ссылка — объект живёт; при нуле strong — **`deinit`**. **`weak`** не удерживает, после освобождения — `nil` (через side table). **`unowned`** не удерживает, non-optional; безопасен только при гарантии lifetime, иначе crash / «зомби» в Deinited.
-- **Answer (EN):** Strong refs keep instances alive; `weak` avoids cycles and zeroes out; `unowned` is non-optional and crashes if the instance dies early.
 
-- **Устная заготовка (RU):** strong держит; weak — цикл и Optional; unowned — только если «всегда живёт дольше».
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** как ловишь **retain cycle** (цикл удержания) в **closure** (замыкании)?
+
+- **Answer (RU):** типичный цикл `self -> closure -> self` (object держит closure, closure держит `self` по strong capture). Разрыв: capture list (список захвата) — часто `[weak self]` / `[unowned self]` + `guard`, либо явно не захватывать `self` сильно; иначе перестройка ownership graph (граф владения).
+
+- **Устная заготовка (RU):**
+
+    1. Цикл: объект держит замыкание, замыкание держит `self`.
+    2. Лечение: capture list — чаще `[weak self]`; или перестроить владение.
+
+</details>
+### Q42
+- **Question (EN):** ARC in brief—roles of `strong`, `weak`, and `unowned`?
+
+- **Answer (EN):** Strong refs keep instances alive; `weak` avoids cycles and zeroes out; `unowned` is non-optional and crashes if the instance dies early.
 
 - **Устная заготовка (EN):** Count strong refs; prefer `weak` in closures unless lifetime is proven.
 
 - **Follow-up:** в чём ключевая разница weak и unowned в runtime behavior (поведении во время выполнения)?
+
 - **Follow-up answer:** `weak` может стать `nil`; `unowned` не проверяет — доступ после деаллокации даёт crash (undefined поведение для unsafe варианта).
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** как в двух словах устроен ARC и роли `strong` / `weak` / `unowned`?
+
+- **Answer (RU):** Для reference types компилятор вставляет **retain/release**; пока есть **strong**-ссылка — объект живёт; при нуле strong — **`deinit`**. **`weak`** не удерживает, после освобождения — `nil` (через side table). **`unowned`** не удерживает, non-optional; безопасен только при гарантии lifetime, иначе crash / «зомби» в Deinited.
+
+- **Устная заготовка (RU):** strong держит; weak — цикл и Optional; unowned — только если «всегда живёт дольше».
+
+</details>
+
 - **Доп. информация:** цикл обычно замыкание держит `self` сильно — лечение `[weak self]`.
-
-
 ### Q43
-- **Question (RU):** управление памятью в iOS: **ARC**, **retain cycle**, роль **`strong` / `weak` / `unowned`**?
 - **Question (EN):** iOS memory management—ARC, retain cycles, and `strong` / `weak` / `unowned`?
+
+- **Answer (EN):** ARC counts strong references to class instances; at zero strong refs, `deinit` runs. A retain cycle is a **cycle of strong references** so refcounts never reach zero. Break cycles with `weak` (optional, zeroes out) or `unowned` (non-optional, needs lifetime guarantees), capture lists, or ownership redesign.
+
+- **Устный канон (опросник п.20 / H20, drill):** «**ARC** — **автоматический подсчёт strong**; **0 strong → deinit**. **Retain cycle** — **цикл strong-ссылок** (часто два объекта друг на друга или `self`↔closure). Лечение — **`weak` / `unowned`**, **capture list**, **слабый delegate**.»
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** управление памятью в iOS: **ARC**, **retain cycle**, роль **`strong` / `weak` / `unowned`**?
+
 - **Answer (RU):** Зацепка: для **reference types** (`class`, замыкания с захватом ref) Swift использует **ARC** — компилятор вставляет **retain/release** (или эквивалент) так, чтобы **сильные** ссылки удерживали объект **живым**; когда счётчик **strong** падает в **ноль**, вызывается **`deinit`** и память освобождается (**не** tracing-GC в стиле Java).
 
     **Strong:** каждая новая **strong**-ссылка на экземпляр **увеличивает** «удержание»; при выходе ссылки из области видимости / присваивании `nil` — **уменьшает**. (Детали ABI — runtime; на собесе достаточно модели **«strong держит объект»**.)
@@ -468,65 +516,83 @@ Live → (strong == 0) → Deiniting [deinit]
 
     **Разрыв цикла:** **`weak`** — не участвует в strong-удержании объекта (после деаллокации — `nil`); **`unowned`** — не удерживает, но **non-optional**; безопасен только при **доказуемом** порядке lifetime. Делегаты — **`weak var delegate`**; замыкания — **`[weak self]`** / **`[unowned self]`** (см. **Q4**, **Q5** в этом файле).
 
-- **Answer (EN):** ARC counts strong references to class instances; at zero strong refs, `deinit` runs. A retain cycle is a **cycle of strong references** so refcounts never reach zero. Break cycles with `weak` (optional, zeroes out) or `unowned` (non-optional, needs lifetime guarantees), capture lists, or ownership redesign.
-
-- **Устный канон (опросник п.20 / H20, drill):** «**ARC** — **автоматический подсчёт strong**; **0 strong → deinit**. **Retain cycle** — **цикл strong-ссылок** (часто два объекта друг на друга или `self`↔closure). Лечение — **`weak` / `unowned`**, **capture list**, **слабый delegate**.»
-
 - **Follow-up (RU):** `weak` влияет на **side table**?
+
 - **Follow-up answer (RU):** да: **опциональный** `weak` после освобождения объекта обнуляется через механизм **side table** / runtime (детали — углубление; на Middle достаточно «не удерживает + `nil`»).
 
+</details>
+
 - **Доп. информация:** [Habr H20](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.20; см. **Q42** (база ARC), **Q4**–**Q5** (weak/unowned, closures); [VI/24 Debug, LLDB, Instruments, Memory Graph](../../VI.%20Качество/24%20Debug%2C%20LLDB%2C%20Instruments%2C%20Memory%20Graph/Debug-LLDB-Instruments-Memory-Graph.md).
-
-
 ### Q44
-- **Question (RU):** **п.41 / J01** — **retain cycle**: что это и как **исправить**?
 - **Question (EN):** What is a retain cycle and how do you fix it?
-- **Answer (RU):** **Цикл strong-ссылок**: объекты держат друг друга (или `self` держит closure, closure держит `self`) → счётчики **не доходят до нуля** → **утечка**, **`deinit` не зовётся**. **Лечение:** **`weak`** / **`unowned`** в capture list и у **delegate**, разорвать цепочку владения, **`[weak self]`** в completion, отмена **`Task`** / подписок **Combine**, снятие **NotificationCenter** observer. Диагностика: **Memory Graph**, **Instruments Leaks**.
+
 - **Answer (EN):** A cycle of strong references prevents deallocation; break with `weak`/`unowned`, capture lists, weak delegates, cancel tasks/subscriptions.
+
 - **Устный канон (опросник п.41 / J01, drill):** «**Retain cycle** — **strong кольцо**; ломаем **`weak`/`unowned`**, **delegate weak**, **capture list**, отмена подписок.» См. **Q43**, **Q5** в этом файле.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **п.41 / J01** — **retain cycle**: что это и как **исправить**?
+
+- **Answer (RU):** **Цикл strong-ссылок**: объекты держат друг друга (или `self` держит closure, closure держит `self`) → счётчики **не доходят до нуля** → **утечка**, **`deinit` не зовётся**. **Лечение:** **`weak`** / **`unowned`** в capture list и у **delegate**, разорвать цепочку владения, **`[weak self]`** в completion, отмена **`Task`** / подписок **Combine**, снятие **NotificationCenter** observer. Диагностика: **Memory Graph**, **Instruments Leaks**.
+
 - **Follow-up (RU):** `unowned` когда безопасен?
+
 - **Follow-up answer (RU):** когда **доказуемо** «другой живёт не дольше» (редко); по умолчанию **`weak` + `guard let self`**.
 
+</details>
+
 - **Доп. информация:** [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.41; **VI/24** Memory Graph.
-
-
 ### Q45
-- **Question (RU):** **п.42 / J02** — **ARC** и чем отличается от **MRC**?
 - **Question (EN):** ARC vs MRC?
-- **Answer (RU):** **ARC** (Automatic Reference Counting) — компилятор **автоматически** вставляет учёт **strong**-ссылок; при нуле — **`deinit`**. **MRC** (Manual Retain Release, Objective-C) — разработчик явно вызывал **`retain`/`release`/`autorelease`**; ошибки → утечки или **over-release** / crash. Swift для `class` — **ARC**; Obj-C legacy могли знать MRC.
+
 - **Answer (EN):** ARC is compiler-managed retain/release; MRC required manual retain/release in Obj-C.
+
 - **Устный канон (опросник п.42 / J02, drill):** «**ARC** — **авто** retain/release; **MRC** — **ручной** Obj-C прошлого.» См. **Q42**–**Q43**.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **п.42 / J02** — **ARC** и чем отличается от **MRC**?
+
+- **Answer (RU):** **ARC** (Automatic Reference Counting) — компилятор **автоматически** вставляет учёт **strong**-ссылок; при нуле — **`deinit`**. **MRC** (Manual Retain Release, Objective-C) — разработчик явно вызывал **`retain`/`release`/`autorelease`**; ошибки → утечки или **over-release** / crash. Swift для `class` — **ARC**; Obj-C legacy могли знать MRC.
+
 - **Follow-up (RU):** есть ли GC в Swift для классов?
+
 - **Follow-up answer (RU):** **нет** tracing-GC как в Java для типичных `class`; **ARC** + **CoW** для value-контейнеров.
 
+</details>
+
 - **Доп. информация:** [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.42.
-
-
 ### Q46
-- **Question (RU):** **п.43 / J03** — **стек** vs **куча** (stack vs heap)?
 - **Question (EN):** Stack vs heap?
-- **Answer (RU):** **Стек** — LIFO-область кадров вызовов: локальные переменные небольшого фиксированного размера, адреса «рядом», освобождение при выходе из функции **автоматически**. **Куча** — динамическая область для объектов **дольше** кадра и крупных аллокаций; жизнь управляется **ARC**/аллокатором; доступ через **указатель**. **`class`** и замыкания с захватом ref — в **куче**; **`struct`** значение часто на стеке, но **буферы** (`Array`) могут быть в **куче** (**CoW**).
+
 - **Answer (EN):** Stack holds per-call frames; heap holds longer-lived reference types and dynamic buffers—ARC manages class lifetime.
 
 - **Устный канон (опросник п.43 / J03, drill):** «**Стек** — **кадр вызова**, быстро и локально; **куча** — **долго и через указатель**; **`class`** — куча; **`struct`** — не «всегда только стек» из-за CoW.»
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **п.43 / J03** — **стек** vs **куча** (stack vs heap)?
+
+- **Answer (RU):** **Стек** — LIFO-область кадров вызовов: локальные переменные небольшого фиксированного размера, адреса «рядом», освобождение при выходе из функции **автоматически**. **Куча** — динамическая область для объектов **дольше** кадра и крупных аллокаций; жизнь управляется **ARC**/аллокатором; доступ через **указатель**. **`class`** и замыкания с захватом ref — в **куче**; **`struct`** значение часто на стеке, но **буферы** (`Array`) могут быть в **куче** (**CoW**).
+
 - **Follow-up (RU):** где переполнить стек?
+
 - **Follow-up answer (RU):** **глубокая рекурсия**, огромные **value** на стеке; для больших данных — **куча** / **indirection**.
 
+</details>
+
 - **Доп. информация:** [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.43; **I/01 Type-system** (value vs reference).
-
-
 ### Q47
-- **Question (RU):** Что делает **`weak`** в Objective-C (`@property`)? Чем отличается от **`assign`**?
 - **Question (EN):** Objective-C `weak` vs `assign`—what do they do?
-- **Answer (RU):** **`weak`** (только для **объектов**): не увеличивает **retain count**; не создаёт **retain cycle**; после dealloc ссылки — **zeroing** (**автоматически `nil`**). **`assign`**: копирует только **адрес**; после удаления объекта остаётся **dangling pointer**; типично для **примитивов** (`int`, `BOOL`, `CGFloat`). Делегаты и обратные ссылки на владельца — **`weak`**, не `assign`.
-- **Answer (EN):** `weak` does not retain; zeroes to `nil` after deallocation—objects only. `assign` stores the address without ownership—safe for primitives, dangling for objects after dealloc. Use `weak` for delegates.
-- **Устная заготовка (RU):**
 
-    1. `weak` — не держит объект, после dealloc → `nil`; только reference types.
-    2. `assign` — адрес без retain; для `int`/`BOOL`; для объектов — crash при use-after-free.
-    3. Delegate → `weak`, не `assign`.
+- **Answer (EN):** `weak` does not retain; zeroes to `nil` after deallocation—objects only. `assign` stores the address without ownership—safe for primitives, dangling for objects after dealloc. Use `weak` for delegates.
 
 - **Устная заготовка (EN):**
 
@@ -534,8 +600,25 @@ Live → (strong == 0) → Deiniting [deinit]
     2. `assign` — raw address; primitives only; objects → dangling.
     3. Delegates use `weak`.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что делает **`weak`** в Objective-C (`@property`)? Чем отличается от **`assign`**?
+
+- **Answer (RU):** **`weak`** (только для **объектов**): не увеличивает **retain count**; не создаёт **retain cycle**; после dealloc ссылки — **zeroing** (**автоматически `nil`**). **`assign`**: копирует только **адрес**; после удаления объекта остаётся **dangling pointer**; типично для **примитивов** (`int`, `BOOL`, `CGFloat`). Делегаты и обратные ссылки на владельца — **`weak`**, не `assign`.
+
+- **Устная заготовка (RU):**
+
+    1. `weak` — не держит объект, после dealloc → `nil`; только reference types.
+    2. `assign` — адрес без retain; для `int`/`BOOL`; для объектов — crash при use-after-free.
+    3. Delegate → `weak`, не `assign`.
+
 - **Follow-up (RU):** почему не `assign` у delegate?
+
 - **Follow-up answer (RU):** после dealloc владельца delegate-указатель указывает в невалидную память → **crash** при обращении; `weak` обнуляется безопасно.
+
+</details>
 
 - **Доп. информация:** Swift `weak` vs `unowned` — **Q4**; [ARC (Swift Book)](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/); flashcards — [Value-Types-Actors-Concurrency-Quiz §7](../concurrency/notes/Value-Types-Actors-Concurrency-Quiz.md#7-быстрые-ответы-flashcards)
 

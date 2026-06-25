@@ -11,9 +11,19 @@
 - [Logging](https://developer.apple.com/documentation/os/logging) — `Logger`, `os_log`, privacy levels, signposts.
 - [Measuring performance using logging](https://developer.apple.com/documentation/os/logging/measuring_performance_using_logging) — signposts for Instruments.
 
-## In 30 seconds
+## За 30 секунд
 
 **Debugging** on iOS is LLDB in Xcode (breakpoints, view hierarchy, memory graph) plus **Instruments** for time and memory at scale. Use **breakpoints** (symbolic, conditional, exception) to stop at failure; use **Instruments** when the problem is statistical (jank, leaks over time). **`os_log` / `Logger`** gives structured, low-cost production-safe logging with privacy redaction—pair with **signposts** to correlate code regions in Time Profiler. Memory Graph catches retain cycles UI tests miss; View Hierarchy debugs layout and accessibility tree issues.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Отладка** на iOS — LLDB, breakpoints, View Hierarchy, Memory Graph, Instruments. Symbolication, zombie objects, concurrency breakpoints в Swift 6.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -83,25 +93,58 @@ Repro bug
 ## Interview Q&A (Knowledge cards)
 
 ### Q1
-- **Question (RU):** Как найти retain cycle в работающем приложении?
 - **Question (EN):** How do you find a retain cycle in a running app?
-- **Answer (RU):** Воспроизвести сценарий → **Debug Memory Graph** (или Leaks в Instruments). Искать объекты, которые должны были deinit, но остались; смотреть **strong references** (часто closure, delegate без `weak`, timer, NotificationCenter). LLDB `po` на suspect; после фикса — повторный snapshot и проверка, что `deinit` вызывается.
+
 - **Answer (EN):** Reproduce, capture Memory Graph or Leaks trace, inspect unexpected strong edges (closures, delegates, timers). Verify `deinit` after fixing weak/unowned captures.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как найти retain cycle в работающем приложении?
+
+- **Answer (RU):** Воспроизвести сценарий → **Debug Memory Graph** (или Leaks в Instruments). Искать объекты, которые должны были deinit, но остались; смотреть **strong references** (часто closure, delegate без `weak`, timer, NotificationCenter). LLDB `po` на suspect; после фикса — повторный snapshot и проверка, что `deinit` вызывается.
+
+</details>
 ### Q2
-- **Question (RU):** Чем `os_log` лучше `print` для iOS?
 - **Question (EN):** Why prefer `os_log`/`Logger` over `print` on iOS?
-- **Answer (RU):** Unified logging: **уровни**, **subsystem/category**, фильтрация в Console, низкий overhead, **privacy** placeholders (`.private`), интеграция со **signposts** и Instruments. `print` не структурирован, может тормозить в hot path и светит PII в логах.
+
 - **Answer (EN):** Structured subsystems, privacy redaction, persistence, signpost integration, and lower overhead—`print` lacks filtering and leaks data easily.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Чем `os_log` лучше `print` для iOS?
+
+- **Answer (RU):** Unified logging: **уровни**, **subsystem/category**, фильтрация в Console, низкий overhead, **privacy** placeholders (`.private`), интеграция со **signposts** и Instruments. `print` не структурирован, может тормозить в hot path и светит PII в логах.
+
+</details>
 ### Q3
-- **Question (RU):** Когда Time Profiler, когда Allocations?
 - **Question (EN):** When do you use Time Profiler vs Allocations?
-- **Answer (RU):** **Time Profiler** — CPU, лаги UI, долгий main thread, высокий energy. **Allocations** — рост памяти, частые аллокации, пики при действии пользователя. **Leaks/Memory Graph** — подозрение на cycle или объект не освобождается. Часто комбинируют: profiler нашёл hot path → allocations на том же сценарии.
+
 - **Answer (EN):** Time Profiler for CPU/jank; Allocations for heap growth and churn; Leaks/Memory Graph for retention. Often profile CPU first, then heap on the same scenario.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Когда Time Profiler, когда Allocations?
+
+- **Answer (RU):** **Time Profiler** — CPU, лаги UI, долгий main thread, высокий energy. **Allocations** — рост памяти, частые аллокации, пики при действии пользователя. **Leaks/Memory Graph** — подозрение на cycle или объект не освобождается. Часто комбинируют: profiler нашёл hot path → allocations на том же сценарии.
+
+</details>
 ### Q4
-- **Question (RU):** Exception breakpoint — зачем, если и так будет crash log?
 - **Question (EN):** Why set an exception breakpoint if you get a crash log anyway?
-- **Answer (RU):** Breakpoint останавливает **в момент throw**, с **живым стеком** и локальными переменными до unwinding. Crash log может быть символицирован позже и без контекста Swift/ObjC bridge. Особенно полезно для `objc_exception_throw` и отловa ошибок до SIGABRT.
+
 - **Answer (EN):** It stops at throw time with intact stack and locals—often clearer than post-mortem crash logs, especially around ObjC exceptions and assertion failures.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Exception breakpoint — зачем, если и так будет crash log?
+
+- **Answer (RU):** Breakpoint останавливает **в момент throw**, с **живым стеком** и локальными переменными до unwinding. Crash log может быть символицирован позже и без контекста Swift/ObjC bridge. Особенно полезно для `objc_exception_throw` и отловa ошибок до SIGABRT.
+
+</details>

@@ -6,11 +6,30 @@
 
 ## За 30 секунд
 
+
+
+
+
+_English summary — expand «По-русски» for the full Russian text._
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 **gRPC** — RPC-фреймворк (CNCF) поверх HTTP/2: API описывают в **Protocol Buffers** (`.proto`), клиент и сервер **генерируются** из спецификации. **gRPC Swift** — runtime на **Swift Concurrency** (async/await, async sequences). На iOS: unary для CRUD-списков, **streaming RPC** — для live-карт, лидербордов, чатов. Один **shared client** в environment; **disconnect** в background. Альтернатива ручному REST + самодельному WebSocket-протоколу, когда backend уже на gRPC.
 
 ---
 
+</details>
+
+
+
 ## gRPC vs REST vs WebSocket
+
+_English summary — expand «По-русски» for full text (gRPC vs REST vs WebSocket)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | | REST + `URLSession` | Plain WebSocket | gRPC |
 |---|----------------------|-----------------|------|
@@ -24,7 +43,14 @@
 
 ---
 
+</details>
+
 ## Четыре стиля RPC
+
+_English summary — expand «По-русски» for full text (Четыре стиля RPC)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```mermaid
 flowchart LR
@@ -49,7 +75,14 @@ rpc FollowRace(stream FollowRaceRequest) returns (stream FollowRaceResponse);
 
 ---
 
+</details>
+
 ## Setup в Xcode (клиент)
+
+_English summary — expand «По-русски» for full text (Setup в Xcode (клиент))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **SPM-пакеты:**
 
@@ -80,7 +113,14 @@ import SwiftProtobuf
 
 ---
 
+</details>
+
 ## Unary RPC
+
+_English summary — expand «По-русски» for full text (Unary RPC)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```protobuf
 service SwiftKartService {
@@ -105,7 +145,14 @@ try await withGRPCClient(
 
 ---
 
+</details>
+
 ## Lifecycle клиента
+
+_English summary — expand «По-русски» for full text (Lifecycle клиента)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Антипаттерн:** новый `withGRPCClient` на каждый `.onAppear` — лишний connect latency.
 
@@ -127,7 +174,14 @@ flowchart TD
 
 ---
 
+</details>
+
 ## Bidirectional streaming (FollowRace)
+
+_English summary — expand «По-русски» for full text (Bidirectional streaming (FollowRace))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Клиент шлёт подписки (какие `event_types`), сервер фильтрует поток событий. Подписка меняется в runtime — через `AsyncStream<Bool>` (показ лидерборда) и `onChange`.
 
@@ -151,7 +205,14 @@ try await kart.followRace { requestStream in
 
 ---
 
+</details>
+
 ## Protobuf на wire
+
+_English summary — expand «По-русски» for full text (Protobuf на wire)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Поля идентифицируются **field number**, не именем → меньше байт, чем JSON
 - **Well Known Types:** `google.protobuf.Timestamp`, `Duration`
@@ -160,7 +221,11 @@ try await kart.followRace { requestStream in
 
 ---
 
+</details>
+
 ## Production (упомянуто в сессии, не в demo)
+
+
 
 - Client-side **load balancing**, **retries**, custom **name resolvers**
 - **Swift OTel**, **Swift Service Lifecycle**
@@ -170,11 +235,23 @@ try await kart.followRace { requestStream in
 
 ## Deploy сервера (кратко)
 
+_English summary — expand «По-русски» for full text (Deploy сервера (кратко))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Swift server → multi-stage **Containerfile** → registry → Cloud Run с `--use-http2`. iOS client переключается с `plaintext` localhost на **DNS + TLS**.
 
 ---
 
+</details>
+
 ## Interview Q&A
+
+_English summary — expand «По-русски» for full text (Interview Q&A)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Почему не писать networking вручную?** Спека устаревает; расхождение DTO; gRPC/OpenAPI генерируют клиент из source of truth.
 
@@ -188,7 +265,11 @@ Swift server → multi-stage **Containerfile** → registry → Cloud Run с `--
 
 ---
 
+</details>
+
 ## Official links
+
+
 
 - [WWDC26-265 — gRPC and Swift](https://developer.apple.com/videos/play/wwdc2026/265/)
 - [grpc-swift (GitHub)](https://github.com/grpc/grpc-swift)

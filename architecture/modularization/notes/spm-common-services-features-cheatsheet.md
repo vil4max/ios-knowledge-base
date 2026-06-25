@@ -8,11 +8,30 @@
 
 ## За 30 секунд
 
+
+
+
+
+_English summary — expand «По-русски» for the full Russian text._
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Локальные **SPM-пакеты** + **однонаправленный граф** = компилятор ловит нарушения слоёв, быстрее incremental build, параллельная работа (UI на моках, сеть отдельно). Три уровня: **Common** (утилиты) → **Services** (**API** + **Domain**) → **Features** (SwiftUI). Фичи **не** импортируют **API**.
 
 ---
 
+</details>
+
+
+
 ## Когда брать этот расклад
+
+_English summary — expand «По-русски» for full text (Когда брать этот расклад)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Подходит | Не подходит |
 |----------|-------------|
@@ -23,7 +42,14 @@
 
 ---
 
+</details>
+
 ## Граф слоёв
+
+_English summary — expand «По-русски» for full text (Граф слоёв)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```mermaid
 flowchart TB
@@ -54,7 +80,14 @@ Common   → (no internal deps)
 
 ---
 
+</details>
+
 ## Что лежит в каждом пакете
+
+_English summary — expand «По-русски» for full text (Что лежит в каждом пакете)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Common
 
@@ -83,7 +116,14 @@ Common   → (no internal deps)
 
 ---
 
+</details>
+
 ## Package.swift (идея)
+
+_English summary — expand «По-русски» for full text (Package.swift (идея))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Зависимости таргетов объявляются **явно** в манifest — dot-синтаксис по продуктам пакета:
 
@@ -112,7 +152,14 @@ let package = Package(
 
 ---
 
+</details>
+
 ## ServiceEnvironment (массовая инъекция)
+
+_English summary — expand «По-русски» for full text (ServiceEnvironment (массовая инъекция))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Когда сервисов > 2, собрать их в одну структуру и прокинуть в SwiftUI **одной** строкой:
 
@@ -166,7 +213,14 @@ extension View {
 
 ---
 
+</details>
+
 ## Порядок миграции (legacy)
+
+_English summary — expand «По-русски» for full text (Порядок миграции (legacy))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. **Domain** — контракты и модели, минимум зависимостей.
 2. **API** — сеть за Domain (DTO + клиент).
@@ -176,7 +230,14 @@ extension View {
 
 ---
 
+</details>
+
 ## Что это даёт
+
+_English summary — expand «По-русски» for full text (Что это даёт)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Эффект | Механизм |
 |--------|----------|
@@ -187,7 +248,14 @@ extension View {
 
 ---
 
+</details>
+
 ## Trade-offs (честно)
+
+_English summary — expand «По-русски» for full text (Trade-offs (честно))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Выбор в digest | Плюс | Минус vs «классический Clean» |
 |----------------|------|-------------------------------|
@@ -199,13 +267,27 @@ extension View {
 
 ---
 
+</details>
+
 ## Устная заготовка (30 сек)
+
+_English summary — expand «По-русски» for full text (Устная заготовка (30 сек))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 «Делю монолит на локальные SPM: **Common** внизу, **API** и **Domain** в Services, **Features** только UI. Фича импортирует Domain, не API — DTO не просачиваются в SwiftUI. Зависимости в Package.swift, нарушение не компилируется. Сервисы собираю в **ServiceEnvironment** — `.live` в app, `.mock` в previews. Миграция: Domain → API → фичи по одной; меряю build time и CI».
 
 ---
 
+</details>
+
 ## Interview mini Q&A
+
+_English summary — expand «По-русски» for full text (Interview mini Q&A)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Q:** Зачем Features не видят API?  
 **A:** Чтобы UI зависел от domain-моделей и use cases, а смена транспорта (REST → gRPC) не трогала SwiftUI. DTO остаются в API.
@@ -218,7 +300,11 @@ extension View {
 
 ---
 
+</details>
+
 ## Ссылки
+
+
 
 - Digest: [AppSell](https://appsell.su/blog/den-apps-1/swift-razrabotka/modulyarizaciya-ios-prilozheniy-cherez-spm-kak-navesti-poryadok-v-zavisimostyah-489)
 - Apple: [Local packages in Xcode](https://developer.apple.com/documentation/xcode/organizing-your-code-with-local-packages)

@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Retrieval-Augmented Generation (RAG)** improves LLM answers by **retrieving** relevant documents from a **vector store** (similarity search on **embeddings**) and injecting them into the prompt. Quality hinges on **chunking**, metadata filters, and reranking — not just “embed everything.” Mobile apps often run retrieval on server; on-device search may use smaller indexes or Natural Language embeddings for offline FAQ.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**RAG** улучшает ответы LLM **извлечением** релевантных фрагментов перед генерацией. Снижает hallucination при актуальных данных.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -74,27 +85,50 @@ User question: ...
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Embeddings — что это?
 - **Question (EN):** What are embeddings?
-- **Answer (RU):** **Векторное представление** текста (или image) в высокомерном пространстве: близкие по смыслу тексты → близкие векторы (cosine similarity). Используются для **semantic search** в RAG вместо только keyword match.
+
 - **Answer (EN):** Dense vectors representing text meaning — similar texts map nearby. Used for semantic search in RAG beyond keyword matching.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Embeddings — что это?
+
+- **Answer (RU):** **Векторное представление** текста (или image) в высокомерном пространстве: близкие по смыслу тексты → близкие векторы (cosine similarity). Используются для **semantic search** в RAG вместо только keyword match.
+
+</details>
 ### Q2
-- **Question (RU):** Зачем chunking?
 - **Question (EN):** Why is chunking important?
-- **Answer (RU):** LLM не вмещает весь корпус; retrieval возвращает **фрагменты**. Плохой chunk (слишком большой, обрезанный абзац) → irrelevant context → hallucination. Chunk по структуре документа + overlap сохраняет continuity.
+
 - **Answer (EN):** Models cannot ingest entire corpora; retrieval returns fragments. Bad chunks yield irrelevant context and hallucinations. Structure-aware chunks plus overlap preserve continuity.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем chunking?
+
+- **Answer (RU):** LLM не вмещает весь корпус; retrieval возвращает **фрагменты**. Плохой chunk (слишком большой, обрезанный абзац) → irrelevant context → hallucination. Chunk по структуре документа + overlap сохраняет continuity.
+
+</details>
 ### Q3
-- **Question (RU):** Как улучшить retrieval quality?
 - **Question (EN):** How do you improve retrieval quality?
-- **Answer (RU):** Tune **chunk size/overlap**, add **metadata filters**, **hybrid** BM25+vector, **rerank** top candidates, maintain **fresh index**, evaluate on **golden set**. Prompt: instruct model to stay in context and refuse when empty.
+
 - **Answer (EN):** Tune chunks, filter by metadata, use hybrid search and reranking, keep indexes fresh, evaluate on golden questions. Instruct the model to stay grounded and refuse when context is empty.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как улучшить retrieval quality?
+
+- **Answer (RU):** Tune **chunk size/overlap**, add **metadata filters**, **hybrid** BM25+vector, **rerank** top candidates, maintain **fresh index**, evaluate on **golden set**. Prompt: instruct model to stay in context and refuse when empty.
+
+</details>
 ### Q4
-- **Question (RU):** RAG on-device на iOS — realistic?
 - **Question (EN):** Is on-device RAG realistic on iOS?
-- **Answer (RU):** **Small corpora** (FAQ, manual): prebuilt index in app bundle or SQLite + on-device embedder (**NLEmbedding** or small Core ML model). **Large/knowledge** — server retrieval; on-device LLM (**Foundation Models**) + **Tool** that fetches snippets from local index or API. Trade-off: size, battery, freshness.
+
 - **Answer (EN):** Small corpora can ship with a local index and on-device embeddings. Large knowledge bases usually need server retrieval; combine on-device LLMs with tools that fetch from local or remote indexes — mind size, battery, and freshness.
 
 <!-- knowledge-cards-canonical:end -->
@@ -106,3 +140,13 @@ User question: ...
 **AI Engineering:** [Track overview](../README.md) · [← 05 · Vector Search](../vector-search/) · [07 · Structured Output →](../structured-output/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** RAG on-device на iOS — realistic?
+
+- **Answer (RU):** **Small corpora** (FAQ, manual): prebuilt index in app bundle or SQLite + on-device embedder (**NLEmbedding** or small Core ML model). **Large/knowledge** — server retrieval; on-device LLM (**Foundation Models**) + **Tool** that fetches snippets from local index or API. Trade-off: size, battery, freshness.
+
+</details>

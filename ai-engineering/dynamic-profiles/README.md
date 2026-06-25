@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Dynamic Profiles** (Foundation Models, WWDC26) let one **`LanguageModelSession`** swap **model**, **tools**, and **instructions** declaratively as app state changes — **without losing transcript**. Conform a struct to **`LanguageModelSession.DynamicProfile`** with a SwiftUI-style **`body`** that resolves to exactly one active **`Profile`**. Pair with **`historyTransform`**, **`summarizeHistory`**, and **[FoundationModelsUtilities](https://github.com/apple/foundation-models-utilities)** for context management. Building block for agentic iOS features — distinct from hand-rolled multi-session juggling.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Dynamic Profiles** (WWDC26) — один **`LanguageModelSession`** с переключаемыми профилями поведения без пересоздания сессии.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -121,35 +132,66 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Dynamic Profile — что решает?
 - **Question (EN):** What problem do Dynamic Profiles solve?
-- **Answer (RU):** **Multi-mode AI** в одном **`LanguageModelSession`**: swap model, tools, instructions по app state **без нового session** и без ручного copy transcript. Declarative `body` re-evaluated каждый prompt — SwiftUI-style для model config.
+
 - **Answer (EN):** Multi-mode AI in one session — swap model, tools, and instructions as app state changes without a new session or manual transcript copying. The declarative body re-evaluates each prompt.
+
 - **Follow-up:** сколько profiles active одновременно?
+
 - **Follow-up answer:** **Exactly one** active Profile at a time — `body` must resolve to single configuration; not parallel multi-agent in one prompt.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Dynamic Profile — что решает?
+
+- **Answer (RU):** **Multi-mode AI** в одном **`LanguageModelSession`**: swap model, tools, instructions по app state **без нового session** и без ручного copy transcript. Declarative `body` re-evaluated каждый prompt — SwiftUI-style для model config.
+
+</details>
 ### Q2
-- **Question (RU):** Когда on-device vs PCC в profiles?
 - **Question (EN):** When on-device vs PCC in profiles?
-- **Answer (RU):** **On-device** — fast, private, simple analysis. **PCC** (`PrivateCloudComputeLanguageModel`) — heavier reasoning, larger context tasks. Same session: user selects "deep brainstorm" → profile branch switches model + `.reasoningLevel(.high)`.
+
 - **Answer (EN):** On-device for fast private tasks; Private Cloud Compute for heavier reasoning. Branch in DynamicProfile switches model and reasoning level while keeping transcript.
+
 - **Follow-up:** availability check per model?
+
 - **Follow-up answer:** Check each `LanguageModel` availability before exposing mode in UI; fallback profile branch with degraded features.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Когда on-device vs PCC в profiles?
+
+- **Answer (RU):** **On-device** — fast, private, simple analysis. **PCC** (`PrivateCloudComputeLanguageModel`) — heavier reasoning, larger context tasks. Same session: user selects "deep brainstorm" → profile branch switches model + `.reasoningLevel(.high)`.
+
+</details>
 ### Q3
-- **Question (RU):** summarizeHistory vs historyTransform?
 - **Question (EN):** summarizeHistory vs historyTransform?
-- **Answer (RU):** **`summarizeHistory`** (utilities) — prebuilt **compress + drop** old turns. **`historyTransform`** — custom **lossless view** (filter, suffix) without necessarily deleting global transcript. Global **`history` property** — lossy, affects all profiles — use deliberately in `onResponse`.
+
 - **Answer (EN):** `summarizeHistory` compresses and drops old turns. `historyTransform` provides a custom lossless view. The global history property is lossy and affects all profiles — use it deliberately.
+
 - **Follow-up:** rewrite history hurts performance?
+
 - **Follow-up answer:** Yes — WWDC26 warns transcript mutations can **invalidate KV cache** and increase latency; prefer append-friendly patterns; measure with Foundation Models Instruments.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** summarizeHistory vs historyTransform?
+
+- **Answer (RU):** **`summarizeHistory`** (utilities) — prebuilt **compress + drop** old turns. **`historyTransform`** — custom **lossless view** (filter, suffix) without necessarily deleting global transcript. Global **`history` property** — lossy, affects all profiles — use deliberately in `onResponse`.
+
+</details>
 ### Q4
-- **Question (RU):** FoundationModelsUtilities — что там?
 - **Question (EN):** What is FoundationModelsUtilities?
-- **Answer (RU):** **Open-source** Apple package (Apache-2.0): history modifiers (`rollingWindow`, `droppingCompletedToolCalls`, `summarizeHistory`), Skills API, `ChatCompletionsLanguageModel` adapter. **Experimental** — не часть OS framework; SPM dependency.
+
 - **Answer (EN):** Open-source Apple package with history modifiers, Skills API, and chat-completions adapter. Experimental — add via SPM, not bundled in the OS framework.
+
 - **Follow-up:** можно ли production без utilities?
+
 - **Follow-up answer:** Yes — implement `historyTransform` manually; utilities save boilerplate; pin package version; monitor API changes as "emerging patterns."
 
 <!-- knowledge-cards-canonical:end -->
@@ -161,3 +203,13 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 **AI Engineering:** [Track overview](../README.md) · [← 12 · Apple Intelligence](../apple-intelligence/) · [14 · Evaluations →](../evaluations/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** FoundationModelsUtilities — что там?
+
+- **Answer (RU):** **Open-source** Apple package (Apache-2.0): history modifiers (`rollingWindow`, `droppingCompletedToolCalls`, `summarizeHistory`), Skills API, `ChatCompletionsLanguageModel` adapter. **Experimental** — не часть OS framework; SPM dependency.
+
+</details>

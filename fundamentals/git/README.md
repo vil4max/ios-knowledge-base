@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 Git is the daily workflow layer for iOS teams: feature branches, rebases, pull requests, and readable history that survives App Store release trains. Interviewers and lead engineers check whether you can explain merge vs rebase without losing work, write Conventional Commits, review Swift/SwiftUI diffs for concurrency and API safety, and bisect a regression to a single commit. Strong git hygiene reduces release risk when multiple developers touch `.xcodeproj`, SPM packages, and generated assets. Code review is part of the same skill: you prove you can ship small, reviewable changes—not only that you know `git status`.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Git — ежедневный слой workflow iOS-команды: feature-ветки, rebase, pull request, code review. На собесе важны merge vs rebase, разрешение конфликтов, bisect, cherry-pick и то, как не ломать историю при force-push.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -84,47 +95,100 @@ Doc link: [Source control management in Xcode](https://developer.apple.com/docum
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** **Merge** vs **rebase** — в чём разница и что сказать на собесе?
 - **Question (EN):** Merge vs rebase—difference and interview-ready answer?
-- **Answer (RU):** **Merge** создаёт commit слияния (или fast-forward), **сохраняет** историю ветвления. **Rebase** переносит ваши commits на новый base, переписывая SHA → **линейная** история. Rebase локально перед PR — ок; **rebase уже запушенных** shared commits — опасно (ломает коллег). Squash merge в PR — компромисс: один commit в main, review по PR. Ответ: «Следую политике команды; лично — короткие ветки + squash, без переписывания public history».
+
 - **Answer (EN):** Merge preserves branch topology; rebase replays commits for a linear history and rewrites SHAs. Rebase locally before opening a PR; avoid rebasing shared remote commits. Squash merge is a common team compromise.
-- **Устная заготовка (RU):** Merge — сохранить ветки; rebase — линия; shared — не переписывать.
+
 - **Устная заготовка (EN):** Merge keeps topology; rebase linearizes; don’t rewrite shared history.
+
 - **Follow-up:** что такое **fast-forward**?
+
 - **Follow-up answer:** main просто сдвигает pointer на tip feature без merge commit — возможен только если нет divergent commits на main.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Merge** vs **rebase** — в чём разница и что сказать на собесе?
+
+- **Answer (RU):** **Merge** создаёт commit слияния (или fast-forward), **сохраняет** историю ветвления. **Rebase** переносит ваши commits на новый base, переписывая SHA → **линейная** история. Rebase локально перед PR — ок; **rebase уже запушенных** shared commits — опасно (ломает коллег). Squash merge в PR — компромисс: один commit в main, review по PR. Ответ: «Следую политике команды; лично — короткие ветки + squash, без переписывания public history».
+
+- **Устная заготовка (RU):** Merge — сохранить ветки; rebase — линия; shared — не переписывать.
+
+</details>
+
 - **Доп. информация:** [Conventional Commits](https://www.conventionalcommits.org/)
-
 ### Q2
-- **Question (RU):** Зачем **Conventional Commits** в iOS-проекте?
 - **Question (EN):** Why use Conventional Commits on an iOS project?
-- **Answer (RU):** Единый формат `type(scope): action` ускоряет **code review**, генерацию **release notes**, автomation в CI (semantic release). Примеры: `feat(paywall): add StoreKit 2 restore`, `fix(network): cancel tasks on logout`. Один commit — одно логическое изменение; present tense. Scope помогает фильтровать `git log --grep`. На собесе: связать с bisect — понятный message быстрее идентифицирует регрессию.
+
 - **Answer (EN):** Standardized messages improve review readability, changelog automation, and bisect/debugging. One logical change per commit with optional scope (`ios`, `auth`).
-- **Устная заготовка (RU):** feat/fix/refactor + scope; один смысл — один commit.
+
 - **Устная заготовка (EN):** Typed, scoped messages; one logical change each.
+
 - **Follow-up:** чем `refactor` отличается от `chore`?
+
 - **Follow-up answer:** refactor — меняет структуру без нового behavior; chore — tooling/deps/config без product impact.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем **Conventional Commits** в iOS-проекте?
+
+- **Answer (RU):** Единый формат `type(scope): action` ускоряет **code review**, генерацию **release notes**, автomation в CI (semantic release). Примеры: `feat(paywall): add StoreKit 2 restore`, `fix(network): cancel tasks on logout`. Один commit — одно логическое изменение; present tense. Scope помогает фильтровать `git log --grep`. На собесе: связать с bisect — понятный message быстрее идентифицирует регрессию.
+
+- **Устная заготовка (RU):** feat/fix/refactor + scope; один смысл — один commit.
+
+</details>
+
 - **Доп. информация:** [Xcode Cloud](https://developer.apple.com/documentation/xcode/xcode-cloud)
-
 ### Q3
-- **Question (RU):** **Чеклист code review** для Swift/iOS PR?
 - **Question (EN):** Code review checklist for a Swift/iOS pull request?
-- **Answer (RU):** **Correctness:** логика, edge cases, error paths. **Concurrency:** MainActor для UI, data races, `[weak self]`, cancellation. **Memory:** cycles, large allocations. **API:** public surface, breaking changes, access control. **Tests:** unit for rules, regression test for bugfix. **Product:** localization, accessibility labels, analytics privacy. **Build:** scheme changes, SPM pins, no accidental `.pbxproj` churn. **Security:** secrets not in repo, Keychain usage. Tone: блокирующие vs nit; предлагать альтернативу, не только «плохо».
-- **Answer (EN):** Review correctness, concurrency/MainActor usage, memory, API stability, tests, localization/a11y, dependency changes, and secrets. Separate blockers from nits; suggest alternatives.
-- **Устная заготовка (RU):** UI/concurrency/memory/tests/API — блокеры; стиль — если не dogma команды.
-- **Устная заготовка (EN):** Block on correctness and concurrency; nits on style only if team agrees.
-- **Follow-up:** как review **generated** code (SwiftGen, R.swift)?
-- **Follow-up answer:** не править руками output; проверить source inputs и CI regeneration step.
-- **Доп. информация:** [Writing documentation](https://developer.apple.com/documentation/xcode/writing-documentation)
 
+- **Answer (EN):** Review correctness, concurrency/MainActor usage, memory, API stability, tests, localization/a11y, dependency changes, and secrets. Separate blockers from nits; suggest alternatives.
+
+- **Устная заготовка (EN):** Block on correctness and concurrency; nits on style only if team agrees.
+
+- **Follow-up:** как review **generated** code (SwiftGen, R.swift)?
+
+- **Follow-up answer:** не править руками output; проверить source inputs и CI regeneration step.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Чеклист code review** для Swift/iOS PR?
+
+- **Answer (RU):** **Correctness:** логика, edge cases, error paths. **Concurrency:** MainActor для UI, data races, `[weak self]`, cancellation. **Memory:** cycles, large allocations. **API:** public surface, breaking changes, access control. **Tests:** unit for rules, regression test for bugfix. **Product:** localization, accessibility labels, analytics privacy. **Build:** scheme changes, SPM pins, no accidental `.pbxproj` churn. **Security:** secrets not in repo, Keychain usage. Tone: блокирующие vs nit; предлагать альтернативу, не только «плохо».
+
+- **Устная заготовка (RU):** UI/concurrency/memory/tests/API — блокеры; стиль — если не dogma команды.
+
+</details>
+
+- **Доп. информация:** [Writing documentation](https://developer.apple.com/documentation/xcode/writing-documentation)
 ### Q4
-- **Question (RU):** Как работает **git bisect** и **stash**?
 - **Question (EN):** How do git bisect and stash work?
-- **Answer (RU):** **Bisect:** бинарный поиск между known good и bad commit; на каждом шаге `git bisect good|bad` после прогона теста → O(log n) commits. Обязательно `git bisect reset` в конце. **Stash:** сохраняет uncommitted changes в stack (`git stash push -u -m "msg"`), рабочая директория clean; `pop`/`apply` вернуть. Для iOS: bisect script = minimal `xcodebuild test -only-testing:...`; stash перед hotfix с feature WIP.
+
 - **Answer (EN):** Bisect binary-searches history with a test script to find the regressing commit. Stash temporarily shelves WIP changes so you can switch branches cleanly.
-- **Устная заготовка (RU):** Bisect — log n поиск бага; stash — положить WIP на полку.
+
 - **Устная заготовка (EN):** Bisect finds regressions fast; stash saves WIP.
+
 - **Follow-up:** bisect на flaky test?
+
 - **Follow-up answer:** flaky test ломает bisect — сначала стабилизировать test или bisect по build artifact/manual repro steps.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как работает **git bisect** и **stash**?
+
+- **Answer (RU):** **Bisect:** бинарный поиск между known good и bad commit; на каждом шаге `git bisect good|bad` после прогона теста → O(log n) commits. Обязательно `git bisect reset` в конце. **Stash:** сохраняет uncommitted changes в stack (`git stash push -u -m "msg"`), рабочая директория clean; `pop`/`apply` вернуть. Для iOS: bisect script = minimal `xcodebuild test -only-testing:...`; stash перед hotfix с feature WIP.
+
+- **Устная заготовка (RU):** Bisect — log n поиск бага; stash — положить WIP на полку.
+
+</details>
+
 - **Доп. информация:** [Building from the command line](https://developer.apple.com/documentation/xcode/building-from-the-command-line-with-xcodebuild)
 
 <!-- knowledge-cards-canonical:end -->

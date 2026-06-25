@@ -10,9 +10,19 @@
 - [Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements) — capabilities in signed bundle.
 - [Capability Requests](https://developer.apple.com/help/account/reference/capability-requests/) — enabling features in portal.
 
-## In 30 seconds
+## За 30 секунд
 
 **TestFlight** distributes signed builds to internal (App Store Connect users) and external testers (beta review for first build). **App Store Connect** manages versions, screenshots, compliance, and **phased release** (7-day gradual rollout). Submission must match **Review Guidelines** (privacy, payments, UGC moderation, accurate metadata). **Entitlements** in the app signature must align with provisioning (push, associated domains, Keychain groups)—missing or extra entitlement causes upload or runtime failures.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**TestFlight** раздаёт подписанные сборки internal/external тестерам. **App Store Connect** — метаданные, ревью, phased release. Senior знает provisioning, сертификаты и типичные reject reasons.
+
+</details>
+
+
 
 ## 🎯 Focus vs Defer
 
@@ -88,25 +98,58 @@ Feature complete
 ## Interview Q&A (Knowledge cards)
 
 ### Q1
-- **Question (RU):** Чем internal TestFlight отличается от external?
 - **Question (EN):** How does internal TestFlight differ from external?
-- **Answer (RU):** **Internal** — пользователи роли App Store Connect (до 100), без Beta App Review, быстрее для daily QA. **External** — до 10k testers по email/public link; **первый build** проходит beta review как упрощённый App Review. External builds expire (~90 days); нужны notes и compliance как для store.
+
 - **Answer (EN):** Internal is for ASC team members without beta review; external reaches wider testers and requires beta review on the first build, with expiry and compliance requirements.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Чем internal TestFlight отличается от external?
+
+- **Answer (RU):** **Internal** — пользователи роли App Store Connect (до 100), без Beta App Review, быстрее для daily QA. **External** — до 10k testers по email/public link; **первый build** проходит beta review как упрощённый App Review. External builds expire (~90 days); нужны notes и compliance как для store.
+
+</details>
 ### Q2
-- **Question (RU):** Что такое phased release и когда её ставят?
 - **Question (EN):** What is phased release and when do you use it?
-- **Answer (RU):** **Phased release** выкатывает версию на процент пользователей App Store за 7 дней (1→2→5→10→20→50→100). Позволяет **pause** при регрессии метрик. Используют для рискованных backend/UI изменений без собственной infra rollout. Не заменяет feature flags внутри app для логики.
+
 - **Answer (EN):** Phased release gradually rolls out an App Store version over seven days with pause control—good for risky releases, complementary to in-app feature flags.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое phased release и когда её ставят?
+
+- **Answer (RU):** **Phased release** выкатывает версию на процент пользователей App Store за 7 дней (1→2→5→10→20→50→100). Позволяет **pause** при регрессии метрик. Используют для рискованных backend/UI изменений без собственной infra rollout. Не заменяет feature flags внутри app для логики.
+
+</details>
 ### Q3
-- **Question (RU):** Entitlements vs capabilities — как связаны?
 - **Question (EN):** How are entitlements and capabilities related?
-- **Answer (RU):** В Xcode **Capability** добавляет entitlement keys в проект и требует включения в **Developer portal** + provisioning profile. Подписанный bundle содержит entitlements; OS проверяет их runtime (push, iCloud, associated domains). Extension и app должны иметь согласованные team ID, groups, app groups. Mismatch → upload fail или feature silent no-op.
+
 - **Answer (EN):** Capabilities configure entitlements and portal settings; the signed app must match profiles—misalignment breaks upload or runtime features.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Entitlements vs capabilities — как связаны?
+
+- **Answer (RU):** В Xcode **Capability** добавляет entitlement keys в проект и требует включения в **Developer portal** + provisioning profile. Подписанный bundle содержит entitlements; OS проверяет их runtime (push, iCloud, associated domains). Extension и app должны иметь согласованные team ID, groups, app groups. Mismatch → upload fail или feature silent no-op.
+
+</details>
 ### Q4
-- **Question (RU):** Типичные причины rejection на review?
 - **Question (EN):** What are common App Review rejection reasons?
-- **Answer (RU):** **Guideline 4.2** — мало функционала/demo login broken. **5.1** — privacy: нет policy, tracking без ATT, неполная Nutrition Label. **3.1** — платный digital content без IAP. **2.1** — crashes на review device. **Metadata** — screenshots не соответствуют build. Готовить demo account, чёткие notes, воспроизводимый happy path.
+
 - **Answer (EN):** Crashes, broken demos, privacy/IAP violations, and misleading metadata dominate—provide test accounts, accurate disclosures, and stable review builds.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Типичные причины rejection на review?
+
+- **Answer (RU):** **Guideline 4.2** — мало функционала/demo login broken. **5.1** — privacy: нет policy, tracking без ATT, неполная Nutrition Label. **3.1** — платный digital content без IAP. **2.1** — crashes на review device. **Metadata** — screenshots не соответствуют build. Готовить demo account, чёткие notes, воспроизводимый happy path.
+
+</details>

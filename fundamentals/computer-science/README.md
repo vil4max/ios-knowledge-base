@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 Computer science fundamentals explain *why* Swift and iOS behave the way they do: stack vs heap, algorithmic cost, concurrency primitives, caching, and common data structures. Interviewers use these topics to test whether you can reason about performance, memory, and correctness—not just API names. On iOS you rarely implement a red-black tree from scratch, but you must connect Big-O to scrolling lists, explain why a closure may escape to the heap, and choose the right structure for a cache or queue. Solid CS basics make answers about ARC, GCD, and networking sound grounded instead of memorized.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Фундамент CS объясняет, *почему* Swift и iOS ведут себя так: память, сложность алгоритмов, структуры данных, процессы и потоки. Это база для ARC, concurrency и system design.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -82,47 +93,100 @@ Computer science fundamentals explain *why* Swift and iOS behave the way they do
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Чем **стек** отличается от **кучи** и как это связано со Swift?
 - **Question (EN):** Stack vs heap—what is the difference and how does it relate to Swift?
-- **Answer (RU):** **Стек** — область памяти по принципу LIFO для кадров вызовов: локальные переменные и параметры живут, пока активна функция; освобождение автоматическое при выходе. **Куча** — динамическая память для объектов с неизвестным или разделяемым временем жизни. В Swift **reference types** (`class`, `actor`, escaping **closures**) обычно в куче под **ARC**; **value types** часто на стеке, но большие буферы (`Array`, `String`) — CoW в куче. На собесе: «ARC не управляет стеком; retain/release — про heap objects».
+
 - **Answer (EN):** Stack holds call frames and locals with scoped lifetime; heap holds dynamically allocated objects. Swift reference types and escaping closures live on the heap under ARC; value types are often stack-allocated but may use heap-backed CoW storage for collections.
-- **Устная заготовка (RU):** Стек — быстро и до конца функции; куча — shared lifetime и ARC.
+
 - **Устная заготовка (EN):** Stack = scoped frames; heap = shared lifetime + ARC.
+
 - **Follow-up:** когда `struct` всё равно трогает кучу?
+
 - **Follow-up answer:** большие value buffers, CoW при мутации, поля reference type, existential/`any`, escaping capture, `inout` через границы.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Чем **стек** отличается от **кучи** и как это связано со Swift?
+
+- **Answer (RU):** **Стек** — область памяти по принципу LIFO для кадров вызовов: локальные переменные и параметры живут, пока активна функция; освобождение автоматическое при выходе. **Куча** — динамическая память для объектов с неизвестным или разделяемым временем жизни. В Swift **reference types** (`class`, `actor`, escaping **closures**) обычно в куче под **ARC**; **value types** часто на стеке, но большие буферы (`Array`, `String`) — CoW в куче. На собесе: «ARC не управляет стеком; retain/release — про heap objects».
+
+- **Устная заготовка (RU):** Стек — быстро и до конца функции; куча — shared lifetime и ARC.
+
+</details>
+
 - **Доп. информация:** [MemoryLayout](https://developer.apple.com/documentation/swift/memorylayout), [ARC (Swift Book)](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/)
-
 ### Q2
-- **Question (RU):** Объясни **Big-O** на примере списка в iOS-приложении.
 - **Question (EN):** Explain Big-O using a list in an iOS app.
-- **Answer (RU):** Big-O описывает, как растёт время или память при увеличении **n** (элементов). **O(1)** — доступ по индексу в `Array`. **O(n)** — линейный проход `filter`/`map` по всем элементам на main → риск jank. **O(n log n)** — сортировка перед отображением. **O(n²)** — вложенные циклы без индекса (например каждый user × все orders). Для UITableView **reuse** даёт амортизированно ~O(1) на видимые ячейки, а не создание n view. Ответ на собесе: назвать n, операцию и одну оптимизацию (индекс, pagination, background queue).
+
 - **Answer (EN):** Big-O describes growth with input size n. Index access is O(1); full array transforms on the main thread are O(n); sorting is O(n log n); nested scans are O(n²). Table/collection reuse keeps UI work proportional to visible items, not total n.
-- **Устная заготовка (RU):** Назови n, где горло, и как уменьшить — индекс, paging, фон.
+
 - **Устная заготовка (EN):** State n, find the bottleneck, fix with indexing or paging.
+
 - **Follow-up:** чем **амортизированная** сложность отличается от worst-case?
+
 - **Follow-up answer:** средняя стоимость серии операций (append в dynamic array) vs редкий worst-case O(n) при reallocate; важно упомянуть `reserveCapacity`.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Объясни **Big-O** на примере списка в iOS-приложении.
+
+- **Answer (RU):** Big-O описывает, как растёт время или память при увеличении **n** (элементов). **O(1)** — доступ по индексу в `Array`. **O(n)** — линейный проход `filter`/`map` по всем элементам на main → риск jank. **O(n log n)** — сортировка перед отображением. **O(n²)** — вложенные циклы без индекса (например каждый user × все orders). Для UITableView **reuse** даёт амортизированно ~O(1) на видимые ячейки, а не создание n view. Ответ на собесе: назвать n, операцию и одну оптимизацию (индекс, pagination, background queue).
+
+- **Устная заготовка (RU):** Назови n, где горло, и как уменьшить — индекс, paging, фон.
+
+</details>
+
 - **Доп. информация:** [ContiguousArray](https://developer.apple.com/documentation/swift/contiguousarray)
-
 ### Q3
-- **Question (RU):** **Процесс** vs **поток** — что важно знать iOS-разработчику?
 - **Question (EN):** Process vs thread—what matters for iOS developers?
-- **Answer (RU):** **Процесс** — изолированное адресное пространство; iOS-приложение = sandboxed process (своя память, entitlements). **Поток** — единица выполнения внутри процесса; потоки делят память → нужны примитивы синхронизации. **Main thread** — UI + RunLoop. **GCD** — очереди поверх пула потоков; **Swift Task** — structured concurrency поверх тех же ресурсов. Extension — отдельный process. На собесе: «не путать lightweight Task с бесплатным параллелизмом; data races возможны на shared mutable state».
-- **Answer (EN):** A process is an isolated memory space (iOS app sandbox). Threads share memory within a process; the main thread drives UI. GCD schedules blocks on thread pools; Swift tasks add structured concurrency but still require synchronization for shared mutable state.
-- **Устная заготовка (RU):** App = process; UI = main thread; shared state = sync или actor.
-- **Устная заготовка (EN):** App is a process; UI on main; protect shared state.
-- **Follow-up:** сколько потоков «создавать» для загрузки 100 URL?
-- **Follow-up answer:** не 100 threads — ограниченный pool/`URLSession` сам управляет; иначе overhead и thrashing; prefer async API + concurrency limit.
-- **Доп. информация:** [Concurrency (Swift Book)](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/), [Dispatch](https://developer.apple.com/documentation/dispatch)
 
+- **Answer (EN):** A process is an isolated memory space (iOS app sandbox). Threads share memory within a process; the main thread drives UI. GCD schedules blocks on thread pools; Swift tasks add structured concurrency but still require synchronization for shared mutable state.
+
+- **Устная заготовка (EN):** App is a process; UI on main; protect shared state.
+
+- **Follow-up:** сколько потоков «создавать» для загрузки 100 URL?
+
+- **Follow-up answer:** не 100 threads — ограниченный pool/`URLSession` сам управляет; иначе overhead и thrashing; prefer async API + concurrency limit.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **Процесс** vs **поток** — что важно знать iOS-разработчику?
+
+- **Answer (RU):** **Процесс** — изолированное адресное пространство; iOS-приложение = sandboxed process (своя память, entitlements). **Поток** — единица выполнения внутри процесса; потоки делят память → нужны примитивы синхронизации. **Main thread** — UI + RunLoop. **GCD** — очереди поверх пула потоков; **Swift Task** — structured concurrency поверх тех же ресурсов. Extension — отдельный process. На собесе: «не путать lightweight Task с бесплатным параллелизмом; data races возможны на shared mutable state».
+
+- **Устная заготовка (RU):** App = process; UI = main thread; shared state = sync или actor.
+
+</details>
+
+- **Доп. информация:** [Concurrency (Swift Book)](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/), [Dispatch](https://developer.apple.com/documentation/dispatch)
 ### Q4
-- **Question (RU):** Когда и как **кэшировать** на iOS?
 - **Question (EN):** When and how should you cache on iOS?
-- **Answer (RU):** Кэш оправдан, когда повторное получение данных дорого (сеть, декодирование, тяжёлые вычисления), а **устаревание** допустимо. Уровни: **URLCache** (HTTP), **NSCache** (объекты с eviction по памяти), in-memory dict + disk (Codable/FileManager). Обязательно: **TTL/invalidation**, лимит размера, потокобезопасность, поведение при **memory warning** (сброс in-memory). Плохой ответ: «вечный dict без лимита». Хороший: политика stale-while-revalidate, ключ кэша включает версию API/locale.
+
 - **Answer (EN):** Cache when recomputation or network is costly and staleness is acceptable. Use URLCache for HTTP, NSCache for memory-sensitive objects, or layered memory+disk with explicit TTL and invalidation. Always cap size and respond to memory pressure.
-- **Устная заготовка (RU):** Кэш = экономия + политика устаревания + лимит памяти.
+
 - **Устная заготовка (EN):** Cache saves work; define staleness, limits, and eviction.
+
 - **Follow-up:** чем `NSCache` лучше `Dictionary` для UIImage?
+
 - **Follow-up answer:** автоматическое eviction под memory pressure, thread-safe, cost limits; Dictionary держит strong refs до явного удаления.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Когда и как **кэшировать** на iOS?
+
+- **Answer (RU):** Кэш оправдан, когда повторное получение данных дорого (сеть, декодирование, тяжёлые вычисления), а **устаревание** допустимо. Уровни: **URLCache** (HTTP), **NSCache** (объекты с eviction по памяти), in-memory dict + disk (Codable/FileManager). Обязательно: **TTL/invalidation**, лимит размера, потокобезопасность, поведение при **memory warning** (сброс in-memory). Плохой ответ: «вечный dict без лимита». Хороший: политика stale-while-revalidate, ключ кэша включает версию API/locale.
+
+- **Устная заготовка (RU):** Кэш = экономия + политика устаревания + лимит памяти.
+
+</details>
+
 - **Доп. информация:** [NSURLCache](https://developer.apple.com/documentation/foundation/nsurlcache), [NSCache](https://developer.apple.com/documentation/foundation/nscache)
 
 <!-- knowledge-cards-canonical:end -->

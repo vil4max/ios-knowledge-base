@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Tool calling** (function calling) lets the model **request app-side execution** — search local database, fetch weather, run vector search — instead of inventing facts. Flow: model emits **structured tool call** (name + arguments) → app **executes** → **returns output** to model → model continues. Covers schema design, **execution loop**, **idempotency**, and **error feedback** to the model. This topic is the **single-turn tool round-trip** — not the full multi-step [09 · Agents](../agents/README.md) orchestration loop.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Tool calling** — модель **запрашивает выполнение** функций приложения. Паттерн agent loop: plan → tool → observe.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -124,35 +135,66 @@ Model can apologize or ask clarifying question — better than silent failure. L
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Tool calling — как работает?
 - **Question (EN):** How does tool calling work?
-- **Answer (RU):** App регистрирует **Tool** (name, description, Arguments schema). Framework кладёт definitions в prompt. Model может emit **tool call** → app **`call(arguments:)`** → output возвращается в transcript → model продолжает. Цикл до final user-facing ответа.
+
 - **Answer (EN):** The app registers tools with names, descriptions, and argument schemas. The model may emit a tool call; the app executes `call(arguments:)` and returns output to the transcript for the model to continue until a final answer.
+
 - **Follow-up:** чем Tool отличается от простого API call в app?
+
 - **Follow-up answer:** **Model chooses** when/which tool based on user intent — app doesn't hardcode routing. Tool output **informs next model turn**, enabling multi-step reasoning within session.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Tool calling — как работает?
+
+- **Answer (RU):** App регистрирует **Tool** (name, description, Arguments schema). Framework кладёт definitions в prompt. Model может emit **tool call** → app **`call(arguments:)`** → output возвращается в transcript → model продолжает. Цикл до final user-facing ответа.
+
+</details>
 ### Q2
-- **Question (RU):** Idempotency — зачем в tool calling?
 - **Question (EN):** Why idempotency in tool calling?
-- **Answer (RU):** Model может **повторить** tool call (retry, duplicate turn, transcript noise). Write tools без idempotency → **double purchase, duplicate reminders**. Pattern: dedupe keys, server idempotency tokens, check-before-create.
+
 - **Answer (EN):** Models may repeat tool calls. Write tools without idempotency can double-charge or duplicate records. Use dedupe keys and server-side idempotency tokens.
+
 - **Follow-up:** read tools нужна idempotency?
+
 - **Follow-up answer:** Less critical but caching helps latency; still avoid unbounded repeated network calls — debounce or return cached result within same turn.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Idempotency — зачем в tool calling?
+
+- **Answer (RU):** Model может **повторить** tool call (retry, duplicate turn, transcript noise). Write tools без idempotency → **double purchase, duplicate reminders**. Pattern: dedupe keys, server idempotency tokens, check-before-create.
+
+</details>
 ### Q3
-- **Question (RU):** Как сообщать ошибки модели?
 - **Question (EN):** How do you report errors back to the model?
-- **Answer (RU):** Return **structured natural-language error** as tool output: what failed, what user can fix. Не stack trace. Model может уточнить у пользователя. Log details in OSLog separately.
+
 - **Answer (EN):** Return a clear natural-language error as tool output describing what failed and how to recover. Log technical details separately; don't pass stack traces to the model.
+
 - **Follow-up:** throw vs return error string из `call`?
+
 - **Follow-up answer:** Prefer **return message** for recoverable errors model can handle; `throw` for programmer errors — framework may surface differently; follow Apple FM error policy for transcript.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как сообщать ошибки модели?
+
+- **Answer (RU):** Return **structured natural-language error** as tool output: what failed, what user can fix. Не stack trace. Model может уточнить у пользователя. Log details in OSLog separately.
+
+</details>
 ### Q4
-- **Question (RU):** Tool calling vs full agent loop?
 - **Question (EN):** Tool calling vs full agent loop?
-- **Answer (RU):** **Tool calling** — mechanism: one or few call/response rounds. **Agent loop** — orchestration: planning, multi-step goals, profile/mode switches, eval of trajectories, context engineering. Tool calling — **building block**; agents — **architecture** ([agents](../agents/README.md)).
+
 - **Answer (EN):** Tool calling is the mechanism for call/response rounds. Agent loops add planning, multi-step goals, profile switching, and trajectory evaluation. Tool calling is a building block, not the full architecture.
+
 - **Follow-up:** ToolCallingMode `.required` — когда?
+
 - **Follow-up answer:** When retrieval/action **must** happen before answer (e.g. search notes before summarizing) — prevents model from answering from memory alone; use with eval to verify tool is actually invoked.
 
 <!-- knowledge-cards-canonical:end -->
@@ -164,3 +206,13 @@ Model can apologize or ask clarifying question — better than silent failure. L
 **AI Engineering:** [Track overview](../README.md) · [← 07 · Structured Output](../structured-output/) · [09 · Agents →](../agents/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Tool calling vs full agent loop?
+
+- **Answer (RU):** **Tool calling** — mechanism: one or few call/response rounds. **Agent loop** — orchestration: planning, multi-step goals, profile/mode switches, eval of trajectories, context engineering. Tool calling — **building block**; agents — **architecture** ([agents](../agents/README.md)).
+
+</details>

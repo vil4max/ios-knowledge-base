@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 Mobile interviews still test **arrays, hash maps, sets, stacks, queues, trees, and graphs** plus **Big-O** for time and space. You rarely implement a red-black tree on iOS, but you must reason about **lookup vs insert**, sorting cost, and **when Swift `Dictionary`/`Set`/`Array` fit**. Pair theory with 2–3 LeetCode-medium patterns: two pointers, BFS/DFS, sliding window.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+На мобильных собесах всё ещё спрашивают **массивы, hash map, set, stack, queue, деревья, графы** и **Big-O**. Редко пишут red-black tree, но нужно понимать lookup vs insert и когда уместны `Dictionary`/`Set`/`Array` в Swift.
+
+</details>
+
+
 
 ## Apple docs & Swift
 
@@ -2251,5 +2262,21 @@ Given an array of integers `temperatures` representing the daily temperatures, r
 ## Naming
 
 `NNNN-slug.md` — e.g. `0001-two-sum.md`, `0020-valid-parentheses.md`
+
+---
+
+## Карточки знаний (Q&A)
+
+### Q1
+- **Question (EN):** Why Big-O on iOS interviews?
+- **Answer (EN):** You must reason about lookup vs insert, nested loops, and when `Dictionary`/`Set` give expected O(1) average time—even if you rarely implement custom trees in app code.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем Big-O на iOS-собесах?
+- **Answer (RU):** Нужно понимать lookup vs insert, вложенные циклы и когда `Dictionary`/`Set` дают O(1) в среднем — даже если в приложении не пишете свои деревья.
+
+</details>
 
 ---

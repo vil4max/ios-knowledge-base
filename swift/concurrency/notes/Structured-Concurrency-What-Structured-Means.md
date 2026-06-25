@@ -6,6 +6,11 @@
 
 ## Главный вопрос
 
+_English summary — expand «По-русски» for full text (Главный вопрос)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `Task` кажется «структурированным»: есть handle, cancellation, async/await. Но в документации Swift написано:
 
 > Runs the given (non-)throwing operation asynchronously as part of a new **unstructured top-level task**.
@@ -14,7 +19,14 @@
 
 ---
 
+</details>
+
 ## Три способа запустить concurrent-работу
+
+_English summary — expand «По-русски» for full text (Три способа запустить concurrent-работу)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Способ | Structured? | Суть |
 |--------|---------------|------|
@@ -26,7 +38,14 @@
 
 ---
 
+</details>
+
 ## Граф зависимостей
+
+_English summary — expand «По-русски» for full text (Граф зависимостей)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Unstructured — плоский список
 
@@ -87,7 +106,14 @@ a.cancel()
 
 ---
 
+</details>
+
 ## Cancellation как практическое следствие
+
+_English summary — expand «По-русски» for full text (Cancellation как практическое следствие)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 При отмене structured-родителя дочерние операции отменяются **автоматически**.
 
@@ -109,7 +135,14 @@ a.cancel()
 
 ---
 
+</details>
+
 ## `async let` с отброшенным результатом
+
+_English summary — expand «По-русски» for full text (`async let` с отброшенным результатом)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Даже если результат не нужен, зависимость остаётся:
 
@@ -124,7 +157,14 @@ let a = Task {
 
 ---
 
+</details>
+
 ## `Task` vs async-closure
+
+_English summary — expand «По-русски» for full text (`Task` vs async-closure)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Часто вместо передачи `Task` достаточно **async-closure** — работа выполняется в контексте вызывающего, отмена наследуется, тестировать проще.
 
@@ -168,7 +208,14 @@ func subtaskUpdate() async {
 
 ---
 
+</details>
+
 ## Правило большого пальца
+
+_English summary — expand «По-русски» for full text (Правило большого пальца)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. **Избегай** top-level `Task`, где можно.
 2. **Предпочитай** `async let`, `TaskGroup`, обычные `async` функции.
@@ -177,7 +224,14 @@ func subtaskUpdate() async {
 
 ---
 
+</details>
+
 ## Как отвечать на интервью
+
+_English summary — expand «По-русски» for full text (Как отвечать на интервью)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Q: Что «structured» в Structured Concurrency?**
 
@@ -193,7 +247,11 @@ func subtaskUpdate() async {
 
 ---
 
+</details>
+
 ## Ссылки
+
+
 
 - [StructuredConcurrencyLab.playground](../StructuredConcurrencyLab.playground) — runnable demos (cancellation propagation)
 - [What's that "structured" in Structured Concurrency?](https://macguru.dev/whats-that-structured-in-structured-concurrency/) — macguru.dev

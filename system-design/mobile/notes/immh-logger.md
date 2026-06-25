@@ -10,11 +10,18 @@
 
 ## TL;DR
 
+
+
 _(paste article summary here)_
 
 ---
 
 ## Ключевые идеи
+
+_English summary — expand «По-русски» for full text (Ключевые идеи)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Зачем логирование в system design interview
 
@@ -34,7 +41,11 @@ _(to be added)_
 
 ---
 
+</details>
+
 ## Связь с базой
+
+
 
 - [Mobile App Design](../README.md) — secondary requirement на собесе
 - [Debug & Instruments](/quality/debug/)
@@ -42,5 +53,7 @@ _(to be added)_
 - [Sync Engine](/system-design/sync-engine/) — sync status / breadcrumbs
 
 ## Что добавить после paste
+
+
 
 See [immh-series-index.md — Logger](immh-series-index.md#logger--planned-updates)

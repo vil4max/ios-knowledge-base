@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Agent patterns** — повторяемые решения в промптах и runtime, которые делают AI-фичу **grounded**, **safe**, и **useful**. Изучать их полезнее, чем копировать сырые system prompts: Apple в Xcode Coding Intelligence явно учит модель **сначала искать контекст**, **рассуждать до действия**, и **выбирать tools** вместо галлюцинаций. Эти паттерны лежат между [08 · Tool Calling](../tool-calling/) и [09 · Agents](../agents/) — один tool round-trip vs полный agent loop.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Agent patterns** — повторяемые решения в промптах и runtime для надёжных AI-фич: routing, reflection, human-in-the-loop.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -168,27 +179,50 @@ Patterns из production IDE ближе к цели **Senior iOS + AI Product En
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Что значит Search Before Answer?
 - **Question (EN):** What does Search Before Answer mean?
-- **Answer (RU):** Модель **сначала** получает контекст через search/tools (docs, codebase, DB), **потом** генерирует ответ. Если retrieval пуст — не выдумывать; повторить search или сказать пользователю.
+
 - **Answer (EN):** The model retrieves context via search or tools before answering. Empty retrieval means retry or admit uncertainty — never invent facts.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что значит Search Before Answer?
+
+- **Answer (RU):** Модель **сначала** получает контекст через search/tools (docs, codebase, DB), **потом** генерирует ответ. Если retrieval пуст — не выдумывать; повторить search или сказать пользователю.
+
+</details>
 ### Q2
-- **Question (RU):** Think Before Act — зачем?
 - **Question (EN):** Why Think Before Act?
-- **Answer (RU):** Разделить **explain** и **make changes**; собрать контекст; озвучить короткий план; только потом tool calls с side effects. Снижает опасные правки и runaway loops.
+
 - **Answer (EN):** Classify intent, gather context, state a brief plan, then invoke tools. Reduces unsafe edits and runaway loops.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Think Before Act — зачем?
+
+- **Answer (RU):** Разделить **explain** и **make changes**; собрать контекст; озвучить короткий план; только потом tool calls с side effects. Снижает опасные правки и runaway loops.
+
+</details>
 ### Q3
-- **Question (RU):** Почему Single Agent + Many Tools?
 - **Question (EN):** Why single agent plus many tools?
-- **Answer (RU):** Один loop проще guardrails, eval и UX. Много **typed tools** покрывают домен без orchestration между sub-agents. Multi-agent — когда домены реально изолированы.
+
 - **Answer (EN):** One loop simplifies guardrails, evals, and UX. A rich tool allowlist covers most product needs; multi-agent only when domains are truly isolated.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Почему Single Agent + Many Tools?
+
+- **Answer (RU):** Один loop проще guardrails, eval и UX. Много **typed tools** покрывают домен без orchestration между sub-agents. Multi-agent — когда домены реально изолированы.
+
+</details>
 ### Q4
-- **Question (RU):** Чем agent patterns отличаются от копирования system prompts?
 - **Question (EN):** How are agent patterns different from copying system prompts?
-- **Answer (RU):** Prompts устаревают и привязаны к продукту. **Паттерны** (search-first, classify, tool preference) переносимы в свой app и тестируются через golden questions.
+
 - **Answer (EN):** Raw prompts rot and are product-specific. Patterns (search-first, classify, prefer tools) transfer to your app and regress with golden tests.
 
 <!-- knowledge-cards-canonical:end -->
@@ -200,3 +234,13 @@ Patterns из production IDE ближе к цели **Senior iOS + AI Product En
 **AI Engineering:** [Track overview](../README.md) · [← 09 · Agents](../agents/) · [10 · MCP →](../mcp/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Чем agent patterns отличаются от копирования system prompts?
+
+- **Answer (RU):** Prompts устаревают и привязаны к продукту. **Паттерны** (search-first, classify, tool preference) переносимы в свой app и тестируются через golden questions.
+
+</details>

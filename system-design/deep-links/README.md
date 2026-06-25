@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Deep links** route users into a specific screen from outside the app: **Universal Links** (HTTPS, verified), **custom URL schemes** (`myapp://`), and **deferred deep links** (attribution after install). iOS validates Universal Links via **Associated Domains** (`apple-app-site-association`). Design covers routing layer, cold vs warm start, auth gates, and fallback when the app is not installed.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Deep links** ведут на конкретный экран: **Universal Links**, custom URL schemes, deferred deep links. Cold start, state restoration, attribution.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -74,27 +85,60 @@ URL / NSUserActivity
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Universal Link vs custom URL scheme?
 - **Question (EN):** Universal Link vs custom URL scheme?
-- **Answer (RU):** **Universal Link** — HTTPS URL, Apple проверяет **AASA** и открывает app без лишнего диалога; безопаснее для marketing. **Custom scheme** (`app://`) — проще, но любой app может зарегистировать похожую схему; часто fallback или legacy. Production: Universal Links + scheme для dev/tests.
+
 - **Answer (EN):** Universal Links use verified HTTPS and AASA for seamless, secure opening. Custom schemes are easy but not ownership-proof. Prefer Universal Links in production; schemes for dev or legacy.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Universal Link vs custom URL scheme?
+
+- **Answer (RU):** **Universal Link** — HTTPS URL, Apple проверяет **AASA** и открывает app без лишнего диалога; безопаснее для marketing. **Custom scheme** (`app://`) — проще, но любой app может зарегистировать похожую схему; часто fallback или legacy. Production: Universal Links + scheme для dev/tests.
+
+</details>
 ### Q2
-- **Question (RU):** Что такое Associated Domains и AASA?
 - **Question (EN):** What are Associated Domains and AASA?
-- **Answer (RU):** Entitlement **`applinks:your.domain`** связывает app с доменом. На сервере файл **apple-app-site-association** перечисляет teamID.bundleID и **paths**, которые app может обрабатывать. Без корректного AASA ссылка откроется в Safari.
+
 - **Answer (EN):** The `applinks:` entitlement links your app to a domain. Host the apple-app-site-association file listing app IDs and paths. Without a valid AASA, links stay in Safari.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое Associated Domains и AASA?
+
+- **Answer (RU):** Entitlement **`applinks:your.domain`** связывает app с доменом. На сервере файл **apple-app-site-association** перечисляет teamID.bundleID и **paths**, которые app может обрабатывать. Без корректного AASA ссылка откроется в Safari.
+
+</details>
 ### Q3
-- **Question (RU):** Deferred deep link — как объяснить на интервью?
 - **Question (EN):** How do you explain deferred deep links?
-- **Answer (RU):** Пользователь кликает ссылку **до установки** → Store → первый запуск. **Deferred** attribution (Branch, Firebase Dynamic Links, custom) сохраняет intent и при первом open восстанавливает маршрут (promo, invite). Компромисс: privacy, accuracy, зависимость от SDK/сервера.
+
 - **Answer (EN):** User clicks a link before install; after first launch the app restores the intended destination via attribution (SDK or custom backend). Trade-offs include privacy, match accuracy, and vendor dependency.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Deferred deep link — как объяснить на интервью?
+
+- **Answer (RU):** Пользователь кликает ссылку **до установки** → Store → первый запуск. **Deferred** attribution (Branch, Firebase Dynamic Links, custom) сохраняет intent и при первом open восстанавливает маршрут (promo, invite). Компромисс: privacy, accuracy, зависимость от SDK/сервера.
+
+</details>
 ### Q4
-- **Question (RU):** Где обрабатывать deep link в SwiftUI / scenes?
 - **Question (EN):** Where do you handle deep links with scenes / SwiftUI?
-- **Answer (RU):** **Scene phase:** `onOpenURL`, `onContinueUserActivity`, или `scene(_:openURLContexts:)` / `continue userActivity`. Один **router** на все entry points (push, link, shortcut). Избегать двойной навигации — centralize в coordinator.
+
 - **Answer (EN):** Use `onOpenURL`, `onContinueUserActivity`, or scene delegate methods — but route everything through one router/coordinator shared with push and shortcuts to avoid duplicate navigation.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Где обрабатывать deep link в SwiftUI / scenes?
+
+- **Answer (RU):** **Scene phase:** `onOpenURL`, `onContinueUserActivity`, или `scene(_:openURLContexts:)` / `continue userActivity`. Один **router** на все entry points (push, link, shortcut). Избегать двойной навигации — centralize в coordinator.
+
+</details>

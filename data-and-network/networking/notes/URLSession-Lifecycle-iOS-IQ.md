@@ -7,13 +7,25 @@
 
 ## Зачем знать жизненный цикл
 
+_English summary — expand «По-русски» for full text (Зачем знать жизненный цикл)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `URLSession.shared.data(from:)` — одна строка; за ней: конфигурация, задача, DNS, TLS, I/O, кэш, делегаты, завершение. Alamofire/Moya стоят поверх этого API — отладка всегда возвращается к `URLSession`, `URLSessionDelegate`, `URLError`, `URLSessionTaskMetrics`.
 
 Жизненный цикл — **граф**, не лента: на любом этапе возможны cancel, retry, background resume.
 
 ---
 
+</details>
+
 ## Семь стадий
+
+_English summary — expand «По-русски» for full text (Семь стадий)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | # | Стадия | Суть |
 |---|--------|------|
@@ -29,7 +41,14 @@
 
 ---
 
+</details>
+
 ## Configuration: три типа
+
+_English summary — expand «По-русски» for full text (Configuration: три типа)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | | `.default` | `.ephemeral` | `.background(identifier:)` |
 |---|------------|--------------|----------------------------|
@@ -54,7 +73,14 @@
 
 ---
 
+</details>
+
 ## URLRequest
+
+_English summary — expand «По-русски» for full text (URLRequest)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - URL через `URLComponents` / `appending(queryItems:)`, не склейка строк.
 - `RequestBuilder` / `Endpoint` enum — auth, User-Agent, correlation ID в одном месте.
@@ -63,7 +89,14 @@
 
 ---
 
+</details>
+
 ## Тип задачи
+
+_English summary — expand «По-русски» for full text (Тип задачи)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Task | Когда |
 |------|-------|
@@ -79,7 +112,14 @@
 
 ---
 
+</details>
+
 ## State machine задачи
+
+_English summary — expand «По-русски» for full text (State machine задачи)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ```
 .suspended ──resume()──► .running ──cancel()──► .canceling ──► .completed
@@ -93,7 +133,14 @@
 
 ---
 
+</details>
+
 ## Network I/O и метрики
+
+_English summary — expand «По-русски» for full text (Network I/O и метрики)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Внутри: DNS → TCP → TLS → request → response stream.
 
@@ -107,7 +154,14 @@
 
 ---
 
+</details>
+
 ## Response и кэш
+
+_English summary — expand «По-русски» for full text (Response и кэш)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 URLSession считает «успехом» любой ответ с заголовками, **включая 500**. Ошибка — только transport (нет сети, TLS, timeout).
 
@@ -128,7 +182,14 @@ default: throw HTTPError(status: http.statusCode, data: data)
 
 ---
 
+</details>
+
 ## Complete: URLError и retry
+
+_English summary — expand «По-русски» for full text (Complete: URLError и retry)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Полезные коды: `.notConnectedToInternet`, `.timedOut`, `.cancelled`, `.networkConnectionLost`, `.dataNotAllowed`.
 
@@ -138,7 +199,14 @@ Retry с **exponential backoff + jitter**. Не retry: POST без idempotency, 
 
 ---
 
+</details>
+
 ## Delegates (каскад)
+
+_English summary — expand «По-русски» for full text (Delegates (каскад))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 `URLSessionDelegate` → `URLSessionTaskDelegate` → `Data` / `Download` / `WebSocket` / `Stream`.
 
@@ -155,7 +223,14 @@ Background: один `identifier` → одна сессия (singleton). `handle
 
 ---
 
+</details>
+
 ## async/await (iOS 15+)
+
+_English summary — expand «По-русски» for full text (async/await (iOS 15+))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - `Task.cancel()` отменяет сетевой запрос по дереву задач.
 - Параллель: `async let` / `TaskGroup`.
@@ -163,7 +238,14 @@ Background: один `identifier` → одна сессия (singleton). `handle
 
 ---
 
+</details>
+
 ## WebSocket
+
+_English summary — expand «По-русски» for full text (WebSocket)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Отдельная сессия; свой ping (`sendPing`) каждые 20–30 с.
 - Reconnect с backoff; состояние — idempotent subscribe после reconnect.
@@ -171,7 +253,14 @@ Background: один `identifier` → одна сессия (singleton). `handle
 
 ---
 
+</details>
+
 ## Прогресс
+
+_English summary — expand «По-русски» for full text (Прогресс)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - `task.progress` + KVO на `fractionCompleted`.
 - Delegate: `didWriteData` / `didSendBodyData`.
@@ -179,7 +268,14 @@ Background: один `identifier` → одна сессия (singleton). `handle
 
 ---
 
+</details>
+
 ## Production checklist (сжатый)
+
+_English summary — expand «По-русски» for full text (Production checklist (сжатый))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - [ ] Одна `URLSession` на клиент, явная конфигурация.
 - [ ] Endpoint/builder, не сырые `URLRequest` по коду.
@@ -195,7 +291,14 @@ Background: один `identifier` → одна сессия (singleton). `handle
 
 ---
 
+</details>
+
 ## Дерево решений (из статьи)
+
+_English summary — expand «По-русски» for full text (Дерево решений (из статьи))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Данные | Инструмент |
 |--------|------------|
@@ -206,7 +309,14 @@ Background: один `identifier` → одна сессия (singleton). `handle
 
 ---
 
+</details>
+
 ## Подводные камни (top)
+
+_English summary — expand «По-русски» for full text (Подводные камни (top))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. Completion handler не на main — UI нужно `@MainActor`.
 2. Background upload только из файла, не `httpBody`.
@@ -216,7 +326,11 @@ Background: один `identifier` → одна сессия (singleton). `handle
 
 ---
 
+</details>
+
 ## Apple docs (первичный источник)
+
+
 
 - [URLSession](https://developer.apple.com/documentation/foundation/urlsession)
 - [URLSessionConfiguration](https://developer.apple.com/documentation/foundation/urlsessionconfiguration)
@@ -228,9 +342,17 @@ Background: один `identifier` → одна сессия (singleton). `handle
 
 ## Interview hooks
 
+_English summary — expand «По-русски» for full text (Interview hooks)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - Объясни 7 стадий и где URLSession **не** считает HTTP 404 ошибкой.
 - Разница `timeoutIntervalForRequest` vs `timeoutIntervalForResource`.
 - Когда `.background`, когда `.ephemeral`.
 - Как unit-тестировать без сети (`URLProtocol`).
 - State machine: почему нельзя `resume()` после `cancel()`.
 - `waitsForConnectivity` + delegate `taskIsWaitingForConnectivity`.
+
+</details>
+

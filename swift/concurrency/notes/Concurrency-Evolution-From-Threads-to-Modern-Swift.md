@@ -8,6 +8,11 @@
 
 ## Оглавление
 
+_English summary — expand «По-русски» for full text (Оглавление)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 1. [Процесс и поток ОС](#1-процесс-и-поток-ос)
 2. [Явный поток: `Thread`](#2-явный-поток-thread)
 3. [[RunLoop](../../../XI. Резюме/Глоссарий/Glossary.md#glossary-runloop) и один поток](#3-runloop-и-один-поток)
@@ -22,7 +27,14 @@
 
 ---
 
+</details>
+
 ## 1. Процесс и поток ОС
+
+_English summary — expand «По-русски» for full text (1. Процесс и поток ОС)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Процесс** — изолированное адресное пространство и ресурсы (файловые дескрипторы, учёт времени CPU). **Поток (thread)** — единица планирования внутри процесса: свой стек, общая куча с соседними потоками того же процесса.
 
@@ -30,7 +42,14 @@
 
 ---
 
+</details>
+
 ## 2. Явный поток: `Thread`
+
+_English summary — expand «По-русски» for full text (2. Явный поток: `Thread`)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Идея:** ты сам создаёшь **долгоживущий** поток и решаешь, что на нём крутить.
 
@@ -55,7 +74,14 @@ func runOnOwnThread() {
 
 ---
 
+</details>
+
 ## 3. [RunLoop](../../../XI. Резюме/Глоссарий/Glossary.md#glossary-runloop) и один поток
+
+_English summary — expand «По-русски» for full text (3. [RunLoop](../../../XI. Резюме/Глоссарий/Glossary.md#glossary-runloop) и один поток)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **[RunLoop](../../../XI. Резюме/Глоссарий/Glossary.md#glossary-runloop)** — цикл обработки **источников** (таймеры, сокеты, custom sources) на **конкретном** потоке. **Main thread** крутит main [RunLoop](../../../XI. Резюме/Глоссарий/Glossary.md#glossary-runloop) и UI-события.
 
@@ -81,7 +107,14 @@ func timerNeedsRunLoopPump() {
 
 ---
 
+</details>
+
 ## 4. GCD: очереди и блоки
+
+_English summary — expand «По-русски» for full text (4. GCD: очереди и блоки)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Идея:** не бронировать поток навсегда, а класть **блоки** на **serial** или **concurrent** `DispatchQueue`; система сопоставляет блоки потокам из пула.
 
@@ -123,7 +156,14 @@ func gcdGroup() {
 
 ---
 
+</details>
+
 ## 5. `Operation` и `OperationQueue`
+
+_English summary — expand «По-русски» for full text (5. `Operation` и `OperationQueue`)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Идея:** **объект** «единица работы» с состоянием, приоритетом, **`dependencies`** (граф), **`cancel()`** (кооперативно), `completionBlock`. Очередь похожа на надстройку над планированием с политикой QoS и лимитом параллелизма (`maxConcurrentOperationCount`).
 
@@ -151,7 +191,14 @@ func operationDependencyChain() {
 
 ---
 
+</details>
+
 ## 6. Callbacks и делегаты (без `async`)
+
+_English summary — expand «По-русски» for full text (6. Callbacks и делегаты (без `async`))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Идея:** асинхронность выражена **инверсией управления** — «позови меня, когда будет готово».
 
@@ -176,7 +223,14 @@ func callbackStyle(completion: @escaping (String) -> Void) {
 
 ---
 
+</details>
+
 ## 7. Combine как слой поверх GCD
+
+_English summary — expand «По-русски» for full text (7. Combine как слой поверх GCD)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Идея:** поток событий (**Publisher**), операторы, подписка; планировщики (`receive(on:)`, `subscribe(on:)`) снова опираются на **очереди** / [RunLoop](../../../XI. Резюме/Глоссарий/Glossary.md#glossary-runloop).
 
@@ -198,7 +252,14 @@ func combineReceiveOnMain() -> AnyCancellable {
 
 ---
 
+</details>
+
 ## 8. Swift Concurrency
+
+_English summary — expand «По-русски» for full text (8. Swift Concurrency)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Идея:** **`async`/`await`** для приостановки без обязательной привязки к «ручному» потоку; **`Task`** — единица работы с **structured concurrency** и отменой по дереву; **`actor`** и **`@MainActor`** — **изоляция**; **`Sendable`** — допустимость пересечения границ.
 
@@ -235,7 +296,14 @@ func modernUIUpdate() async {
 
 ---
 
+</details>
+
 ## 9. Одна и та же задача: четыре эпохи
+
+_English summary — expand «По-русски» for full text (9. Одна и та же задача: четыре эпохи)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Задача: **посчитать строку на фоне, показать на main**.
 
@@ -248,7 +316,14 @@ func modernUIUpdate() async {
 
 ---
 
+</details>
+
 ## 10. Сводная таблица
+
+_English summary — expand «По-русски» for full text (10. Сводная таблица)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Слой | Что абстрагирует | Кто гарантирует порядок доступа к state | Отмена | Компилятор про гонки |
 |------|------------------|----------------------------------------|---------|----------------------|
@@ -265,10 +340,20 @@ func modernUIUpdate() async {
 
 ---
 
+</details>
+
 ## 11. Ссылки
+
+_English summary — expand «По-русски» for full text (11. Ссылки)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - [Swift Language Guide — Concurrency](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/)
 - [WWDC 2015: Advanced NSOperations](https://developer.apple.com/videos/play/wwdc2015/226/) (`Operation` в архитектуре)
 - [Habr: Operation и OperationQueue](https://habr.com/en/articles/335756/) (Swift 3–4, идеи сохраняются)
 - Конспект Operation в фундаменте: [`Operating-Systems-and-Networks-for-iOS.md`](../../../I. Фундамент/02 Операционные системы и сети для iOS/Operating-Systems-and-Networks-for-iOS.md)
 - Подробнее про изоляцию и очереди в одном интервью-блоке: [Actors vs Queues vs Locks](https://livsycode.com/best-practices/actors-vs-queues-vs-locks-in-swift/)
+
+</details>
+

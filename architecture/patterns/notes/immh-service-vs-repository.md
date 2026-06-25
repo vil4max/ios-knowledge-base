@@ -10,11 +10,18 @@
 
 ## TL;DR
 
+
+
 _(paste article summary here)_
 
 ---
 
 ## Ключевые идеи
+
+_English summary — expand «По-русски» for full text (Ключевые идеи)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Repository
 
@@ -34,12 +41,18 @@ _(to be added)_
 
 ---
 
+</details>
+
 ## Связь с базой
+
+
 
 - [MVVM → TCA README](../README.md)
 - [Mobile App Design](/system-design/mobile/) — data layer on interview
 - [Networking](/data-and-network/networking/)
 
 ## Что добавить после paste
+
+
 
 See [immh-series-index.md — Service vs Repository](../../system-design/mobile/notes/immh-series-index.md#service-vs-repository--planned-updates)

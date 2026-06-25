@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 SwiftUI is **declarative UI**: views are values, state drives body recomputation, modifiers build a render tree. **ARC still applies** — pick the right ownership wrapper (`@State` / `@Bindable` / `@Environment` on iOS 17+; `@StateObject` / `@ObservedObject` / `@EnvironmentObject` for legacy). Interview depth: view identity (`id`, `ForEach`), navigation (`NavigationStack`), async tied to lifetime (`.task`), performance (unnecessary body work), and **UIKit interop** (`UIViewRepresentable`). Know when SwiftUI is wrong tool (complex gestures, legacy UIKit investment).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+SwiftUI — **декларативный UI**: view как значения, state перерисовывает `body`. `@State`, `@Binding`, `@Observable`, `NavigationStack`, lifecycle и performance (identity, лишние body).
+
+</details>
+
+
 
 ## Apple docs
 
@@ -550,8 +561,20 @@ flowchart LR
 ---
 
 ### Q9
-- **Question (RU):** **multilevel dismiss** в SwiftUI: несколько уровней **sheet** / **fullScreenCover** / **навигация** — как задать состояние и **кто** закрывает какой уровень?
 - **Question (EN):** Multilevel dismiss in SwiftUI—stacked sheets, fullScreenCover, navigation; state patterns and who dismisses which level?
+
+- **Answer (EN):** Presentations follow state. Use `Environment(\.dismiss)` **inside** presented content to pop a sheet or a navigation level; read it in the wrong scope and dismissal targets the wrong presentation (per Apple). Prefer a single `sheet(item:)` driven by an `Identifiable` enum rather than stacking multiple `sheet(isPresented:)`. Collapsing the whole stack = reset shared presentation state or clear `NavigationPath`.
+
+- **Устный канон (опросник п.22 / H22, drill):** «**Состояние** решает, что показано; **закрыть** — **сбросить state** или **`dismiss()` из контента презентации**. Несколько уровней — **enum + один sheet** или **вложенный NavigationStack**; **свалить всё** — **родитель** в **один** переход состояния.»
+
+- **Playground:** [open](swiftui_state_management.playground/Contents.swift)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** **multilevel dismiss** в SwiftUI: несколько уровней **sheet** / **fullScreenCover** / **навигация** — как задать состояние и **кто** закрывает какой уровень?
+
 - **Answer (RU):** Зацепка: презентации в SwiftUI **декларативны** — показывается то, что следует из **`@State` / биндингов / маршрута**; закрытие — это **сброс того же состояния** или вызов **`dismiss()`** из **правильного** `Environment`.
 
     **Кто закрывает уровень:** **`@Environment(\.dismiss)`** ([`DismissAction`](https://developer.apple.com/documentation/swiftui/dismissaction)) закрывает **текущую** презентацию **относительно того места, где environment прочитан**. Apple прямо предупреждает: **`dismiss` нужно брать внутри контента sheet**, а не в родителе — иначе действие относится к **родительскому** окружению (лист не закроется, на macOS/iPadOS может закрыться **окно**). Для **навигации** (`NavigationStack` + `path`) «закрыть уровень» = **`path.removeLast()`** или очистить **`NavigationPath`**; `dismiss()` в контексте push — **pop** текущего экрана ([документация](https://developer.apple.com/documentation/swiftui/dismissaction)).
@@ -560,44 +583,60 @@ flowchart LR
 
     **fullScreenCover** — по смыслу как sheet для dismiss/state; отличие в **UX и жестах**, не в модели «сбросить binding».
 
-- **Answer (EN):** Presentations follow state. Use `Environment(\.dismiss)` **inside** presented content to pop a sheet or a navigation level; read it in the wrong scope and dismissal targets the wrong presentation (per Apple). Prefer a single `sheet(item:)` driven by an `Identifiable` enum rather than stacking multiple `sheet(isPresented:)`. Collapsing the whole stack = reset shared presentation state or clear `NavigationPath`.
-
-- **Устный канон (опросник п.22 / H22, drill):** «**Состояние** решает, что показано; **закрыть** — **сбросить state** или **`dismiss()` из контента презентации**. Несколько уровней — **enum + один sheet** или **вложенный NavigationStack**; **свалить всё** — **родитель** в **один** переход состояния.»
-
 - **Follow-up (RU):** как закрыть **два листа** одной кнопкой?
+
 - **Follow-up answer (RU):** один **`enum`** презентации в `.none`; либо сброс **двух** `@State` подряд (может мигать — лучше одна модель); либо **dismiss** на самом внешнем контейнере, если архитектура это допускает.
 
-- **Доп. информация:** [Habr H22](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.22; [DismissAction](https://developer.apple.com/documentation/swiftui/dismissaction); блок выше «обратная передача данных» (unwind-аналог); **II/05 Q51** (если отвлёкся на функции — там таблицы).
+</details>
 
-- **Playground:** [open](swiftui_state_management.playground/Contents.swift)
+- **Доп. информация:** [Habr H22](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.22; [DismissAction](https://developer.apple.com/documentation/swiftui/dismissaction); блок выше «обратная передача данных» (unwind-аналог); **II/05 Q51** (если отвлёкся на функции — там таблицы).
 - **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
 
 ---
-
 ### Q10
-- **Question (RU):** что такое протокол **`View`** в SwiftUI и зачем **`Body`** / **`@ViewBuilder`**?
 - **Question (EN):** What is the `View` protocol—`Body`, `@ViewBuilder`?
+
+- **Answer (EN):** `View` describes a piece of UI via `body`; modifiers wrap the view. `Body` is the concrete tree type; `@ViewBuilder` builds conditional/multi-statement view DSL.
+
+- **Устный канон (опросник п.23 / H23, drill):** «**`View`** — **описание** куска UI через **`body`**; **`@ViewBuilder`** — **DSL** для дерева; **модификаторы** — **обёртки** вокруг типа.»
+
+- **Playground:** [open](swiftui_state_management.playground/Contents.swift)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** что такое протокол **`View`** в SwiftUI и зачем **`Body`** / **`@ViewBuilder`**?
+
 - **Answer (RU):** Зацепка: по [документации Apple](https://developer.apple.com/documentation/swiftui/view), **`View`** — тип, который **представляет часть UI** и даёт **модификаторы** для настройки; обязательное — вычисляемое свойство **`body`** с типом **`some View`** (opaque), собирающее иерархию из примитивов и других `View`.
 
     **`associatedtype Body`:** конкретный тип дерева, которое возвращает `body` (часто **opaque** `some View`). **`@ViewBuilder`** — атрибут результата `body` (и похожих замыканий): позволяет писать **несколько** дочерних view / `if` / `switch` **без явного `Group`** — DSL для дерева.
 
     **Модификаторы** по модели SwiftUI **оборачивают** экземпляр в новый тип view с нужными параметрами (цепочка `Text().padding().foregroundStyle(...)`).
 
-- **Answer (EN):** `View` describes a piece of UI via `body`; modifiers wrap the view. `Body` is the concrete tree type; `@ViewBuilder` builds conditional/multi-statement view DSL.
-
-- **Устный канон (опросник п.23 / H23, drill):** «**`View`** — **описание** куска UI через **`body`**; **`@ViewBuilder`** — **DSL** для дерева; **модификаторы** — **обёртки** вокруг типа.»
-
 - **Follow-up (RU):** почему `body` — **`some View`**, а не конкретный тип?
+
 - **Follow-up answer (RU):** тип дерева **сложный и меняется** от модификаторов; **opaque** скрывает конкретику, сохраняя **статическую** типизацию у компилятора.
 
+</details>
+
 - **Доп. информация:** [Habr H23](https://habr.com/en/articles/726388/); [View](https://developer.apple.com/documentation/swiftui/view); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.23; см. **Q11** (почему `struct`).
+- **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
+### Q11
+- **Question (EN):** Why is SwiftUI `View` typically a `struct`?
+
+- **Answer (EN):** A SwiftUI `View` is primarily a **lightweight value-typed description** of UI, not a long-lived widget instance. `body` can be re-evaluated frequently; real persistence lives in `@State`/environment/models (often classes). Structs match modifier chains (wrapping values), reduce accidental shared mutation of the description, and keep ARC/retain-cycle concerns centered in models/closures. Identity in the tree is handled separately (`id`, `ForEach` keys, structure), not by `===` on the struct description itself.
+
+- **Устный канон (опросник п.24 / H24, drill):** «**`View` — struct**, потому что это **описание** UI: **value semantics**, **дешёвые копии**, состояние **вне** в `State`/модели; **меньше shared mutable** на уровне дерева.»
 
 - **Playground:** [open](swiftui_state_management.playground/Contents.swift)
-- **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
 
-### Q11
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Question (RU):** почему во SwiftUI **`View`** обычно — **`struct`**?
-- **Question (EN):** Why is SwiftUI `View` typically a `struct`?
+
 - **Answer (RU):** Зацепка: **`View`** в SwiftUI — это не «живой виджет на экране», а **значение-описание** (`value`): *какой* UI нужен при *текущих* входных данных. Рендер и долговечность — у **рантайма и графа**; `struct` хорошо ложится на эту модель.
 
     **1) Value semantics вместо «одного объекта на экран».** В UIKit **`UIView`** — **reference type** с **идентичностью** (`===`): один экземпляр, много указателей, общая мутабельность. В SwiftUI **каждый раз** можно получить **новое значение** `ContentView(...)` — это **новая версия рецепта**, а не «тот же объект перерисовали». Мутабельность **не размазывается** по алиасам самого `View`-значения.
@@ -614,21 +653,29 @@ flowchart LR
 
     **7) Почему не `class` по умолчанию.** Класс тянет **разделяемую ссылку**, **наследование**, **деинициализацию** — для «одноразового описания кадра» это чаще **лишняя семантика** и риск **разделяемой мутабельности** описания. Классы остаются для **сервисов, VM, legacy UIKit**.
 
-- **Answer (EN):** A SwiftUI `View` is primarily a **lightweight value-typed description** of UI, not a long-lived widget instance. `body` can be re-evaluated frequently; real persistence lives in `@State`/environment/models (often classes). Structs match modifier chains (wrapping values), reduce accidental shared mutation of the description, and keep ARC/retain-cycle concerns centered in models/closures. Identity in the tree is handled separately (`id`, `ForEach` keys, structure), not by `===` on the struct description itself.
-
-- **Устный канон (опросник п.24 / H24, drill):** «**`View` — struct**, потому что это **описание** UI: **value semantics**, **дешёвые копии**, состояние **вне** в `State`/модели; **меньше shared mutable** на уровне дерева.»
-
 - **Follow-up (RU):** когда **`View` всё же `class`**?
+
 - **Follow-up answer (RU):** редко и осознанно; чаще **класс** — **модель** (`ObservableObject`, сервис), а не сам `View`.
 
+</details>
+
 - **Доп. информация:** [Habr H24](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.24; [View](https://developer.apple.com/documentation/swiftui/view); см. **Q10**.
+- **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
+### Q12
+- **Question (EN):** Embedding UIKit in SwiftUI—`UIViewRepresentable` vs `UIViewControllerRepresentable`, lifecycle hooks, coordinator, state?
+
+- **Answer (EN):** Representables wrap UIKit views or view controllers into SwiftUI. Implement make/update/dismantle; use a `Coordinator` to bridge delegates/target-actions to SwiftUI state via bindings. Don’t fight SwiftUI for layout of the managed view—Apple documents UB if you set frame/bounds/center/transform yourself.
+
+- **Устный канон (опросник п.25 / H25, drill):** «**Representable** встраивает **UIKit**: **`make` / `update` / `dismantle`**, **`Coordinator`** для **delegate**, **`Binding`** для данных; **layout** не ломать — контролирует **SwiftUI**.»
 
 - **Playground:** [open](swiftui_state_management.playground/Contents.swift)
-- **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
 
-### Q12
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Question (RU):** **UIKit внутри SwiftUI** — **`UIViewRepresentable`** и **`UIViewControllerRepresentable`**: зачем, **какие методы**, **`Coordinator`**, как **прокинуть state**?
-- **Question (EN):** Embedding UIKit in SwiftUI—`UIViewRepresentable` vs `UIViewControllerRepresentable`, lifecycle hooks, coordinator, state?
+
 - **Answer (RU):** Зацепка: по [Apple](https://developer.apple.com/documentation/swiftui/uiviewrepresentable), **`UIViewRepresentable`** — обёртка **`UIView`** для встраивания в SwiftUI; **`UIViewControllerRepresentable`** — то же для [`UIViewController`](https://developer.apple.com/documentation/swiftui/uiviewcontrollerrepresentable). Оба — **`View`**, но с `Body == Never`: реального `body` нет — рендерит **UIKit**.
 
     **Жизненный цикл (UIView):** **`makeUIView(context:)`** — создать view и базовую настройку; **`updateUIView(_:context:)`** — при изменении **SwiftUI state** снова вызывается — синхронизируй **props** в UIKit (`text`, `isHidden`, …); **`dismantleUIView(_:coordinator:)`** — убрать подписки / освободить ресурсы. Для VC: **`makeUIViewController`**, **`updateUIViewController`**, **`dismantleUIViewController`**.
@@ -639,21 +686,69 @@ flowchart LR
 
     **Предупреждение Apple:** SwiftUI **полностью контролирует** layout-поля (`frame`, `bounds`, `center`, `transform`) вью у representable — **не выставляй их вручную** из своего кода к управляемой SwiftUI вью — **undefined behavior**.
 
-- **Answer (EN):** Representables wrap UIKit views or view controllers into SwiftUI. Implement make/update/dismantle; use a `Coordinator` to bridge delegates/target-actions to SwiftUI state via bindings. Don’t fight SwiftUI for layout of the managed view—Apple documents UB if you set frame/bounds/center/transform yourself.
-
-- **Устный канон (опросник п.25 / H25, drill):** «**Representable** встраивает **UIKit**: **`make` / `update` / `dismantle`**, **`Coordinator`** для **delegate**, **`Binding`** для данных; **layout** не ломать — контролирует **SwiftUI**.»
-
 - **Follow-up (RU):** когда нужен **VC**, а не **View**?
+
 - **Follow-up answer (RU):** нужен **`UINavigationController`**, **системные VC**, **child VC**-композиция — тогда **`UIViewControllerRepresentable`**.
 
+</details>
+
 - **Доп. информация:** [Habr H25](https://habr.com/en/articles/726388/); [UIViewRepresentable](https://developer.apple.com/documentation/swiftui/uiviewrepresentable); [UIViewControllerRepresentable](https://developer.apple.com/documentation/swiftui/uiviewcontrollerrepresentable); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.25; **III/10 UIKit** (жизненный цикл VC).
+- **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
+### Q13
+- **Question (EN):** SwiftUI vs UIKit tradeoffs in one interview pass?
+
+- **Answer (EN):** SwiftUI is declarative: lightweight `View` values (usually structs) describe UI; the runtime diff/updates the graph. UIKit is imperative: you mutate a persistent `UIView` hierarchy (reference semantics). SwiftUI trades boilerplate and speed of development for occasional complexity in state/diff debugging; UIKit trades verbosity for fine control. Models in SwiftUI are often still classes.
+
+- **Устный канон (опросник п.33 / H33, drill):** «**SwiftUI** — **декларативно**, **`View`**-**`struct`**, состояние отдельно; **UIKit** — **императивно**, **`UIView`**-**class**, ручная иерархия; **SwiftUI** быстрее стандартные экраны, **UIKit** — тонкий контроль и легаси; сложное — **Representable** / **HostingController**.»
+
+- **Формулировка с drill (п.33):** «**SwiftUI** — **декларативный** UI на **структурах**; **UIKit** — **императивный** на **референс-типах**.»
 
 - **Playground:** [open](swiftui_state_management.playground/Contents.swift)
-- **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
 
-### Q13
+### TimelineView — time-driven UI (Nil Coalescing)
+
+- **Type:** article + playground
+
+- **URL:** https://nilcoalescing.com/blog/TimelineViewInSwiftUI/
+
+- **Author:** Natalia Panferova (Nil Coalescing)
+
+- **Why:** Schedules, `context.cadence`, animation without state; vs `Timer`
+
+- **When:** Clocks, countdown, shimmer, shader time uniform
+
+- **Tags:** `swiftui`, `timelineview`, `animation`, `pattern`
+
+- **Note:** [timeline-view-swiftui.md](notes/timeline-view-swiftui.md)
+
+- **Playground:** [TimelineViewDemo.playground](TimelineViewDemo.playground)
+
+- **Added:** 2026-06-19
+
+### Floating card using safeAreaBar (Codakuma)
+
+- **Type:** article + code
+
+- **URL:** https://codakuma.com/floating-safe-area-bar/
+
+- **Author:** Codakuma
+
+- **Why:** CTA-карточка внизу: safeAreaInset → floating card → safeAreaBar (26) / material fallback (18)
+
+- **When:** Checkout bar, summary + Save, bottom CTA over ScrollView/List
+
+- **Tags:** `swiftui`, `safe-area`, `ios-26`, `layout`, `pattern`
+
+- **Playground:** [FloatingSafeAreaBar.playground](FloatingSafeAreaBar.playground)
+
+- **Added:** 2026-06-19
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Question (RU):** **п.33 / H33** — плюсы и минусы **SwiftUI** vs **UIKit** (в одном заходе)?
-- **Question (EN):** SwiftUI vs UIKit tradeoffs in one interview pass?
+
 - **Answer (RU):** Зацепка: **SwiftUI** — **декларативное** описание UI (**`View`** чаще как **`struct`**, «рецепт кадра»); **UIKit** — **императивная** работа с **живым** графом **`UIView`** (**reference type**, идентичность `===`, ручные `addSubview` / constraints / `setNeedsLayout`).
 
     **Плюсы SwiftUI:** меньше шаблонного кода, быстрее типичные экраны, **состояние** рядом с UI (`@State`, `@Binding`, `@Observable`), превью, проще адаптив и списки в стандартных кейсах.
@@ -666,41 +761,15 @@ flowchart LR
 
     **Уточнение к короткой формуле «SwiftUI = struct, UIKit = class»:** у SwiftUI **модель и окружение** часто **`class`** (`@Observable`, `ObservableObject`); **описание** экрана — значения **`struct`**. UIKit тоже использует **structs** (`CGRect`, `NSDirectionalEdgeInsets`) — речь про **узел UI**, не про «всё приложение только классы».
 
-- **Answer (EN):** SwiftUI is declarative: lightweight `View` values (usually structs) describe UI; the runtime diff/updates the graph. UIKit is imperative: you mutate a persistent `UIView` hierarchy (reference semantics). SwiftUI trades boilerplate and speed of development for occasional complexity in state/diff debugging; UIKit trades verbosity for fine control. Models in SwiftUI are often still classes.
-
-- **Устный канон (опросник п.33 / H33, drill):** «**SwiftUI** — **декларативно**, **`View`**-**`struct`**, состояние отдельно; **UIKit** — **императивно**, **`UIView`**-**class**, ручная иерархия; **SwiftUI** быстрее стандартные экраны, **UIKit** — тонкий контроль и легаси; сложное — **Representable** / **HostingController**.»
-
-- **Формулировка с drill (п.33):** «**SwiftUI** — **декларативный** UI на **структурах**; **UIKit** — **императивный** на **референс-типах**.»
-
 - **Follow-up (RU):** как встроить SwiftUI в UIKit и наоборот?
+
 - **Follow-up answer (RU):** **`UIHostingController`** (SwiftUI внутри UIKit); **`UIViewRepresentable` / `UIViewControllerRepresentable`** (**Q12**) — UIKit внутри SwiftUI.
 
-- **Доп. информация:** [Habr H33](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.33; **Q11** (почему `struct`), **Q12** (bridge); **III/10 UIKit**.
+</details>
 
-- **Playground:** [open](swiftui_state_management.playground/Contents.swift)
+- **Доп. информация:** [Habr H33](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.33; **Q11** (почему `struct`), **Q12** (bridge); **III/10 UIKit**.
 - **Notes:** [III/11 SwiftUI — декларативный UI и state management/SwiftUI-Declarative-UI-State.md](III.%20iOS%20SDK/11%20SwiftUI%20—%20декларативный%20UI%20и%20state%20management/SwiftUI-Declarative-UI-State.md)
 
 ---
 
 ## Ресурсы
-
-### TimelineView — time-driven UI (Nil Coalescing)
-- **Type:** article + playground
-- **URL:** https://nilcoalescing.com/blog/TimelineViewInSwiftUI/
-- **Author:** Natalia Panferova (Nil Coalescing)
-- **Why:** Schedules, `context.cadence`, animation without state; vs `Timer`
-- **When:** Clocks, countdown, shimmer, shader time uniform
-- **Tags:** `swiftui`, `timelineview`, `animation`, `pattern`
-- **Note:** [timeline-view-swiftui.md](notes/timeline-view-swiftui.md)
-- **Playground:** [TimelineViewDemo.playground](TimelineViewDemo.playground)
-- **Added:** 2026-06-19
-
-### Floating card using safeAreaBar (Codakuma)
-- **Type:** article + code
-- **URL:** https://codakuma.com/floating-safe-area-bar/
-- **Author:** Codakuma
-- **Why:** CTA-карточка внизу: safeAreaInset → floating card → safeAreaBar (26) / material fallback (18)
-- **When:** Checkout bar, summary + Save, bottom CTA over ScrollView/List
-- **Tags:** `swiftui`, `safe-area`, `ios-26`, `layout`, `pattern`
-- **Playground:** [FloatingSafeAreaBar.playground](FloatingSafeAreaBar.playground)
-- **Added:** 2026-06-19

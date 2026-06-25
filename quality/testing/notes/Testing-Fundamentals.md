@@ -1,6 +1,6 @@
 # Основы тестирования (интервью)
 
-**Назначение:** фундамент до senior-практик — зачем тесты, пирамида, FIRST, AAA, test doubles. Продолжение: [Senior-Unit-Testing-Mastery-RU](Senior-Unit-Testing-Mastery-RU.md).
+**Назначение:** фундамент до senior-практик — зачем тесты, пирамида, FIRST, AAA, test doubles. Продолжение: [Senior-Unit-Testing-Mastery-RU](Senior-Unit-Testing-Mastery.md).
 
 **Topic README:** [Testing](../README.md)
 
@@ -8,11 +8,23 @@
 
 ## TL;DR
 
+_English summary — expand «По-русски» for full text (TL;DR)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Тесты нужны не чтобы «убедиться, что код работает» (это делает ручной прогон), а для **regression safety** — изменения не ломают то, что уже работало — и как **живая спецификация** для новых разработчиков. Большинство проверок — быстрые **unit** (изоляция, моки); меньше **integration**; минимум **UI/E2E**. Хороший тест — **FIRST**; структура — **AAA**; зависимости — **test doubles** по роли (на собесе чаще всего **Stub vs Mock**).
 
 ---
 
+</details>
+
 ## Зачем вообще нужны тесты
+
+_English summary — expand «По-русски» for full text (Зачем вообще нужны тесты)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Главная идея не в том, чтобы «проверить что код работает». Ты и так можешь запустить приложение и потыкать.
 
@@ -25,7 +37,14 @@
 
 ---
 
+</details>
+
 ## Пирамида тестирования
+
+_English summary — expand «По-русски» for full text (Пирамида тестирования)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Три уровня; у каждого своя цена и цель:
 
@@ -55,7 +74,14 @@ Unit даёт быстрый, точный сигнал; UI — страховк
 
 ---
 
+</details>
+
 ## FIRST
+
+_English summary — expand «По-русски» for full text (FIRST)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Хорошие тесты обязаны быть:
 
@@ -71,7 +97,14 @@ Unit даёт быстрый, точный сигнал; UI — страховк
 
 ---
 
+</details>
+
 ## AAA (Arrange – Act – Assert)
+
+_English summary — expand «По-русски» for full text (AAA (Arrange – Act – Assert))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Каждый тест — три части:
 
@@ -96,7 +129,14 @@ func test_addItem_incrementsCartCount() {
 
 ---
 
+</details>
+
 ## Test doubles — самое важное для интервью
+
+_English summary — expand «По-русски» for full text (Test doubles — самое важное для интервью)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Общее имя — **test double** (подмена зависимости). Роли часто путают даже опытные разработчики.
 
@@ -151,7 +191,14 @@ final class InMemoryCartStore: CartStore {
 
 ---
 
+</details>
+
 ## Вопросы–ответы (собес)
+
+_English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 **Q. Зачем тесты, если можно запустить приложение?**  
 **A.** Ручной прогон не масштабируется и не ловит регрессии при каждом изменении. Тесты — regression safety + спецификация поведения.
@@ -170,13 +217,23 @@ final class InMemoryCartStore: CartStore {
 
 ---
 
+</details>
+
 ## Что читать дальше
+
+_English summary — expand «По-русски» for full text (Что читать дальше)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - [XCTest](https://developer.apple.com/documentation/xctest)
 - [Swift Testing](https://developer.apple.com/documentation/testing)
-- [Test Plans и CI](Test-Plans-CI-RU.md) — PR vs Nightly (детали pipeline: [CI/CD](../../../devops/ci-cd/README.md))
-- В репозитории: [Senior-Unit-Testing-Mastery-RU](Senior-Unit-Testing-Mastery-RU.md) · [Swift-Testing-vs-XCTest-RU](Swift-Testing-vs-XCTest-RU.md) · [TDD-Basics-RU](TDD-Basics-RU.md) · [AI-assisted TDD](ai-assisted-tdd.md)
+- [Test Plans и CI](Test-Plans-CI.md) — PR vs Nightly (детали pipeline: [CI/CD](../../../devops/ci-cd/README.md))
+- В репозитории: [Senior-Unit-Testing-Mastery-RU](Senior-Unit-Testing-Mastery.md) · [Swift-Testing-vs-XCTest-RU](Swift-Testing-vs-XCTest.md) · [TDD-Basics-RU](TDD-Basics.md) · [AI-assisted TDD](ai-assisted-tdd.md)
 
 ---
 
 **Версия:** 1.0 · **Язык:** RU · **Уровень:** fundamentals → senior note
+
+</details>
+

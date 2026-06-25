@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **AI agents** run a loop: model plans → calls [tools](../tool-calling/) → observes results → repeats until done or a step limit. Unlike a single chat completion, an agent **persists state** across turns and may chain multiple tool calls. **Guardrails** (allowlists, human approval, timeouts) matter on mobile where side effects touch user data and battery. Production-style orchestration patterns (search-first, think-before-act, single agent + many tools) → [Agent Patterns](../agent-patterns/). For transport and IDE integration see [MCP](../mcp/); for on-device tool wiring see [Foundation Models](../foundation-models/).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**AI agents** — цикл: план → [tools](../tool-calling/) → наблюдение → повтор. Ограничения: контекст, стоимость, безопасность.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -77,27 +88,50 @@ User goal
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Что такое agent loop?
 - **Question (EN):** What is an agent loop?
-- **Answer (RU):** LLM получает цель и **описания tools** → решает вызвать tool с JSON-аргументами → runtime **выполняет** → результат (**observation**) возвращается в контекст → модель продолжает до финального ответа или лимита шагов.
+
 - **Answer (EN):** The model receives a goal and tool definitions, emits a structured tool call, the runtime executes it, feeds the result back as observation, and repeats until done or a step limit is hit.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое agent loop?
+
+- **Answer (RU):** LLM получает цель и **описания tools** → решает вызвать tool с JSON-аргументами → runtime **выполняет** → результат (**observation**) возвращается в контекст → модель продолжает до финального ответа или лимита шагов.
+
+</details>
 ### Q2
-- **Question (RU):** Tool calling vs просто prompt?
 - **Question (EN):** Tool calling vs plain prompting?
-- **Answer (RU):** Prompt alone — модель **галлюцинирует** факты и не может безопасно выполнить side effects. **Tools** дают реальные данные (API, DB, sensors) и controlled actions. Описание tool важно — model routing по description.
+
 - **Answer (EN):** Prompting alone hallucinates facts and cannot safely perform side effects. Tools provide real data and controlled actions; clear tool descriptions drive correct routing.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Tool calling vs просто prompt?
+
+- **Answer (RU):** Prompt alone — модель **галлюцинирует** факты и не может безопасно выполнить side effects. **Tools** дают реальные данные (API, DB, sensors) и controlled actions. Описание tool важно — model routing по description.
+
+</details>
 ### Q3
-- **Question (RU):** MCP — зачем?
 - **Question (EN):** Why MCP?
-- **Answer (RU):** **Стандартный протокол** между agent host (IDE, app) и **tool servers** (Git, Xcode, docs). Один раз реализовал server — многие clients подключаются. Alternatives: ad hoc REST wrappers per agent — не масштабируется.
+
 - **Answer (EN):** MCP standardizes how agent hosts connect to tool servers — implement once, reuse across clients. Ad hoc per-agent integrations do not scale.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** MCP — зачем?
+
+- **Answer (RU):** **Стандартный протокол** между agent host (IDE, app) и **tool servers** (Git, Xcode, docs). Один раз реализовал server — многие clients подключаются. Alternatives: ad hoc REST wrappers per agent — не масштабируется.
+
+</details>
 ### Q4
-- **Question (RU):** Guardrails для production agent?
 - **Question (EN):** Guardrails for a production agent?
-- **Answer (RU):** **Allowlist** tools; max iterations; timeout; validate outputs (schema); **human confirm** на destructive/financial; log traces; redact PII из observations; rate limit API. На iOS — не блокировать main thread; чёткие error states в UI.
+
 - **Answer (EN):** Tool allowlists, step/time limits, schema validation, human confirmation for destructive actions, logging, PII redaction, rate limits. On iOS keep work off the main thread with clear UI error states.
 
 <!-- knowledge-cards-canonical:end -->
@@ -109,3 +143,13 @@ User goal
 **AI Engineering:** [Track overview](../README.md) · [← 08 · Tool Calling](../tool-calling/) · [10 · MCP →](../mcp/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Guardrails для production agent?
+
+- **Answer (RU):** **Allowlist** tools; max iterations; timeout; validate outputs (schema); **human confirm** на destructive/financial; log traces; redact PII из observations; rate limit API. На iOS — не блокировать main thread; чёткие error states в UI.
+
+</details>

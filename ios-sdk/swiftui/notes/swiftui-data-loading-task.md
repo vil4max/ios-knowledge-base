@@ -3,17 +3,33 @@
 - **Status:** curated note
 - **Added:** 2026-06-19
 - **Source:** [appsell.su — прекратите использовать onAppear для API](https://appsell.su/blog/den-apps-1/swift-razrabotka/prekratite-ispolzovat-onappear-dlya-vyzovov-k-zaprosov-k-api-v-swiftui-532)
-- **Related:** [SwiftUI README](../README.md) · [Approachable Concurrency](../../../swift/concurrency/notes/Approachable-Swift-Concurrency-Site-RU.md) · [URLSession lifecycle](../../../data-and-network/networking/notes/URLSession-Lifecycle-iOS-IQ.md)
+- **Related:** [SwiftUI README](../README.md) · [Approachable Concurrency](../../../swift/concurrency/notes/Approachable-Swift-Concurrency-Site.md) · [URLSession lifecycle](../../../data-and-network/networking/notes/URLSession-Lifecycle-iOS-IQ.md)
 
 ---
 
 ## За 30 секунд
 
+
+
+
+
+_English summary — expand «По-русски» for the full Russian text._
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `View` в SwiftUI — **лёгкие struct**, пересоздаются часто. **`.onAppear`** — событие «view стала видимой», не контракт на загрузку данных. **`Task { }` внутри `.onAppear`** — неструктурированная работа без автоотмены. Для async-загрузки экрана: **`enum` состояния (FSM)** в **`@Observable` ViewModel** + модификатор **`.task`** (или **`.task(id:)`**). `.task` отменяет task при исчезновении view; **повторный fetch при возврате на экран** решает кэш/VM, а не сам модификатор.
 
 ---
 
+</details>
+
+
+
 ## Поток: view → VM → сеть
+
+
 
 ```mermaid
 flowchart LR
@@ -29,6 +45,11 @@ flowchart LR
 ---
 
 ## Концепты
+
+_English summary — expand «По-русски» for full text (Концепты)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### 1) Почему `.onAppear` — ловушка для API
 
@@ -146,7 +167,14 @@ Pull-to-refresh — отдельный вход в загрузку; не сме
 
 ---
 
+</details>
+
 ## `.onAppear` vs `.task` — сводка
+
+_English summary — expand «По-русски» for full text (`.onAppear` vs `.task` — сводка)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | | `.onAppear` + `Task { }` | `.task` / `.task(id:)` |
 |--|--------------------------|-------------------------|
@@ -158,7 +186,14 @@ Pull-to-refresh — отдельный вход в загрузку; не сме
 
 ---
 
+</details>
+
 ## Best practices & mistakes
+
+_English summary — expand «По-русски» for full text (Best practices & mistakes)._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | ✅ Делай | ❌ Не делай |
 |----------|------------|
@@ -171,7 +206,14 @@ Pull-to-refresh — отдельный вход в загрузку; не сме
 
 ---
 
+</details>
+
 ## Карточки знаний (Q&A)
+
+_English summary — expand «По-русски» for full text (Карточки знаний (Q&A))._
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 ### Q: Почему не вызывать API в `.onAppear`?
 
@@ -201,7 +243,11 @@ Pull-to-refresh — отдельный вход в загрузку; не сме
 
 ---
 
+</details>
+
 ## Apple docs
+
+
 
 - [task(priority:_:)](https://developer.apple.com/documentation/swiftui/view/task(priority:_:))
 - [task(id:priority:_:)](https://developer.apple.com/documentation/swiftui/view/task(id:priority:_:))
@@ -213,7 +259,9 @@ Pull-to-refresh — отдельный вход в загрузку; не сме
 
 ## Связь с базой
 
+
+
 - [SwiftUI README](../README.md) — Q-card data loading, `@Observable`
-- [Approachable Concurrency](../../../swift/concurrency/notes/Approachable-Swift-Concurrency-Site-RU.md) — §2 `.task`, §9 «невидимые Task»
+- [Approachable Concurrency](../../../swift/concurrency/notes/Approachable-Swift-Concurrency-Site.md) — §2 `.task`, §9 «невидимые Task»
 - [URLSession lifecycle](../../../data-and-network/networking/notes/URLSession-Lifecycle-iOS-IQ.md) — cancel на уходе с экрана
 - [architecture/patterns](../../../architecture/patterns/README.md) — ViewModel и `ViewState`

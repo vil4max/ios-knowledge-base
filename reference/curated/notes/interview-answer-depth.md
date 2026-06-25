@@ -36,7 +36,7 @@ Tech Lead, Architect, Engineering Manager, and Project Manager loops add **scope
 |----------|------|
 | [Mike Salari — Senior iOS Interview Playbook](https://leanpub.com/senior-ios-playbook) | Senior / staff / principal depth; companion to *The iOS Interview Blueprint* |
 | [immh — Mobile System Design (glava 1)](/system-design/mobile/) | Mobile SD interview frame in-repo |
-| Topic Q-cards (RU/EN) | Per-subject mechanisms — tier your answer using the table above |
+| Topic Q-cards (RU/EN) | Per-subject mechanisms — tier your answer using the table above; format: [bilingual-format.md](bilingual-format.md) |
 
 *The iOS Interview Blueprint (Elite Edition 2026)* — author edition; no stable public URL in Curated yet. See [BACKLOG](../BACKLOG.md).
 

@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Offline-first** means the app treats **local storage as the source of truth** for what the user sees. Reads never block on network; writes are recorded locally first, then synced. Network is reconciliation, not a gate for every screen. Interview answers cover outbox queues, idempotent APIs, conflict policies, and UX for pending/failed states.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Offline-first**: локальное хранилище — source of truth; sync в фоне; UX при stale data; conflict resolution.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -76,27 +87,60 @@
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Что значит «local source of truth»?
 - **Question (EN):** What does “local source of truth” mean?
-- **Answer (RU):** UI и бизнес-логика читают **локальное хранилище** (Core Data, SQLite, файлы). Сеть **обновляет** локальное состояние, но не является единственным местом, откуда экран берёт данные. Пользователь видит последнее известное состояние сразу, даже без сети.
+
 - **Answer (EN):** Screens read from local storage; the network updates that store but does not gate every read. The user sees the last known state immediately, including offline.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что значит «local source of truth»?
+
+- **Answer (RU):** UI и бизнес-логика читают **локальное хранилище** (Core Data, SQLite, файлы). Сеть **обновляет** локальное состояние, но не является единственным местом, откуда экран берёт данные. Пользователь видит последнее известное состояние сразу, даже без сети.
+
+</details>
 ### Q2
-- **Question (RU):** Зачем outbox на диске?
 - **Question (EN):** Why a durable outbox on disk?
-- **Answer (RU):** Мутации (create/update/delete) записываются в **очередь на диске** до ack сервера. При краше или offline очередь сохраняется; при восстановлении сети — retry с backoff. In-memory queue теряет данные при kill процесса.
+
 - **Answer (EN):** Mutations persist in a disk queue until the server acknowledges them. Survives crashes and offline periods; retries with backoff when online. In-memory queues lose work on process death.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем outbox на диске?
+
+- **Answer (RU):** Мутации (create/update/delete) записываются в **очередь на диске** до ack сервера. При краше или offline очередь сохраняется; при восстановлении сети — retry с backoff. In-memory queue теряет данные при kill процесса.
+
+</details>
 ### Q3
-- **Question (RU):** Last-write-wins vs custom merge — когда что?
 - **Question (EN):** Last-write-wins vs custom merge — when to use which?
-- **Answer (RU):** **LWW** — простые сущности, одно поле «версии» (`updatedAt`), допустимо перезатереть запись. **Custom merge** — разные поля от разных клиентов (статус + комментарий), доменные инварианты, или нужен **user-facing conflict UI**. Часто: LWW для metadata, field merge для контента.
+
 - **Answer (EN):** LWW fits simple records with a single version timestamp. Custom merge fits multi-field edits, domain rules, or user-visible conflicts. Often combine both strategies by entity type.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Last-write-wins vs custom merge — когда что?
+
+- **Answer (RU):** **LWW** — простые сущности, одно поле «версии» (`updatedAt`), допустимо перезатереть запись. **Custom merge** — разные поля от разных клиентов (статус + комментарий), доменные инварианты, или нужен **user-facing conflict UI**. Часто: LWW для metadata, field merge для контента.
+
+</details>
 ### Q4
-- **Question (RU):** Как offline-first стыкуется с push?
 - **Question (EN):** How does offline-first work with push notifications?
-- **Answer (RU):** Push — **триггер синхронизации**, не транспорт данных: silent push будит app → fetch **delta** → merge в local store → UI обновляется через observation (Combine/async stream/FRC). Не полагаться только на push payload для больших данных.
+
 - **Answer (EN):** Push triggers sync, it is not the data transport: silent push wakes the app, fetches a delta, merges locally, UI updates via observation. Do not rely on push payload alone for large payloads.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как offline-first стыкуется с push?
+
+- **Answer (RU):** Push — **триггер синхронизации**, не транспорт данных: silent push будит app → fetch **delta** → merge в local store → UI обновляется через observation (Combine/async stream/FRC). Не полагаться только на push payload для больших данных.
+
+</details>

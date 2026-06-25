@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 Mobile **analytics** turns product questions into an **event taxonomy**: what to measure, which properties attach to each event, how data batches and uploads respect battery, and how **privacy** (consent, ATT, minimal PII) shapes the pipeline. Senior answers link events to decisions, define session/user identity carefully, and know when **SKAdNetwork** replaces user-level attribution on iOS.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+Мобильная **аналитика** — **таксономия событий**: что логировать, sampling, privacy, связь с remote config и A/B. Client schema vs server pipeline.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -86,27 +97,60 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Как спроектировать event taxonomy?
 - **Question (EN):** How do you design an event taxonomy?
-- **Answer (RU):** Начать с **product questions** (где отваливаются, что drives retention). Имена: **`object_action`** (`checkout_completed`). Обязательные поля: `timestamp`, `session_id`, ids сущностей. Документ schema; версионировать breaking changes; один event — одно действие, не god-event.
+
 - **Answer (EN):** Start from product questions. Use consistent names like `object_action`. Require timestamp, session id, and entity ids. Document schemas, version changes, one action per event.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Как спроектировать event taxonomy?
+
+- **Answer (RU):** Начать с **product questions** (где отваливаются, что drives retention). Имена: **`object_action`** (`checkout_completed`). Обязательные поля: `timestamp`, `session_id`, ids сущностей. Документ schema; версионировать breaking changes; один event — одно действие, не god-event.
+
+</details>
 ### Q2
-- **Question (RU):** Batching на iOS — как не убить battery?
 - **Question (EN):** How do you batch analytics without draining battery?
-- **Answer (RU):** **Persist queue on disk**; flush по порогу (N events / KB) или при **background** / app backgrounding. Critical events — immediate. Exponential backoff при ошибках сети. Не wake каждые 5 секунд.
+
 - **Answer (EN):** Persist a disk queue; flush on size threshold, background transition, or timer — not constant polling. Send critical events immediately; backoff on network errors.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Batching на iOS — как не убить battery?
+
+- **Answer (RU):** **Persist queue on disk**; flush по порогу (N events / KB) или при **background** / app backgrounding. Critical events — immediate. Exponential backoff при ошибках сети. Не wake каждые 5 секунд.
+
+</details>
 ### Q3
-- **Question (RU):** ATT — что меняется для analytics?
 - **Question (EN):** What changes for analytics after ATT?
-- **Answer (RU):** **IDFA** доступен только после authorize. Без ATT — first-party ids (install id, account id), aggregated analytics, **SKAdNetwork** для ad attribution. Нельзя обходить ATT fingerprinting. Privacy Nutrition Label и privacy manifest должны отражать сбор.
+
 - **Answer (EN):** IDFA requires authorization. Without it use first-party identifiers, aggregated metrics, and SKAdNetwork for ads. No fingerprinting to bypass ATT; disclose collection in privacy labels and manifests.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** ATT — что меняется для analytics?
+
+- **Answer (RU):** **IDFA** доступен только после authorize. Без ATT — first-party ids (install id, account id), aggregated analytics, **SKAdNetwork** для ad attribution. Нельзя обходить ATT fingerprinting. Privacy Nutrition Label и privacy manifest должны отражать сбор.
+
+</details>
 ### Q4
-- **Question (RU):** SKAdNetwork в двух предложениях?
 - **Question (EN):** Explain SKAdNetwork in two sentences.
-- **Answer (RU):** Apple посредничает **атрибуцию установок** от рекламных сетей без передачи user-level ID между app. Advertiser получает **postback** с campaign и coarse conversion value — достаточно для оптимизации ads, недостаточно для user-level analytics.
+
 - **Answer (EN):** Apple mediates install attribution from ad networks without cross-app user identifiers. Advertisers receive postbacks with campaign and coarse conversion values — useful for ads optimization, not user-level analytics.
 
 <!-- knowledge-cards-canonical:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** SKAdNetwork в двух предложениях?
+
+- **Answer (RU):** Apple посредничает **атрибуцию установок** от рекламных сетей без передачи user-level ID между app. Advertiser получает **postback** с campaign и coarse conversion value — достаточно для оптимизации ads, недостаточно для user-level analytics.
+
+</details>

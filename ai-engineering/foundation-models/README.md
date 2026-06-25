@@ -2,7 +2,18 @@
 
 ## За 30 секунд
 
+
 **Foundation Models framework** (iOS 26+, iPadOS 26+, macOS 26+) exposes Apple’s **on-device LLM** powering Apple Intelligence: Swift-native API, offline-capable, no per-token cloud bill for on-device inference. Core types: **`SystemLanguageModel`**, **`LanguageModelSession`**, **guided generation** (`@Generable`), and **Tools** for app callbacks. Requires Apple Intelligence–compatible device with Intelligence enabled; larger requests may use **Private Cloud Compute**.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Foundation Models** (iOS 26+) — on-device LLM API Apple: `SystemLanguageModel`, `LanguageModelSession`, guided generation.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -86,27 +97,50 @@ let response = try await session.respond(to: userText)
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (RU):** Что даёт Foundation Models framework iOS разработчику?
 - **Question (EN):** What does the Foundation Models framework give iOS developers?
-- **Answer (RU):** Нативный **Swift API** к on-device LLM Apple Intelligence: генерация текста, multi-turn **sessions**, **structured output** (`@Generable`), **Tools** для данных app. Работает **offline** на supported devices; inference on-device без cloud API billing для базового сценария.
+
 - **Answer (EN):** Native Swift access to Apple’s on-device LLM: generation, sessions, structured output via `@Generable`, and Tools for app data — offline on supported devices without cloud token billing for standard on-device use.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что даёт Foundation Models framework iOS разработчику?
+
+- **Answer (RU):** Нативный **Swift API** к on-device LLM Apple Intelligence: генерация текста, multi-turn **sessions**, **structured output** (`@Generable`), **Tools** для данных app. Работает **offline** на supported devices; inference on-device без cloud API billing для базового сценария.
+
+</details>
 ### Q2
-- **Question (RU):** LanguageModelSession vs one-shot prompt?
 - **Question (EN):** LanguageModelSession vs one-shot prompts?
-- **Answer (RU):** **Session** хранит **transcript** multi-turn диалога и **instructions**; модель использует контекст предыдущих turns. One-shot — один запрос без history. Chat UI почти всегда session; простые transforms — single `respond`.
+
 - **Answer (EN):** Sessions keep transcripts and instructions across turns. One-shot calls suit single transforms without history; chat UIs use sessions.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** LanguageModelSession vs one-shot prompt?
+
+- **Answer (RU):** **Session** хранит **transcript** multi-turn диалога и **instructions**; модель использует контекст предыдущих turns. One-shot — один запрос без history. Chat UI почти всегда session; простые transforms — single `respond`.
+
+</details>
 ### Q3
-- **Question (RU):** Guided generation — зачем?
 - **Question (EN):** Why guided generation?
-- **Answer (RU):** LLM raw text → хрупкий `JSONDecoder`. **`@Generable`** заставляет модель заполнять **Swift struct** с compile-time schema — меньше parse errors, type-safe integration с app logic.
+
 - **Answer (EN):** Raw JSON from LLMs is fragile. `@Generable` targets Swift structs with a defined schema — fewer parse failures and type-safe integration.
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Guided generation — зачем?
+
+- **Answer (RU):** LLM raw text → хрупкий `JSONDecoder`. **`@Generable`** заставляет модель заполнять **Swift struct** с compile-time schema — меньше parse errors, type-safe integration с app logic.
+
+</details>
 ### Q4
-- **Question (RU):** On-device vs Private Cloud Compute?
 - **Question (EN):** On-device vs Private Cloud Compute?
-- **Answer (RU):** **On-device** — privacy, latency, offline; лимиты размера задачи. **PCC** — Apple-hosted compute для более тяжёлых запросов с **privacy architecture** (не classic cloud logging user content). Проверять availability и не отправлять sensitive data третьим cloud LLM без необходимости.
+
 - **Answer (EN):** On-device offers privacy, latency, and offline use with capacity limits. PCC extends capability on Apple-controlled infrastructure with privacy protections — prefer over third-party clouds for sensitive Apple Intelligence workflows.
 
 <!-- knowledge-cards-canonical:end -->
@@ -118,3 +152,13 @@ let response = try await session.respond(to: userText)
 **AI Engineering:** [Track overview](../README.md) · [← 10 · MCP](../mcp/) · [12 · Apple Intelligence →](../apple-intelligence/)
 
 <!-- ai-engineering-nav:end -->
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** On-device vs Private Cloud Compute?
+
+- **Answer (RU):** **On-device** — privacy, latency, offline; лимиты размера задачи. **PCC** — Apple-hosted compute для более тяжёлых запросов с **privacy architecture** (не classic cloud logging user content). Проверять availability и не отправлять sensitive data третьим cloud LLM без необходимости.
+
+</details>

@@ -15,11 +15,26 @@
 
 ## За 30 секунд
 
+
 - **Metaprogramming** — код, который **анализирует или генерирует** другой код. В этом топике — **runtime**: `Mirror` и `@dynamicMemberLookup`. Compile-time (макросы, result builders, `KeyPath`) — см. таблицу ниже.
+
 - **`Mirror`** — read-only рефлексия: обход `children`, имена свойств и значения; `displayStyle` и `subjectType` для форматирования.
+
 - **`@dynamicMemberLookup`** — синтаксис `json.user.name` превращается в вызовы `subscript(dynamicMember:)`.
+
 - Swift **ограничивает** рефлексию (нет вызова методов и мутации в runtime) ради производительности и type safety.
+
 - **Не** использовать `Mirror` на hot path; для логов и JSON в проде — `CustomDebugStringConvertible`, `Codable`, typed models.
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+**Metaprogramming** — код, который анализирует или генерирует другой код. В топике — runtime: `Mirror` и `@dynamicMemberLookup`. Compile-time (макросы, result builders) — отдельная ось. Swift ограничивает рефлексию ради производительности и type safety.
+
+</details>
+
+
 
 ## 🎯 Фокус vs можно отложить (вопрос → ответ)
 
@@ -336,3 +351,19 @@ struct JSONObject {
 - [Mirror](https://developer.apple.com/documentation/swift/mirror)
 - [dynamicMemberLookup](https://developer.apple.com/documentation/swift/dynamicmemberlookup)
 - [Macros — The Swift Programming Language](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/macros/)
+
+---
+
+## Карточки знаний (Q&A)
+
+### Q1
+- **Question (EN):** What is `Mirror` for?
+- **Answer (EN):** Read-only runtime reflection: walk `children`, `displayStyle`, `subjectType`—for debug/introspection, not hot-path serialization (prefer `Codable`).
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем нужен `Mirror`?
+- **Answer (RU):** Read-only рефлексия в runtime: обход `children`, `displayStyle`, `subjectType` — для debug/инспекции, не для hot path (в проде — `Codable`).
+
+</details>

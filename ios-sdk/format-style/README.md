@@ -2,9 +2,20 @@
 
 ## За 30 секунд
 
+
 `FormatStyle` — современный Swift-способ форматировать Foundation-типы в локализованные строки (и обратно через `ParseableFormatStyle`). Заменяет тяжёлые `NumberFormatter` / `DateFormatter` для нового кода. В SwiftUI предпочитай `Text(value, format:)` и `TextField(value:format:)` вместо `.formatted()` в `body`.
 
 **Минимум:** iOS 15+ (часть API — iOS 16+, live/attributed — iOS 18+).
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+`FormatStyle` — Swift-способ форматировать Foundation-типы локализованно: даты, числа, `Measurement`. Предпочтительнее `DateFormatter`/`NumberFormatter` в новом коде.
+
+</details>
+
+
 
 ## Apple docs
 
@@ -111,24 +122,42 @@ TextField("Amount", value: $amount, format: .currency(code: "USD"))
 
 ## Карточки знаний (Q&A)
 
-### Q1. FormatStyle vs Formatter?
+### Q1
+- **Question (EN):** FormatStyle vs Formatter?
+- **Answer (EN):** `FormatStyle` is value-type, composable, cheap to create—Apple's recommendation for new Swift. `Formatter` is legacy NSObject for Obj-C interop or untouchable legacy.
 
-**RU:** `FormatStyle` — value-type, композируемый, дешевле создавать; Apple рекомендует для нового Swift. `Formatter` — legacy, Obj-C, оставляй для сложного legacy или Obj-C.
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-**EN:** Prefer `FormatStyle` in new Swift; keep `Formatter` for Obj-C or untouchable legacy formatters.
+- **Question (RU):** FormatStyle vs Formatter?
+- **Answer (RU):** `FormatStyle` — value-type, композируемый; Apple рекомендует для нового Swift. `Formatter` — legacy Obj-C.
+
+</details>
 
 **Доп. информация:** [goshdarnformatstyle.com — FAQ](https://goshdarnformatstyle.com/)
 
-### Q2. Почему в SwiftUI не `.formatted()`?
+### Q2
+- **Question (EN):** Why not `.formatted()` everywhere in SwiftUI?
+- **Answer (EN):** `.formatted()` yields a one-shot `String`; environment (locale, timeZone) changes are not tracked. `Text(value, format:)` stays typed and environment-aware.
 
-**RU:** `.formatted()` даёт `String` один раз; environment (locale, timeZone) не отслеживается. `Text(value, format:)` остаётся typed и реагирует на environment.
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-**EN:** Use `format:` overloads in SwiftUI for environment-aware, typed formatting.
+- **Question (RU):** Почему в SwiftUI не `.formatted()`?
+- **Answer (RU):** `.formatted()` даёт `String` один раз; environment не отслеживается. `Text(value, format:)` typed и реагирует на locale/timeZone.
+
+</details>
 
 **Доп. информация:** [formatstyle.guide/swiftui](https://formatstyle.guide/swiftui)
 
-### Q3. Percent: 1 или 100%?
+### Q3
+- **Question (EN):** Percent style: is 1 equal to 1% or 100%?
+- **Answer (EN):** For `Double`/`Float`/`Decimal`, the value is a fraction (0.01 = 1%). For `Int`, 1 formats as 1%.
 
-**RU:** Для `Double`/`Float`/`Decimal` значение **доля** (0.01 = 1%). Для `Int` — уже «проценты» (1 = 1%). Частая ошибка в UI.
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-**EN:** Floating-point percent styles treat 1.0 as 100%; integer 1 formats as 1%.
+- **Question (RU):** Percent: 1 или 100%?
+- **Answer (RU):** Для `Double`/`Float`/`Decimal` — доля (0.01 = 1%). Для `Int` — уже проценты (1 = 1%).
+
+</details>
