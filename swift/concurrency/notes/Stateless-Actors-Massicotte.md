@@ -4,7 +4,7 @@
 
 ---
 
-## Главный вопрос
+## Core question
 
 _English summary — expand «По-русски» for full text (Главный вопрос)._
 
@@ -68,7 +68,7 @@ struct NetworkClient: Sendable {
 
 </details>
 
-## 2. `@globalActor` BackgroundActor — антипаттерн
+## 2. `@globalActor` BackgroundActor — anti-pattern
 
 _English summary — expand «По-русски» for full text (2. `@globalActor` BackgroundActor — антипаттерн)._
 
@@ -95,7 +95,7 @@ Task { @BackgroundActor in ... }
 
 </details>
 
-## 3. Custom executor actor (легитимный «stateless»)
+## 3. Custom executor actor (legitimate “stateless”)
 
 _English summary — expand «По-русски» for full text (3. Custom executor actor (легитимный «stateless»))._
 
@@ -125,7 +125,7 @@ actor LandingSite {
 
 </details>
 
-## 4. Файловая система = внешнее state
+## 4. File system = external state
 
 _English summary — expand «По-русски» for full text (4. Файловая система = внешнее state)._
 
@@ -144,7 +144,7 @@ On-disk cache / файлы — **state вне процесса**, невидим
 
 </details>
 
-## 5. First rule of actors (для собеса)
+## 5. First rule of actors (interview)
 
 _English summary — expand «По-русски» for full text (5. First rule of actors (для собеса))._
 
@@ -171,7 +171,7 @@ _English summary — expand «По-русски» for full text (5. First rule o
 
 </details>
 
-## Связь с roadmap
+## Link to roadmap
 
 _English summary — expand «По-русски» for full text (Связь с roadmap)._
 

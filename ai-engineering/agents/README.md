@@ -1,6 +1,6 @@
 # 09 · Agents
 
-## За 30 секунд
+## In 30 seconds
 
 
 **AI agents** run a loop: model plans → calls [tools](../tool-calling/) → observes results → repeats until done or a step limit. Unlike a single chat completion, an agent **persists state** across turns and may chain multiple tool calls. **Guardrails** (allowlists, human approval, timeouts) matter on mobile where side effects touch user data and battery. Production-style orchestration patterns (search-first, think-before-act, single agent + many tools) → [Agent Patterns](../agent-patterns/). For transport and IDE integration see [MCP](../mcp/); for on-device tool wiring see [Foundation Models](../foundation-models/).
@@ -13,15 +13,15 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Foundation Models — tool integration](https://developer.apple.com/documentation/foundationmodels) — provide Swift tools the on-device model can invoke.
 - [WWDC — Expand your app’s experience with generative AI](https://developer.apple.com/videos/) — search “Foundation Models” for tool-calling sessions.
 - [App Intents](https://developer.apple.com/documentation/appintents) — structured actions Siri/Shortcuts; conceptually similar “typed tools” for system integration.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -38,7 +38,8 @@
 - MCP wire protocol bytes — explain client/server roles.
 - Replacing app architecture with agents everywhere — anti-pattern.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Term | Role |
 |------|------|
@@ -67,6 +68,7 @@ User goal
 
 ## 🏋️ Exercises
 
+
 1. **Travel assistant agent** — Tools: `searchFlights`, `getCalendar`, `createHold`. *Expected:* diagram loop; confirm before book.
 
 2. **MCP mental model** — Explain how Cursor uses MCP for Xcode. *Expected:* client lists tools from server; model picks `BuildProject`.
@@ -77,13 +79,15 @@ User goal
 
 5. **Unsafe tool** — `deleteAllNotes`. *Expected:* not in allowlist; require explicit user confirmation.
 
-## Ссылки
+## Links
+
 
 - [Model Context Protocol](https://modelcontextprotocol.io/) — specification
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
 - Related: [tools](../tools/README.md), [prompt-engineering](../prompt-engineering/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -101,6 +105,7 @@ User goal
 - **Answer (RU):** LLM получает цель и **описания tools** → решает вызвать tool с JSON-аргументами → runtime **выполняет** → результат (**observation**) возвращается в контекст → модель продолжает до финального ответа или лимита шагов.
 
 </details>
+
 ### Q2
 - **Question (EN):** Tool calling vs plain prompting?
 
@@ -115,6 +120,7 @@ User goal
 - **Answer (RU):** Prompt alone — модель **галлюцинирует** факты и не может безопасно выполнить side effects. **Tools** дают реальные данные (API, DB, sensors) и controlled actions. Описание tool важно — model routing по description.
 
 </details>
+
 ### Q3
 - **Question (EN):** Why MCP?
 
@@ -129,6 +135,7 @@ User goal
 - **Answer (RU):** **Стандартный протокол** между agent host (IDE, app) и **tool servers** (Git, Xcode, docs). Один раз реализовал server — многие clients подключаются. Alternatives: ad hoc REST wrappers per agent — не масштабируется.
 
 </details>
+
 ### Q4
 - **Question (EN):** Guardrails for a production agent?
 

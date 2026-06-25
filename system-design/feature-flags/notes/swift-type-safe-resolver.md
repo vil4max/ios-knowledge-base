@@ -20,7 +20,7 @@ _English summary — expand «По-русски» for full text (TL;DR)._
 
 </details>
 
-## Архитектура
+## Architecture
 
 _English summary — expand «По-русски» for full text (Архитектура)._
 
@@ -75,7 +75,7 @@ flowchart TB
 
 </details>
 
-## 1. Определение флагов
+## 1. Flag definitions
 
 _English summary — expand «По-русски» for full text (1. Определение флагов)._
 
@@ -115,7 +115,7 @@ enum AppFeature: String, Feature {
 
 </details>
 
-## 2. Источники и приоритеты
+## 2. Sources and priorities
 
 _English summary — expand «По-русски» for full text (2. Источники и приоритеты)._
 
@@ -151,7 +151,7 @@ public enum FeatureFlagPriority: Int, Comparable {
 
 </details>
 
-## 3. Resolver и thread safety
+## 3. Resolver and thread safety
 
 _English summary — expand «По-русски» for full text (3. Resolver и thread safety)._
 
@@ -183,7 +183,7 @@ public final class FeatureFlags {
 
 </details>
 
-## 4. DSL для конфигурации
+## 4. DSL for configuration
 
 _English summary — expand «По-русски» for full text (4. DSL для конфигурации)._
 
@@ -264,7 +264,7 @@ Injection на корне `App` / `Scene`: `.featureFlags(resolver)`. В [Featur
 
 </details>
 
-## 7. Remote config как source
+## 7. Remote config as source
 
 _English summary — expand «По-русски» for full text (7. Remote config как source)._
 
@@ -301,25 +301,25 @@ _English summary — expand «По-русски» for full text (Interview Q&A).
 <details class="lang-ru">
 <summary>По-русски</summary>
 
-### Q1: Зачем enum, если remote config отдаёт строки?
+### Q1: Why enum when remote config returns strings?
 
 **RU:** Enum — **контракт в коде**: список флагов, defaults, рефакторинг. Remote mapится `key → Bool` один раз при fetch. Без enum ключи размазываются строками — flag spaghetti.
 
 **EN:** The enum is the in-code contract; remote config maps string keys once at fetch time. Without it, keys scatter as string literals.
 
-### Q2: Почему приоритеты, а не «последний write wins»?
+### Q2: Why priorities instead of last write wins?
 
 **RU:** Предсказуемость: QA override (300) перебивает business (0), но не перебивает forced (400). Порядок merge **явный**, не зависит от порядка регистрации в массиве.
 
 **EN:** Explicit precedence makes QA and emergency overrides predictable; merge order does not depend on registration order alone.
 
-### Q3: NSLock vs actor для `FeatureFlags`?
+### Q3: NSLock vs actor for `FeatureFlags`?
 
 **RU:** Hot path — синхронный `Bool` из UI. Snapshot под lock — микросекунды. Actor добавляет `await` на каждый read; оправдан, если resolver сам ходит в сеть (лучше не делать).
 
 **EN:** Synchronous reads suit UI gating; actors add async overhead unless the resolver itself performs I/O (which it should not).
 
-### Q4: Как тестировать?
+### Q4: How to test?
 
 **RU:** `DictionaryFeatureFlagSource(states:priority:)` в тестах — вкл/выкл без `UserDefaults`. Проверять цепочку: business off + testing on → on; override on top.
 
@@ -329,7 +329,7 @@ _English summary — expand «По-русски» for full text (Interview Q&A).
 
 </details>
 
-## Связь с базой
+## Link to parent topic
 
 
 

@@ -1,10 +1,10 @@
-# Что значит «structured» в Structured Concurrency
+# What “structured” means in Structured Concurrency
 
 **Источник:** [What's that "structured" in Structured Concurrency?](https://macguru.dev/whats-that-structured-in-structured-concurrency/) — macguru.dev. Связанные темы: [StructuredConcurrencyLab.playground](../StructuredConcurrencyLab.playground), [SwiftConcurrencyPrimer.playground](../SwiftConcurrencyPrimer.playground).
 
 ---
 
-## Главный вопрос
+## Core question
 
 _English summary — expand «По-русски» for full text (Главный вопрос)._
 
@@ -21,7 +21,7 @@ _English summary — expand «По-русски» for full text (Главный 
 
 </details>
 
-## Три способа запустить concurrent-работу
+## Three ways to start concurrent work
 
 _English summary — expand «По-русски» for full text (Три способа запустить concurrent-работу)._
 
@@ -40,14 +40,14 @@ _English summary — expand «По-русски» for full text (Три спос
 
 </details>
 
-## Граф зависимостей
+## Dependency graph
 
 _English summary — expand «По-русски» for full text (Граф зависимостей)._
 
 <details class="lang-ru">
 <summary>По-русски</summary>
 
-### Unstructured — плоский список
+### Unstructured — flat list
 
 ```swift
 let a = Task {
@@ -62,7 +62,7 @@ a.cancel()
 → Task b
 ```
 
-### Structured — дерево
+### Structured — tree
 
 ```swift
 func load() async { /* ... */ }
@@ -82,7 +82,7 @@ a.cancel()
   ↳ async let c
 ```
 
-### TaskGroup — structured, несмотря на имя «Task»
+### TaskGroup — structured, despite the name “Task”
 
 ```swift
 let a = Task {
@@ -108,7 +108,7 @@ a.cancel()
 
 </details>
 
-## Cancellation как практическое следствие
+## Cancellation as a practical consequence
 
 _English summary — expand «По-русски» for full text (Cancellation как практическое следствие)._
 
@@ -137,7 +137,7 @@ a.cancel()
 
 </details>
 
-## `async let` с отброшенным результатом
+## `async let` with discarded result
 
 _English summary — expand «По-русски» for full text (`async let` с отброшенным результатом)._
 
@@ -210,7 +210,7 @@ func subtaskUpdate() async {
 
 </details>
 
-## Правило большого пальца
+## Rule of thumb
 
 _English summary — expand «По-русски» for full text (Правило большого пальца)._
 
@@ -226,7 +226,7 @@ _English summary — expand «По-русски» for full text (Правило 
 
 </details>
 
-## Как отвечать на интервью
+## How to answer in interviews
 
 _English summary — expand «По-русски» for full text (Как отвечать на интервью)._
 
@@ -249,7 +249,7 @@ _English summary — expand «По-русски» for full text (Как отве
 
 </details>
 
-## Ссылки
+## Links
 
 
 

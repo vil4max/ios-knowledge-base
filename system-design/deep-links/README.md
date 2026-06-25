@@ -1,6 +1,6 @@
 # Deep Links
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Deep links** route users into a specific screen from outside the app: **Universal Links** (HTTPS, verified), **custom URL schemes** (`myapp://`), and **deferred deep links** (attribution after install). iOS validates Universal Links via **Associated Domains** (`apple-app-site-association`). Design covers routing layer, cold vs warm start, auth gates, and fallback when the app is not installed.
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Supporting universal links in your app](https://developer.apple.com/documentation/xcode/supporting-universal-links-in-your-app) — Associated Domains, AASA file.
 - [Allowing apps and websites to link to your content](https://developer.apple.com/documentation/xcode/allowing-apps-and-websites-to-link-to-your-content) — entitlements, paths.
@@ -23,6 +22,7 @@
 - [Scene-based lifecycle](https://developer.apple.com/documentation/uikit/app_and_environment/scenes) — `scene(_:openURLContexts:)`, `continue userActivity`.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -39,7 +39,8 @@
 - Android App Links parity unless cross-platform interview.
 - Every edge case of Facebook/Instagram in-app browsers — mention wrapped WebView limitations briefly.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Mechanism | Pros | Cons |
 |-----------|------|------|
@@ -64,6 +65,7 @@ URL / NSUserActivity
 
 ## 🏋️ Exercises
 
+
 1. **Product page link** — `https://example.com/product/42` opens ProductDetail. *Expected:* AASA path `/product/*`, router extracts id, handles missing product.
 
 2. **Auth gate** — Deep link to settings while logged out. *Expected:* store pending route, login, replay navigation.
@@ -74,13 +76,15 @@ URL / NSUserActivity
 
 5. **Notification parity** — Push tap and Universal Link share router. *Expected:* one `OpenRoute` type fed from both entry points.
 
-## Ссылки
+## Links
+
 
 - [Universal Links](https://developer.apple.com/ios/universal-links/)
 - [Associated Domains entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_associated-domains)
 - Related: [push-notifications](../push-notifications/README.md), [mobile](../mobile/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -98,6 +102,7 @@ URL / NSUserActivity
 - **Answer (RU):** **Universal Link** — HTTPS URL, Apple проверяет **AASA** и открывает app без лишнего диалога; безопаснее для marketing. **Custom scheme** (`app://`) — проще, но любой app может зарегистировать похожую схему; часто fallback или legacy. Production: Universal Links + scheme для dev/tests.
 
 </details>
+
 ### Q2
 - **Question (EN):** What are Associated Domains and AASA?
 
@@ -112,6 +117,7 @@ URL / NSUserActivity
 - **Answer (RU):** Entitlement **`applinks:your.domain`** связывает app с доменом. На сервере файл **apple-app-site-association** перечисляет teamID.bundleID и **paths**, которые app может обрабатывать. Без корректного AASA ссылка откроется в Safari.
 
 </details>
+
 ### Q3
 - **Question (EN):** How do you explain deferred deep links?
 
@@ -126,6 +132,7 @@ URL / NSUserActivity
 - **Answer (RU):** Пользователь кликает ссылку **до установки** → Store → первый запуск. **Deferred** attribution (Branch, Firebase Dynamic Links, custom) сохраняет intent и при первом open восстанавливает маршрут (promo, invite). Компромисс: privacy, accuracy, зависимость от SDK/сервера.
 
 </details>
+
 ### Q4
 - **Question (EN):** Where do you handle deep links with scenes / SwiftUI?
 

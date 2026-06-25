@@ -4,7 +4,7 @@
 
 ---
 
-## За 30 секунд
+## In 30 seconds
 
 
 
@@ -26,7 +26,7 @@ _English summary — expand «По-русски» for the full Russian text._
 
 
 
-## Что такое SQLite?
+## What is SQLite?
 
 _English summary — expand «По-русски» for full text (Что такое SQLite?)._
 
@@ -35,7 +35,7 @@ _English summary — expand «По-русски» for full text (Что тако
 
 **SQLite** — лёгкая встраиваемая **relational database** (реляционная БД). Всё хранится в одном файле `.sqlite` на устройстве.
 
-### Характеристики
+### Characteristics
 
 - Relational database (реляционная модель)
 - Uses **SQL** (язык запросов)
@@ -44,7 +44,7 @@ _English summary — expand «По-русски» for full text (Что тако
 - No server required (сервер не нужен)
 - Excellent for **offline storage** (офлайн-хранение)
 
-### Пример
+### Example
 
 **Users**
 
@@ -57,7 +57,7 @@ _English summary — expand «По-русски» for full text (Что тако
 SELECT * FROM Users WHERE age > 40;
 ```
 
-### Типичные iOS use cases
+### Typical iOS use cases
 
 - Offline storage (офлайн-данные)
 - Local cache (локальный кэш)
@@ -66,7 +66,7 @@ SELECT * FROM Users WHERE age > 40;
 - Inventory (инвентарь)
 - Любая персистентная локальная data
 
-### Библиотеки поверх SQLite
+### Libraries on top of SQLite
 
 - **GRDB** — migrations, concurrency, observation, async
 - **SQLite.swift** — type-safe query builder
@@ -74,7 +74,7 @@ SELECT * FROM Users WHERE age > 40;
 
 На iOS также: **SwiftData → SQLite**, **Core Data → SQLite** (default), **GRDB → SQLite**.
 
-### Плюсы и минусы
+### Pros and cons
 
 | Плюсы | Минусы |
 |-------|--------|
@@ -88,7 +88,7 @@ SELECT * FROM Users WHERE age > 40;
 
 </details>
 
-## Что такое NoSQL?
+## What is NoSQL?
 
 _English summary — expand «По-русски» for full text (Что такое NoSQL?)._
 
@@ -97,7 +97,7 @@ _English summary — expand «По-русски» for full text (Что тако
 
 **NoSQL** — не одна база данных. Это **категория** (семейство) БД, оптимизированных под масштаб и гибкие модели данных.
 
-### Типы NoSQL
+### NoSQL types
 
 | Тип | Примеры | Суть |
 |-----|---------|------|
@@ -106,7 +106,7 @@ _English summary — expand «По-русски» for full text (Что тако
 | **Graph** (графовая) | Neo4j | Узлы и рёбра: social, recommendations, fraud |
 | **Column** (колоночная) | Apache Cassandra | Огромные распределённые датасеты, high write throughput |
 
-### Пример document
+### Document example
 
 ```json
 {
@@ -121,14 +121,14 @@ _English summary — expand «По-русски» for full text (Что тако
 
 Каждый document может иметь разные поля — **flexible / schema-less** (гибкая или без жёсткой схемы).
 
-### Характеристики
+### Characteristics
 
 - Flexible data model
 - Usually **server-based** (обычно на сервере)
 - **Horizontal scaling** (горизонтальное масштабирование)
 - Optimized for **distributed systems**
 
-### Типичные use cases
+### Typical use cases
 
 - Backend services
 - Cloud applications
@@ -158,7 +158,7 @@ _English summary — expand «По-русски» for full text (SQLite vs NoSQL
 | Транзакции | ACID | Depends on implementation |
 | Сильная сторона | Local storage | Cloud scalability |
 
-### Что быстрее?
+### Which is faster?
 
 **Зависит от задачи.**
 
@@ -173,7 +173,7 @@ _English summary — expand «По-русски» for full text (SQLite vs NoSQL
 
 </details>
 
-## Пример: social network
+## Example: social network
 
 _English summary — expand «По-русски» for full text (Пример: social network)._
 
@@ -210,7 +210,7 @@ JOIN Users ON Posts.userId = Users.id;
 
 </details>
 
-## Где Core Data и SwiftData?
+## Where do Core Data and SwiftData fit?
 
 _English summary — expand «По-русски» for full text (Где Core Data и SwiftData?)._
 
@@ -264,7 +264,7 @@ let request = User.fetchRequest()
 let users = try context.fetch(request)
 ```
 
-### Core Data — плюсы и минусы
+### Core Data — pros and cons
 
 | Плюсы | Минусы |
 |-------|--------|
@@ -275,7 +275,7 @@ let users = try context.fetch(request)
 | Migrations | |
 | Background contexts | |
 
-### SwiftData — плюсы и минусы
+### SwiftData — pros and cons
 
 | Плюсы | Минусы |
 |-------|--------|
@@ -290,7 +290,7 @@ let users = try context.fetch(request)
 
 </details>
 
-## Когда что использовать?
+## When to use what?
 
 _English summary — expand «По-русски» for full text (Когда что использовать?)._
 
@@ -308,7 +308,7 @@ _English summary — expand «По-русски» for full text (Когда чт
 
 </details>
 
-## Типичная iOS-архитектура
+## Typical iOS architecture
 
 _English summary — expand «По-русски» for full text (Типичная iOS-архитектура)._
 
@@ -329,7 +329,7 @@ SwiftUI → REST / GraphQL API → Backend → MongoDB / Firestore / PostgreSQL 
 
 iOS-приложение обычно **не** подключается к NoSQL напрямую — общается с backend через API.
 
-### Для iOS-разработчика
+### For iOS developers
 
 - **SQLite** встретите чаще: SwiftData, Core Data, GRDB, FMDB
 - **NoSQL** — чаще backend-технологии; на клиенте — через сеть

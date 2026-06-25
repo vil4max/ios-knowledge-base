@@ -2,7 +2,7 @@
 
 > **Source:** [@swiftynew](https://t.me/swiftynew) — *Development Principles* (KISS, DRY, YAGNI, BDUF, SOLID, APO, Occam's Razor).
 
-## За 30 секунд
+## In 30 seconds
 
 
 Development principles are decision guides, not dogma. They help you keep code readable, testable, and easy to change. Interviewers rarely test acronym recall — they want you to **reason about trade-offs**: when to extract shared logic (DRY), when to stop adding layers (YAGNI, KISS, Occam), when to plan before coding (BDUF), how SOLID reduces coupling in Swift (protocols, SRP), and when to optimize only after measurement (APO). Middle+ engineers explain **why** a solution is simple enough, not just that they "follow SOLID."
@@ -15,9 +15,8 @@ Development principles are decision guides, not dogma. They help you keep code r
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [The Swift Programming Language — Protocols](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols) — abstraction boundaries for DIP and ISP.
 - [Improving app performance](https://developer.apple.com/documentation/xcode/improving-app-performance) — measure before optimizing (APO).
@@ -25,35 +24,240 @@ Development principles are decision guides, not dogma. They help you keep code r
 
 ## 🎯 Focus vs Defer
 
+
 ### Focus
 
 - **YAGNI** — ship only what the current task needs; delete dead code during refactors (git history preserves it).
 - **DRY + SSOT** — one source of truth for rules and data; duplication multiplies maintenance and test surface.
 - **KISS** — simplest solution that satisfies requirements; complexity should come from the product, not from tooling fashion.
 - **BDUF (lightweight)** — think through constraints and architecture **before** large implementation; align with the team early.
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **SOLID (especially SRP, OCP, DIP in iOS)** — single responsibility per type, extend via protocols/composition, depend on abstractions.
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **APO** — optimize only after Instruments proves a bottleneck.
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Occam's Razor** — among working options, pick the simplest sufficient one.
 
 <details class="lang-ru">
 <summary>По-русски</summary>
 
-### Фокус
+
+</details>
+
+
+</details>
+
+
+</details>
+
+### Focus
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **YAGNI** — только то, что нужно текущей задаче; мёртвый код удалять при рефакторинге.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **DRY + SSOT** — один источник правды для правил и данных.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **KISS** — простейшее решение под требования; сложность из продукта, не из моды.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **BDUF (лёгкий)** — constraints и архитектура до большой реализации.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **SOLID (SRP, OCP, DIP на iOS)** — одна ответственность, расширение через протоколы.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **APO** — оптимизация после Instruments.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Occam's Razor** — среди рабочих вариантов выбрать самый простой достаточный.
 
-### Можно отложить
+
+</details>
+
+
+</details>
+
+
+</details>
+
+### Defer
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Зубрёжка SOLID без Swift-примеров.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - BDUF как месяцы дизайна без итераций.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - DRY для трёхстрочных UI-дубликатов.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - Микро-оптимизация до профилирования.
+
+</details>
+
+
+</details>
+
+
+</details>
+
 
 </details>
 
@@ -64,7 +268,8 @@ Development principles are decision guides, not dogma. They help you keep code r
 - Applying DRY to three-line UI duplicates that will diverge anyway.
 - Micro-optimizing before profiling.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Principle | Full name | One-line meaning |
 |-----------|-----------|------------------|
@@ -115,7 +320,8 @@ flowchart LR
 - **APO + Occam** — do not add complexity without proven need.
 - **BDUF** — fewer rewrites when architecture is agreed early.
 
-## Как отвечать на интервью
+## How to answer in interviews
+
 
 1. **Name the trade-off**, not the acronym — e.g. "I'd extract shared validation once the second screen needs the same rules (DRY), but I wouldn't add a generic framework after one use (YAGNI)."
 2. **Give a Swift boundary** — SRP: "This ViewModel owns screen state; networking lives in a `UserFetching` protocol implementation."
@@ -123,7 +329,8 @@ flowchart LR
 4. **Acknowledge tension** — DRY vs YAGNI: abstract when the pattern is stable, not on the first duplicate.
 5. **Connect to team process** — BDUF as a short design discussion or ADR, not a waterfall spec.
 
-## Код и примеры
+## Code & examples
+
 
 ### YAGNI vs speculative abstraction
 
@@ -252,7 +459,8 @@ Ask before adding a new service or coordinator:
 
 If two designs work, pick the one with fewer moving parts.
 
-## Ссылки
+## Links
+
 
 - [Clean Code (Martin)](https://www.pearson.com/en-us/subject-catalog/p/clean-code-a-handbook-of-agile-software-craftsmanship/P200000003284) — craftsmanship context for SOLID and readability
 - [Refactoring (Fowler)](https://martinfowler.com/books/refactoring.html) — when and how to improve structure safely
@@ -261,7 +469,8 @@ If two designs work, pick the one with fewer moving parts.
 
 ---
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -278,13 +487,50 @@ If two designs work, pick the one with fewer moving parts.
 
 - **Answer (RU):** **You Aren't Gonna Need It** — пишите только код для **текущей** задачи. Нарушение: фичи «на будущее», универсальные хуки без требования, лишние протоколы «на вырост». При рефакторинге мёртвый код можно удалять — git сохранит историю.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «Не кодирую гипотезы — только то, что просит задача сейчас.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** YAGNI против тестов?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** Тесты на **текущее** поведение — не YAGNI; тесты на воображаемые сценарии без требования — да.
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q2
 - **Question (EN):** DRY vs SSOT — what's the difference?
 
@@ -298,11 +544,36 @@ If two designs work, pick the one with fewer moving parts.
 
 - **Answer (RU):** **DRY** — не дублировать **важную логику** в нескольких местах. **SSOT** — конкретный приём: данные и правила меняются в **одном** месте (один validator, один mapper, один remote config source). DRY — принцип; SSOT — архитектурная цель.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** Когда дублирование допустимо?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** Когда абстракция ещё нестабильна или дубликаты **случайно похожи**, но по смыслу разойдутся — два явных фрагмента дешевле ложного DRY.
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q3
 - **Question (EN):** Does KISS mean writing primitive code?
 
@@ -317,6 +588,7 @@ If two designs work, pick the one with fewer moving parts.
 - **Answer (RU):** Нет — **достаточно просто для задачи**. Сложность должна идти из **требований**, а не из модных паттернов. Простое решение легче читать, ревьюить и передавать команде.
 
 </details>
+
 ### Q4
 - **Question (EN):** Is BDUF the same as waterfall?
 
@@ -331,6 +603,7 @@ If two designs work, pick the one with fewer moving parts.
 - **Answer (RU):** Нет в agile-смысле «заморозить всё». BDUF здесь — **осознанное проектирование до кода**: ограничения, границы модулей, спорные места с командой **раньше**, чтобы меньше переделок. Короткий design doc / ADR / схема на доске — достаточно.
 
 </details>
+
 ### Q5
 - **Question (EN):** List SOLID and give an iOS SRP example.
 
@@ -345,6 +618,7 @@ If two designs work, pick the one with fewer moving parts.
 - **Answer (RU):** **S**ingle Responsibility, **O**pen/Closed, **L**iskov Substitution, **I**nterface Segregation, **D**ependency Inversion. **SRP:** `UIViewController` — UI lifecycle; `NetworkClient` — HTTP; `LoginViewModel` — состояние экрана и команды. Один тип — одна зона ответственности.
 
 </details>
+
 ### Q6
 - **Question (EN):** How do you demonstrate OCP and DIP in Swift?
 
@@ -359,6 +633,7 @@ If two designs work, pick the one with fewer moving parts.
 - **Answer (RU):** **OCP:** новое поведение через **новый тип** (wrapper, strategy), а не правки рабочего класса. **DIP:** ViewModel/UseCase зависит от `protocol ImageLoading`, а не от `URLSession` напрямую; конкретику собирают в composition root.
 
 </details>
+
 ### Q7
 - **Question (EN):** APO — what should you say about iOS?
 
@@ -373,6 +648,7 @@ If two designs work, pick the one with fewer moving parts.
 - **Answer (RU):** **Avoid Premature Optimization** — оптимизируйте **подтверждённую** проблему. Сначала Instruments: Time Profiler, Allocations, FPS. Без измерения оптимизация часто усложняет код без выигрыша.
 
 </details>
+
 ### Q8
 - **Question (EN):** Occam's Razor vs KISS and YAGNI?
 
@@ -387,6 +663,7 @@ If two designs work, pick the one with fewer moving parts.
 - **Answer (RU):** **Оккам:** из рабочих вариантов — **минимум сущностей** (слои, сервисы, типы). **KISS** — простота решения. **YAGNI** — не писать ненужное. Вместе: не добавлять абстракцию без понятной пользы.
 
 </details>
+
 ### Q9
 - **Question (EN):** DRY vs YAGNI — how do you resolve the tension?
 
@@ -401,6 +678,7 @@ If two designs work, pick the one with fewer moving parts.
 - **Answer (RU):** Выносить общий код, когда повтор отражает **одно и то же правило** и паттерн **стабилен**. Не выносить на первом похожем фрагменте — иначе абстракция сломается на втором кейсе. Правило трёх повторений — практичный ориентир.
 
 </details>
+
 ### Q10
 - **Question (EN):** How are these principles tested in interviews?
 

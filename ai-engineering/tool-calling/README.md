@@ -1,6 +1,6 @@
 # 08 · Tool Calling
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Tool calling** (function calling) lets the model **request app-side execution** — search local database, fetch weather, run vector search — instead of inventing facts. Flow: model emits **structured tool call** (name + arguments) → app **executes** → **returns output** to model → model continues. Covers schema design, **execution loop**, **idempotency**, and **error feedback** to the model. This topic is the **single-turn tool round-trip** — not the full multi-step [09 · Agents](../agents/README.md) orchestration loop.
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Tool](https://developer.apple.com/documentation/foundationmodels/tool) — protocol, `call(arguments:)`, `@Generable` arguments.
 - [LanguageModelSession](https://developer.apple.com/documentation/foundationmodels/languagemodelsession) — attach tools to session or profile.
@@ -24,6 +23,7 @@
 - [WWDC26 — Build agentic app experiences (242)](https://developer.apple.com/videos/play/wwdc2026/242/) — tool calling mode, transcript impact.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -40,7 +40,8 @@
 - MCP wire protocol — see [mcp](../mcp/README.md).
 - Parallel tool execution scheduling internals — mention concurrent `Sendable` tools.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Piece | Role |
 |-------|------|
@@ -113,6 +114,7 @@ Model can apologize or ask clarifying question — better than silent failure. L
 
 ## 🏋️ Exercises
 
+
 1. **Read vs write** — `getAccountBalance` vs `transferMoney`. *Expected:* read tool auto; write tool requires confirmation + idempotent server API.
 
 2. **Duplicate call** — Model calls `createReminder` twice with same args. *Expected:* second call no-op or returns existing ID.
@@ -123,14 +125,16 @@ Model can apologize or ask clarifying question — better than silent failure. L
 
 5. **Context bloat** — 12 tools attached. *Expected:* trim descriptions; dynamic tool subset per screen via DynamicProfile; drop unused tools from session.
 
-## Ссылки
+## Links
+
 
 - [Tool protocol](https://developer.apple.com/documentation/foundationmodels/tool)
 - [LanguageModelSession](https://developer.apple.com/documentation/foundationmodels/languagemodelsession)
 - [Build agentic experiences (WWDC26-242)](https://developer.apple.com/videos/play/wwdc2026/242/)
 - Related: [structured-output](../structured-output/README.md), [agents](../agents/README.md), [rag](../rag/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -139,8 +143,20 @@ Model can apologize or ask clarifying question — better than silent failure. L
 
 - **Answer (EN):** The app registers tools with names, descriptions, and argument schemas. The model may emit a tool call; the app executes `call(arguments:)` and returns output to the transcript for the model to continue until a final answer.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** чем Tool отличается от простого API call в app?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** **Model chooses** when/which tool based on user intent — app doesn't hardcode routing. Tool output **informs next model turn**, enabling multi-step reasoning within session.
 
 
@@ -152,13 +168,26 @@ Model can apologize or ask clarifying question — better than silent failure. L
 - **Answer (RU):** App регистрирует **Tool** (name, description, Arguments schema). Framework кладёт definitions в prompt. Model может emit **tool call** → app **`call(arguments:)`** → output возвращается в transcript → model продолжает. Цикл до final user-facing ответа.
 
 </details>
+
 ### Q2
 - **Question (EN):** Why idempotency in tool calling?
 
 - **Answer (EN):** Models may repeat tool calls. Write tools without idempotency can double-charge or duplicate records. Use dedupe keys and server-side idempotency tokens.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** read tools нужна idempotency?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** Less critical but caching helps latency; still avoid unbounded repeated network calls — debounce or return cached result within same turn.
 
 
@@ -170,13 +199,26 @@ Model can apologize or ask clarifying question — better than silent failure. L
 - **Answer (RU):** Model может **повторить** tool call (retry, duplicate turn, transcript noise). Write tools без idempotency → **double purchase, duplicate reminders**. Pattern: dedupe keys, server idempotency tokens, check-before-create.
 
 </details>
+
 ### Q3
 - **Question (EN):** How do you report errors back to the model?
 
 - **Answer (EN):** Return a clear natural-language error as tool output describing what failed and how to recover. Log technical details separately; don't pass stack traces to the model.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** throw vs return error string из `call`?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** Prefer **return message** for recoverable errors model can handle; `throw` for programmer errors — framework may surface differently; follow Apple FM error policy for transcript.
 
 
@@ -188,13 +230,26 @@ Model can apologize or ask clarifying question — better than silent failure. L
 - **Answer (RU):** Return **structured natural-language error** as tool output: what failed, what user can fix. Не stack trace. Model может уточнить у пользователя. Log details in OSLog separately.
 
 </details>
+
 ### Q4
 - **Question (EN):** Tool calling vs full agent loop?
 
 - **Answer (EN):** Tool calling is the mechanism for call/response rounds. Agent loops add planning, multi-step goals, profile switching, and trajectory evaluation. Tool calling is a building block, not the full architecture.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** ToolCallingMode `.required` — когда?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** When retrieval/action **must** happen before answer (e.g. search notes before summarizing) — prevents model from answering from memory alone; use with eval to verify tool is actually invoked.
 
 <!-- knowledge-cards-canonical:end -->

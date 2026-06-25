@@ -16,7 +16,7 @@ _(paste article summary here)_
 
 ---
 
-## Ключевые идеи
+## Key ideas
 
 _English summary — expand «По-русски» for full text (Ключевые идеи)._
 
@@ -35,7 +35,7 @@ _(to be added)_
 
 _(to be added)_
 
-### Границы и типичные ошибки
+### Boundaries and typical mistakes
 
 _(to be added)_
 
@@ -43,7 +43,7 @@ _(to be added)_
 
 </details>
 
-## Связь с базой
+## Link to parent topic
 
 
 
@@ -51,7 +51,7 @@ _(to be added)_
 - [Mobile App Design](/system-design/mobile/) — data layer on interview
 - [Networking](/data-and-network/networking/)
 
-## Что добавить после paste
+## TODO after paste
 
 
 

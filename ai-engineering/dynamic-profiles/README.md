@@ -1,6 +1,6 @@
 # 13 · Dynamic Profiles
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Dynamic Profiles** (Foundation Models, WWDC26) let one **`LanguageModelSession`** swap **model**, **tools**, and **instructions** declaratively as app state changes — **without losing transcript**. Conform a struct to **`LanguageModelSession.DynamicProfile`** with a SwiftUI-style **`body`** that resolves to exactly one active **`Profile`**. Pair with **`historyTransform`**, **`summarizeHistory`**, and **[FoundationModelsUtilities](https://github.com/apple/foundation-models-utilities)** for context management. Building block for agentic iOS features — distinct from hand-rolled multi-session juggling.
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [LanguageModelSession.DynamicProfile](https://developer.apple.com/documentation/foundationmodels/languagemodelsession/dynamicprofile) — protocol, `body`, modifiers.
 - [historyTransform(_:)](https://developer.apple.com/documentation/foundationmodels/languagemodelsession/dynamicprofile) — per-profile lossless transcript views.
@@ -24,6 +23,7 @@
 - [Foundation Models Utilities (GitHub)](https://github.com/apple/foundation-models-utilities) — `rollingWindow`, `droppingCompletedToolCalls`, `summarizeHistory`.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -41,7 +41,8 @@
 - Every lifecycle modifier (`onToolCall`, etc.) unless debugging/orchestration interview.
 - Private Cloud Compute pricing details — cite Apple docs, don't guess numbers.
 
-## Ключевые понятия
+## Key concepts
+
 
 | API | Purpose |
 |-----|---------|
@@ -109,6 +110,7 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 
 ## 🏋️ Exercises
 
+
 1. **Photo workflow** — Analyze image on-device, then creative captions via PCC. *Expected:* one session, DynamicProfile switches model + instructions; transcript keeps image discussion context.
 
 2. **Tool visibility** — Checkout mode must not expose admin `DeleteUserTool`. *Expected:* separate Profile branch without admin tools; not runtime hide only.
@@ -119,7 +121,8 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 
 5. **Wrong profile bug** — User in "review" but brainstorm tools fire. *Expected:* fix `body` branch condition; add ToolCallEvaluator golden trajectories.
 
-## Ссылки
+## Links
+
 
 - [LanguageModelSession.DynamicProfile](https://developer.apple.com/documentation/foundationmodels/languagemodelsession/dynamicprofile)
 - [What's new in Foundation Models (WWDC26-241)](https://developer.apple.com/videos/play/wwdc2026/241/)
@@ -127,7 +130,8 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 - [foundation-models-utilities](https://github.com/apple/foundation-models-utilities)
 - Related: [foundation-models](../foundation-models/README.md), [tool-calling](../tool-calling/README.md), [context-window](../context-window/README.md), [evaluations](../evaluations/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -136,8 +140,20 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 
 - **Answer (EN):** Multi-mode AI in one session — swap model, tools, and instructions as app state changes without a new session or manual transcript copying. The declarative body re-evaluates each prompt.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** сколько profiles active одновременно?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** **Exactly one** active Profile at a time — `body` must resolve to single configuration; not parallel multi-agent in one prompt.
 
 
@@ -149,6 +165,7 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 - **Answer (RU):** **Multi-mode AI** в одном **`LanguageModelSession`**: swap model, tools, instructions по app state **без нового session** и без ручного copy transcript. Declarative `body` re-evaluated каждый prompt — SwiftUI-style для model config.
 
 </details>
+
 ### Q2
 - **Question (EN):** When on-device vs PCC in profiles?
 
@@ -167,6 +184,7 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 - **Answer (RU):** **On-device** — fast, private, simple analysis. **PCC** (`PrivateCloudComputeLanguageModel`) — heavier reasoning, larger context tasks. Same session: user selects "deep brainstorm" → profile branch switches model + `.reasoningLevel(.high)`.
 
 </details>
+
 ### Q3
 - **Question (EN):** summarizeHistory vs historyTransform?
 
@@ -185,13 +203,26 @@ let session = LanguageModelSession(profile: CraftProfile(mode: .reviewing))
 - **Answer (RU):** **`summarizeHistory`** (utilities) — prebuilt **compress + drop** old turns. **`historyTransform`** — custom **lossless view** (filter, suffix) without necessarily deleting global transcript. Global **`history` property** — lossy, affects all profiles — use deliberately in `onResponse`.
 
 </details>
+
 ### Q4
 - **Question (EN):** What is FoundationModelsUtilities?
 
 - **Answer (EN):** Open-source Apple package with history modifiers, Skills API, and chat-completions adapter. Experimental — add via SPM, not bundled in the OS framework.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** можно ли production без utilities?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** Yes — implement `historyTransform` manually; utilities save boilerplate; pin package version; monitor API changes as "emerging patterns."
 
 <!-- knowledge-cards-canonical:end -->

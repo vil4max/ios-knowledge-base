@@ -34,8 +34,17 @@ EN_LABEL = re.compile(
 Q_CARD = re.compile(r"^### Q\d+", re.M)
 HAS_DETAILS = re.compile(r'<details\s+class="lang-ru"', re.I)
 RU_FILENAME = re.compile(r"-RU\.md$", re.I)
-SEC_30 = re.compile(r"^## За 30 секунд\s*$", re.M)
-IN_30_EN = re.compile(r"^## In 30 seconds\s*$", re.M)
+SEC_30 = re.compile(r"^## In 30 seconds\s*$", re.M)
+SEC_30_RU = re.compile(r"^## За 30 секунд\s*$", re.M)
+CYRILLIC_HEADING = re.compile(r"^#{1,6}\s+.*[а-яА-ЯёЁ]", re.M)
+CYRILLIC = re.compile(r"[а-яА-ЯёЁ]")
+DETAILS_OPEN = re.compile(r'<details\s+class="lang-ru"', re.I)
+DETAILS_CLOSE = re.compile(r"</details>", re.I)
+
+README_SKIP_CYRILLIC = {
+    KB / "glossary/README.md",
+    KB / "ai-engineering/roadmap/README.md",
+}
 
 
 @dataclass
@@ -65,6 +74,23 @@ def iter_targets() -> list[Path]:
     return sorted(set(paths))
 
 
+def visible_cyrillic_count(text: str) -> int:
+    in_details = False
+    in_fence = False
+    total = 0
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_fence = not in_fence
+        if DETAILS_OPEN.search(line):
+            in_details = True
+        if not in_details and not in_fence:
+            total += len(CYRILLIC.findall(line))
+        if DETAILS_CLOSE.search(line):
+            in_details = False
+    return total
+
+
 def lint_file(path: Path) -> Violations:
     text = path.read_text(encoding="utf-8")
     v = Violations(path=path)
@@ -72,8 +98,13 @@ def lint_file(path: Path) -> Violations:
     if RU_FILENAME.search(path.name):
         v.issues.append("filename uses *-RU.md suffix")
 
-    if IN_30_EN.search(text):
-        v.issues.append("uses deprecated '## In 30 seconds' heading")
+    if SEC_30_RU.search(text):
+        v.issues.append("uses deprecated '## За 30 секунд' heading — use '## In 30 seconds'")
+
+    for match in CYRILLIC_HEADING.finditer(text):
+        title = match.group().strip()
+        v.issues.append(f"Cyrillic heading: {title[:60]}{'…' if len(title) > 60 else ''}")
+        break
 
     if Q_CARD.search(text):
         cards = list(Q_CARD.finditer(text))
@@ -95,6 +126,11 @@ def lint_file(path: Path) -> Violations:
 
     if SEC_30.search(text) and not HAS_DETAILS.search(text):
         v.issues.append("30-sec section missing <details class=\"lang-ru\">")
+
+    if path.name == "README.md" and path not in README_SKIP_CYRILLIC:
+        n = visible_cyrillic_count(text)
+        if n > 0:
+            v.issues.append(f"README has {n} visible Cyrillic char(s) outside <details class=\"lang-ru\">")
 
     return v
 

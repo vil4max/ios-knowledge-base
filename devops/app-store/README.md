@@ -2,6 +2,7 @@
 
 ## Apple docs
 
+
 - [App Store Connect](https://developer.apple.com/app-store-connect/) — apps, builds, metadata, users.
 - [TestFlight](https://developer.apple.com/testflight/) — beta distribution, internal/external testers.
 - [Distributing your app for beta testing and releases](https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases)
@@ -10,7 +11,8 @@
 - [Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements) — capabilities in signed bundle.
 - [Capability Requests](https://developer.apple.com/help/account/reference/capability-requests/) — enabling features in portal.
 
-## За 30 секунд
+## In 30 seconds
+
 
 **TestFlight** distributes signed builds to internal (App Store Connect users) and external testers (beta review for first build). **App Store Connect** manages versions, screenshots, compliance, and **phased release** (7-day gradual rollout). Submission must match **Review Guidelines** (privacy, payments, UGC moderation, accurate metadata). **Entitlements** in the app signature must align with provisioning (push, associated domains, Keychain groups)—missing or extra entitlement causes upload or runtime failures.
 
@@ -22,9 +24,8 @@
 
 </details>
 
-
-
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -42,6 +43,7 @@
 - Alternate payment APIs outside Apple rules without legal/product sign-off.
 
 ## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -74,6 +76,7 @@ Feature complete
 
 ## 🏋️ Exercises
 
+
 1. **Internal TF:** Upload build; add internal group; install via TestFlight app. **Expected:** processing → ready to test < typical SLA; crashes symbolicated with dSYM uploaded.
 2. **Entitlement audit:** List app + extension entitlements; compare to portal capabilities. **Expected:** no orphan `aps-environment` without push setup.
 3. **Phased release plan:** Document go/no-go metrics (crash-free sessions, support tickets) for day 1 vs day 7. **Expected:** runbook to pause rollout.
@@ -82,11 +85,13 @@ Feature complete
 
 ## WWDC & resources
 
+
 - [Explore App Store Connect for developers (WWDC22)](https://developer.apple.com/videos/play/wwdc2022/10001/)
 - [Get started with TestFlight (App Store Connect Help)](https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/)
 - [App Store submission tips (Tech Talks)](https://developer.apple.com/news/?id=testflight-and-submission)
 
 ## Artifacts
+
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -96,6 +101,7 @@ Feature complete
 ---
 
 ## Interview Q&A (Knowledge cards)
+
 
 ### Q1
 - **Question (EN):** How does internal TestFlight differ from external?
@@ -111,6 +117,7 @@ Feature complete
 - **Answer (RU):** **Internal** — пользователи роли App Store Connect (до 100), без Beta App Review, быстрее для daily QA. **External** — до 10k testers по email/public link; **первый build** проходит beta review как упрощённый App Review. External builds expire (~90 days); нужны notes и compliance как для store.
 
 </details>
+
 ### Q2
 - **Question (EN):** What is phased release and when do you use it?
 
@@ -125,6 +132,7 @@ Feature complete
 - **Answer (RU):** **Phased release** выкатывает версию на процент пользователей App Store за 7 дней (1→2→5→10→20→50→100). Позволяет **pause** при регрессии метрик. Используют для рискованных backend/UI изменений без собственной infra rollout. Не заменяет feature flags внутри app для логики.
 
 </details>
+
 ### Q3
 - **Question (EN):** How are entitlements and capabilities related?
 
@@ -139,6 +147,7 @@ Feature complete
 - **Answer (RU):** В Xcode **Capability** добавляет entitlement keys в проект и требует включения в **Developer portal** + provisioning profile. Подписанный bundle содержит entitlements; OS проверяет их runtime (push, iCloud, associated domains). Extension и app должны иметь согласованные team ID, groups, app groups. Mismatch → upload fail или feature silent no-op.
 
 </details>
+
 ### Q4
 - **Question (EN):** What are common App Review rejection reasons?
 

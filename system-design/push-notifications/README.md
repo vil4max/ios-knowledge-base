@@ -1,6 +1,6 @@
 # Push Notifications
 
-## За 30 секунд
+## In 30 seconds
 
 
 iOS push flows through **APNs**: your server sends to Apple, Apple delivers to device. The app registers for a **device token**, handles permission via **UNUserNotificationCenter**, and may use **Notification Service Extension** for rich media and **silent push** (`content-available`) to wake the app for background fetch — within strict budgets. Design covers token lifecycle, payload size limits, categories/actions, and never assuming guaranteed delivery.
@@ -13,9 +13,8 @@ Push через **APNs**: сервер → Apple → устройство. Paylo
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [User Notifications framework](https://developer.apple.com/documentation/usernotifications) — `UNUserNotificationCenter`, permissions, categories.
 - [Registering your app with APNs](https://developer.apple.com/documentation/usernotifications/registering_your_app_with_apns) — device token, entitlements.
@@ -24,6 +23,7 @@ Push через **APNs**: сервер → Apple → устройство. Paylo
 - [Pushing background updates](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/pushing_background_updates_to_your_app) — silent push constraints.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -41,7 +41,8 @@ Push через **APNs**: сервер → Apple → устройство. Paylo
 - VoIP push legacy patterns — mention PushKit only if prompt is call-related.
 - Custom APNs certificate management minutiae unless ops-focused interview.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Term | Detail |
 |------|--------|
@@ -71,6 +72,7 @@ Backend → APNs (HTTP/2) → Device
 
 ## 🏋️ Exercises
 
+
 1. **Onboarding permission** — When to show pre-permission screen vs system dialog. *Expected:* value prop first; handle denied → settings deep link.
 
 2. **Chat message push** — Payload design + collapse id for same thread. *Expected:* `thread-id`, minimal body, fetch message on tap/open.
@@ -81,13 +83,15 @@ Backend → APNs (HTTP/2) → Device
 
 5. **Token rotation** — User reinstalls app. *Expected:* new token, invalidate old mapping, avoid duplicate devices per user.
 
-## Ссылки
+## Links
+
 
 - [User Notifications](https://developer.apple.com/documentation/usernotifications)
 - [APNs overview](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server)
 - Related: [deep-links](../deep-links/README.md), [offline-first](../offline-first/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -105,6 +109,7 @@ Backend → APNs (HTTP/2) → Device
 - **Answer (RU):** Backend шлёт HTTP/2 запрос в **APNs** с device token и payload. APNs доставляет на устройство. **UNUserNotificationCenter** показывает alert или будит app (silent). App обрабатывает tap через delegate / scene, маршрутизирует deep link и при необходимости тянет данные с API.
 
 </details>
+
 ### Q2
 - **Question (EN):** Silent push — what is allowed and what is not?
 
@@ -119,6 +124,7 @@ Backend → APNs (HTTP/2) → Device
 - **Answer (RU):** Payload с `content-available: 1` без alert — **background wake** для короткой работы (sync). Доставка **не guaranteed**, система **throttle** по battery/usage. Нельзя использовать для рекламы или обхода background limits; нужен `remote-notification` background mode и бережное использование.
 
 </details>
+
 ### Q3
 - **Question (EN):** Why use a Notification Service Extension?
 
@@ -133,6 +139,7 @@ Backend → APNs (HTTP/2) → Device
 - **Answer (RU):** Выполняется **до показа** уведомления: скачать медиа, расшифровать, изменить title/body. Ограничения по времени и памяти; при timeout — показ исходного payload. Нужен для rich notifications без огромного payload в APNs (лимит ~4 KB).
 
 </details>
+
 ### Q4
 - **Question (EN):** How should the backend manage device tokens?
 

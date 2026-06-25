@@ -2,6 +2,7 @@
 
 ## Apple docs
 
+
 - [Accessibility for UIKit](https://developer.apple.com/documentation/uikit/accessibility-for-uikit) — labels, traits, notifications.
 - [Accessibility for SwiftUI](https://developer.apple.com/documentation/swiftui/accessibility) — modifiers, `@AccessibilityFocusState`.
 - [VoiceOver](https://developer.apple.com/accessibility/voiceover/) — user guide; rotor, gestures.
@@ -10,7 +11,8 @@
 - [String Catalogs](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog) — `.xcstrings`, pluralization, variants.
 - [Human Interface Guidelines — Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)
 
-## За 30 секунд
+## In 30 seconds
+
 
 **Accessibility** makes UI usable with VoiceOver, Dynamic Type, Reduce Motion, and other settings—via **labels**, **traits**, **hints**, and logical **focus order**. SwiftUI: `.accessibilityLabel`, `.accessibilityAddTraits`, `accessibilityElement(children:)`; UIKit: `accessibilityLabel` / `accessibilityTraits`. **Localization** externalizes copy; **String Catalogs** (`.xcstrings`) centralize strings, plurals, and device variations with Xcode review tools. Test with Accessibility Inspector and VoiceOver on device—not only after release.
 
@@ -22,9 +24,8 @@
 
 </details>
 
-
-
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -42,6 +43,7 @@
 - Snapshot-testing every language before copy freeze process exists.
 
 ## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -70,6 +72,7 @@ Developer adds key in String Catalog
 
 ## 🏋️ Exercises
 
+
 1. **Unlabeled icon button:** Fix toolbar icon-only button with label “Close” and `.isButton` trait. **Expected:** VoiceOver reads purpose, not “image”.
 2. **Dynamic Type:** Screen with fixed-height label; switch to scalable font + `minimumScaleFactor` or multiline. **Expected:** largest accessibility size without clipping.
 3. **Group fields:** Combine “Email” label + text field for VoiceOver as one element or logical order. **Expected:** rotor navigates label then field sensibly.
@@ -78,12 +81,14 @@ Developer adds key in String Catalog
 
 ## WWDC & resources
 
+
 - [Build an accessible SwiftUI app (WWDC19)](https://developer.apple.com/videos/play/wwdc2019/238/)
 - [Create accessible experiences for watchOS (WWDC20)](https://developer.apple.com/videos/play/wwdc2020/10120/) — focus/state patterns
 - [What's new in SwiftUI accessibility (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10036/)
 - [Discover String Catalogs (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10155/)
 
 ## Artifacts
+
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -93,6 +98,7 @@ Developer adds key in String Catalog
 ---
 
 ## Interview Q&A (Knowledge cards)
+
 
 ### Q1
 - **Question (EN):** What is the difference between accessibility label, hint, and trait?
@@ -108,6 +114,7 @@ Developer adds key in String Catalog
 - **Answer (RU):** **Label** — что это (имя элемента). **Trait** — роль/состояние (кнопка, заголовок, selected). **Hint** — что произойдёт при действии; используй редко, если label неочевиден. Плохой паттерн: дублировать visible text в hint. Декоративные картинки — `accessibilityHidden(true)`.
 
 </details>
+
 ### Q2
 - **Question (EN):** How do you support Dynamic Type without breaking layout?
 
@@ -122,6 +129,7 @@ Developer adds key in String Catalog
 - **Answer (RU):** Системные text styles / `UIFontMetrics`, multiline labels, **Auto Layout** или SwiftUI stacks с приоритетами, избегать фиксированных высот для текста. Проверять **largest content size** в Simulator и на device. Touch targets ≥ 44pt; при необходимости scroll. Snapshot только как дополнение — живой VoiceOver важнее.
 
 </details>
+
 ### Q3
 - **Question (EN):** String Catalog vs legacy `Localizable.strings`?
 
@@ -136,6 +144,7 @@ Developer adds key in String Catalog
 - **Answer (RU):** **String Catalog** (`.xcstrings`) — единый файл в Xcode: plurals, variants, comments для переводчиков, validation, sync с code. Legacy strings работают, но хуже для plural rules и review. Новые проекты — catalog-first; миграция постепенная через Xcode import.
 
 </details>
+
 ### Q4
 - **Question (EN):** How do you test accessibility in CI?
 

@@ -20,10 +20,10 @@
 
 ---
 
-## Глоссарий ключевых терминов
+## Glossary of key terms
 
 
-### Память и модель данных
+### Memory and data model
 
 <a id="glossary-arc"></a>
 **ARC** — *Automatic Reference Counting* — автоматический подсчёт ссылок; объект освобождается, когда у него 0 strong-ссылок.
@@ -81,7 +81,7 @@
 <a id="glossary-isolation"></a>
 **Isolation** — правило компилятора: код актора/`@MainActor` вызывается только с допустимого executor или через `await` при пересечении границы.
 
-### Типы и протоколы
+### Types and protocols
 
 <a id="glossary-existential"></a>
 **Existential** — тип `any P`: «коробка» для произвольной реализации протокола `P` в runtime (existential container / witness table).
@@ -150,7 +150,7 @@
 <a id="glossary-viewbuilder"></a>
 **ViewBuilder** — `@resultBuilder` для DSL вложенных view в `body` и модификаторах.
 
-### Синтаксис Swift / DSL
+### Swift syntax / DSL
 
 <a id="glossary-optional"></a>
 **Optional** — перечисление с кейсами `.some(Wrapped)` и `.none`; суффиксы `?` и `!` — сахар над Optional.
@@ -197,7 +197,7 @@
 <a id="glossary-result-builder"></a>
 **Result Builder** — декларативный синтаксис «как в SwiftUI `body`»; собирается через атрибут `@resultBuilder`.
 
-### Сеть и хранение
+### Network and storage
 
 <a id="glossary-urlsession"></a>
 **URLSession** — API HTTP(S): `data(for:)`, upload/download tasks, конфигурации и кэш; типичная основа REST-клиента.
@@ -217,7 +217,7 @@
 <a id="glossary-certificate-pinning"></a>
 **Certificate pinning** — клиент сверяет сертификат или публичный ключ сервера с заранее вложенным отпечатком (pin), а не только с системным trust store; усложняет MITM при компрометации CA, но усложняет ротацию сертификатов.
 
-### Метрики, диагностика и тесты
+### Metrics, diagnostics, and tests
 
 <a id="glossary-metrickit"></a>
 **MetricKit** — фреймворк сбора метрик стабильности и производительности с реальных устройств (диагностика в поле).
@@ -234,7 +234,7 @@
 <a id="glossary-ui-test"></a>
 **UI test** — XCTest сценарии по accessibility tree на симуляторе или устройстве: сквозные пользовательские потоки.
 
-### Сборка и архитектура проекта
+### Build and project architecture
 
 <a id="glossary-spm"></a>
 **SPM** — *Swift Package Manager* — менеджер пакетов и зависимостей от Apple.
@@ -254,7 +254,7 @@
 <a id="glossary-app-thinning"></a>
 **App Thinning** — на стороне App Store пользователь получает «урезанный» билд: только исполняемый **binary slice** под архитектуру устройства и подходящие варианты ресурсов по idiom/scale; уменьшает размер загрузки (при необходимости вместе с *On-Demand Resources*).
 
-### Процессы и документы
+### Processes and documents
 
 <a id="glossary-rfc"></a>
 **RFC** — *Request For Comments* — документ с предложением технического изменения (в т.ч. Swift Evolution).

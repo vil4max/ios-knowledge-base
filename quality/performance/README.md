@@ -2,6 +2,7 @@
 
 ## Apple docs
 
+
 - [Analyzing CPU usage with the Time Profiler instrument](https://developer.apple.com/documentation/xcode/analyzing-cpu-usage-with-the-time-profiler-instrument)
 - [Analyzing hangs in your app](https://developer.apple.com/documentation/xcode/analyzing-hangs-in-your-app) — hang detection, responsiveness.
 - [Improving app launch time](https://developer.apple.com/documentation/xcode/improving-your-app-s-launch-time) — dyld, pre-main, first frame.
@@ -10,7 +11,8 @@
 - [MXMetricManager](https://developer.apple.com/documentation/metrickit/mxmetricmanager) — collect and upload daily payloads.
 - [SwiftUI performance](https://developer.apple.com/documentation/swiftui/performance) — identity, equatable, lazy containers.
 
-## За 30 секунд
+## In 30 seconds
+
 
 **Performance** work starts with **measurement**: Time Profiler for CPU, Hangs instrument for main-thread stalls, launch metrics for cold start. On device, watch **main-thread work**—layout, image decode, sync I/O. In SwiftUI, unnecessary **`body` recomputation** (unstable identity, heavy work in `body`) causes jank; fix with stable `id`, extracted subviews, `@Observable` granularity, and moving work off the main actor. **MetricKit** aggregates real-user launch time, hang rate, and memory—complement lab profiling, not replace it.
 
@@ -22,9 +24,8 @@
 
 </details>
 
-
-
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -42,6 +43,7 @@
 - Replacing entire UI stack for performance before fixing one synchronous network call on main.
 
 ## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -71,6 +73,7 @@ Tap icon
 
 ## 🏋️ Exercises
 
+
 1. **Launch signposts:** Mark `willFinishLaunching`, first view `onAppear`, first network response; one Instruments run. **Expected:** timeline shows largest gap.
 2. **Main-thread offender:** Move JSON parsing of 1MB file from main to background; compare Time Profiler self time. **Expected:** main thread freed during parse.
 3. **SwiftUI bodies:** Add counter triggering parent refresh; use Instruments SwiftUI template or print in `body` to count recomputes; apply `@Observable` field split. **Expected:** fewer body executions.
@@ -79,12 +82,14 @@ Tap icon
 
 ## WWDC & resources
 
+
 - [Optimize app startup time (WWDC22)](https://developer.apple.com/videos/play/wwdc2022/110362/)
 - [Explore UI animation hitches and hangs (WWDC20)](https://developer.apple.com/videos/play/wwdc2020/10077/)
 - [Diagnose performance issues with MetricKit (WWDC20)](https://developer.apple.com/videos/play/wwdc2020/10078/)
 - [Demystify SwiftUI performance (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10160/)
 
 ## Artifacts
+
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -94,6 +99,7 @@ Tap icon
 ---
 
 ## Interview Q&A (Knowledge cards)
+
 
 ### Q1
 - **Question (EN):** How do you investigate scroll jank?
@@ -109,6 +115,7 @@ Tap icon
 - **Answer (RU):** Device + Release-like build → **Time Profiler** во время скрола → main thread hot spots (layout, `draw`, decode). Проверить **cell reuse**, размер изображений, синхронный I/O. SwiftUI: частота `body`, тяжёлые модификаторы на каждой ячейке. Подтвердить fix тем же сценарием; опционально Core Animation instrument для hitch frames.
 
 </details>
+
 ### Q2
 - **Question (EN):** What do you optimize for cold launch?
 
@@ -123,6 +130,7 @@ Tap icon
 - **Answer (RU):** Измерить фазы: **pre-main** (меньше dylibs, +load) и **post-main** (отложить analytics, migrations, sync network). Lazy init тяжёлых singletons. Меньше work до первого кадра; async загрузка некритичного. Signposts + MetricKit launch time в поле. Не гадать — один change → remeasure.
 
 </details>
+
 ### Q3
 - **Question (EN):** Why can SwiftUI feel slow on large lists?
 
@@ -137,6 +145,7 @@ Tap icon
 - **Answer (RU):** Часто не runtime SwiftUI, а **лишние invalidations**: нестабильный `id`, state высоко в дереве, тяжёлая работа в `body`, отсутствие пагинации. `LazyVStack`/`List` без stable identity пересоздаёт subtree. Решение: узкий state, Equatable wrappers где уместно, prefetch/decode off-main, профилировать Instruments.
 
 </details>
+
 ### Q4
 - **Question (EN):** MetricKit vs Instruments—when to use which?
 

@@ -1,4 +1,4 @@
-# Test Plans и CI
+# Test Plans and CI
 
 **Назначение:** как разделить PR / Nightly / Release в Xcode и `xcodebuild`. Детали pipeline: [CI/CD](../../../devops/ci-cd/README.md).
 
@@ -19,7 +19,7 @@ _English summary — expand «По-русски» for full text (TL;DR)._
 
 </details>
 
-## Типичное разделение
+## Typical split
 
 _English summary — expand «По-русски» for full text (Типичное разделение)._
 
@@ -46,7 +46,7 @@ flowchart LR
 
 </details>
 
-## Настройка в Xcode
+## Setup in Xcode
 
 _English summary — expand «По-русски» for full text (Настройка в Xcode)._
 
@@ -87,7 +87,7 @@ xcodebuild test \
 
 </details>
 
-## Flaky tests в CI
+## Flaky tests in CI
 
 _English summary — expand «По-русски» for full text (Flaky tests в CI)._
 
@@ -106,7 +106,7 @@ _English summary — expand «По-русски» for full text (Flaky tests в 
 
 </details>
 
-## Связь с тегами Swift Testing
+## Link to Swift Testing tags
 
 _English summary — expand «По-русски» for full text (Связь с тегами Swift Testing)._
 
@@ -130,7 +130,7 @@ Test Plan или CI script выбирает subset по тегам (через �
 
 </details>
 
-## Вопросы–ответы (собес)
+## Interview Q&A
 
 _English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
 
@@ -150,7 +150,7 @@ _English summary — expand «По-русски» for full text (Вопросы�
 
 </details>
 
-## Официально
+## Official docs
 
 
 

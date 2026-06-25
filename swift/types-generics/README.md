@@ -1,14 +1,23 @@
 # Types & Generics
 
-## Типы, протоколы, дженерики, opaque и existentials — описание
+## Types, protocols, generics, opaque and existentials — overview
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | | |
 |---|---|
-| **Уровни** | Junior, Middle, Senior |
-| **Трек** | Язык |
+| **Levels** | Junior, Middle, Senior |
+| **Track** | Язык |
 | **Must** | Тут начинается «настоящий Swift». Дженерики, ассоциированные типы, `some` vs `any` — то, что делит middle и senior на собесах. |
 
-**Фокус**
+</details>
+
+**Focus**
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - `some` (opaque) vs `any` (existential): когда что выбирать.
 - Дженерик-ограничения: `where`, `==`, `:`, несколько ограничений сразу.
@@ -16,39 +25,187 @@
 
 **Память и ABI рядом с `any` / existential:** экзистенциальные контейнеры, non-frozen, CoW крупных значений в протокольной типизации — [Habr (Avito) — память Swift, ч.1](https://habr.com/en/companies/avito/articles/1017162/); якоря в [`swift/memory-arc/README.md`](../memory-arc/README.md) (разделы **Доп. конспект: Avito ч.1–2**).
 
+</details>
 
-## Структура топика
+## Topic structure
 
-- `notes/` — Q&A + ссылки на Apple docs
-- `exercises/` — упражнения с expected outcome
+
+- `notes/` — Q&A + links to Apple docs
+- `exercises/` — exercises with expected outcome
 
 ---
 
-## 🎯 Фокус vs можно отложить
+## 🎯 Focus vs Defer
 
-### Фокус
+
+### Focus
 
   Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/`
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - `some` (opaque) vs `any` (existential): когда что выбирать.
-- **Ответ**: `some P` = “возвращаю один конкретный тип, но скрываю его” (тип фиксирован и известен компилятору) → обычно быстрее. `any P` = “храню/передаю разные реализации как один тип” (existential box) → гибче, но есть overhead и ограничения.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Answer:** `some P` = “возвращаю один конкретный тип, но скрываю его” (тип фиксирован и известен компилятору) → обычно быстрее. `any P` = “храню/передаю разные реализации как один тип” (existential box) → гибче, но есть overhead и ограничения.
   Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/opaquetypes/`
-- **Ответ**: type erasure нужен, чтобы скрыть конкретный generic-тип в публичном API и/или собрать разные реализации под единый тип. Обычно делается через “box” (протокол + private concrete boxes) или замыкания (хранить функции `next()/render()` внутри wrapper).
-  Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/`
-- Дженерик-ограничения: `where`, `==`, `:`, несколько constraints.
-- **Ответ**: ограничения описывают требования к типам, чтобы внутри generic-кода можно было использовать нужные операции. `:` — conformance (например `Element: Equatable`), `==` — равенство типов (например `T == U.Element`), `where` — место для нескольких условий.
-  Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/`
-- Phantom types для compile-time контроля состояния.
-- **Ответ**: phantom type — параметр типа, который не хранится как данные, но кодирует “состояние” на этапе компиляции (например `Money<USD>`). Это предотвращает целый класс ошибок (например сложение разных валют) без runtime-проверок.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Answer:** type erasure нужен, чтобы скрыть конкретный generic-тип в публичном API и/или собрать разные реализации под единый тип. Обычно делается через “box” (протокол + private concrete boxes) или замыкания (хранить функции `next()/render()` внутри wrapper).
   Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/`
 
-### Отложить
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- Дженерик-ограничения: `where`, `==`, `:`, несколько constraints.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Answer:** ограничения описывают требования к типам, чтобы внутри generic-кода можно было использовать нужные операции. `:` — conformance (например `Element: Equatable`), `==` — равенство типов (например `T == U.Element`), `where` — место для нескольких условий.
+  Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/`
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- Phantom types для compile-time контроля состояния.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Answer:** phantom type — параметр типа, который не хранится как данные, но кодирует “состояние” на этапе компиляции (например `Money<USD>`). Это предотвращает целый класс ошибок (например сложение разных валют) без runtime-проверок.
+  Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/`
+
+
+</details>
+
+
+</details>
+
+
+</details>
+
+### Defer
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Variadic generics (`each T`) — узкий круг задач.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - Метатипы и `Self`-семантика на глубоком уровне — точечно.
 
-## 📊 some vs any (интуиция)
+
+</details>
+
+
+</details>
+
+
+</details>
+
+## 📊 some vs any (intuition)
+
 
 Protocol `P`:
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Визуальная шпаргалка:
 
@@ -66,48 +223,92 @@ Protocol `P`:
 - “возвращаю один конкретный тип, но не хочу его раскрывать” → `some`
 - “мне нужно хранить/передавать разные реализации как один тип” → `any`
 
-## 🏋️ Упражнения (8)
+</details>
+
+## 🏋️ Exercises (8)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 `protocol Container { associatedtype Item ... }` → попытаться использовать `Container` как тип → получить ошибку → исправить через `any` или type erasure.
 
+</details>
 2) `some` vs `any`  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `makeAdder() -> some Numeric` → переписать на `any Numeric` → сравнить через `XCTMetric` (где уместно).
 
 Сделать свой `AnyView` с `SomeView` и `OtherView`. Измерить размер через `MemoryLayout` и посмотреть overhead.
 
+</details>
 4) Phantom types  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `Money<USD>` и `Money<EUR>` — компилятор должен запретить складывать разные валюты.
 
+</details>
 5) Generic constraints  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `extension Array where Element: Numeric { var average: Element }` (и продумать “что такое average для Int?”).
 
+</details>
 6) Sequence/Collection  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Свой `FibonacciSequence: Sequence`, использовать в `for-in`.
 
+</details>
 7) Result builder  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 `HTMLBuilder` для сборки HTML-строки декларативно.
 
+</details>
 8) Conditional conformance  
 
 ## 🌟 Strategic (Senior+)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Дизайн API**: важнее “как написать”, чем “как использовать другие”. Читать API Design Guidelines и смотреть stdlib.
 - **Источник истины — swift-evolution**: понимать направление языка и последствия для архитектуры.
 - **Баланс сложности**: не “упарываться” в generics там, где достаточно простого протокола.
 
----
+</details>
 
-## Связка с карточками (Q&A) — `any` vs generics, `associatedtype`, dispatch
+---## Q-card tie-in — `any` vs generics, `associatedtype`, dispatch
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Материал в формате **тезис → практика → типичная ошибка → Docs**, совпадает с карточками **Q7 и Q8** в секции **Карточки знаний (Q&A)** ниже. Playground: `06_protocols_generics.playground`.
 
-### Сравниваем не «протокол против дженерика», а **`T: P`** vs **`any P`**
+</details>
+
+### Compare `T: P` vs `any P`, not protocol vs generic
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Тезис:** при **`T: P`** в конкретном месте вызова тип **`T` зафиксирован** — компилятор знает фактический тип и может **специализировать** реализацию; при **`any P`** значение — это **«любой conforming тип»** (existential), часто с **boxing** и вызовами через **witness table**.
 - **Когда осознанно `any`:** гетерогенная коллекция **`[any P]`**, публичный API без лишнего generic-параметра, интеграция с кодом, уже принимающим existential; когда упрощение типов важнее micro-perf **вне hot path**.
 - **Частая ошибка:** думать, что протокол «всегда медленнее» или что generic «размывает типизацию». Наоборот: **generic задаёт строгость «какой именно тип здесь»**; **`any`** сознательно её смягчает ради единого типа значения.
 
-### `some P` (opaque) vs `any P` (existential) — коротко
+</details>
+
+### `some P` (opaque) vs `any P` (existential) — brief
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **`some P`:** один конкретный тип, известный компилятору в области видимости; наружу «виден» протокол; обычно **дешевле**, чем произвольный existential.
 - **`any P`:** в рантайме может быть **разный** concrete тип за одной переменной; гибко для хранения, но **overhead** и динамическая диспетчеризация по протоколу чаще, чем у специализированного generic.
@@ -119,7 +320,12 @@ Protocol `P`:
 - **Частая ошибка:** говорить, что associated type «подставляется в **runtime** как другой тип». Динамика «любой conforming тип» ближе к **`any`** и **type erasure**, не к подстановке associated type.
 - Docs: [Protocols — Associated Types](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/)
 
-### Dispatch и связь с `any` vs generic (что спрашивают Middle/Senior)
+</details>
+
+### Dispatch and `any` vs generic (Middle/Senior)
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Static dispatch:** для данного места вызова компилятор знает целевую функцию → прямой вызов / инлайн; типично для конкретных типов, `final`, часто для **`T: P`** на сайте вызова после специализации.
 - **Dynamic dispatch (class):** реализация выбирается по фактическому типу объекта → **vtable** при наследовании классов.
@@ -127,16 +333,22 @@ Protocol `P`:
 - **Связка с вопросом:** на **hot path** держат конкретный тип и **`T: P`**; **`any`** — когда нужна гетерогенность или простота API и это оправдано.
 - **Оговорка:** SIL/LLVM может оптимизировать границы; на собесе часто достаточно **концептуальной** разводки.
 
-### Устные опоры (формат карточек)
+</details>
+
+### Oral anchors (card format)
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 1. Сравниваем **`T: P`** и **`any P`**, не «протокол vs дженерик».
 3. **`some`** — один скрытый конкретный тип; **`any`** — разные реализации под одной «коробкой».
 
----
+</details>
 
-## Карточки знаний (Q&A)
+---## Interview Q&A (Knowledge cards)
 
-Ниже — Q&A по теме.
+
+Interview Q&A below.
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -144,6 +356,9 @@ Protocol `P`:
 - **Question (EN):** `any Protocol` vs generics?
 
 - **Answer (EN):** Generics are usually faster and more type-precise; `any` is flexible but can mean existential boxing and extra dispatch cost.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Вводные данные:** здесь сравнивают не «протокол против дженерика», а **два способа абстрагироваться по типу**, когда уже есть **протокол** `P`.
 
@@ -155,15 +370,55 @@ Protocol `P`:
 
     - **Частая ошибка:** думать, что «протокол = без строгой типизации», а «дженерики = уже». Наоборот: **generic как раз даёт строгость «какой именно тип здесь»**; **`any`** осознанно допускает «любой conforming тип» и платит за это.
 
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. Compare **`T: P`** vs **`any P`**, not protocols vs generics in the abstract.
     2. Generics fix a concrete type per use site — usually faster and sharper typing.
     3. `any P` erases to “some conforming type” — flexible; can mean boxing and dynamic dispatch.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** где осознанно выбираешь **`any`**?
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up answer:** когда нужна **одна сущность** или **heterogeneous collection** вроде **`[any P]`** (разные типы, все **conform** к одному `P`). Когда **public API** проще без второго **generic**-параметра или стыкуешься с уже **existential**-кодом. Когда **`associatedtype`**, **`opaque type`** / **`some P`** или размер типовой сигнатуры толкают к **type erasure** (обёртка / **`any`**) — полный разбор **`associatedtype`** в **Q8**. Когда **performance** не на **hot path** (см. **Q2**, follow-up) и важнее простота.
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация (не свёрнуто в коротком Answer про `any` vs generic):** **dispatch** (**dispatch** / диспетчеризация — как рантайм или компилятор выбирает реализацию метода для конкретного типа) — типичное углубление после ответа про existential vs специализацию. Ниже — разводка, которую в основном **не раскрывают** одной фразой про boxing/overhead.
 
@@ -189,7 +444,7 @@ Protocol `P`:
 
         - **`final`:** запрещает **наследование класса** и **override** методов → компилятор может **static dispatch** и оптимизации; сигнал, что полиморфизм через подклассы не нужен.
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -197,13 +452,30 @@ Protocol `P`:
 
 - **Answer (RU):** generic чаще быстрее и строже типизирован; existential (экзистенциальный тип) удобнее для абстракций, но может давать boxing (упаковка) и dispatch overhead (накладные расходы диспетчеризации).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. Сравниваем **`T: P`** (generic) и **`any P`** (existential), не «протокол против дженерика».
     2. Generic — конкретный тип на месте вызова, часто быстрее.
     3. `any P` — «любой conforming тип», гибче, возможны boxing и лишний dispatch.
 
 </details>
+
 ### Q8
 - **Question (EN):** Why do protocols use **`associatedtype`** (**associated type** — type placeholder declared in the protocol; each conforming type supplies the concrete `typealias` / inference)?
 
@@ -211,18 +483,46 @@ Protocol `P`:
 
     It lets a protocol describe that family without fixing one concrete type upfront (e.g. collection element/key types).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Примечание:** в **Q7** (follow-up про **`any`**) **`associatedtype`** уже назван как типичная причина упростить тип через **`any`** / **type erasure**; в этом блоке ниже — follow-up про **type erasure** и устные заготовки.
 
 - **Частая ошибка:** **`associatedtype`** — не «в **runtime** система подставит другой тип». Связанный тип фиксируется для каждого conforming типа на этапе **компиляции**; гибкость — в **семействе** типов без одного захардкоженного типа в протоколе. Динамика «любой conforming тип» ближе к **`any P`** и **type erasure**, не к **`associatedtype`** как источнику рантайм-подстановки.
 
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. **`associatedtype`** is a placeholder type inside the protocol; each conforming type fixes it.
     2. Models relationships like collection element types without hard-coding one concrete type.
     3. The protocol names a **family** of conforming types, not one concrete storage layout.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** почему такой протокол нельзя хранить как обычное значение без **type erasure** (стирание типа: один тип API скрывает разные **conforming** типы)?
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -233,28 +533,81 @@ Protocol `P`:
 
     Позволяет протоколу описывать семейство типов без фиксированного конкретного типа (примеры: `Element`, `Key`/`Value` у коллекций).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. **`associatedtype`** — имя типа внутри протокола; конкретику задаёт каждый conforming тип.
     2. Нужен, чтобы описать API вроде «элемент коллекции связан с типом коллекции», без привязки к одному классу.
     3. Без фиксированного конкретного типа протокол описывает **семейство** типов, а не один размер в памяти.
 
 </details>
+
 ### Q9
 - **Question (EN):** Why does this `some Equatable` function fail to compile, and how does switching to `any` fix it?
 
 - **Answer (EN):** `some P` opaque return must resolve to **one** concrete type known to the compiler across all return paths. `Int` and `String` both conform to `Equatable` but are different types, so the function can’t pick one hidden concrete type → compile error. `any Equatable` is an existential box that can hold any conforming type at runtime, so it accepts both branches at the cost of boxing and dynamic dispatch.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. `some P` — one fixed hidden concrete type per function.
     2. `any P` — existential box, different branches may return different concretes.
     3. Mnemonic: `some` is hide; `any` is erase.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** Когда осознанно выбираешь `some`, а когда `any`?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** **`some`** — когда фактически возвращается один конкретный тип, и хочется скрыть его в публичном API (классика — SwiftUI `body: some View`, фабрики последовательностей `some Sequence<T>`). Это даёт компилятору шанс на специализацию и снимает overhead existential. **`any`** — когда **нужно** хранить/передавать **разные** реализации под одной переменной (`[any Drawable]`, `var current: any State`), или когда упрощение типов в публичном API важнее микро-перформанса вне hot path.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -287,52 +640,128 @@ Protocol `P`:
 
     Потому что `any Equatable` — **existential container**: одна и та же переменная может в рантайме хранить значение **любого** типа, который conforms to `Equatable`. Цена — **boxing** и динамическая диспетчеризация по witness table.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. `some P` = «один конкретный скрытый тип», тип фиксирован для функции.
     2. `any P` = existential, разные ветки могут возвращать разные типы.
     3. Ассоциация: `some` = «знаю тип, скрываю»; `any` = «тип заранее неизвестен».
 
 </details>
+
 ### Q10
+<details class="lang-ru">
+<summary>По-русски</summary>
+
     - **Conforming type** — это любой реальный тип, который **реализует** протокол. `Int`, `String`, `User: Equatable` — все они conforming types для `Equatable`. Это просто факт «тип соответствует протоколу».
 
     Связка между ними:
 
+</details>
     ```swift
     func makeView() -> some View {
         VStack { Text("Hello") }   // реальный conforming type: VStack<Text>
     }
     ```
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
     - Реальный conforming type здесь — `VStack<Text>`.
 
     То есть: **conforming type — реальный тип; opaque type — способ его «скрыть» через `some`, не теряя статической типизации**. Противоположен opaque не «conforming», а **existential** (`any P`), потому что existential тоже скрывает конкретный тип, но **разрешает разным значениям** иметь разные конкретные типы в рантайме.
 
+</details>
 - **Answer (EN):** They’re orthogonal. A **conforming type** is any concrete type that implements a protocol (`Int : Equatable`, `VStack<Text> : View`). An **opaque type** (`some P`) is a syntax that returns one concrete conforming type while hiding which one from callers — the compiler still knows it. The real opposite of opaque is the **existential** (`any P`), which also hides the concrete type but allows different runtime types behind one variable.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. Conforming type — a real type that implements the protocol.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** Что у `some View` в SwiftUI «под капотом» и почему это важно для перфа?
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up answer:** Реальный возвращаемый тип у `body: some View` — раздутая дженерик-структура вроде `_ConditionalContent<…, …>`/`TupleView<…>`/`ModifiedContent<…, …>`. SwiftUI **сравнивает** структуру и решает, что переоснасть. Если бы `body` возвращал `any View`, диффер не мог бы статически опираться на структуру — было бы хуже и для перфа, и для предсказуемости перерисовок.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
 
 - **Question (RU):** В чём разница между **opaque type** и **conforming type**? Это противоположности?
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. Conforming = «тип реализует протокол» (факт о типе).
     3. Противоположность opaque — **existential** (`any`), не «conforming».
 
-</details>
 
 - **Доп. информация:** Поэтому правило в SwiftUI: **возвращай `some View` из `body`, не `any View`**. `any View` уместен, когда тебе нужно действительно гетерогенно хранить view-значения (редкий случай), и ты сознательно платишь за existential.
 
-
+</details>
 <!-- knowledge-cards-canonical:end -->

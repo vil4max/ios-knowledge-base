@@ -5,7 +5,7 @@
 
 ---
 
-## Зачем знать жизненный цикл
+## Why know the lifecycle
 
 _English summary — expand «По-русски» for full text (Зачем знать жизненный цикл)._
 
@@ -20,7 +20,7 @@ _English summary — expand «По-русски» for full text (Зачем зн
 
 </details>
 
-## Семь стадий
+## Seven stages
 
 _English summary — expand «По-русски» for full text (Семь стадий)._
 
@@ -43,7 +43,7 @@ _English summary — expand «По-русски» for full text (Семь ста
 
 </details>
 
-## Configuration: три типа
+## Configuration: three types
 
 _English summary — expand «По-русски» for full text (Configuration: три типа)._
 
@@ -91,7 +91,7 @@ _English summary — expand «По-русски» for full text (URLRequest)._
 
 </details>
 
-## Тип задачи
+## Task type
 
 _English summary — expand «По-русски» for full text (Тип задачи)._
 
@@ -114,7 +114,7 @@ _English summary — expand «По-русски» for full text (Тип зада
 
 </details>
 
-## State machine задачи
+## Task state machine
 
 _English summary — expand «По-русски» for full text (State machine задачи)._
 
@@ -135,7 +135,7 @@ _English summary — expand «По-русски» for full text (State machine �
 
 </details>
 
-## Network I/O и метрики
+## Network I/O and metrics
 
 _English summary — expand «По-русски» for full text (Network I/O и метрики)._
 
@@ -156,7 +156,7 @@ _English summary — expand «По-русски» for full text (Network I/O и 
 
 </details>
 
-## Response и кэш
+## Response and cache
 
 _English summary — expand «По-русски» for full text (Response и кэш)._
 
@@ -184,7 +184,7 @@ default: throw HTTPError(status: http.statusCode, data: data)
 
 </details>
 
-## Complete: URLError и retry
+## Complete: URLError and retry
 
 _English summary — expand «По-русски» for full text (Complete: URLError и retry)._
 
@@ -201,7 +201,7 @@ Retry с **exponential backoff + jitter**. Не retry: POST без idempotency, 
 
 </details>
 
-## Delegates (каскад)
+## Delegates (cascade)
 
 _English summary — expand «По-русски» for full text (Delegates (каскад))._
 
@@ -255,7 +255,7 @@ _English summary — expand «По-русски» for full text (WebSocket)._
 
 </details>
 
-## Прогресс
+## Progress
 
 _English summary — expand «По-русски» for full text (Прогресс)._
 
@@ -270,7 +270,7 @@ _English summary — expand «По-русски» for full text (Прогрес�
 
 </details>
 
-## Production checklist (сжатый)
+## Production checklist (compact)
 
 _English summary — expand «По-русски» for full text (Production checklist (сжатый))._
 
@@ -293,7 +293,7 @@ _English summary — expand «По-русски» for full text (Production chec
 
 </details>
 
-## Дерево решений (из статьи)
+## Decision tree (from article)
 
 _English summary — expand «По-русски» for full text (Дерево решений (из статьи))._
 
@@ -311,7 +311,7 @@ _English summary — expand «По-русски» for full text (Дерево р
 
 </details>
 
-## Подводные камни (top)
+## Top pitfalls
 
 _English summary — expand «По-русски» for full text (Подводные камни (top))._
 
@@ -328,7 +328,7 @@ _English summary — expand «По-русски» for full text (Подводн�
 
 </details>
 
-## Apple docs (первичный источник)
+## Apple docs (primary source)
 
 
 

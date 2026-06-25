@@ -1,6 +1,6 @@
 # 06 · RAG
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Retrieval-Augmented Generation (RAG)** improves LLM answers by **retrieving** relevant documents from a **vector store** (similarity search on **embeddings**) and injecting them into the prompt. Quality hinges on **chunking**, metadata filters, and reranking — not just “embed everything.” Mobile apps often run retrieval on server; on-device search may use smaller indexes or Natural Language embeddings for offline FAQ.
@@ -13,15 +13,15 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [NLEmbedding](https://developer.apple.com/documentation/naturallanguage/nlembedding) — on-device word/sentence embeddings (limited vs cloud embedding models).
 - [Natural Language framework](https://developer.apple.com/documentation/naturallanguage) — tokenization, language identification.
 - [Foundation Models — tool calling](https://developer.apple.com/documentation/foundationmodels) — model calls app tools to fetch context (RAG-like pattern on device).
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -38,7 +38,8 @@
 - Training custom embedding models — use off-the-shelf first.
 - Full enterprise search ACL design unless prompted.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Stage | Detail |
 |-------|--------|
@@ -64,6 +65,7 @@ User question: ...
 
 ## 🏋️ Exercises
 
+
 1. **Chunk strategy** — 50-page PDF help center. *Expected:* split by H2, 400-token chunks, 50-token overlap, store page title in metadata.
 
 2. **Empty retrieval** — No chunks above similarity threshold. *Expected:* model responds “not found” — do not invent.
@@ -74,13 +76,15 @@ User question: ...
 
 5. **Evaluate** — 20 golden questions with expected doc ids. *Expected:* measure recall@5 before tuning chunk size.
 
-## Ссылки
+## Links
+
 
 - [NLEmbedding](https://developer.apple.com/documentation/naturallanguage/nlembedding)
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
 - Related: [llm](../llm/README.md), [prompt-engineering](../prompt-engineering/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -98,6 +102,7 @@ User question: ...
 - **Answer (RU):** **Векторное представление** текста (или image) в высокомерном пространстве: близкие по смыслу тексты → близкие векторы (cosine similarity). Используются для **semantic search** в RAG вместо только keyword match.
 
 </details>
+
 ### Q2
 - **Question (EN):** Why is chunking important?
 
@@ -112,6 +117,7 @@ User question: ...
 - **Answer (RU):** LLM не вмещает весь корпус; retrieval возвращает **фрагменты**. Плохой chunk (слишком большой, обрезанный абзац) → irrelevant context → hallucination. Chunk по структуре документа + overlap сохраняет continuity.
 
 </details>
+
 ### Q3
 - **Question (EN):** How do you improve retrieval quality?
 
@@ -126,6 +132,7 @@ User question: ...
 - **Answer (RU):** Tune **chunk size/overlap**, add **metadata filters**, **hybrid** BM25+vector, **rerank** top candidates, maintain **fresh index**, evaluate on **golden set**. Prompt: instruct model to stay in context and refuse when empty.
 
 </details>
+
 ### Q4
 - **Question (EN):** Is on-device RAG realistic on iOS?
 

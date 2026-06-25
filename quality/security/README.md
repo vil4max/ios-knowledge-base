@@ -2,6 +2,7 @@
 
 ## Apple docs
 
+
 - [Keychain Services](https://developer.apple.com/documentation/security/keychain-services) — secure storage for secrets and credentials.
 - [TN3137: On Mac keychain APIs and implementations](https://developer.apple.com/documentation/technotes/tn3137-on-mac-keychain-apis-and-implementations) — keychain behavior notes.
 - [App Transport Security](https://developer.apple.com/documentation/bundleresources/information-property-list/nsapptransportsecurity) — ATS defaults and exceptions.
@@ -10,7 +11,8 @@
 - [Adding a privacy manifest to your app or third-party SDK](https://developer.apple.com/documentation/xcode/adding-a-privacy-manifest-to-your-app-or-third-party-sdk)
 - [Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements) — capabilities tied to provisioning.
 
-## За 30 секунд
+## In 30 seconds
+
 
 iOS security layers: **Keychain** for tokens and keys (not UserDefaults), **ATS** enforcing HTTPS by default, optional **certificate pinning** for high-threat apps, **privacy manifests** declaring sensitive API use, and **entitlements** gating capabilities (Keychain access groups, associated domains, push). **Jailbreak detection** is heuristic—useful for risk scoring, not as sole protection; assume secrets in the client can be extracted. Design: minimize stored secrets, short-lived tokens, server-side authorization, and no sensitive data in logs.
 
@@ -22,9 +24,8 @@ iOS security layers: **Keychain** for tokens and keys (not UserDefaults), **ATS*
 
 </details>
 
-
-
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -42,6 +43,7 @@ iOS security layers: **Keychain** for tokens and keys (not UserDefaults), **ATS*
 - Pinning every endpoint before threat model says MITM is in scope.
 
 ## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -69,6 +71,7 @@ PII cache              → encrypted or avoid; never log
 
 ## 🏋️ Exercises
 
+
 1. **Keychain wrapper:** Save/read/delete auth token with `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`. **Expected:** no token in UserDefaults; survives relaunch.
 2. **ATS audit:** List all `NSAppTransportSecurity` keys in project; justify each exception or remove. **Expected:** no blanket arbitrary loads.
 3. **Pinning spike:** URLSession delegate `didReceive challenge`—compare server cert to embedded pin (test env only). **Expected:** invalid proxy cert fails handshake.
@@ -77,11 +80,13 @@ PII cache              → encrypted or avoid; never log
 
 ## WWDC & resources
 
+
 - [Secure your app with App Transport Security (WWDC16)](https://developer.apple.com/videos/play/wwdc2016/706/)
 - [Get started with privacy manifests (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10060/)
 - [What’s new in privacy (WWDC24)](https://developer.apple.com/videos/play/wwdc2024/10123/)
 
 ## Artifacts
+
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -91,6 +96,7 @@ PII cache              → encrypted or avoid; never log
 ---
 
 ## Interview Q&A (Knowledge cards)
+
 
 ### Q1
 - **Question (EN):** Store access tokens in UserDefaults or Keychain?
@@ -106,6 +112,7 @@ PII cache              → encrypted or avoid; never log
 - **Answer (RU):** **Keychain** для секретов и refresh/access tokens: шифрование, контроль доступности (`kSecAttrAccessible*`), опционально access group для extensions. UserDefaults — plist, бэкапится, читается на compromised device проще. Дополнительно: короткий TTL, refresh на сервере, не логировать token.
 
 </details>
+
 ### Q2
 - **Question (EN):** What is ATS and when are exceptions justified?
 
@@ -120,6 +127,7 @@ PII cache              → encrypted or avoid; never log
 - **Answer (RU):** **App Transport Security** требует безопасный TLS по умолчанию. Exceptions (`NSExceptionDomains`) — только для legacy/dev endpoints с планом миграции. `NSAllowsArbitraryLoads = true` в проде — red flag. Лучше поднять сервер до HTTPS, чем ослаблять ATS глобально.
 
 </details>
+
 ### Q3
 - **Question (EN):** Pros and cons of certificate pinning?
 
@@ -134,6 +142,7 @@ PII cache              → encrypted or avoid; never log
 - **Answer (RU):** **Плюс:** защита от MITM с подменой CA (корп. proxy, malicious cert). **Минусы:** операционная боль при ротации cert, риск outage, не заменяет server auth. Нужны backup pins и мониторинг expiry. Для многих consumer apps достаточно ATS + правильный TLS на сервере.
 
 </details>
+
 ### Q4
 - **Question (EN):** Why does Apple require privacy manifests?
 

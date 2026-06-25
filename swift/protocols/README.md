@@ -1,6 +1,6 @@
 # Protocols
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Protocol** in Swift is a **contract**: it declares what properties and methods a type must provide, without prescribing how. Classes, structs, and enums can **conform** to one or many protocols. **Protocol-oriented programming (POP)** builds architecture on composition and extensions instead of deep class hierarchies — delegates, dependency injection, and test doubles all lean on protocols.
@@ -11,7 +11,7 @@ Mastering protocols is non-negotiable for every iOS developer: if you truly unde
 
 |---|---|
 
-| **Уровни** | Junior, Middle |
+| **Levels** | Junior, Middle |
 
 | **Must** | Top 10 interview questions — basics before `some`/`any` in [Types & Generics](../types-generics/README.md) |
 
@@ -21,13 +21,12 @@ Mastering protocols is non-negotiable for every iOS developer: if you truly unde
 <details class="lang-ru">
 <summary>По-русски</summary>
 
-| **Трек** | Язык |
+| **Track** | Язык |
 
 </details>
 
+## Topic structure
 
-
-## Структура топика
 
 - Playground: `swift/syntax/SwiftInSixtySeconds.playgroundbook` — chapter *Protocols and extensions*
 - Playground: `swift/types-generics/06_protocols_generics.playground`
@@ -35,6 +34,7 @@ Mastering protocols is non-negotiable for every iOS developer: if you truly unde
 ---
 
 ## 🎯 Top 10 — quick map
+
 
 | # | Question | One-line answer |
 |---|----------|-----------------|
@@ -51,7 +51,8 @@ Mastering protocols is non-negotiable for every iOS developer: if you truly unde
 
 ---
 
-## Ключевые понятия
+## Key concepts
+
 
 ### Adoption & properties
 
@@ -77,13 +78,12 @@ Mastering protocols is non-negotiable for every iOS developer: if you truly unde
 
 ---
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 ### Q1 — What is a Protocol in Swift?
-
-- **Question (RU):** Что такое протокол в Swift?
 - **Question (EN):** What is a protocol in Swift?
-- **Answer (RU):** Протокол — **контракт** (набор требований к свойствам и методам). Класс, struct или enum **подписывается** (`conform`) через `: ProtocolName` и реализует всё обязательное. Протокол сам по себе не хранит данные.
+
 - **Answer (EN):** A protocol is a **blueprint** of required properties and methods. Types conform with `: ProtocolName` and supply implementations. Protocols describe capability without prescribing storage.
 
 ```swift
@@ -99,8 +99,20 @@ struct Person: Greetable {
 ```
 
 - **Key points:** Blueprint of methods; adopted by class/struct/enum to provide implementation.
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** Могут ли у протокола быть свойства? — Да, как **требования** (`var name: String { get }`), не stored state внутри протокола.
 
+</details>
+</details>
+</details>
 ```swift
 protocol UserInfo {
     var name: String { get }
@@ -115,22 +127,36 @@ struct User: UserInfo {
 
 ---
 
-### Q2 — Protocol vs Class
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Question (RU):** Чем протокол отличается от класса?
+- **Question (RU):** Что такое протокол в Swift?
+
+- **Answer (RU):** Протокол — **контракт** (набор требований к свойствам и методам). Класс, struct или enum **подписывается** (`conform`) через `: ProtocolName` и реализует всё обязательное. Протокол сам по себе не хранит данные.
+
+</details>
+
+### Q2 — Protocol vs Class
 - **Question (EN):** How is a protocol different from a class?
-- **Answer (RU):** Протокол задаёт **интерфейс** (что делать); класс — **реализацию** с состоянием и идентичностью. Протокол не имеет stored properties; класс — одно наследование. Тип может conform к **нескольким** протоколам.
+
 - **Answer (EN):** Protocols define **what**; classes define **how** with stored state and identity. Protocols allow multiple conformance; classes allow single inheritance.
 
 - **Key points:** Protocol defines a blueprint of methods; classes can have stored properties; protocols support multiple inheritance (conformance); classes support single inheritance. Protocols define *what to do*, classes define *how to do*.
 
 ---
 
-### Q3 — Protocol Extensions
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Question (RU):** Зачем нужны protocol extensions?
+- **Question (RU):** Чем протокол отличается от класса?
+
+- **Answer (RU):** Протокол задаёт **интерфейс** (что делать); класс — **реализацию** с состоянием и идентичностью. Протокол не имеет stored properties; класс — одно наследование. Тип может conform к **нескольким** протоколам.
+
+</details>
+
+### Q3 — Protocol Extensions
 - **Question (EN):** What are protocol extensions for?
-- **Answer (RU):** **`extension ProtocolName`** добавляет методы и **default implementations** всем conforming types без базового класса. Основа **protocol-oriented programming** — общее поведение через композицию.
+
 - **Answer (EN):** Protocol extensions add methods and default implementations to all conformers without a base class — core of POP and shared behavior.
 
 ```swift
@@ -150,15 +176,35 @@ struct Square: Drawable {
 }
 ```
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** Отличие от наследования класса? — Extension не создаёт иерархию владения; struct/enum тоже получают методы.
+
+</details>
+</details>
+</details>
 
 ---
 
-### Q4 — Class-only Protocols
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Question (RU):** Что такое class-only protocol?
+- **Question (RU):** Зачем нужны protocol extensions?
+
+- **Answer (RU):** **`extension ProtocolName`** добавляет методы и **default implementations** всем conforming types без базового класса. Основа **protocol-oriented programming** — общее поведение через композицию.
+
+</details>
+
+### Q4 — Class-only Protocols
 - **Question (EN):** What is a class-only protocol?
-- **Answer (RU):** Протокол с ограничением **`AnyObject`**: conform могут только **reference types** (class). Нужен для **`weak var delegate`** и identity (`===`). Struct и enum conformить нельзя.
+
 - **Answer (EN):** A protocol constrained to **`AnyObject`**: only classes can conform. Required for `weak` delegates and reference identity.
 
 ```swift
@@ -173,11 +219,19 @@ final class DetailViewController {
 
 ---
 
-### Q5 — Optional Protocol Requirements
 
-- **Question (RU):** Что такое optional requirements в протоколах?
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Что такое class-only protocol?
+
+- **Answer (RU):** Протокол с ограничением **`AnyObject`**: conform могут только **reference types** (class). Нужен для **`weak var delegate`** и identity (`===`). Struct и enum conformить нельзя.
+
+</details>
+
+### Q5 — Optional Protocol Requirements
 - **Question (EN):** What are optional protocol requirements?
-- **Answer (RU):** В **чистом Swift** optional requirements **нет** — все требования обязательны. Для ObjC-interop: `@objc protocol` + `@objc optional func …`. В Swift чаще — **default** в extension или отдельный протокол для опционального поведения.
+
 - **Answer (EN):** Pure Swift has no optional requirements — use protocol extensions with defaults. For Objective-C: `@objc optional` on an `@objc` protocol.
 
 ```swift
@@ -194,15 +248,27 @@ class MyCar: NSObject, Car {
 }
 ```
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Частая ошибка:** Синтаксис `func honk?()` из старых шпаргалок — **не Swift**; это путаница с Objective-C. Проверка: `(obj as? Car)?.honk?()`.
+
+</details>
 
 ---
 
-### Q6 — Protocol Inheritance
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Question (RU):** Что такое наследование протоколов?
+- **Question (RU):** Что такое optional requirements в протоколах?
+
+- **Answer (RU):** В **чистом Swift** optional requirements **нет** — все требования обязательны. Для ObjC-interop: `@objc protocol` + `@objc optional func …`. В Swift чаще — **default** в extension или отдельный протокол для опционального поведения.
+
+</details>
+
+### Q6 — Protocol Inheritance
 - **Question (EN):** What is protocol inheritance?
-- **Answer (RU):** Протокол наследует другой: `protocol B: A`. Conforming type должен удовлетворить **всем** требованиям цепочки. Протоколы **композируются** — основа POP.
+
 - **Answer (EN):** One protocol can inherit another (`protocol B: A`). Conforming types must satisfy the full chain.
 
 ```swift
@@ -224,11 +290,18 @@ class MyClass: B {
 
 ---
 
-### Q7 — Default Implementations
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Question (RU):** Можно ли дать default implementation в протоколе?
+- **Question (RU):** Что такое наследование протоколов?
+
+- **Answer (RU):** Протокол наследует другой: `protocol B: A`. Conforming type должен удовлетворить **всем** требованиям цепочки. Протоколы **композируются** — основа POP.
+
+</details>
+
+### Q7 — Default Implementations
 - **Question (EN):** Can we provide default implementations in a protocol?
-- **Answer (RU):** Да — через **`extension ProtocolName`**. Conforming type получает реализацию автоматически; может переопределить своей версией.
+
 - **Answer (EN):** Yes — use a **protocol extension**. Conformers get the default; they can provide a custom implementation.
 
 ```swift
@@ -246,15 +319,27 @@ struct FileLogger: Logger { }
 // inherits default log(message:)
 ```
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Связка с Q3:** extensions = механизм defaults; см. advanced dispatch в [Types & Generics](../types-generics/README.md).
+
+</details>
 
 ---
 
-### Q8 — Delegates & Retain Cycles
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Question (RU):** Как протоколы связаны с delegate и retain cycle?
+- **Question (RU):** Можно ли дать default implementation в протоколе?
+
+- **Answer (RU):** Да — через **`extension ProtocolName`**. Conforming type получает реализацию автоматически; может переопределить своей версией.
+
+</details>
+
+### Q8 — Delegates & Retain Cycles
 - **Question (EN):** How do protocols relate to delegates and retain cycles?
-- **Answer (RU):** Delegate — свойство типа протокола; владелец держит UI **strong**, delegate обычно **`weak`** (`AnyObject` protocol). Два **strong** друг на друга → **retain cycle**. Лечение: `weak` delegate, `[weak self]` в closures.
+
 - **Answer (EN):** The owner holds the delegate as `weak` when the delegate also references the owner. Two strong references → retain cycle.
 
 ```swift
@@ -283,11 +368,18 @@ final class Coordinator: ListDelegate {
 
 ---
 
-### Q9 — Type Casting with Protocols
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Question (RU):** Как проверить conformance и привести к протоколу? Чем `is` отличается от `as`?
+- **Question (RU):** Как протоколы связаны с delegate и retain cycle?
+
+- **Answer (RU):** Delegate — свойство типа протокола; владелец держит UI **strong**, delegate обычно **`weak`** (`AnyObject` protocol). Два **strong** друг на друга → **retain cycle**. Лечение: `weak` delegate, `[weak self]` в closures.
+
+</details>
+
+### Q9 — Type Casting with Protocols
 - **Question (EN):** How do you check conformance? What is the difference between `is` and `as`?
-- **Answer (RU):** **`is`** — проверка (`Bool`). **`as?`** — безопасное приведение (optional). **`as!`** — force cast, упадёт при ошибке.
+
 - **Answer (EN):** `is` checks conformance; `as?` returns optional; `as!` force casts and may crash.
 
 ```swift
@@ -326,11 +418,18 @@ print(str2)
 
 ---
 
-### Q10 — Real-world iOS Use Cases
+<details class="lang-ru">
+<summary>По-русски</summary>
 
-- **Question (RU):** Зачем протоколы в iOS-разработке?
+- **Question (RU):** Как проверить conformance и привести к протоколу? Чем `is` отличается от `as`?
+
+- **Answer (RU):** **`is`** — проверка (`Bool`). **`as?`** — безопасное приведение (optional). **`as!`** — force cast, упадёт при ошибке.
+
+</details>
+
+### Q10 — Real-world iOS Use Cases
 - **Question (EN):** What is the use of protocols in iOS development?
-- **Answer (RU):** **Delegate & DataSource**, **decoupling**, **dependency injection**, **тестируемость** (mock conformers), общее поведение для разных типов. POP даёт loose coupling, гибкость и масштабируемость.
+
 - **Answer (EN):** Delegates & data sources, decoupling, dependency injection, test doubles, shared behavior. Protocols achieve loose coupling, flexibility, and scalability.
 
 **Typical patterns:**
@@ -356,18 +455,30 @@ struct URLSessionClient: NetworkClient {
 
 ## 🏋️ Exercises
 
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 1. **Greetable** — struct и class conform к одному протоколу; массив `[any Greetable]`.
 2. **Drawable** — `protocol Shape: Drawable` + default `draw()` в extension.
 3. **Weak delegate** — cycle без `weak`, починить; Memory Graph.
 4. **is / as** — `Any` коллекция; `compactMap { $0 as? Printable }`.
 5. **Class-only** — `struct` не conform к `AnyObject` протоколу.
 6. **Optional vs default** — `@objc optional` vs extension default для `honk()`.
+
+</details>
 7. **DI mock** — `protocol Clock`; production vs test conformers.
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 8. **Adoption** — `class Circle: Shape, Drawable` — два протокола + суперкласс.
+
+</details>
 
 ---
 
-## Ссылки
+## Links
+
 
 - [The Swift Programming Language — Protocols](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/)
 - [Protocol-Oriented Programming in Swift (WWDC 2015)](https://developer.apple.com/videos/play/wwdc2015/408/)
@@ -378,3 +489,12 @@ struct URLSessionClient: NetworkClient {
 ---
 
 > Practice. Understand. Design. That's how you master **Protocols** in Swift.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+- **Question (RU):** Зачем протоколы в iOS-разработке?
+
+- **Answer (RU):** **Delegate & DataSource**, **decoupling**, **dependency injection**, **тестируемость** (mock conformers), общее поведение для разных типов. POP даёт loose coupling, гибкость и масштабируемость.
+
+</details>

@@ -37,7 +37,7 @@ _English summary — expand «По-русски» for full text (Integration che
 
 ### Glava 1 — planned README updates (after paste)
 
-- [ ] **За 30 секунд** — framing: что такое mobile SD interview vs backend
+- [ ] **In 30 seconds** — framing: what a mobile SD interview is vs backend
 - [ ] **Ключевые понятия** — entity graph, read/write paths, constraints, 45-min flow
 - [ ] **Q1** — «С чего начать ответ на mobile system design?»
 - [ ] **Q2** — «Чем mobile SD отличается от backend SD?»

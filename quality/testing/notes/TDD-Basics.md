@@ -1,4 +1,4 @@
-# TDD — основы (без AI)
+# TDD basics (without AI)
 
 **Назначение:** red–green–refactor, triangulation, TDD vs test-after. Продолжение: [AI-assisted TDD](ai-assisted-tdd.md), [Testing-Fundamentals-RU](Testing-Fundamentals.md).
 
@@ -19,7 +19,7 @@ _English summary — expand «По-русски» for full text (TL;DR)._
 
 </details>
 
-## Цикл red – green – refactor
+## Red – green – refactor cycle
 
 _English summary — expand «По-русски» for full text (Цикл red – green – refactor)._
 
@@ -82,7 +82,7 @@ _English summary — expand «По-русски» for full text (TDD vs test-aft
 
 </details>
 
-## Что TDD не решает
+## What TDD does not solve
 
 _English summary — expand «По-русски» for full text (Что TDD не решает)._
 
@@ -97,7 +97,7 @@ _English summary — expand «По-русски» for full text (Что TDD не
 
 </details>
 
-## Мини-пример (Swift Testing)
+## Mini example (Swift Testing)
 
 _English summary — expand «По-русски» for full text (Мини-пример (Swift Testing))._
 
@@ -128,7 +128,7 @@ Red: функция не существует или возвращает 0. Gre
 
 </details>
 
-## Вопросы–ответы (собес)
+## Interview Q&A
 
 _English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
 
@@ -148,7 +148,7 @@ _English summary — expand «По-русски» for full text (Вопросы�
 
 </details>
 
-## Читать дальше
+## Read next
 
 
 

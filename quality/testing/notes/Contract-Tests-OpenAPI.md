@@ -1,4 +1,4 @@
-# Contract tests и OpenAPI
+# Contract tests and OpenAPI
 
 **Назначение:** клиент ↔ API контракт до продакшена — фикстуры, схема, codegen. Сеть в unit: [Testing-Network-Stub-RU](Testing-Network-Stub.md). REST/gRPC выбор: [Networking README](../../../data-and-network/networking/README.md).
 
@@ -19,7 +19,7 @@ _English summary — expand «По-русски» for full text (TL;DR)._
 
 </details>
 
-## Зачем
+## Why
 
 _English summary — expand «По-русски» for full text (Зачем)._
 
@@ -38,7 +38,7 @@ _English summary — expand «По-русски» for full text (Зачем)._
 
 </details>
 
-## Уровни зрелости
+## Maturity levels
 
 _English summary — expand «По-русски» for full text (Уровни зрелости)._
 
@@ -69,7 +69,7 @@ flowchart LR
 
 </details>
 
-## Fixture-based contract (минимум)
+## Fixture-based contract (minimum)
 
 _English summary — expand «По-русски» for full text (Fixture-based contract (минимум))._
 
@@ -104,7 +104,7 @@ struct UserDTO: Decodable {
 
 </details>
 
-## OpenAPI как source of truth
+## OpenAPI as source of truth
 
 _English summary — expand «По-русски» for full text (OpenAPI как source of truth)._
 
@@ -131,7 +131,7 @@ openapi.yaml  →  swift-openapi-generator  →  Generated Client + Types
 
 </details>
 
-## Что проверять в contract-тесте
+## What to check in a contract test
 
 _English summary — expand «По-русски» for full text (Что проверять в contract-тесте)._
 
@@ -152,7 +152,7 @@ _English summary — expand «По-русски» for full text (Что пров
 
 </details>
 
-## Consumer vs provider (кратко)
+## Consumer vs provider (brief)
 
 _English summary — expand «По-русски» for full text (Consumer vs provider (кратко))._
 
@@ -185,7 +185,7 @@ _English summary — expand «По-русски» for full text (CI)._
 
 </details>
 
-## Вопросы–ответы (собес)
+## Interview Q&A
 
 _English summary — expand «По-русски» for full text (Вопросы–ответы (собес))._
 
@@ -208,7 +208,7 @@ _English summary — expand «По-русски» for full text (Вопросы�
 
 </details>
 
-## Официально
+## Official docs
 
 
 

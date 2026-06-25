@@ -1,6 +1,6 @@
 # Scaling Teams
 
-## За 30 секунд
+## In 30 seconds
 
 
 Scaling mobile engineering is about **module ownership**, clear **RFCs** for cross-cutting changes, enforced **coding standards**, and a branching strategy that matches release cadence — often **trunk-based development** with short-lived branches for apps that ship weekly, vs **GitFlow** when release trains are long and hotfix isolation matters. Interview answers connect org design to build times, merge conflicts, and quality gates (CI, feature flags).
@@ -13,15 +13,15 @@ Scaling mobile engineering is about **module ownership**, clear **RFCs** for cro
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Apple Platform Deployment](https://developer.apple.com/documentation/xcode-release-notes) — align team standards with SDK cadence (annual iOS release).
 - [XCTest](https://developer.apple.com/documentation/xctest) — CI quality gate expectations for mobile modules.
 - No Apple doc for GitFlow vs trunk — organizational choice documented in internal RFCs.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -39,7 +39,8 @@ Scaling mobile engineering is about **module ownership**, clear **RFCs** for cro
 - HR performance review process.
 - Detailed legal/compliance unless fintech/health prompt.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Model | When it fits mobile |
 |-------|---------------------|
@@ -73,6 +74,7 @@ develop → release/x.y → main + hotfix/*
 
 ## 🏋️ Exercises
 
+
 1. **Split monolith app** — 3 teams, 40 engineers. Propose module map and ownership. *Expected:* Feature modules + Core/Networking/DesignSystem platforms.
 
 2. **RFC draft** — Migrate from callbacks to async/await in Networking module. *Expected:* motivation, migration phases, risks, timeline, rollback.
@@ -83,13 +85,15 @@ develop → release/x.y → main + hotfix/*
 
 5. **Hotfix process** — P0 crash in production. *Expected:* branch from tag, fix, expedited review, phased rollout, postmortem RFC optional.
 
-## Ссылки
+## Links
+
 
 - [Trunk Based Development](https://trunkbaseddevelopment.com/) — canonical reference
 - [GitFlow original](https://nvie.com/posts/a-successful-git-branching-model/) — know to compare/contrast
 - Related: [feature-flags](../feature-flags/README.md), [architecture/modularization](../../architecture/modularization/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -107,6 +111,7 @@ develop → release/x.y → main + hotfix/*
 - **Answer (RU):** **Trunk-based** — частые мержи в main, незавершённое за **feature flags**, CI держит main green; подходит частым App Store релизам. **GitFlow** — долгие release/hotfix ветки; оправдан при длинных stabilization и нескольких supported версиях. Mobile industry сдвинулся к trunk + flags.
 
 </details>
+
 ### Q2
 - **Question (EN):** Why use RFCs on a mobile team?
 
@@ -121,6 +126,7 @@ develop → release/x.y → main + hotfix/*
 - **Answer (RU):** Кросс-модульные решения (новый sync layer, смена DI, breaking API) нуждаются в **письменном consensus** до кода: проблема, альтернативы, decision, plan. Снижает rework и bus factor; особенно важно при modularization.
 
 </details>
+
 ### Q3
 - **Question (EN):** What does module ownership include?
 
@@ -135,6 +141,7 @@ develop → release/x.y → main + hotfix/*
 - **Answer (RU):** **DRI** за roadmap модуля, review PR, on-call за crashes в зоне, документация public API, deprecation policy. Platform modules (UI kit, network) — отдельная команда с SLA для internal customers.
 
 </details>
+
 ### Q4
 - **Question (EN):** How do you enforce coding standards without endless debates?
 

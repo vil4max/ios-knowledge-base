@@ -1,10 +1,17 @@
 # Modularization
 
-## Материалы
+## Materials
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Шпаргалка (Common → API → Domain → Features):** [notes/spm-common-services-features-cheatsheet.md](notes/spm-common-services-features-cheatsheet.md) — [AppSell digest](https://appsell.su/blog/den-apps-1/swift-razrabotka/modulyarizaciya-ios-prilozheniy-cherez-spm-kak-navesti-poryadok-v-zavisimostyah-489): SPM-граф, Features ↛ API, `ServiceEnvironment` (.live / .mock)
 
+</details>
+
 ## Apple docs
+
 
 - [Organizing your code with local packages](https://developer.apple.com/documentation/xcode/organizing-your-code-with-local-packages) — SPM inside the workspace.
 - [PackageDescription](https://developer.apple.com/documentation/packagedescription) — targets, products, dependencies.
@@ -13,7 +20,8 @@
 - [Library evolution](https://www.swift.org/documentation/server/guides/library-evolution.html) — `@frozen`, resilience (when shipping binary frameworks).
 - [Testing imported modules](https://developer.apple.com/documentation/xcode/testing-imported-modules) — test targets and visibility.
 
-## За 30 секунд
+## In 30 seconds
+
 
 **Modularization** splits an app into **SPM packages** (or Xcode frameworks) with explicit **dependencies** and **API surfaces**. Feature modules depend **inward** on domain/interfaces; the app target is the **composition root**. Public API stays minimal (`public`/`package`); internals are `internal`. **`@testable import`** is for unit tests in the same package—not a license to break boundaries in production. Goal: faster incremental builds, parallel ownership, and compile-time enforcement of layer rules.
 
@@ -25,9 +33,8 @@
 
 </details>
 
-
-
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -45,6 +52,7 @@
 - Full **Clean Architecture** folder taxonomy before team agrees on dependency rules.
 
 ## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -97,6 +105,7 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 
 ## 🏋️ Exercises
 
+
 1. **Graph audit:** Draw current targets and imports; mark any feature→feature edge. **Expected:** list of edges to break with protocols in Core.
 2. **Extract package:** Move `NetworkClient` + models to `CoreNetworking` SPM; app depends on product `.networking`. **Expected:** feature modules import protocol from Core, not URLSession details.
 3. **Public surface:** For one feature, list every `public` symbol; remove unnecessary exports. **Expected:** ≤1 factory/coordinator + protocols for other layers.
@@ -105,11 +114,13 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 
 ## WWDC & resources
 
+
 - [Swift packages: Resources and localization (WWDC20)](https://developer.apple.com/videos/play/wwdc2020/10169/)
 - [Build scalable enterprise apps (WWDC21)](https://developer.apple.com/videos/play/wwdc2021/102364/) — modular workflows
 - [Demystify parallelization in Xcode builds (WWDC22)](https://developer.apple.com/videos/play/wwdc2022/110364/)
 
 ## Artifacts
+
 
 - Notes: `notes/`
   - [spm-common-services-features-cheatsheet.md](notes/spm-common-services-features-cheatsheet.md)
@@ -120,6 +131,7 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 ---
 
 ## Interview Q&A (Knowledge cards)
+
 
 ### Q1
 - **Question (EN):** Why extract SPM modules if a single Xcode target already works?
@@ -135,6 +147,7 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 - **Answer (RU):** Один таргет не ограничивает **зависимости** — любой файл может импортировать anything. Модули дают **компиляторную границу**, параллельную сборку и изоляцию изменений. На больших кодовых базах incremental build и ownership по фичам окупают overhead настройки Package.swift.
 
 </details>
+
 ### Q2
 - **Question (EN):** How do you prevent Feature A from importing Feature B?
 
@@ -149,6 +162,7 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 - **Answer (RU):** Общие контракты — в **Core/Domain** (протоколы, DTO). Навигация между фичами — через **router/coordinator** в app shell или callback/intent, не через `import FeatureB`. CI: script greps forbidden imports. Cross-feature UI — composition в app target, не внутри пакета.
 
 </details>
+
 ### Q3
 - **Question (EN):** When is `@testable import` appropriate?
 
@@ -163,12 +177,14 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 - **Answer (RU):** В **test target того же package**, когда нужно проверить `internal` логику без расширения public API. Не использовать в app или других packages для «обхода» инкапсуляции. Если часто нужен `@testable` снаружи — возможно, API модуля спроектирован неверно (вынести протокол или factory).
 
 </details>
+
 ### Q4
 - **Question (EN):** Does modularization always improve build times?
 
 - **Answer (EN):** Not automatically—tiny modules add overhead; huge ones rebuild too much. Profile incremental builds and split hot, frequently edited code with stable public APIs.
 
-## Ресурсы
+## Resources
+
 
 ### AppSell — SPM Common / Services / Features
 
@@ -176,10 +192,14 @@ FeatureCheckout ↛ FeatureCatalog   (no cross-feature imports)
 
 - **URL:** https://appsell.su/blog/den-apps-1/swift-razrabotka/modulyarizaciya-ios-prilozheniy-cherez-spm-kak-navesti-poryadok-v-zavisimostyah-489
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Why:** Практический SPM-граф для растущих SwiftUI-проектов; compile-time границы
 
 - **When:** Старт модульности, onboarding, CI/build time
 
+</details>
 - **Tags:** `spm`, `modularization`, `architecture`, `swiftui`
 
 - **Note:** [notes/spm-common-services-features-cheatsheet.md](notes/spm-common-services-features-cheatsheet.md)

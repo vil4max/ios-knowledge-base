@@ -16,18 +16,18 @@ _(paste article summary here)_
 
 ---
 
-## Ключевые идеи
+## Key ideas
 
 _English summary — expand «По-русски» for full text (Ключевые идеи)._
 
 <details class="lang-ru">
 <summary>По-русски</summary>
 
-### Зачем логирование в system design interview
+### Why logging in a system design interview
 
 _(to be added)_
 
-### Уровни, категории, PII
+### Levels, categories, PII
 
 _(to be added)_
 
@@ -35,7 +35,7 @@ _(to be added)_
 
 _(to be added)_
 
-### Связь с observability
+### Link to observability
 
 _(to be added)_
 
@@ -43,7 +43,7 @@ _(to be added)_
 
 </details>
 
-## Связь с базой
+## Link to parent topic
 
 
 
@@ -52,7 +52,7 @@ _(to be added)_
 - [Crash Analytics & Monitoring](/devops/monitoring/)
 - [Sync Engine](/system-design/sync-engine/) — sync status / breadcrumbs
 
-## Что добавить после paste
+## TODO after paste
 
 
 

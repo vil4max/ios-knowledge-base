@@ -1,14 +1,23 @@
 # Syntax & Idioms
 
-## Swift: базовый синтаксис и идиоматика — описание
+## Swift: basic syntax and idioms — overview
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | | |
 |---|---|
-| **Уровни** | Trainee, Junior |
-| **Трек** | Язык |
+| **Levels** | Trainee, Junior |
+| **Track** | Язык |
 | **Must** | Optional, value/reference типы, control flow, функции, замыкания, расширения. Swift — выразительный язык, и идиоматичный код легко отличить от «Java на Swift». |
 
-**Фокус**
+</details>
+
+**Focus**
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Optional и его обработка: `if let`, `guard let`, `??`, optional chaining.
 - Замыкания: capture lists, escaping vs non-escaping, trailing syntax.
@@ -16,57 +25,111 @@
 - Уровни доступа: `open`, `public`, `internal`, `fileprivate`, `private`.
 - Property wrappers и result builders на пользовательском уровне.
 
+</details>
 
-## Материалы
+## Materials
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - `*.playground` / `*.playgroundbook` в корне темы — runnable примеры (см. секцию **Playgrounds** ниже).
 - PDF в корне темы (например материалы по closures / error handling), если лежат рядом с prep.
 
-## Структура топики (фактическая)
+</details>
+
+## Topic structure (actual)
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Корень `05 Swift — базовый синтаксис и идиоматика/` — один `Swift-Syntax-and-Idioms.md` + playground’ы + опциональные PDF.
 - Дополнительные подпапки (`notes/`, `exercises/` и т.д.) не обязательны: не держим пустые каталоги в репозитории.
 
----
+</details>
 
-## 🎯 Фокус vs можно отложить
+---## 🎯 Focus vs Defer
 
-### Фокус
+
+### Focus
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Optional и обработка: `if let`, `guard let`, `??`, optional chaining.
-- **Ответ**: Optional — это enum `.some/.none`. Цель идиоматики — сделать happy path плоским: `guard let` для раннего выхода, `??` для дефолта, optional chaining чтобы “провалиться в nil” без ручных проверок.
+- **Answer:** Optional — это enum `.some/.none`. Цель идиоматики — сделать happy path плоским: `guard let` для раннего выхода, `??` для дефолта, optional chaining чтобы “провалиться в nil” без ручных проверок.
+
+</details>
   Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/`
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - Замыкания: capture lists, escaping vs non-escaping, trailing syntax.
+
+</details>
   Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/`
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - Расширения и условные расширения для generic-типов.
-- **Ответ**: extension позволяет добавлять API без наследования. Conditional extension (`where`) добавляет методы только когда тип удовлетворяет constraints — так stdlib строит “богатый” API без runtime-checks.
+- **Answer:** extension позволяет добавлять API без наследования. Conditional extension (`where`) добавляет методы только когда тип удовлетворяет constraints — так stdlib строит “богатый” API без runtime-checks.
+
+</details>
   Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/`
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - Уровни доступа: `open`, `public`, `internal`, `fileprivate`, `private`.
-- **Ответ**: доступы управляют видимостью API. `open` — можно наследоваться/override вне модуля; `public` — видно, но нельзя override; `internal` — по умолчанию внутри модуля; `fileprivate/private` — ограничение области видимости для инкапсуляции.
+- **Answer:** доступы управляют видимостью API. `open` — можно наследоваться/override вне модуля; `public` — видно, но нельзя override; `internal` — по умолчанию внутри модуля; `fileprivate/private` — ограничение области видимости для инкапсуляции.
+
+</details>
   Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/accesscontrol/`
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - Property wrappers и result builders на пользовательском уровне (использование/простая реализация).
-- **Ответ**: property wrapper инкапсулирует повторяемую логику хранения/валидации (например `@Clamped`). Result builder позволяет писать декларативный DSL (как SwiftUI), собирая итоговое значение из набора выражений.
+- **Answer:** property wrapper инкапсулирует повторяемую логику хранения/валидации (например `@Clamped`). Result builder позволяет писать декларативный DSL (как SwiftUI), собирая итоговое значение из набора выражений.
+
+</details>
   Docs: `https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/`
 
-### Отложить
+### Defer
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Полное знание всех глобальных функций Stdlib (учить по мере встречи).
 - `@dynamicMemberLookup`, `@dynamicCallable` (экзотика).
 - Swift macros на уровне написания (пока достаточно уметь пользоваться).
 
-## Упражнения (10)
+</details>
+
+## Exercises (10)
+
 
 1) Optional pyramid -> guard  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Возьмите код с 4 вложенными `if let` и перепишите через `guard let`. Сравните читаемость.
 
 Создайте retain cycle с closure в `UIViewController`. Поймайте Memory Graph. Исправьте через `[weak self]`.
 
+</details>
 3) Trailing closure  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Перепишите `UIView.animate(withDuration:animations:completion:)` в trailing-стиле с двумя замыканиями.
 
 Напишите `@Clamped(0...100)` который ограничивает `Int`.
 
+</details>
 5) Result builder  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Сделайте `@AttributedStringBuilder`, собирающий `NSAttributedString` декларативно.
 
 6) Уровни доступа  
@@ -76,17 +139,32 @@
 8) Расширения протоколов  
 Дефолтная `description` через `Mirror` для типов, реализующих `Reflectable`.
 
+</details>
 9) Result type  
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Перепишите callback `(Data?, Error?)` в `Result<Data, Error>`. Сравните читаемость.
 
 10) `String` как коллекция  
 Сравните `str.count` и `str.utf8.count` для `"👨‍👩‍👧‍👦"`. Объясните grapheme clusters vs code units.
 
-## Связка с карточками (Q&A) — defer, type methods, class init
+</details>
+
+## Q-card tie-in — defer, type methods, class init
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Материал в том же духе, что **Фокус / тезис / ссылка** в `07_memory_arc/Swift-Syntax-and-Idioms.md`: коротко для собеса + куда копать глубже. Соответствует карточкам **Q6, Q9, Q10, Q41** в секции **Карточки знаний (Q&A)** ниже.
 
+</details>
+
 ### `defer`
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Тезис:** блок помеченный `defer` выполняется при **выходе из текущего scope** (в т.ч. `return` и `throw`); несколько `defer` подряд выполняются в порядке **LIFO** (последний объявленный — первым при выходе).
 - **Зачем на практике:** одна точка **cleanup** (освобождение ресурса) и **teardown** (симметричный разбор после setup) для парных операций — захват `NSLock`/`lock()` → в `defer` снять блокировку, открытый файл/дескриптор → закрыть, временные флаги UI → сбросить. Удобно при **многих ранних выходах** (`guard`, ветки ошибок): не копировать очистку в каждую ветку.
@@ -94,25 +172,42 @@
 - **Оговорка:** `defer` не заменяет асинхронную отмену или `Task`; внутри `defer` управление потоком только локальное.
 - Docs: [Defer Statement](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/deferstatement/)
 
+</details>
+
 ### `static` vs `class` methods (type methods)
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Тезис:** у **type method** с `static` подкласс **не может** сделать `override`; у метода с `class` на **class** подкласс **может** переопределить реализацию — это полиморфизм через наследование на уровне типа, не экземпляра.
 - **Зачем на практике:** в **публичном SDK** `class func` иногда оставляют как **hook** для кастомизации клиентом; `static func` сигнализирует «поведение зафиксировано, на override не рассчитывать». Смена `class` → `static` в released API — типичный **semver major** для тех, кто переопределял.
 - **Связь с `final`:** для **instance**-методов запрет наследования/override часто делают через `final class` или `final` метод; для **type methods** роль «финальности на metatype» задаёт как раз пара **`static`** / **`class`**.
 - Docs: [Methods](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/methods/) · [Inheritance](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/inheritance/)
 
-### Почему у `class` нет memberwise `init`, как у `struct`
+</details>
+
+### Why `class` has no memberwise `init` like `struct`
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Тезис:** у классов нет **синтезируемого** memberwise init как у многих `struct`: **наследование** и **двухфазная инициализация** требуют явных **designated** инициализаторов и цепочки **`super.init`** — автоматическая сборка полей была бы неоднозначной или противоречила бы правилам языка; плюс **контроль доступа** к `init`. Явные `init`, которые ты пишешь сам, нормальны; речь именно об отсутствии **автогенерации** по полям.
 - **Следствие в коде:** явные `init`, часто DI через конструктор; в иерархии — цепочка designated инициализаторов. У `struct` memberwise init появляется, когда компилятор может однозначно собрать поля (и нет запретов видимости).
 - Docs: [Initialization](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/initialization/) · [Structures and Classes](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/)
 
-### Optionals (связка с junior-линией)
+</details>
+
+### Optionals (junior track tie-in)
 
 
-### Playgrounds под номера карточек (Q)
+### Playgrounds by Q-card number
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 | Тема | Playground |
+
+</details>
 |------|------------|
 | CoW / value collections | `CopyOnWriteInterview.playground` |
 | `defer` | `DeferInterview.playground` |
@@ -120,26 +215,41 @@
 | memberwise / class init | `ClassMemberwiseInitInterview.playground` |
 | optionals baseline | `OptionalsJuniorInterview.playground` |
 | `map` / `flatMap` / `compactMap` / `reduce` | `MapFlatMapCompactMapInterview.playground` |
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 | широкий обзор value/reference/layout (не один вопрос) | `SwiftCore.playground` |
 
----
+</details>
 
-## TL;DR
+---## TL;DR
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - SE-0508 снимает старое ограничение парсера для trailing closure после выражений вида `[T]` и `[K: V]`.
 - Это делает DSL и builder-style API проще: меньше промежуточных `Builder.make {}` обёрток.
 - Механика не меняет модель выполнения — это синтаксическое улучшение поверх уже существующих инициализаторов/вызовов.
 - Практическая выгода: чище тестовые сценарии, конфиги и декларативные списки шагов/секций.
 
-## Источник
+</details>
+
+## Source
+
 
 - [SE-0508: Array expression trailing closures](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0508-array-expression-trailing-closures.md)
 
-## Что было неудобно до SE-0508
+## What was awkward before SE-0508
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Trailing closure привычно работает для функций и инициализаторов, но долгое время был “особый случай” для array/dictionary expression.
 
 Например, запись в стиле:
+
+</details>
 
 ```swift
 let values = [Int] {
@@ -147,15 +257,27 @@ let values = [Int] {
 }
 ```
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 раньше либо не парсилась, либо требовала обходных форм через отдельные helper-типы/методы.
 
-## Что меняется
+</details>
+
+## What changes
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 Если у типа действительно есть подходящий API (инициализатор или вызов), trailing closure теперь можно писать непосредственно после `[T]`/`[K: V]` expression.
 
 Иными словами, язык убирает синтаксический барьер и позволяет использовать более естественную форму для DSL.
 
-## Пример с Array-инициализатором
+</details>
+
+## Example with Array initializer
+
 
 ```swift
 extension Array {
@@ -169,13 +291,19 @@ let values = [Int] {
 }
 ```
 
-## Где особенно полезно
+## Where especially useful
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - DSL для UI/конфигов/разметки.
 - Тестовые сценарии и шаги.
 - Результат-билдеры, где важна читаемость декларативного кода.
 
 Пример “до/после”:
+
+</details>
 
 ```swift
 // До
@@ -189,50 +317,80 @@ let sections = [Section] {
     if user.isPremium { premiumSection() }
     commonSection()
 }
-```
+```## What to understand
 
-## Что важно понимать
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Это не новая concurrency/архитектурная модель и не изменение semantics.
 - Сахар работает только когда существует корректная цель вызова (подходящий init/call).
 - Непрозрачные или двусмысленные API всё ещё могут требовать явной формы.
 
-## Практические выводы / что брать в работу
+</details>
+
+## Practical takeaways
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - В DSL-подобных местах упрощать синтаксис до `[Type] { ... }`, если это улучшает читаемость.
 - Сохранять явные helper-обёртки только там, где они добавляют реальную доменную ценность.
 - При code review оценивать, уменьшает ли новая запись когнитивную нагрузку в конкретном модуле.
 
-## Мини-чеклист
+</details>
+
+## Mini checklist
+
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - Есть ли у выражения `[Type]` подходящий инициализатор/вызов под trailing closure.
 - Улучшает ли новая форма читабельность относительно builder-обёртки.
 - Не создаёт ли запись двусмысленность для команды и автокомплита.
 - Покрыты ли DSL-ветки тестами, если синтаксис активно используется в критичных сценариях.
 
----
+</details>
 
-## Карточки знаний (Q&A)
+---## Interview Q&A (Knowledge cards)
 
-Ниже — Q&A по теме.
+
+Interview Q&A below.
 
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
 - **Question (EN):** When do you choose `struct` vs `class`?
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
     - **Value semantics** (`struct`): при присваивании/передаче — логически независимая копия; мутация меняет только её (у `Array`, `Dictionary`, `Set`, `String` физическая копия буфера часто откладывается до первой мутации — Copy-on-Write).
 
     - **Reference semantics** (`class`): несколько ссылок на один экземпляр, мутация видна через все алиасы; также выбор для **identity**, **shared mutable state**, **inheritance**.
 
+</details>
 - **Answer (EN):** `struct` — value semantics and independent copies; `class` — reference semantics when you need stable identity, inheritance, or shared mutable state.
 
     - **Value semantics** (`struct`): assignment/passing yields logically independent copies; mutation affects only that value (`Array`, `Dictionary`, `Set`, `String` often defer the buffer copy until the first mutation — Copy-on-Write).
 
     - **Reference semantics** (`class`): aliases refer to one instance, so mutations are visible through every reference; also use `class` for stable identity, inheritance, or shared mutable state.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. I use `struct` for value semantics and independent copies.
     2. Assignment and passing give logically separate copies; mutation affects that value only.
     3. `Array`, `Dictionary`, `Set`, `String` often use copy-on-write until the first mutation.
@@ -240,8 +398,20 @@ let sections = [Section] {
     5. Mutations are visible through every reference.
     6. Also for stable identity, shared mutable state, or inheritance when I need those.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** где ты сознательно мигрировал **`class` → `struct`** и что это дало?
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -250,7 +420,23 @@ let sections = [Section] {
 
 - **Answer (RU):** `struct` — **value semantics** (семантика значений) и независимые копии; `class` — **reference semantics** (ссылочная семантика), когда нужны **identity** (идентичность экземпляра), **shared mutable state** (разделяемое изменяемое состояние), **inheritance** (наследование).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. `struct` — **value semantics** (семантика значений) и независимые копии.
     2. При присваивании и передаче — логически своя копия, мутация меняет только её.
@@ -260,21 +446,58 @@ let sections = [Section] {
     6. Плюс **identity**, **shared mutable state**, **inheritance** — когда это нужно.
 
 </details>
+
 ### Q2
 - **Question (EN):** What is Copy-on-Write (CoW)?
 
 - **Answer (EN):** Standard collections share storage until the first write; they copy the buffer only when you mutate and the storage is still shared.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. `Array`, `Dictionary`, `Set`, `String` can share storage across copies until someone mutates.
     2. The first mutation copies the buffer only if storage is still shared.
     3. That avoids eager copies when you only read.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** как ловить лишние копии на **hot path** (горячий путь — код, который выполняется очень часто или с жёстким perf-бюджетом)?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** в **custom CoW type** (кастомном CoW-типе) проверяю уникальность **`storage`** через **`isKnownUniquelyReferenced(&storage)`** перед мутацией: если ссылка не уникальна — копирую **`storage`**, если уникальна — **in-place mutation** (мутация на месте). Для стандартных коллекций **CoW** уже встроен, поэтому на практике фокус на профилировании мутаций на **hot path** и снижении промежуточных копий.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -283,31 +506,85 @@ let sections = [Section] {
 
 - **Answer (RU):** для `Array`, `Dictionary`, `Set`, `String` физическая копия откладывается до мутации, если storage (хранилище) разделяется.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. У `Array`, `Dictionary`, `Set`, `String` буфер могут делить между «копиями», пока нет мутации.
     2. Физическая копия буфера — при первой мутации, если storage ещё разделяют.
     3. Так не платят за полную копию при одном чтении.
 
-</details>
 
 - **Доп. информация:** CoW связывают с **большими value-type контейнерами**: дешевая шаринг-read-копия + дорогая мутация только при необходимости; на интервью иногда спрашивают про **промежуточные копии** (цепочки `filter`/`map`, временные массивы) — это уже зона профилирования, не определения CoW.
 
     **Углубление (чат / Habr Q7):** CoW — **паттерн**, не только коллекции: разделяемое хранилище, **физическая копия буфера при записи**, пока buffer **shared** (не «ждём изменения оригинала» как сущности). Свой тип: **`class`**-буфер + **`isKnownUniquelyReferenced`**. **`mutating`** не делает `struct` **reference type** — только помечает метод, который может изменить `self`. Про размещение полей и кучу — **Q47**; про **`var b = a` и мутацию `b`** — **Q49**.
+
+</details>
+
 ### Q6
 - **Question (EN):** `static` vs `class` methods?
 
 - **Answer (EN):** **`static`** methods **cannot be overridden**. **`class`** methods **can be overridden in subclasses** (use `class` when you want polymorphic dispatch through inheritance).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. `static` — no overrides in subclasses.
     2. `class` — subclasses can override.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** где это важно для **SDK API contract** (контракта API)?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** в точках **расширяемости** для клиента SDK: `class` method оставляет hook для override в подклассе (кастомизация без форка); `static` фиксирует поведение на типе и сигнализирует «не рассчитывайте на override». Это влияет на **semver** (semantic versioning / семантическое версионирование: `MAJOR.MINOR.PATCH` — major при breaking changes (ломающих изменениях), minor при обратно совместимых фичах, patch при правках без смены контракта API) и ожидания интеграторов: смена `class` → `static` — ломающее изменение для тех, кто переопределял.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -316,12 +593,29 @@ let sections = [Section] {
 
 - **Answer (RU):** у **`static`** methods **`override`** (переопределение) в **`subclass`** (подклассе) нет; у **`class`** methods на классе — **`override`** в **`subclass`** возможен.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. `static` — без **`override`** в **`subclass`**.
     2. `class` — можно **`override`** в **`subclass`**.
 
 </details>
+
 ### Q9
 - **Question (EN):** A practical `defer` use case?
 
@@ -329,16 +623,52 @@ let sections = [Section] {
 
     One place for cleanup (freeing resources / restoring safe state) and teardown (symmetric unwind after setup): acquire `lock` then `defer { unlock }`, open then `defer { close }`, rollback or restore temporary flags.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. `defer` at scope exit, returns and errors included.
     2. cleanup / teardown: paired operations like locks and handles.
     3. Many early exits — write teardown once.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** где `defer` заметно улучшает читаемость?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** когда много ранних выходов (`guard`, ошибки): блок освобождения ресурса пишется один раз рядом с захватом, основной путь без дублирования очистки в конце каждой ветки. Плюс восстановление временных флагов или настроек UI после короткого scope.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -349,15 +679,33 @@ let sections = [Section] {
 
     Одна точка для cleanup (cleanup / освобождение ресурса и приведение к безопасному состоянию) и teardown (teardown / симметричный разбор после setup): `lock` → в `defer` снять блокировку, открыли файл → в `defer` закрыть, откат транзакции или временные UI-флаги после `begin`/`commit`.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. `defer` — при выходе из scope, не «следующая строка кода».
     2. cleanup / teardown: парные операции — lock/unlock, open/close.
     3. Много ранних `return` — очистка один раз, без копипаста.
 
-</details>
 
 - **Доп. информация:** тело `defer` видит те же локальные имена, что и окружающий scope (в т.ч. переменные, объявленные выше по функции); несколько `defer` при **`throw`** всё равно отрабатывают при выходе из scope. **`defer`** не отменяет тяжёлую синхронную работу и не заменяет явную отмену **`Task`** — это про синхронный порядок очистки, не про concurrency.
+
+</details>
+
 ### Q10
 - **Question (EN):** Why no memberwise initializer for classes like structs?
 
@@ -365,16 +713,52 @@ let sections = [Section] {
 
     It’s not that explicit class initializers are “unsafe”—it’s that the compiler **won’t synthesize** a memberwise initializer from stored properties the way it commonly does for `struct`s.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):**
 
+</details>
+</details>
+</details>
     1. Inheritance plus **two-phase initialization** means **designated** inits and **`super.init`**, not a synthesized field bundle like many structs.
     2. **`convenience`** / **`required`** and **`init`** visibility are part of the same model—you can’t glue one memberwise across the hierarchy.
     3. So you write explicit `init`s and often factories at the composition root.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** как это влияет на **dependency injection** (внедрение зависимостей)?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** без memberwise у класса зависимости обычно явно перечислены в **`init`** или собираются в **фабрике на composition root** — это хорошо стыкуется с **constructor injection** и подстановкой моков в тестах. У **`struct`** автоматический memberwise иногда скрывает раздувание набора полей; у **`class`** «толстый» конструктор виден раньше. Минус — больше бойлерплейта, зато граф зависимостей прозрачнее на границе модуля.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -385,15 +769,32 @@ let sections = [Section] {
 
     Речь не о том, что «явный init у класса небезопасен», а о том, что **компилятор не генерирует** такой init сам по полям, как часто делает для `struct`.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):**
+
+</details>
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     1. Наследование + **двухфазная инициализация** → нужны **designated** и **`super.init`**, а не автосборка полей как у `struct`.
     2. **`convenience`** / **`required`** и доступность **`init`** — часть той же модели; без этого memberwise для всей иерархии не склеить.
     3. В итоге явные **`init`** и часто фабрики на **composition root**.
 
-</details>
 
 - **Доп. информация:** запрет на полное использование **`self`** до завершения designated фазы (детали двухфазной модели) — частый oral follow-up; **`convenience`** только внутри класса, **`required`** протягивает контракт в подклассы. Про DI — в **Follow-up answer** выше.
+
+</details>
 
 ---
 ### Q41
@@ -401,12 +802,48 @@ let sections = [Section] {
 
 - **Answer (EN):** Optionals model absence at the type level; unwrap safely (`if/guard let`, `?.`, `??`)—reserve `!` for provably non-nil cases.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):** Encode missing values; safe unwrap first.
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** когда уместен force unwrap (`!`), и почему это риск?
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up answer:** уместен для констант после инициализации известного ресурса или после guarded входа; риск — краш в проде при изменении предположений.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -417,18 +854,48 @@ let sections = [Section] {
 
     опционал — значение может отсутствовать (`nil`). Разворачивание: `if let`, `guard let`, optional chaining `?.`, значение по умолчанию `??`. Force unwrap (`!`) — только когда логически невозможно `nil` или это preconditionfailure уровня программиста.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «есть или nil» — не force unwrap по умолчанию.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** для ошибок операций предпочтительнее `throws`/`Result`, чем опционал «на всё».
+
+</details>
+
 ### Q42
 - **Question (EN):** How is `Optional<Wrapped>` implemented in Swift?
 
 - **Answer (EN):** `Optional` is a **generic `enum`** with two cases: **`.none`** and **`.some(Wrapped)`**. `T?` is sugar for `Optional<T>`; **`nil`** is **`.none`**. For class existentials, `Optional` often uses a **nullable pointer** representation; small value types may need an extra tag when no spare bit pattern exists.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):** «Two-case enum; `nil` is `.none`; references often use a null pointer; unwrapping is pattern matching on `.some`.»
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -441,15 +908,57 @@ let sections = [Section] {
 
     `if let` / `guard let` / `?.` — по сути **pattern matching** по enum.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «Два кейса enum, не три; `nil` = `.none`; для классов часто nullable pointer; `if let` — разбор `.some`.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** почему не три кейса? / `nil` и `.none` одно и то же? / `Optional` — протокол? / чем `T!` отличается от `T?`? / `==` для двух optionals? / optional chaining?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** три кейса не нужны — модель «есть/нет». `nil` ≡ `.none` для Optional. Протоколом не является. **`ImplicitlyUnwrappedOptional`** / `T!` — тот же optional с другим контрактом проверки (ожидается non-nil к использованию); в новом коде редко. `Equatable` для `Optional` при `Wrapped: Equatable`. Chaining: при `.none` на шаге — вся цепочка даёт `.none`.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** базовый сценарий опционалов — **Q41**; внешний чеклист: [Habr — iOS interview prep](https://habr.com/en/articles/726388/) (вопросы 2–3).
+
+</details>
+
 ### Q43
 - **Question (EN):** Is there a difference between `.none` and `nil`?
 
@@ -465,15 +974,57 @@ let sections = [Section] {
 
     Уточнение к формулировке «в памяти нет объекта»: для **`SomeClass?`** `.none` часто совпадает с **нулевым указателем** (объекта в куче нет). Для **`Int?` / `Bool?`** говорить «нет объекта» неточнее — нет **wrapped-значения**, состояние enum «пусто» (иногда с **tag** у value).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «`nil` и `.none` — одно состояние optional; для классов это про отсутствие ссылки, для value — про отсутствие wrapped-значения.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** `nil` без типа? / `==` двух optionals? / в чём отличие от «переменной нет»?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** `nil` требует контекста `Optional`. При `Wrapped: Equatable` сравнение optionals стандартное. Переменная есть — **нет значения** в смысле `Wrapped`.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** см. **Q42**; источник сценария: [Habr Q3](https://habr.com/en/articles/726388/).
+
+</details>
+
 ### Q44
 - **Question (EN):** Ways to unwrap optional variables?
 
@@ -489,24 +1040,90 @@ let sections = [Section] {
 
     Дополнить: **`?.`** optional chaining (цепочка с optional-результатом); **`switch` / `if case` / `guard case`** по optional; **`map` / `flatMap`** на `Optional`.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «Разворот — `if`/`guard let`; дефолт — `??` без лишнего вычисления; `!` — осознанно; плюс `?.` и `switch`.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** `guard let` vs `if let`? / сайд-эффект в правой части `??`? / shorthand `if let x`?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** `guard` — ранний выход, плоский happy path. В `??` правая часть не выполняется при non-nil слева. В Swift есть shorthand optional binding (`if let x`, `guard let self`).
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** **Q41**; [Habr Q4](https://habr.com/en/articles/726388/).
+
+</details>
+
 ### Q45
 - **Question (EN):** What’s the difference between reference and value types? Examples?
 
 - **Answer (EN):** Lead with **semantics**: **reference** types share **identity**—aliases mutate one instance; use **`===`**. **Value** types copy independently; compare with **`==`**. Heap/stack and static/dynamic dispatch are **implementation details**, not definitions (`Array`/`String` are heap-backed COW structs).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU) — одна фраза:** «**Value vs reference** — про **семантику**: у **class** — **общая identity** (`===`), одна мутация на все ссылки; у **value** — **независимые копии** и **`==`** по значению; **стек/куча** и **static/dynamic dispatch** — не визитка, **`Array`/`String`** — **struct** с **CoW** в куче.»
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Устная заготовка (EN) — one line:** «**Value vs reference** is about **semantics**: classes share **identity** (`===`); values copy and compare with **`==`**; heap/stack and dispatch are details—**COW** collections are still **structs**.»
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -517,13 +1134,43 @@ let sections = [Section] {
 
     **Уточнение:** «value = стек, reference = куча» и «value = static dispatch, reference = dynamic» — **частые упрощения**. `String`, `Array`, `Dictionary` — **`struct`** с **value semantics**, но буфер может быть в **куче** (**Copy-on-Write**). Диспетчеризация зависит от **`final`**, generics, **existential** — не от одного только class/struct.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** что такое **identity** vs **equality**? / почему `Array` — struct, но большой? / `===` для struct?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** **Identity** — «тот же экземпляр» для ссылок (`===`). **Equality** — одинаковое **значение** (`==`). `Array` — **value semantics** + **CoW**, буфер в куче. У `struct` обычно **`===` не про копии значений** — сравнивают **`==`**.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** выбор **`struct` vs `class`** — карточка **Q1**; отличия `class`/`struct` и нюанс коллекций — **Q46**; layout + dispatch — **Q47**, **Q48**; [Habr Q5](https://habr.com/en/articles/726388/).
+
+</details>
+
 ### Q46
 - **Question (EN):** What’s the difference between `class` and `structure`?
 
@@ -541,15 +1188,57 @@ let sections = [Section] {
 
     **Нюанс коллекций:** `Array` / `Dictionary` / `Set` — это **`struct`** (**value semantics** у контейнера), но элементы могут быть **ссылками** (`[UIViewController]`): копия массива — **своя** как значение контейнера, а **объекты классов** внутри остаются **теми же экземплярами** (алиасы на один объект), пока явно не копируешь граф объектов. Связка с **Copy-on-Write** у буфера — **Q2**.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «`class` — ссылки и ARC; `struct` — копии и `mutating`; `Array` — struct, но элементы могут быть class — value у коробки, не у содержимого.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** когда выбираешь `struct` vs `class`? / CoW у `Array`? / shallow vs deep copy?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** см. **Q1**; CoW — **Q2**; копия `[SomeClass]` — **shallow** по элементам по умолчанию.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** **Q1** (выбор типа), **Q45** (value vs reference), **Q2** (CoW), **Q47–Q49** (layout, dispatch, `var b = a` / `inout`); [Habr Q6](https://habr.com/en/articles/726388/).
+
+</details>
+
 ### Q47
 - **Question (EN):** Memory layout: `struct` holding a class reference; `class` storing a `struct`; `let` struct property—vs stack/heap?
 
@@ -567,15 +1256,55 @@ let sections = [Section] {
 
     **`let` vs `var` у property:** про **место** то же (inline в объекте класса); **`let`** — нельзя **перепривязать** свойство целиком после init, а не «struct переехал в стек».
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «Value-обёртка может держать pointer на кучу; копия struct — копия слов, не дублирование объекта класса. Где лежит snapshot — стек/куча/регистры от **контекста**; внутри `class` — всегда кусок **кучи** класса.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** shallow vs deep copy `[SomeClass]`? / retain cycles через поле класса?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** массив копирует контейнер — элементы class **те же**; deep — явная логика. ARC — на **объект в куче**; циклы — через сильные ссылки, не «struct стал class».
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q48
 - **Question (EN):** How do stack/heap relate to method dispatch? What are vtable, witness table, static dispatch?
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     - **Static dispatch** — компилятор знает конкретный тип: **прямой вызов** / инлайн (**`final`**, конкретный `struct`, generic с известным `T`).
 
@@ -585,6 +1314,7 @@ let sections = [Section] {
 
     - **@objc / NSObject** — отдельная линия **`objc_msgSend`** (селектор → IMP, кэш).
 
+</details>
 - **Answer (EN):** Stack/heap describe **where** values live; **dispatch** chooses **which function runs**. **Static** = direct call. **Classes** = **vtable** in metadata. **Protocols** = **witness tables** (+ value witnesses for existentials). **Obj-C interop** = `objc_msgSend` / runtime.
 
 
@@ -595,15 +1325,55 @@ let sections = [Section] {
 
 - **Answer (RU):** Оси **разные**: стек/куча — **где лежат данные и кадры**; **таблицы** — **как** в рантайме выбрать реализацию при полиморфизме.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «Память и dispatch не путать: vtable у class metadata, witness у протокола, static — когда тип известен компилятору.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** почему existential «дороже»? / `final` и деvirtualization?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** existential несёт **контейнер + witness**; `final`/`private` помогают компилятору снять динамику.
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q49
 - **Question (EN):** Under the hood: `var b = a` for structs then mutate `b`; passing `struct` by value vs `inout`?
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     - **Плоский маленький `struct`** (без внутреннего разделяемого буфера): копия **битового образа** полей; мутация **`b`** не трогает **`a`**.
 
@@ -613,6 +1383,7 @@ let sections = [Section] {
 
     - **В функцию `f(_ x: T)`** — семантика **копии** входного значения (ABI может оптимизировать передачу, модель для языка та же). **`inout`** — контракт **мутировать тот же** экземпляр по **адресу**, изменения видны вызывателю.
 
+</details>
 - **Answer (EN):** `b = a` copies value semantics-wise. Plain structs: field-wise copy; CoW containers may share a buffer until `b` mutates, then copy-on-write if still shared. `struct` with a class field copies the **pointer** (shallow). `f(_ x:)` passes a copy; `inout` mutates the caller’s storage in place.
 
 
@@ -623,23 +1394,68 @@ let sections = [Section] {
 
 - **Answer (RU):** База — **value semantics**: **`b = a`** даёт **логически отдельное** значение `b`.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «Две переменные struct — две копии значения; CoW откладывает копию **буфера** до записи; `inout` — мутируем исходный экземпляр по адресу.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** чем это отличается от **ARC**? / почему `Array` — struct?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** ARC — учёт **ссылок на class**; CoW — **когда дублировать буфер** value-контейнера. `Array` — struct с **value semantics** + CoW.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** **Q2**, **Q47**, **Q46**; [Habr Q7](https://habr.com/en/articles/726388/).
+
+</details>
+
 ### Q50
 - **Question (EN):** What does the `NS` prefix mean in Foundation types?
 
 - **Answer (EN):** `NS` stands for **NeXTSTEP**: NeXT engineers prefixed symbols in NeXTSTEP’s **Foundation** / **AppKit**. After Apple acquired NeXT (1996–1997), that API became the core of Cocoa/Cocoa Touch. Objective-C has a **global class namespace**, so prefixes avoid collisions; Apple **reserves two-letter prefixes** for its frameworks (`NS`, `UI`, `CA`, …). In Swift, `NS*` types are Objective-C classes with **bridging** to Swift value types where defined; Swift stdlib types don’t carry the prefix.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устный канон (опросник п.19 / H19, drill):** «**`NS` — NeXTSTEP**: API **NeXT**, после **покупки NeXT** стало основой **Cocoa**; в Obj-C **глобальные имена классов** → **префикс**; у Apple **`NS`/`UI`/… — системные**, свои классы — **три буквы**. В Swift — **bridging** к `String`/`Array` и т.д.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -655,22 +1471,79 @@ let sections = [Section] {
 
     **Рядом по смыслу:** **`CF*`** (**Core Foundation**, C API) — другой слой; с частью `NS*` существует **toll-free bridging** (например `NSString` ↔ `CFString`).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** почему в Swift нет префикса у `Array`?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** нативные Swift-типы в **stdlib** без Obj-C префикса; `NSArray` — другой слой рантайма.
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** чем **`NS`** от **`UI`** / **`CA`**?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** разные **фреймворки** в экосистеме Apple; в [Conventions](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Conventions/Conventions.html) у Apple есть таблица: **`NS`** — Foundation + AppKit (macOS), **`UI`** — UIKit (iOS), **`CA`** — Core Animation и т.д.
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q51
 - **Question (EN):** `map` / `flatMap` / `compactMap` / `reduce` in Swift and Combine—distinctions and related sequence operators?
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Таблица (Swift stdlib — комбинаторы и соседи):** ниже **практический набор** имён из **`Sequence` / `Collection` / `LazySequence`** и связанного API; **не** все сотни overload’ов из документации — полный индекс: [`Sequence`](https://developer.apple.com/documentation/swift/sequence), [`Collection`](https://developer.apple.com/documentation/swift/collection).
 
 | Функция / метод | Описание |
+
+</details>
 | --- | --- |
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 | `map` | По каждому элементу строит новое значение; длина совпадает с исходной (для коллекций). |
 | `compactMap` | Как `map`, но замыкание возвращает `Optional`; `.none` отбрасываются, остальное разворачивается. |
 | `flatMap` (`Sequence`) | Замыкание возвращает **последовательность**; результаты **склеиваются на один уровень** (один проход flatten). |
@@ -713,7 +1586,12 @@ let sections = [Section] {
 - **Таблица (Combine — частые операторы над `Publisher`):** неполный список; см. [Combine](https://developer.apple.com/documentation/combine).
 
 | Оператор | Описание |
+
+</details>
 | --- | --- |
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 | `map` | Преобразует каждое значение потока. |
 | `tryMap` | Как `map`, но может **бросить ошибку** → завершение с failure. |
 | `compactMap` | Отбрасывает `nil` из опциональных результатов. |
@@ -731,11 +1609,15 @@ let sections = [Section] {
 | `debounce` | Эмитит после **тишины** в окне времени. |
 | `throttle` | Пропускает события не чаще заданного интервала (политики latest/first). |
 
+</details>
 - **Answer (EN):** `map` transforms each element. `compactMap` maps to `Optional` and drops `nil`s (replaces the old optional `flatMap` overload—SE-0187). `flatMap` on `Sequence` flattens one level of nested sequences—don’t confuse with `compactMap`. `reduce` folds a collection into one value; `reduce(into:)` is often better for in-place accumulation. Combine reuses the same vocabulary on `Publisher`s with streaming semantics (`flatMap` controls inner publishers, `scan` accumulates over time).
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Устный канон (опросник п.21 / H21, drill):** «**`map`** — поэлементно; **`compactMap`** — `map` + **убрать nil**; **`flatMap`** на последовательности — **сплющить вложенные последовательности** (не то же, что `compactMap`); **`reduce`** — **свёртка** в одно значение, для мутации часто **`reduce(into:)`**. В **Combine** — те же идеи над **потоком событий**, плюс **`flatMap`** по **внутренним publisher’ам**.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -761,23 +1643,56 @@ let sections = [Section] {
 
     **Combine (идеи те же, другой тип):** **`map`**, **`tryMap`**, **`compactMap`**, **`flatMap(maxPublishers:)`** (подписка на **вложенный** publisher + политика **вложенных** потоков), **`scan`** (как «reduce во времени» по событиям), **`collect`**, **`reduce`**, **`filter`**, **`replaceNil`**, **`ignoreOutput`**, и т.д.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** зачем **`lazy`**?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** цепочка **`lazy.map.filter`** не строит **промежуточные массивы** целиком — элементы вычисляются **по требованию** при обходе (**индекс/итератор**); полезно на **больших** данных, но каждый проход может заново вычислять замыкания.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Habr H21](https://habr.com/en/articles/726388/); [SE-0187 `compactMap`](https://github.com/apple/swift-evolution/blob/main/proposals/0187-introduce-filtermap.md); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.21; [Swift Algorithms](https://github.com/apple/swift-algorithms); **V/20 Networking** (Combine в сетевом слое при необходимости). Playground: [MapFlatMapCompactMapInterview.playground](MapFlatMapCompactMapInterview.playground/Contents.swift) — runnable drill по PDF-карточкам (`map` count, `Optional` trap, `compactMap`, nested `flatMap`).
+
+</details>
+
 ### Q52
 - **Question (EN):** Why mark a Swift class `final`?
 
 - **Answer (EN):** `final class` forbids subclassing entirely—design signal and enables more static devirtualization when the dynamic type can’t be a subclass. Don’t conflate with `static` on class methods (non-overridable, statically dispatched on the metatype). `open` controls subclassing across modules; `final` is stronger than “no open subclasses”—it means no subclasses at all.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устный канон (опросник п.31 / H31, drill):** «**`final class`** — **никаких подклассов**; **замысел API** + **проще оптимизировать вызовы**; не путать с **`static`** на **type methods**.»
 
 - **Формулировка с drill (п.31):** «**`final`** говорит системе, что **наследования не будет**; тогда компилятору проще **убрать лишнюю динамику** у вызовов (**devirtualize**), но это **не** то же самое, что ключевое слово **`static`** на **type method** — **`static`** про **метод типа** и отсутствие **override** у подклассов, а **`final class`** про **запрет всего класса как базы**.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -789,15 +1704,48 @@ let sections = [Section] {
 
     **Связка с `open`:** **`public class`** вне модуля **наследовать нельзя** по умолчанию; **`open class`** — можно наследовать **вне модуля**; **`final`** добавляет запрет наследования **даже внутри модуля** (для `class` без `open` подклассы и так только внутри модуля — `final` всё равно усиливает намерение и оптимизации).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** чем **`final`** от **`private` класса** по наследованию?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** **`private class`** — видимость в файле; наследовать внутри файла теоретически можно, если не `final`. **`final`** — про **запрет подкласса**, не про видимость.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Habr H31](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.31; **Q48** (static vs dynamic dispatch); **`static` vs `class`** на type methods — рядом с темой **instance `final`** в начале файла (блок про методы и наследование).
+
+</details>
+
 ### Q53
 - **Question (EN):** What is `lazy` in Swift?
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
     - Только **`lazy var`**, не **`lazy let`**: после первого вычисления значение **фиксируется** как у обычного `var`.
 
@@ -809,13 +1757,17 @@ let sections = [Section] {
 
     - Не путать с **`lazy` у `Sequence`/`Collection`**: там ленивость цепочки **`map`/`filter`** без немедленных материализаций до обхода — см. follow-up у **Q51**.
 
+</details>
 - **Answer (EN):** `lazy var` defers initialization of a stored property until the first read; typically a once-run closure. Not `lazy let`. Requires fully initialized `self` before first access. Not thread-safe by default. Don’t confuse with `lazy` on sequences/collections.
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Устный канон (опросник п.32 / H32, drill):** «**`lazy var`** — **первое чтение** запускает инициализацию **один раз**; не **`let`**; **`self` уже собран**; **потоки сами не защищены**; отдельно — **`lazy` на коллекциях** про **отложенный pipeline**, не про stored property.»
 
 - **Формулировка с drill (п.32):** «**`lazy`** — это когда сущность **создаётся/поднимается только при первом обращении** к свойству, а не заранее.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -823,21 +1775,54 @@ let sections = [Section] {
 
 - **Answer (RU):** Зацепка: **`lazy var`** — **хранимое** свойство, которое **инициализируется при первом обращении** (чтении), а не в момент готовности всего `self` в `init` (если только инициализация не началась и не упала раньше присваивания).
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** есть ли **`lazy var` на уровне файла/модуля** как у свойства типа?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** **нет:** компилятор сообщает, что **глобальная** переменная **уже** инициализируется с отложенной семантикой (`lazy` там **нельзя** навесить явно — «already-lazy global»). Для **типа** (`struct`/`class`) — отдельное правило **`lazy var`**.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Habr H32](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.32; **Q51** follow-up про **`lazy.map`**.
+
+</details>
+
 ### Q54
 - **Question (EN):** How does `Codable` differ from `Encodable & Decodable`?
 
 - **Answer (EN):** `Codable` is a typealias for `Encodable & Decodable`—syntactic sugar when both directions are required.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устный канон (опросник п.34 / H34, drill):** «**`Codable` = `Encodable & Decodable`** — **alias**, не отдельный магический протокол.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -845,21 +1830,54 @@ let sections = [Section] {
 
 - **Answer (RU):** **`Codable`** — это **`typealias`** для **`Encodable & Decodable`**; для типа, которому нужны **обе** стороны сериализации, пишут `Codable` как **короткий синоним**. Семантика та же, что «тип и кодируется, и декодируется».
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** когда писать только **`Decodable`**?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** DTO **только ответа** API, конфиг «только читаем из JSON» — не обязан быть `Encodable`.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Habr H34](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.34; [Glossary Codable](../../XI.%20Резюме/Глоссарий/Glossary.md#glossary-codable).
+
+</details>
+
 ### Q55
 - **Question (EN):** Why split `Encodable` and `Decodable`?
 
 - **Answer (EN):** Split protocols narrow requirements—encode-only vs decode-only models without implementing both.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устный канон (опросник п.35 / H35, drill):** «**Раздельно** — чтобы тип был **только вход** или **только выход** по контракту, без лишней реализации.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -867,21 +1885,54 @@ let sections = [Section] {
 
 - **Answer (RU):** Разделение **контракта**: тип может **только уходить** на сервер (`Encodable`) или **только приходить** из JSON (`Decodable`) — не реализуешь лишнюю сторону; уже **поверхность API** и проще **тесты**/моки. Плюс явная документация намерения в публичных типах.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** можно ли **`Codable`** и вручную **`init(from:)`** без `encode`?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** если нужен только decode — достаточно **`Decodable`**; `Codable` потребует и **`encode(to:)`** (или синтез с обеими сторонами).
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Habr H35](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.35; **V/20 Networking** (DTO).
+
+</details>
+
 ### Q56
 - **Question (EN):** `@escaping` vs non-escaping closures?
 
 - **Answer (EN):** Non-escaping closures can’t outlive the function call; `@escaping` allows storing/async completion—think capture lists and cycles.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устный канон (опросник п.38 / H38, drill):** «**Non-escaping** — только **внутри** вызова; **`@escaping`** — **позже**; тогда **`weak self`**.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -889,21 +1940,54 @@ let sections = [Section] {
 
 - **Answer (RU):** **По умолчанию** замыкание в параметре функции — **non-escaping**: компилятор знает, что оно **не живёт дольше** вызова функции (вызов только синхронно внутри тела). **`@escaping`** — замыкание может быть **сохранено** и вызвано **позже** (completion handler, property, async) → нужна пометка; чаще вспоминают **`[weak self]`** против **retain cycle**.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** почему компилятор разрешает **оптимизации** для non-escaping?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** известен **контрольный поток** — нет утечки замыкания наружу, можно агрессивнее с захватами и порядком освобождения (детали — компилятор; на собесе достаточно «не уходит за пределы вызова»).
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Habr H38](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.38; **II/07** retain cycles.
+
+</details>
+
 ### Q57
 - **Question (EN):** What does `inout` on a parameter mean?
 
 - **Answer (EN):** `inout` passes an addressable slot so the callee can mutate the caller’s variable; copy-in/copy-out for values; classes mutate fields through the reference.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устный канон (опросник п.39 / H39, drill):** «**`inout`** — **изменить переданное** место в памяти вызывающего; не путать с **копией по значению**.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -911,21 +1995,54 @@ let sections = [Section] {
 
 - **Answer (RU):** Параметр передаётся как **ссылка на уже существующее** хранилище: функция может **мутировать** значение «на месте»; после выхода из функции изменения **видны** вызывающему. Для **value types** под капотом часто **копия + write-back**; для **классов** — мутируются **поля объекта** по ссылке на экземпляр. Нельзя передавать **let**, нужен **l-value**.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** можно ли **`inout`** и **`async`** вместе?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** в современном Swift есть правила изоляции; на собесе достаточно: **`inout`** + асинхронность требуют **аккуратности** (эксклюзивный доступ, не держать `inout` через **suspension** без понимания — см. актуальные правила Swift про overlapping access).
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Habr H39](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.39.
+
+</details>
+
 ### Q58
 - **Question (EN):** Multiple class inheritance in Swift?
 
 - **Answer (EN):** Swift classes have single concrete superclass; compose behavior via protocols and extensions.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устный канон (опросник п.40 / H40, drill):** «**Класс** — **один суперкласс**; **много протоколов**; композиция вместо второго суперкласса.»
 
-
+</details>
 <details class="lang-ru">
 <summary>По-русски</summary>
 
@@ -933,20 +2050,62 @@ let sections = [Section] {
 
 - **Answer (RU):** У **классов** — **нет** множественного наследования реализации (**single inheritance**). Можно **много протоколов** (`class C: P, Q`), композицию (**has-a**), **protocol extensions** для общего кода. Повторить «ромб» C++ в Swift для `class` нельзя.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** чем **`protocol`** + default implementation от наследования?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** нет **хранимого состояния** в протоколе (до **extension** с ограничениями); нет единой иерархии инициализации как у `class`; гибче миксовать поведение.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Habr H40](https://habr.com/en/articles/726388/); [consolidated-interview-questionnaire.md](../../X.%20Карьера%20и%20софт-скилы/38%20Подготовка%20к%20собеседованиям/notes/resources/consolidated-interview-questionnaire.md) п.40.
+
+</details>
+
 ### Q59
 - **Question (EN):** Tuples in Swift—when should you use them?
 
 - **Answer (EN):** A tuple groups unnamed values with value semantics—good for ad-hoc multi-return (`minMax`) and local tuples. Prefer `struct` for domain models, public APIs, and types with behavior.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):** «Tuple for quick multi-return; struct when the shape is part of your API or domain.»
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -969,14 +2128,54 @@ let sections = [Section] {
 
     **Когда не использовать:** модели приложения, **публичный API**, типы с **собственным поведением** — лучше **`struct`**.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** «Tuple — value type без своего типа; ок для пары из `min`/`max` и локального кода; для API и моделей — `struct`.»
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up (RU):** tuple может оказаться в **heap**?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer (RU):** **Да** — как любой value type: stored property `class`, escaping closure, CoW-буфер. См. [quiz §6](../concurrency/notes/Value-Types-Actors-Concurrency-Quiz.md#6-value-type-vs-stack-vs-heap-interview).
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** value vs reference — **Q45**; [Tuples (playground)](SwiftInSixtySeconds.playgroundbook/Contents/Chapters/Complex%20types.playgroundchapter/Pages/Tuples.playgroundpage/Contents.swift); flashcards — [quiz §7](../concurrency/notes/Value-Types-Actors-Concurrency-Quiz.md#7-быстрые-ответы-flashcards)
 
+</details>
 <!-- knowledge-cards-canonical:end -->

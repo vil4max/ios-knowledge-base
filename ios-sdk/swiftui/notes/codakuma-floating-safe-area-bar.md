@@ -71,7 +71,7 @@ When min OS is 26, remove fallback branch.
 
 ---
 
-## Связь с базой
+## Link to parent topic
 
 - [SwiftUI README](../README.md)
 - [FloatingSafeAreaBar.playground](../FloatingSafeAreaBar.playground)

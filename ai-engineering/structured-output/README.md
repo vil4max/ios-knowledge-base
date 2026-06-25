@@ -1,6 +1,6 @@
 # 07 · Structured Output
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Structured output** forces LLM responses into a **machine-parseable shape** — JSON, Swift structs — instead of free-form prose you regex-parse. Patterns: **JSON Schema** (cloud APIs), Apple **`@Generable`** macro with **`@Guide`** constraints, and post-generation **validation** before side effects. Reduces hallucinated fields and integration bugs in iOS apps. Distinct from [08 · Tool Calling](../tool-calling/README.md) (model invokes app code) but shares schema thinking.
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Generable](https://developer.apple.com/documentation/foundationmodels/generable) — guided generation macro.
 - [@Guide attribute](https://developer.apple.com/documentation/foundationmodels/guide(description:)) — field constraints for generation.
@@ -24,6 +23,7 @@
 - [WWDC25 — Deep dive into the Foundation Models framework](https://developer.apple.com/videos/play/wwdc2025/301/) — `@Generable` patterns.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -40,7 +40,8 @@
 - Every cloud vendor JSON mode quirk — know Apple + one cloud pattern.
 - XML structured output legacy unless enterprise integration topic.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Approach | Platform | Strength |
 |----------|----------|----------|
@@ -97,6 +98,7 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 
 ## 🏋️ Exercises
 
+
 1. **Extract contact** — Name, phone, email from messy paste. *Expected:* `@Generable struct Contact`; validate phone with `PhoneNumberKit`; nil optional fields.
 
 2. **Enum drift** — Model returns `"pos"` instead of `"positive"`. *Expected:* `@Guide` enum or JSON Schema enum; fail closed to retry.
@@ -107,14 +109,16 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 
 5. **Cloud + iOS** — Backend OpenAI JSON schema, app decodes. *Expected:* `additionalProperties: false`; version schema in API contract.
 
-## Ссылки
+## Links
+
 
 - [Generable](https://developer.apple.com/documentation/foundationmodels/generable)
 - [Guide](https://developer.apple.com/documentation/foundationmodels/guide(description:))
 - [Meet Foundation Models (WWDC25)](https://developer.apple.com/videos/play/wwdc2025/286/)
 - Related: [tool-calling](../tool-calling/README.md), [foundation-models](../foundation-models/README.md), [evaluations](../evaluations/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -123,8 +127,20 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 
 - **Answer (EN):** Free-form JSON breaks with fences, extra keys, and type errors. Schema or `@Generable` constrains generation for safer parsing. You still validate values before side effects.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** @Generable гарантирует valid JSON?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** Guarantees **shape** much more reliably than prompt-only; not a substitute for business validation (dates, IDs, authorization).
 
 
@@ -136,13 +152,26 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 - **Answer (RU):** Free-form JSON **ломается**: markdown fences, trailing commas, extra keys, wrong types. **Schema / @Generable** constrains generation at sampling time — меньше parse errors, type-safe Swift integration. Validation всё равно нужна для **values**.
 
 </details>
+
 ### Q2
 - **Question (EN):** What does @Guide provide?
 
 - **Answer (EN):** Field-level descriptions and constraints like ranges and patterns. Improves extraction quality and documents the schema in code. Tool arguments use the same pattern.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** optional vs required поля?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** Swift `Optional` + `@Guide(description: "null if missing")`; JSON Schema `required` array; always handle missing data in UI — don't force model to invent.
 
 
@@ -154,6 +183,7 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 - **Answer (RU):** **Field-level constraints**: description для model, `.range`, patterns, enum hints. Улучшает extraction quality и документирует schema в коде. Tool `Arguments` тоже `@Generable`.
 
 </details>
+
 ### Q3
 - **Question (EN):** What to validate after generation?
 
@@ -172,6 +202,7 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 - **Answer (RU):** **Business rules** beyond schema: date sanity, numeric bounds, cross-field logic, authorization, idempotency keys. **Never** auto-charge or auto-book on raw model output. Show **confirmation** UI on iOS.
 
 </details>
+
 ### Q4
 - **Question (EN):** JSON Schema vs @Generable?
 

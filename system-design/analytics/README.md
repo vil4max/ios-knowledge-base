@@ -1,6 +1,6 @@
 # Analytics
 
-## За 30 секунд
+## In 30 seconds
 
 
 Mobile **analytics** turns product questions into an **event taxonomy**: what to measure, which properties attach to each event, how data batches and uploads respect battery, and how **privacy** (consent, ATT, minimal PII) shapes the pipeline. Senior answers link events to decisions, define session/user identity carefully, and know when **SKAdNetwork** replaces user-level attribution on iOS.
@@ -13,9 +13,8 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [App Tracking Transparency](https://developer.apple.com/documentation/apptrackingtransparency) — `ATTrackingManager`, permission before IDFA access.
 - [SKAdNetwork](https://developer.apple.com/documentation/storekit/skadnetwork) — privacy-preserving ad attribution.
@@ -23,6 +22,7 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 - [User privacy and data use](https://developer.apple.com/app-store/user-privacy-and-data-use/) — App Store privacy nutrition labels.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -40,7 +40,8 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 - Marketing mix modeling — mention as ATT-era alternative briefly.
 - Every vendor SDK API (Amplitude, Firebase) — patterns over vendor specifics.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Layer | Responsibility |
 |-------|----------------|
@@ -75,6 +76,7 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 
 ## 🏋️ Exercises
 
+
 1. **Define taxonomy for onboarding** — 5–8 events from app open to first success. *Expected:* `onboarding_started`, `step_viewed`, `step_completed`, `onboarding_completed` with `step_id`.
 
 2. **ATT-aware attribution** — Campaign drives install; measure conversion without IDFA. *Expected:* SKAdNetwork + first-party deep link params for organic; no illegal fingerprinting.
@@ -85,14 +87,16 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 
 5. **Experiment exposure** — Log flag assignment once per session. *Expected:* `experiment_exposure` with `variant`, tied to feature flag topic.
 
-## Ссылки
+## Links
+
 
 - [App Tracking Transparency](https://developer.apple.com/documentation/apptrackingtransparency)
 - [SKAdNetwork](https://developer.apple.com/documentation/storekit/skadnetwork)
 - [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files)
 - Related: [feature-flags](../feature-flags/README.md), [mobile](../mobile/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -110,6 +114,7 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 - **Answer (RU):** Начать с **product questions** (где отваливаются, что drives retention). Имена: **`object_action`** (`checkout_completed`). Обязательные поля: `timestamp`, `session_id`, ids сущностей. Документ schema; версионировать breaking changes; один event — одно действие, не god-event.
 
 </details>
+
 ### Q2
 - **Question (EN):** How do you batch analytics without draining battery?
 
@@ -124,6 +129,7 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 - **Answer (RU):** **Persist queue on disk**; flush по порогу (N events / KB) или при **background** / app backgrounding. Critical events — immediate. Exponential backoff при ошибках сети. Не wake каждые 5 секунд.
 
 </details>
+
 ### Q3
 - **Question (EN):** What changes for analytics after ATT?
 
@@ -138,6 +144,7 @@ Mobile **analytics** turns product questions into an **event taxonomy**: what to
 - **Answer (RU):** **IDFA** доступен только после authorize. Без ATT — first-party ids (install id, account id), aggregated analytics, **SKAdNetwork** для ad attribution. Нельзя обходить ATT fingerprinting. Privacy Nutrition Label и privacy manifest должны отражать сбор.
 
 </details>
+
 ### Q4
 - **Question (EN):** Explain SKAdNetwork in two sentences.
 

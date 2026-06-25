@@ -103,7 +103,7 @@ Use for independent network calls, parallel downloads, fan-out inside one async 
 
 ---
 
-## Чего нет в посте (см. основной README и другие материалы)
+## Not in the post (see main README and other materials)
 
 | Тема | Где углубиться |
 |------|----------------|
@@ -115,7 +115,7 @@ Use for independent network calls, parallel downloads, fan-out inside one async 
 
 ---
 
-## Связь с базой
+## Link to parent topic
 
 - [Concurrency README](../README.md)
 - [StructuredConcurrencyLab.playground](../StructuredConcurrencyLab.playground)

@@ -4,7 +4,7 @@
 
 ---
 
-## За 30 секунд
+## In 30 seconds
 
 
 
@@ -45,7 +45,7 @@ _English summary — expand «По-русски» for full text (gRPC vs REST vs
 
 </details>
 
-## Четыре стиля RPC
+## Four RPC styles
 
 _English summary — expand «По-русски» for full text (Четыре стиля RPC)._
 
@@ -77,7 +77,7 @@ rpc FollowRace(stream FollowRaceRequest) returns (stream FollowRaceResponse);
 
 </details>
 
-## Setup в Xcode (клиент)
+## Setup in Xcode (client)
 
 _English summary — expand «По-русски» for full text (Setup в Xcode (клиент))._
 
@@ -147,7 +147,7 @@ try await withGRPCClient(
 
 </details>
 
-## Lifecycle клиента
+## Client lifecycle
 
 _English summary — expand «По-русски» for full text (Lifecycle клиента)._
 
@@ -207,7 +207,7 @@ try await kart.followRace { requestStream in
 
 </details>
 
-## Protobuf на wire
+## Protobuf on the wire
 
 _English summary — expand «По-русски» for full text (Protobuf на wire)._
 
@@ -223,7 +223,7 @@ _English summary — expand «По-русски» for full text (Protobuf на w
 
 </details>
 
-## Production (упомянуто в сессии, не в demo)
+## Production (mentioned in session, not in demo)
 
 
 
@@ -233,7 +233,7 @@ _English summary — expand «По-русски» for full text (Protobuf на w
 
 ---
 
-## Deploy сервера (кратко)
+## Server deploy (brief)
 
 _English summary — expand «По-русски» for full text (Deploy сервера (кратко))._
 

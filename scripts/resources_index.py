@@ -8,7 +8,7 @@ from typing import Optional
 
 KB = Path(__file__).resolve().parents[1]
 OUTPUT = KB / "reference" / "curated" / "README.md"
-RESOURCES_HEADING = re.compile(r"^## Ресурсы\s*$", re.MULTILINE)
+RESOURCES_HEADING = re.compile(r"^## Resources\s*$", re.MULTILINE)
 CARD_HEADING = re.compile(r"^### (.+)$", re.MULTILINE)
 FIELD = re.compile(r"^- \*\*(.+?):\*\* (.+)$")
 
@@ -97,7 +97,7 @@ def build_markdown(cards: list[ResourceCard]) -> str:
     lines = [
         "# External Links",
         "",
-        "Auto-generated from `## Ресурсы` sections in topic READMEs.",
+        "Auto-generated from `## Resources` sections in topic READMEs.",
         "",
         "Regenerate:",
         "",
@@ -105,7 +105,7 @@ def build_markdown(cards: list[ResourceCard]) -> str:
         "python3 scripts/resources_index.py",
         "```",
         "",
-        "Add a resource: edit the topic README → `## Ресурсы` → run the script above.",
+        "Add a resource: edit the topic README → `## Resources` → run the script above.",
         "",
         "**Before adding anything:** [CURATION.md](CURATION.md) — usefulness gate (reject / bookmark / enhance / new note).",
         "",

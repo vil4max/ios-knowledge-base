@@ -1,4 +1,4 @@
-# Mobile System Design Interview — глава 1
+# Mobile System Design Interview — chapter 1
 
 - **Source:** https://immh.tech/blog/mobile-system-design-interview-glava-1
 - **Author:** immh (IT Makes Me Hate)
@@ -16,7 +16,7 @@ _(paste article summary here)_
 
 ---
 
-## Ключевые идеи
+## Key ideas
 
 _English summary — expand «По-русски» for full text (Ключевые идеи)._
 
@@ -25,19 +25,19 @@ _English summary — expand «По-русски» for full text (Ключевы�
 
 _(structure sections to match the article after paste)_
 
-### Что такое mobile system design interview
+### What a mobile system design interview is
 
 _(to be added)_
 
-### Отличие от backend / generic SD
+### Difference from backend / generic SD
 
 _(to be added)_
 
-### Структура ответа (45 мин)
+### Answer structure (45 min)
 
 _(to be added)_
 
-### Entity graph и потоки данных
+### Entity graph and data flows
 
 _(to be added)_
 
@@ -45,7 +45,7 @@ _(to be added)_
 
 </details>
 
-## Формулировки для собеса
+## Interview phrasing
 
 
 
@@ -55,7 +55,7 @@ _(to be added)_
 
 ---
 
-## Диаграммы
+## Diagrams
 
 
 
@@ -63,7 +63,7 @@ _(mermaid / ascii from article)_
 
 ---
 
-## Связь с базой
+## Link to parent topic
 
 
 
@@ -72,7 +72,7 @@ _(mermaid / ascii from article)_
 - [Offline First](/system-design/offline-first/)
 - [Sync Engine](/system-design/sync-engine/)
 
-## Что добавить в README после paste
+## TODO for parent README after paste
 
 
 

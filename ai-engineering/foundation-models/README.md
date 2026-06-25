@@ -1,6 +1,6 @@
 # 11 · Foundation Models
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Foundation Models framework** (iOS 26+, iPadOS 26+, macOS 26+) exposes Apple’s **on-device LLM** powering Apple Intelligence: Swift-native API, offline-capable, no per-token cloud bill for on-device inference. Core types: **`SystemLanguageModel`**, **`LanguageModelSession`**, **guided generation** (`@Generable`), and **Tools** for app callbacks. Requires Apple Intelligence–compatible device with Intelligence enabled; larger requests may use **Private Cloud Compute**.
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
 - [SystemLanguageModel](https://developer.apple.com/documentation/foundationmodels/systemlanguagemodel)
@@ -26,6 +25,7 @@
 - [Apple Intelligence & privacy](https://www.apple.com/legal/privacy/data/en/intelligence-engine/)
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -43,7 +43,8 @@
 - Replacing all NL APIs — Vision/Natural Language still fit non-generative tasks.
 - Jailbreak / model extraction — out of scope for app dev interview.
 
-## Ключевые понятия
+## Key concepts
+
 
 | API | Purpose |
 |-----|---------|
@@ -75,6 +76,7 @@ let response = try await session.respond(to: userText)
 
 ## 🏋️ Exercises
 
+
 1. **Availability UX** — Feature flag + `isAvailable` gating. *Expected:* graceful hide on unsupported hardware/OS.
 
 2. **Guided extraction** — `@Generable struct EventDraft { title, date }` from natural language. *Expected:* validate before saving to Calendar API.
@@ -85,14 +87,16 @@ let response = try await session.respond(to: userText)
 
 5. **Evaluations** — Golden prompts after iOS beta upgrade. *Expected:* mention Evaluations framework regression suite.
 
-## Ссылки
+## Links
+
 
 - [Foundation Models documentation](https://developer.apple.com/documentation/foundationmodels)
 - [Meet the Foundation Models framework (WWDC25)](https://developer.apple.com/videos/play/wwdc2025/286/)
 - [Apple Intelligence overview](https://www.apple.com/apple-intelligence/)
 - Related: [fundamentals](../fundamentals/README.md), [ai-in-ios-apps](../ai-in-ios-apps/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -110,6 +114,7 @@ let response = try await session.respond(to: userText)
 - **Answer (RU):** Нативный **Swift API** к on-device LLM Apple Intelligence: генерация текста, multi-turn **sessions**, **structured output** (`@Generable`), **Tools** для данных app. Работает **offline** на supported devices; inference on-device без cloud API billing для базового сценария.
 
 </details>
+
 ### Q2
 - **Question (EN):** LanguageModelSession vs one-shot prompts?
 
@@ -124,6 +129,7 @@ let response = try await session.respond(to: userText)
 - **Answer (RU):** **Session** хранит **transcript** multi-turn диалога и **instructions**; модель использует контекст предыдущих turns. One-shot — один запрос без history. Chat UI почти всегда session; простые transforms — single `respond`.
 
 </details>
+
 ### Q3
 - **Question (EN):** Why guided generation?
 
@@ -138,6 +144,7 @@ let response = try await session.respond(to: userText)
 - **Answer (RU):** LLM raw text → хрупкий `JSONDecoder`. **`@Generable`** заставляет модель заполнять **Swift struct** с compile-time schema — меньше parse errors, type-safe integration с app logic.
 
 </details>
+
 ### Q4
 - **Question (EN):** On-device vs Private Cloud Compute?
 

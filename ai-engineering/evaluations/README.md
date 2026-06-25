@@ -1,6 +1,6 @@
 # 14 · Evaluations
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Evaluations** measure whether AI features behave correctly after **prompt**, **model**, or **tool** changes — beyond traditional unit tests that can't catch fluent-but-wrong answers. Apple's **Evaluations framework** (WWDC26) runs **golden datasets** in Xcode with **quantitative evaluators** and **Model Judge** for qualitative traits. For agentic apps: **`ToolCallEvaluator`** verifies **tool trajectories** (which tools, args, order). Essential for regression when iOS updates ship new Foundation Models weights.
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Evaluations framework](https://developer.apple.com/documentation/evaluations) — core types and workflow.
 - [ToolCallEvaluator](https://developer.apple.com/documentation/evaluations/toolcallevaluator) — agentic tool trajectory verification.
@@ -26,6 +25,7 @@
 - [WWDC26 — Improve prompts by hill-climbing (335)](https://developer.apple.com/videos/play/wwdc2026/335/) — compare eval runs, iterate prompts.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -43,7 +43,8 @@
 - Human rating infrastructure at scale — mention spot-check + Model Judge.
 - Statistical significance formulas — qualitative "compare runs in Xcode" enough for interview.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Component | Role |
 |-----------|------|
@@ -104,6 +105,7 @@ struct BookSearchToolEval: Evaluation {
 
 ## 🏋️ Exercises
 
+
 1. **Golden set design** — Note-tagging feature. *Expected:* 25 samples: short/long notes, non-English, empty note, PII-heavy; expect ≥3 tags or explicit empty.
 
 2. **Tool regression** — Added `BookLookupTool`; model stops calling search. *Expected:* ToolCallEvaluator trajectory requires `searchBooks` before `respond`; catch in Xcode.
@@ -114,7 +116,8 @@ struct BookSearchToolEval: Evaluation {
 
 5. **Hill-climb** — Tag quality 2.8 avg → edit system prompt → 3.4. *Expected:* compare eval runs in Xcode; document winning prompt version in git.
 
-## Ссылки
+## Links
+
 
 - [Evaluations framework](https://developer.apple.com/documentation/evaluations)
 - [ToolCallEvaluator](https://developer.apple.com/documentation/evaluations/toolcallevaluator)
@@ -123,7 +126,8 @@ struct BookSearchToolEval: Evaluation {
 - [What's new in Foundation Models (WWDC26-241)](https://developer.apple.com/videos/play/wwdc2026/241/)
 - Related: [tool-calling](../tool-calling/README.md), [dynamic-profiles](../dynamic-profiles/README.md), [structured-output](../structured-output/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -145,13 +149,26 @@ struct BookSearchToolEval: Evaluation {
 - **Answer (RU):** LLM output **non-deterministic** и **fluent-but-wrong**. Unit tests ломаются на wording. Evaluations проверяют **properties**: schema, tag count, tool trajectory, judge scores — regression при смене prompt/model/iOS.
 
 </details>
+
 ### Q2
 - **Question (EN):** How do you build a golden dataset?
 
 - **Answer (EN):** Start with 20–30 real redacted cases plus edge cases. Each sample has a prompt and expectation. Expand with SampleGenerator but review synthetic rows.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** сколько samples для App Store feature?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** Enough to cover **top user paths + known failures** — often 50–100 before major AI launch; continuous add from support tickets post-release.
 
 
@@ -163,6 +180,7 @@ struct BookSearchToolEval: Evaluation {
 - **Answer (RU):** Start **20–30 real** cases (redacted logs) + edge cases: empty input, injection attempt, wrong locale, offline context. Each sample: prompt + **expectation** (struct fields or trajectory). Grow via **SampleGenerator** with human review — не blind synthetic only.
 
 </details>
+
 ### Q3
 - **Question (EN):** What does ToolCallEvaluator verify?
 
@@ -181,13 +199,26 @@ struct BookSearchToolEval: Evaluation {
 - **Answer (RU):** **Trajectory**: какие **tools** вызваны, **arguments**, **order**. Model может дать правдоподобный ответ **без** tool — eval ловит. Essential для RAG/search agents после prompt/model change.
 
 </details>
+
 ### Q4
 - **Question (EN):** Regression process on Apple model updates?
 
 - **Answer (EN):** Re-run the eval suite on device for each iOS beta seed. Compare to baseline, triage failures, iterate prompts and tools, gate release on pass-rate thresholds.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** CI для FM evals realistic?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** Challenging — needs Apple Intelligence device/simulator in CI; often **manual pre-release gate** + smaller heuristic unit tests for parsing; run full eval locally and on TestFlight dogfood builds.
 
 <!-- knowledge-cards-canonical:end -->

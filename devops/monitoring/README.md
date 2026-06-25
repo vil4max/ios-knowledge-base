@@ -1,6 +1,6 @@
 # Crash Analytics & Monitoring
 
-## За 30 секунд
+## In 30 seconds
 
 
 Production iOS monitoring combines **crash reports**, **performance metrics**, and **structured logs** so you can detect regressions before users flood support. Apple gives you **MetricKit** (hangs, launches, disk writes, CPU), **OSLog** (privacy-aware logging), and **Xcode Organizer / crash logs** with **dSYM symbolication**. Third-party tools like **Firebase Crashlytics** add aggregation, breadcrumbs, and release health dashboards. Senior answers tie the pipeline together: collect → symbolicate → triage by impact → fix → verify in the next build with uploaded symbols and MetricKit deltas.
@@ -13,9 +13,8 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [MetricKit](https://developer.apple.com/documentation/metrickit) — `MXMetricManager`, daily diagnostic and metric payloads (hangs, crashes, launches, memory, energy).
 - [Logging (OSLog)](https://developer.apple.com/documentation/os/logging) — unified logging, subsystems, categories, privacy levels (`public` / `private`).
@@ -27,22 +26,23 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 ## 🎯 Focus vs Defer
 
+
 ### Focus
 
 - **Crash pipeline end-to-end** — capture, symbolicate, group, prioritize, fix, verify.
-  - **Ответ:** Raw crash = addresses + binary UUIDs. **dSYM** maps addresses to symbols. Without matching dSYM for the exact build UUID, stacks show `0x…` only. Upload dSYMs to App Store Connect and/or Crashlytics on every release build. Triage by **affected users**, **version**, **signal** (SIGSEGV vs SIGABRT), and **reproducibility**.
+  - **Answer:** Raw crash = addresses + binary UUIDs. **dSYM** maps addresses to symbols. Without matching dSYM for the exact build UUID, stacks show `0x…` only. Upload dSYMs to App Store Connect and/or Crashlytics on every release build. Triage by **affected users**, **version**, **signal** (SIGSEGV vs SIGABRT), and **reproducibility**.
 
 - **MetricKit for perf regressions** — hangs, launch time, scroll hitch metrics, disk writes.
-  - **Ответ:** Subscribe to `MXMetricManager`; process **daily** payloads off main thread. Use for “app got slower” without full Instruments session. Pair with release tags to spot regressions between versions. Not a substitute for profiling hot paths—good for fleet-level trends.
+  - **Answer:** Subscribe to `MXMetricManager`; process **daily** payloads off main thread. Use for “app got slower” without full Instruments session. Pair with release tags to spot regressions between versions. Not a substitute for profiling hot paths—good for fleet-level trends.
 
 - **OSLog discipline** — subsystems, categories, `.info` vs `.debug`, privacy.
-  - **Ответ:** Prefer `Logger(subsystem:category:)` over `print`. Mark PII as `privacy: .private` so logs survive device collection without leaking data. Correlate logs with crash **breadcrumbs** in Crashlytics by logging stable event IDs, not user emails.
+  - **Answer:** Prefer `Logger(subsystem:category:)` over `print`. Mark PII as `privacy: .private` so logs survive device collection without leaking data. Correlate logs with crash **breadcrumbs** in Crashlytics by logging stable event IDs, not user emails.
 
 - **Crash triage workflow** — dedupe, root cause, ownership, SLA.
-  - **Ответ:** Group by **top frame in app code** + exception reason. Ignore system frames until app frame identified. **SIGABRT** often asserts/preconditions; **EXC_BAD_ACCESS** often memory/lifetime. Assign severity: crash on launch > background > edge screen. Link to commit via `CFBundleVersion` / build number in report.
+  - **Answer:** Group by **top frame in app code** + exception reason. Ignore system frames until app frame identified. **SIGABRT** often asserts/preconditions; **EXC_BAD_ACCESS** often memory/lifetime. Assign severity: crash on launch > background > edge screen. Link to commit via `CFBundleVersion` / build number in report.
 
 - **Symbolication basics** — UUID match, `atos`, Organizer, missing dSYM.
-  - **Ответ:** Each binary slice has a **UUID** in the crash report. dSYM must match UUID + architecture. CI should archive dSYMs per build and upload automatically. “Missing symbol” usually means wrong build or bitcode recompilation (legacy)—keep immutable artifact per release.
+  - **Answer:** Each binary slice has a **UUID** in the crash report. dSYM must match UUID + architecture. CI should archive dSYMs per build and upload automatically. “Missing symbol” usually means wrong build or bitcode recompilation (legacy)—keep immutable artifact per release.
 
 ### Defer
 
@@ -51,7 +51,8 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 - Chasing every low-volume crash in third-party SDKs before fixing top 3 app-owned crash clusters.
 - MetricKit custom signposts for every function—start with launch, network, and main-screen interactive milestones.
 
-## Ключевые понятия
+## Key concepts
+
 
 - **Crash report:** OS-generated artifact after fatal signal/exception; includes threads, registers, binary images, exception type.
 - **dSYM (debug symbol file):** Companion file mapping machine addresses to function names and line numbers for a specific build UUID.
@@ -66,13 +67,15 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 ## 🏋️ Exercises
 
+
 1. **dSYM UUID match:** Given a crash log listing `MyApp` UUID `ABC…` and an archived dSYM with UUID `DEF…`, explain why symbolication fails and what CI step fixes it. **Expected:** UUID mismatch; archive and upload dSYM from the exact CI job that produced the shipped IPA.
 2. **OSLog privacy:** Rewrite `print("User logged in: \(email)")` using `Logger` with appropriate privacy. **Expected:** `logger.info("User logged in: \(email, privacy: .private)"` or log user ID hash only.
 3. **MetricKit handler:** Sketch `MXMetricManagerSubscriber` that parses hang diagnostics and attaches `CFBundleShortVersionString` before forwarding to your backend. **Expected:** async processing, no main-thread JSON work, version tagging for regression detection.
 4. **Triage table:** For three crash clusters—launch SIGABRT in `AppDelegate`, background `EXC_BAD_ACCESS` in image cache, 0.01% SDK crash—order fix priority and justify. **Expected:** launch first, app-owned background second, low-rate SDK third unless blocking release.
 5. **Breadcrumb design:** List five breadcrumb events for a checkout flow that would help debug a crash on payment confirmation. **Expected:** cart state, payment method type (not PAN), network request start/end, view appearance, error codes—no secrets.
 
-## Ссылки
+## Links
+
 
 - WWDC 2020 — [Detect and diagnose memory issues](https://developer.apple.com/videos/play/wwdc2020/10180/) — crashes, leaks, MetricKit mindset
 - WWDC 2020 — [Explore logging in OSLog](https://developer.apple.com/videos/play/wwdc2020/10168/)
@@ -83,7 +86,8 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 ---
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -92,12 +96,40 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 - **Answer (EN):** A dSYM maps instruction addresses in a crash report to function names and line numbers for one specific build UUID. Symbolication requires the dSYM that matches the shipped binary; otherwise stacks stay unsymbolicated.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Уstная заготовка (EN):** Crashes have addresses; dSYM maps them; UUIDs must match.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** где взять UUID бинарника?
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up answer:** секция **Binary Images** в crash log или `dwarfdump --uuid MyApp.app/MyApp`.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -106,22 +138,68 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 - **Answer (RU):** **dSYM** — файл отладочных символов для конкретной сборки приложения (UUID + architecture). Crash report содержит **адреса** в машинном коде; symbolication подставляет **имена функций и строки** из dSYM. Без совпадения UUID dSYM и бинарника в отчёте стек бесполезен (`0x…`). Загружай dSYM из CI для каждого релиза в App Store Connect и/или Crashlytics.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** Crash = адреса; dSYM = словарь; UUID должен совпасть.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Building your app to include debugging information](https://developer.apple.com/documentation/xcode/building-your-app-to-include-debugging-information)
+
+</details>
+
 ### Q2
 - **Question (EN):** How does MetricKit differ from Crashlytics?
 
 - **Answer (EN):** MetricKit is Apple’s on-device aggregated diagnostics channel. Crashlytics is a third-party service for crash grouping, breadcrumbs, and team dashboards. They complement each other rather than replace each other.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Уstная заготовка (EN):** MetricKit = Apple batch diagnostics; Crashlytics = team crash dashboard.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** можно ли полагаться только на MetricKit для crash-free rate?
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up answer:** для App Store scale часто добавляют Crashlytics/Organizer для быстрого grouping и алертов; MetricKit полезен для hangs/launch regressions.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -130,22 +208,68 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 - **Answer (RU):** **MetricKit** — Apple framework: агрегированные **метрики и диагностики** с устройств (hangs, launches, CPU, disk, crashes) с privacy-моделью Apple; данные приходят **пакетами**, не live. **Crashlytics** (Firebase) — сторонний сервис: **real-time** crash grouping, breadcrumbs, release health UI, non-fatal errors, интеграция с CI. На практике: MetricKit — официальный fleet-level perf/crash signal; Crashlytics — triage dashboard и алерты команды. Можно использовать оба.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** MetricKit — Apple, батчи, perf; Crashlytics — dashboard и breadcrumbs.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [MetricKit](https://developer.apple.com/documentation/metrickit)
+
+</details>
+
 ### Q3
 - **Question (EN):** How should you use OSLog in production?
 
 - **Answer (EN):** Use `Logger` with subsystem and category, annotate sensitive values with privacy, prefer `.info`/`.error` in production, and avoid `print`. OSLog integrates with Console and Instruments and respects user privacy settings.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Уstная заготовка (EN):** Structured Logger, categories, mark PII private.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** чем `.private` лучше удаления поля из лога?
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up answer:** в debug/profile поле видно локально; в shared logs/redaction система скрывает значение автоматически.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -154,22 +278,68 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 - **Answer (RU):** `Logger(subsystem:category:)` с осмысленными **subsystem** (bundle id) и **category** (network, auth). Уровни: `.debug` для разработки, `.info/.error` для значимых событий. **Privacy:** PII и токены — `privacy: .private` или не логировать вовсе. Не `print` — шум, нет persistence/filters. Логи помогают воспроизвести краш **рядом** с breadcrumbs; избегай high-volume логов на hot path.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** Logger + category + privacy; без секретов в public.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Logging](https://developer.apple.com/documentation/os/logging)
+
+</details>
+
 ### Q4
 - **Question (EN):** Describe crash triage for a new release.
 
 - **Answer (EN):** Filter by release, ensure symbolication, cluster by in-app top frame, rank by user impact and novelty, assign owners, fix with regression test, verify metrics on the next build.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Уstная заготовка (EN):** Version filter, symbolicate, cluster, prioritize impact, verify fix.
+
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** SIGABRT vs EXC_BAD_ACCESS — первая гипотеза?
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up answer:** SIGABRT — assert/precondition/fatalError/over-release часто; EXC_BAD_ACCESS — dangling pointer, buffer overrun, race on memory.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -178,10 +348,26 @@ Production iOS monitoring combines **crash reports**, **performance metrics**, a
 
 - **Answer (RU):** 1) Фильтр по **версии/build** нового релиза. 2) **Symbolicate** — проверить, что dSYM загружены. 3) **Группировка** по top app frame + exception reason. 4) **Приоритет:** crash on launch / main flow > background; рост частоты vs baseline; новый vs recurring. 5) **Назначить** владельца модулю по стеку. 6) **Fix + test**; verify crash-free rate и MetricKit hangs на следующем build. 7) Закрыть или понизить приоритет SDK/low-rate edge cases с документированным workaround.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** Версия → символы → кластер → impact → fix → verify.
 
 </details>
+</details>
+</details>
+</details>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Доп. информация:** [Analyzing a crash report](https://developer.apple.com/documentation/xcode/analyzing-a-crash-report)
 
+</details>
 <!-- knowledge-cards-canonical:end -->

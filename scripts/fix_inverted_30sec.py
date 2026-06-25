@@ -9,7 +9,7 @@ from pathlib import Path
 KB = Path(__file__).resolve().parents[1]
 PLACEHOLDER = "_(Русский перевод — добавить.)_"
 BLOCK = re.compile(
-    r"(## За 30 секунд\s*\n)(.*?)(\n<details class=\"lang-ru\">.*?<summary>По-русски</summary>\s*\n+)"
+    r"(## In 30 seconds\s*\n)(.*?)(\n<details class=\"lang-ru\">.*?<summary>По-русски</summary>\s*\n+)"
     + re.escape(PLACEHOLDER)
     + r"(\s*\n</details>)",
     re.S,

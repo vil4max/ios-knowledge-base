@@ -16,7 +16,7 @@ _(paste article summary here)_
 
 ---
 
-## Ключевые идеи
+## Key ideas
 
 _English summary — expand «По-русски» for full text (Ключевые идеи)._
 
@@ -27,11 +27,11 @@ _English summary — expand «По-русски» for full text (Ключевы�
 
 _(to be added)_
 
-### API contract и versioning
+### API contract and versioning
 
 _(to be added)_
 
-### Renderer на клиенте
+### Client renderer
 
 _(to be added)_
 
@@ -43,7 +43,7 @@ _(to be added)_
 
 </details>
 
-## Связь с базой
+## Link to parent topic
 
 
 
@@ -52,7 +52,7 @@ _(to be added)_
 - [Analytics & Remote Config](/system-design/analytics/)
 - [SwiftUI](/ios-sdk/swiftui/)
 
-## Что добавить после paste
+## TODO after paste
 
 
 

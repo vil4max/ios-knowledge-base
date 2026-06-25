@@ -21,11 +21,11 @@
 7. **URLProtocol** — stub 200 + body; assert path и decoded model (см. [Testing-Network-Stub-RU](../notes/Testing-Network-Stub.md), [playground](../testing.playground/Contents.swift)).
 8. **Contract fixture** — `user_ok.json` из OpenAPI example → DTO + mapper; сломанное поле в fixture → красный тест (см. [Contract-Tests-OpenAPI-RU](../notes/Contract-Tests-OpenAPI.md)).
 
-## UI (опционально)
+## UI (optional)
 
 9. **Launch arg** — `-UITesting` открывает экран без логина; один XCUITest на `accessibilityIdentifier` кнопки.
 
-## Test Plan (конфигурация)
+## Test Plan (configuration)
 
 10. Опиши два `.xctestplan`: **PR** (unit only) и **Nightly** (+ UI). Какие теги Swift Testing включишь?
 

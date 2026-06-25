@@ -1,6 +1,6 @@
 # 02 · Tokens
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Tokens** are the atomic units models read and write — not words, but **subword pieces** produced by a **tokenizer** (often BPE). Token count drives **cost**, **latency**, and whether content fits the **context window**. Interviews expect you to distinguish **input vs output tokens**, explain why the same sentence tokenizes differently across languages, and optimize prompts for mobile (shorter system prompts, fewer few-shot examples). Context limits and truncation strategies live in [03 · Context Window](../context-window/README.md).
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Foundation Models — LanguageModelSession](https://developer.apple.com/documentation/foundationmodels/languagemodelsession) — transcript grows in tokens each turn.
 - [WWDC25 — Deep dive into the Foundation Models framework](https://developer.apple.com/videos/play/wwdc2025/301/) — tokens, context limits, sampling.
@@ -23,6 +22,7 @@
 - [NLTokenizer](https://developer.apple.com/documentation/naturallanguage/nltokenizer) — word/sentence boundaries on device.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -39,7 +39,8 @@
 - Byte-level BPE vs SentencePiece internals unless NLP research role.
 - Vendor-specific tokenizer file formats (tiktoken, etc.) — know concept, not every API.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Term | Detail |
 |------|--------|
@@ -74,6 +75,7 @@
 
 ## 🏋️ Exercises
 
+
 1. **Estimate budget** — System prompt 400 tokens, history 2000, user 100, reserve 500 for reply. Model limit 4096. Safe? *Expected:* 400+2000+100+500=3000 — yes, ~1096 headroom; monitor history growth.
 
 2. **Multilingual** — Same FAQ in EN vs JA; JA uses 2× tokens. *Expected:* shorter JA system prompt or summarize FAQ chunks; don't assume equal capacity.
@@ -84,7 +86,8 @@
 
 5. **Mobile trim** — 3-page system prompt for on-device chat. *Expected:* cut to role + format + safety; move examples to `@Generable` schema; measure with transcript inspection.
 
-## Ссылки
+## Links
+
 
 - [Deep dive Foundation Models (WWDC25)](https://developer.apple.com/videos/play/wwdc2025/301/)
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
@@ -92,7 +95,8 @@
 - Next: [03 · Context Window](../context-window/README.md)
 - Related: [llm-basics](../llm-basics/README.md), [context-window](../context-window/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -101,10 +105,34 @@
 
 - **Answer (EN):** A token is a subword unit from the model vocabulary after tokenization. Frequent words map to one token; rare words split into multiple pieces. The model operates on integer IDs, not raw strings.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** почему JSON «дороже» в tokens?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** Скобки, кавычки, ключи — отдельные tokens; pretty-printed JSON с whitespace ещё хуже. Minify + schema в system, не paste огромного blob в user message.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -114,15 +142,40 @@
 - **Answer (RU):** **Token** — subword unit из vocabulary модели после **tokenization**. Частые слова = 1 token; редкие разбиваются (`"internationalization"` → несколько pieces). Модель оперирует **integer IDs**, не Unicode строками напрямую.
 
 </details>
+
 ### Q2
 - **Question (EN):** BPE in 30 seconds?
 
 - **Answer (EN):** Start with characters, repeatedly merge the most frequent pairs until vocabulary size is reached. Produces subwords like common suffixes as single tokens — a balance between characters and whole words.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** один tokenizer для всех моделей?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** **Нет** — каждая модель/семейство имеет свой vocabulary и tokenizer. Нельзя считать tokens модели A по tokenizer модели B для billing/limit checks.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -132,15 +185,40 @@
 - **Answer (RU):** **Byte Pair Encoding:** начать с символов, iteratively **merge** самые частые пары до target vocabulary size. Результат — subwords: `"ing"`, `"tion"` как отдельные tokens. Баланс между character-level и word-level.
 
 </details>
+
 ### Q3
 - **Question (EN):** Why distinguish input vs output tokens?
 
 - **Answer (EN):** Cloud APIs often price them differently. Input drives prefill cost; output drives sequential decode latency. Cap maximum response tokens and monitor both in production.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** что растёт быстрее в long chat — input или output?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** **Input** (history) растёт каждый turn и eventually hits context window — см. truncation/summary в context-window topic. Output per turn controllable лимитом.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -150,15 +228,40 @@
 - **Answer (RU):** **Billing:** cloud APIs часто разные rates. **Latency:** input = prefill (parallel); output = decode (sequential, token-by-token). **Limits:** max output отдельно от context size. Production: cap `maximumResponseTokens`, мониторить оба.
 
 </details>
+
 ### Q4
 - **Question (EN):** Multilingual impact on mobile LLM?
 
 - **Answer (EN):** Non-Latin scripts often need more tokens per character, so the same context window holds less content with higher cost and latency. Test real UI strings per locale and keep prompts concise.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up:** Apple on-device model — один tokenizer для всех языков?
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up answer:** Модель multilingual, но token efficiency **не равна** across languages — проверять transcript size на target locales, не только English QA.
 
+</details>
+</details>
+</details>
 <!-- knowledge-cards-canonical:end -->
 
 <!-- ai-engineering-nav:start -->

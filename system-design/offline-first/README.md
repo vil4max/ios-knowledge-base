@@ -1,6 +1,6 @@
 # Offline First
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Offline-first** means the app treats **local storage as the source of truth** for what the user sees. Reads never block on network; writes are recorded locally first, then synced. Network is reconciliation, not a gate for every screen. Interview answers cover outbox queues, idempotent APIs, conflict policies, and UX for pending/failed states.
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Using background tasks](https://developer.apple.com/documentation/backgroundtasks) — `BGAppRefreshTask`, deferred sync windows.
 - [NWPathMonitor](https://developer.apple.com/documentation/network/nwpathmonitor) — reachability without polling.
@@ -23,6 +22,7 @@
 - [URLSession background configuration](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1407496-background) — large uploads/downloads while suspended.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -39,7 +39,8 @@
 - CloudKit as default answer for every custom backend — mention when it fits vs when it does not.
 - Perfect real-time consistency across devices in v1.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -66,6 +67,7 @@
 
 ## 🏋️ Exercises
 
+
 1. **Notes app** — Design local schema + outbox for create/edit/delete. *Expected:* `Note` table, `PendingMutation` table, LWW on `updatedAt`.
 
 2. **Shopping cart offline** — User adds items offline, prices change on server. *Expected:* local cart authoritative for UX; reconcile price conflicts on sync with user message.
@@ -76,13 +78,15 @@
 
 5. **Idempotency** — POST /messages twice with same client UUID. *Expected:* server returns same resource id both times.
 
-## Ссылки
+## Links
+
 
 - [Using Background Tasks](https://developer.apple.com/documentation/backgroundtasks)
 - Related: [sync-engine](../sync-engine/README.md), [caching-offline-first](../../data-and-network/caching-offline-first/README.md)
 - [Offline First (offlinefirst.org)](https://offlinefirst.org/) — principles and patterns
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -100,6 +104,7 @@
 - **Answer (RU):** UI и бизнес-логика читают **локальное хранилище** (Core Data, SQLite, файлы). Сеть **обновляет** локальное состояние, но не является единственным местом, откуда экран берёт данные. Пользователь видит последнее известное состояние сразу, даже без сети.
 
 </details>
+
 ### Q2
 - **Question (EN):** Why a durable outbox on disk?
 
@@ -114,6 +119,7 @@
 - **Answer (RU):** Мутации (create/update/delete) записываются в **очередь на диске** до ack сервера. При краше или offline очередь сохраняется; при восстановлении сети — retry с backoff. In-memory queue теряет данные при kill процесса.
 
 </details>
+
 ### Q3
 - **Question (EN):** Last-write-wins vs custom merge — when to use which?
 
@@ -128,6 +134,7 @@
 - **Answer (RU):** **LWW** — простые сущности, одно поле «версии» (`updatedAt`), допустимо перезатереть запись. **Custom merge** — разные поля от разных клиентов (статус + комментарий), доменные инварианты, или нужен **user-facing conflict UI**. Часто: LWW для metadata, field merge для контента.
 
 </details>
+
 ### Q4
 - **Question (EN):** How does offline-first work with push notifications?
 

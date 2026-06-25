@@ -29,8 +29,8 @@ EN_ITEM = re.compile(
 )
 META_ITEM = re.compile(r"^\s*[-*]\s+\*\*(Доп\. информация|Notes):\*\*")
 HAS_DETAILS = re.compile(r'<details\s+class="lang-ru"', re.I)
-IN_30 = re.compile(r"^## In 30 seconds\s*$", re.M)
-SEC_30 = re.compile(r"^## За 30 секунд\s*$", re.M)
+SEC_30_RU = re.compile(r"^## За 30 секунд\s*$", re.M)
+SEC_30 = re.compile(r"^## In 30 seconds\s*$", re.M)
 
 
 def is_list_item_start(line: str) -> bool:
@@ -152,7 +152,7 @@ def migrate_q_cards(text: str) -> str:
 
 
 def migrate_30_sec(text: str) -> str:
-    text = IN_30.sub("## За 30 секунд", text)
+    text = SEC_30_RU.sub("## In 30 seconds", text)
     m = SEC_30.search(text)
     if not m or HAS_DETAILS.search(text[m.start() : m.start() + 800]):
         return text

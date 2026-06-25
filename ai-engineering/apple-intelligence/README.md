@@ -1,6 +1,6 @@
 # 12 · Apple Intelligence
 
-## За 30 секунд
+## In 30 seconds
 
 
 Practical **on-device AI** in iOS apps mixes **Apple frameworks** by task: **Vision** / **Core ML** for perception, **Natural Language** for lightweight NLP, **Foundation Models** (iOS 26+) for generative text and tools. Patterns: capability gating, streaming UI, background inference off main thread, privacy manifests, hybrid cloud fallback only when justified. Ship measurable value — summarization, search, assistive input — not AI for its own sake.
@@ -13,9 +13,8 @@ Practical **on-device AI** in iOS apps mixes **Apple frameworks** by task: **Vis
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Core ML](https://developer.apple.com/documentation/coreml) — custom and converted models.
 - [Vision](https://developer.apple.com/documentation/vision) — face, text, barcode, object detection.
@@ -25,6 +24,7 @@ Practical **on-device AI** in iOS apps mixes **Apple frameworks** by task: **Vis
 - [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) — declare ML-related API use.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -42,7 +42,8 @@ Practical **on-device AI** in iOS apps mixes **Apple frameworks** by task: **Vis
 - Custom CUDA — irrelevant on Apple platforms (Neural Engine / GPU via Core ML).
 - Embedding entire ChatGPT clone in v1 — scope to one assistive feature.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Use case | Apple stack |
 |----------|-------------|
@@ -73,6 +74,7 @@ UI (SwiftUI)
 
 ## 🏋️ Exercises
 
+
 1. **Smart reply** — Three suggested replies to incoming message using on-device model. *Expected:* low temp, max length, user tap to send (no auto-send).
 
 2. **Receipt scan** — Vision OCR + guided extraction of total/date. *Expected:* Vision for text, FM or regex for fields, validate currency.
@@ -83,14 +85,16 @@ UI (SwiftUI)
 
 5. **Privacy review** — List data leaving device for AI feature. *Expected:* default none for FM; if cloud, document in privacy manifest and UI disclosure.
 
-## Ссылки
+## Links
+
 
 - [Core ML](https://developer.apple.com/documentation/coreml)
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
 - [Human Interface Guidelines — Machine learning](https://developer.apple.com/design/human-interface-guidelines/machine-learning) — UX expectations
 - Related: [apple-foundation-models](../apple-foundation-models/README.md), [fundamentals](../fundamentals/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -108,6 +112,7 @@ UI (SwiftUI)
 - **Answer (RU):** **Core ML** — фиксированная задача (classify, detect, regress), известный input/output, часто меньше и deterministic. **Foundation Models** — open-ended **text generation**, dialog, tools. Не гонять generative LLM туда, где хватит Vision + regex.
 
 </details>
+
 ### Q2
 - **Question (EN):** Where should inference run?
 
@@ -122,6 +127,7 @@ UI (SwiftUI)
 - **Answer (RU):** **Не на main thread** — Vision/Core ML/FM calls в `Task` или dedicated **actor**; UI только observes state on **MainActor**. Длинная генерация — **streaming** + cancel. Watch memory on large images — downsample first.
 
 </details>
+
 ### Q3
 - **Question (EN):** On-device AI UX patterns?
 
@@ -136,6 +142,7 @@ UI (SwiftUI)
 - **Answer (RU):** Показать **progress/streaming**; не скрывать что ответ AI; **confirm** перед irreversible actions; fallback когда model unavailable; settings link для Apple Intelligence. Избегать blank screen >2s без indicator.
 
 </details>
+
 ### Q4
 - **Question (EN):** App Store and privacy considerations for AI features?
 

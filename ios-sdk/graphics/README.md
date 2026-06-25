@@ -1,6 +1,6 @@
 # Graphics & Metal
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Core Graphics** (`CGContext`, paths, gradients) is the immediate-mode 2D API behind much of UIKit drawing and **`UIImage`** rendering. **`UIGraphicsImageRenderer`** (preferred over legacy `UIGraphicsBeginImageContext`) creates bitmap contexts with correct scale and wide-color format. **`UIImage`** drawing respects **`UIImage.RenderingMode`**, asset catalogs, and PDF/vector assets at target size. **Metal** is Apple's low-level GPU API for high-throughput shading — use **`MTKView`**, **`CAMetalLayer`**, or SwiftUI **`MeshGradient`** / custom render pipelines when Core Graphics or Core Animation cannot meet performance goals; most UI stays UIKit/SwiftUI. **SwiftUI stitchable shaders** (iOS 17+): write `[[ stitchable ]]` functions in a `.metal` file, call them via auto-generated **`ShaderLibrary`**, apply with **`.colorEffect`**, **`.layerEffect`**, or **`.distortionEffect`** — per-pixel GPU effects without a manual render pipeline. **`CADisplayLink`** drives frame-synced redraw loops for custom **`draw(_:)`** or Metal present. **Pixel formats** (`RGBA8`, `BGRA`, extended sRGB, **`prefersExtendedRange`**) affect memory and color accuracy. All **UIKit/AppKit drawing and view mutation** belongs on the **main thread** — mark custom drawing types **`@MainActor`** in Swift concurrency code.
@@ -13,9 +13,8 @@
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [Core Graphics](https://developer.apple.com/documentation/coregraphics) — contexts, paths, images, transforms.
 - [UIGraphicsImageRenderer](https://developer.apple.com/documentation/uikit/uigraphicsimagerenderer) — bitmap rendering with format control.
@@ -33,6 +32,7 @@
 - [distortionEffect(_:maxSampleOffset:isEnabled:)](https://developer.apple.com/documentation/swiftui/view/distortioneffect(_:maxsampleoffset:isenabled:)) — geometric pixel offset.
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -54,7 +54,8 @@
 - **CPU-side PDF parsing each frame** — rasterize once at needed size.
 - **Drawing from background threads** — never mutate UIKit graphics state off main.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -127,6 +128,7 @@ Wrong `bitmapInfo` → tinted edges, washed colors, or extra memory. Always thre
 
 ## 🏋️ Exercises
 
+
 1. **Renderer badge:** Draw rounded rect + centered text with `UIGraphicsImageRenderer`; verify crisp output on @3x simulator. **Expected:** set `format.opaque` correctly; explain points vs pixels.
 
 2. **Off-main decode:** Load 4000×4000 JPEG on background using `CGImageSourceCreateThumbnailAtIndex`; assign to `UIImageView` on main. **Expected:** no main-thread hitch in Instruments.
@@ -145,7 +147,8 @@ Wrong `bitmapInfo` → tinted edges, washed colors, or extra memory. Always thre
 
 9. **Stitchable gradient:** `basicColor` + `gradient` shaders in `.metal`; apply with `.colorEffect(ShaderLibrary.gradient(.boundingRect))` on a resizable rectangle. **Expected:** gradient scales with view bounds; explain why hardcoded `300.0` breaks.
 
-## Ссылки
+## Links
+
 
 - [WWDC 2023 — What's new in SwiftUI](https://developer.apple.com/videos/play/wwdc2023/10148/) — Metal shaders, `ShaderLibrary`, text styling (shader segment ~23:39)
 - [WWDC 2018 — Image and Graphics Best Practices](https://developer.apple.com/videos/play/wwdc2018/219/)
@@ -155,6 +158,7 @@ Wrong `bitmapInfo` → tinted edges, washed colors, or extra memory. Always thre
 - [Drawing and Printing Guide for iOS (archive)](https://developer.apple.com/library/archive/documentation/2DDrawing/Conceptual/DrawingPrintingiOS/Introduction/Introduction.html)
 
 ## Code patterns
+
 
 ### UIGraphicsImageRenderer
 
@@ -233,7 +237,8 @@ struct GradientShaderView: View {
 
 ---
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -242,12 +247,48 @@ struct GradientShaderView: View {
 
 - **Answer (EN):** Renderer handles scale and format correctly; legacy context APIs are error-prone for Retina and alpha. Use renderer for all new bitmap generation.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):** Renderer fixes scale/format; legacy causes blurry or wrong alpha.
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** points vs pixels в renderer size?
 
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Follow-up answer:** size в **points**; format.scale умножает на pixel grid — не hardcode pixel width.
 
+</details>
+</details>
+</details>
 
 <details class="lang-ru">
 <summary>По-русски</summary>
@@ -256,16 +297,41 @@ struct GradientShaderView: View {
 
 - **Answer (RU):** **Renderer** — preferred API: автоматический **scale**, **`UIGraphicsImageRendererFormat`** (opaque, wide color, **`preferredRange`**), без ручного `UIGraphicsGetCurrentContext` boilerplate. Legacy context легко получить неверный scale (blur) или non-opaque лишние альфа-blend. Рендер closure атомарен; результат **`UIImage`** для `UIImageView` / share sheet.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** renderer = scale + format из коробки; legacy — blur и alpha баги.
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q2
 - **Question (EN):** UIKit Core Graphics pipeline — draw(_:), setNeedsDisplay, layers?
 
 - **Answer (EN):** Invalidation triggers draw(_:) on main; cache static art as images or layer contents; avoid heavy per-frame full view redraw.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):** Invalidate sparingly; cache; main-thread draw.
 
+</details>
+</details>
+</details>
 - **Follow-up:** `draw(_:)` vs `CALayer` delegate?
 
 - **Follow-up answer:** layer-backed views often draw into layer; direct layer contents skip some view draw path — know your hierarchy.
@@ -278,16 +344,41 @@ struct GradientShaderView: View {
 
 - **Answer (RU):** **`setNeedsDisplay`** помечает view dirty → **`draw(_ rect:)`** на main в следующем cycle. Частые full redraw дороги — кеш **`UIImage`**, **`CALayer.contents`**, **`CATiledLayer`** для zoom. **`UIGraphicsImageRenderer`** — offscreen draw без subclass. **`shouldRasterize`** — trade memory for scroll perf. SwiftUI **`Canvas`** — declarative analogue для custom vector art.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** setNeedsDisplay → draw на main; кешируй статику; не рисуй список каждый frame.
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q3
 - **Question (EN):** Metal overview — when Metal vs Core Graphics / SwiftUI?
 
 - **Answer (EN):** CG for 2D image generation; SwiftUI stitchable shaders for view effects; raw Metal for GPU-bound 3D/compute; most app UI never needs a custom pipeline.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):** CG for bitmaps; Metal for GPU-heavy; standard UI elsewhere.
 
+</details>
+</details>
+</details>
 - **Follow-up:** `MTKView` vs raw `CAMetalLayer`?
 
 - **Follow-up answer:** MTKView — loop, drawable size, delegate; CAMetalLayer — lower level embed in custom view hierarchy.
@@ -300,18 +391,55 @@ struct GradientShaderView: View {
 
 - **Answer (RU):** **Core Graphics / UIKit** — badges, PDF rasterization, moderate custom 2D, image processing на CPU. **SwiftUI** — product UI, `Canvas`, **stitchable shaders** (`.colorEffect` / `.layerEffect`) для per-pixel эффектов без `MTKView`. **Raw Metal** — sustained GPU: games, camera filters, particle systems, 3D mesh, compute. Stack: **`MTLDevice`** → command queue → encoders → **`CAMetalLayer`** drawable present. Большинству app-разработчиков достаточно знать **границу**, не писать pipeline каждый день.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** CG — 2D картинки; Metal — GPU throughput; UI — UIKit/SwiftUI.
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q4
 - **Question (EN):** Pixel formats, color spaces, and @MainActor for drawing — interview topics?
 
 - **Answer (EN):** Know default BGRA premultiplied; wide color needs end-to-end color space match; decode off main, assign on main; mark UI drawing types @MainActor.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):** Color space chain matters; background decode; main for UI bitmap.
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** **`CADisplayLink`** + custom draw — риски?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** per-frame allocation, main-thread overload — profile; throttle or move simulation off hot path.
 
 
@@ -322,18 +450,55 @@ struct GradientShaderView: View {
 
 - **Answer (RU):** **BGRA8 premultiplied** — типичный UI bitmap. **Display P3 / extended range** — нужны matching **`CGColorSpace`**, asset catalog wide color, renderer format. Неверный **`bitmapInfo`** → fringe и banding. **UIKit/AppKit mutation и graphics state — main thread**; decode/filter на background, **`UIImage` assign @MainActor**. Swift 6: custom renderer class **`@MainActor`**, иначе isolation errors из `Task.detached`.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** P3 end-to-end; decode off main; UI draw @MainActor.
 
 </details>
+</details>
+</details>
+</details>
+
 ### Q5
 - **Question (EN):** SwiftUI stitchable shaders — workflow, signatures, when enough vs raw Metal?
 
 - **Answer (EN):** Mark MSL functions `[[ stitchable ]]`, call via generated `ShaderLibrary`, apply with color/layer/distortion effect modifiers; use `.boundingRect` for size-aware math; prefer stitchable for view effects, raw Metal for full GPU pipelines.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (EN):** Stitchable wraps Metal for SwiftUI views; know three modifier signatures; raw Metal for 3D/compute.
+
+</details>
+</details>
+</details>
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
 
 - **Follow-up:** Animated shader — как обновлять uniform?
 
+</details>
+</details>
+</details>
 - **Follow-up answer:** `TimelineView(.animation)` + `.float(elapsedTime)` argument; iOS 18+ `Shader.compile()` to avoid first-frame hitch.
 
 <!-- knowledge-cards-canonical:end -->
@@ -346,6 +511,18 @@ struct GradientShaderView: View {
 
 - **Answer (RU):** **Workflow:** `.metal` → `[[ stitchable ]]` → build → **`ShaderLibrary.name(args)`** → modifier. **`colorEffect`:** `half4(float2 position, half4 color, args…)` — цвет пикселя. **`layerEffect`:** + `SwiftUI::Layer` — `layer.sample(position)`. **`distortionEffect`:** `float2(float2 position, args…)` — смещение координат. SwiftUI сам передаёт `position`/`color`/`layer`; ты передаёшь uniforms (`.float`, `.boundingRect`). Для градиентов — **`.boundingRect`**, не magic size. **Stitchable** хватает для UI-эффектов на view; **raw Metal** — свой render loop, 3D, compute.
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 - **Устная заготовка (RU):** stitchable = `.metal` + ShaderLibrary + colorEffect; три сигнатуры; boundingRect для размера; raw Metal — когда нужен полный pipeline.
 
+</details>
+</details>
+</details>
 </details>

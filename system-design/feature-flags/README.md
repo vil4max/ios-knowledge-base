@@ -1,6 +1,6 @@
 # Feature Flags
 
-## За 30 секунд
+## In 30 seconds
 
 
 **Feature flags** and **remote config** decouple release from exposure: ship code dark, enable per user/segment, run **gradual rollout**, and flip a **kill switch** without App Store delay. Client-side evaluation reads cached config at launch; server-side gates sensitive or paid features. Interview answers cover flag lifecycle, consistency, analytics linkage, and avoiding flag spaghetti.
@@ -13,20 +13,21 @@
 
 </details>
 
+## Materials
 
-
-## Материалы
 
 - **Implementation (Swift):** [notes/swift-type-safe-resolver.md](notes/swift-type-safe-resolver.md) — type-safe resolver, priority sources, environment composition ([Livsy Code](https://livsycode.com/best-practices/a-feature-flags-system-in-swift/), [FeatureFlagsKit](https://github.com/Livsy90/FeatureFlagsKit))
 - **Playground:** [feature_flags_resolver.playground](feature_flags_resolver.playground/Contents.swift) — runnable `Feature`, sources, `FeatureFlagsConfigurator`, override demo
 
 ## Apple docs
 
+
 - No first-party feature-flag SDK — integrate Firebase Remote Config, LaunchDarkly, custom CDN JSON, or backend-driven config via your API.
 - [BackgroundTasks](https://developer.apple.com/documentation/backgroundtasks) — optional periodic config refresh (not real-time guarantee).
 - [App Store review guidelines](https://developer.apple.com/app-store/review/guidelines/) — hidden switches for review vs production must comply with guideline 2.3.1 (no undisclosed toggles for reviewers).
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -45,7 +46,8 @@
 - Multi-layer flag inheritance across 50 teams — keep example scoped.
 - Server-side rendering of flags for static sites — mobile focus stays client cache + API.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Pattern | Use |
 |---------|-----|
@@ -79,6 +81,7 @@ Launch → fetch config (CDN/API)
 
 ## 🏋️ Exercises
 
+
 1. **New checkout flow** — Roll out to 5% iOS 18+ users; kill switch if crash rate spikes. *Expected:* hash bucketing, crash telemetry tie-in, revert without release.
 
 2. **Remote config** — API timeout default 30s → change to 15s without app update. *Expected:* config key + client read at request layer.
@@ -89,7 +92,8 @@ Launch → fetch config (CDN/API)
 
 5. **Flag cleanup RFC** — Process to remove flag after 100% rollout. *Expected:* default true in code, delete branch, remove remote key.
 
-## Ссылки
+## Links
+
 
 - [LaunchDarkly architecture concepts](https://docs.launchdarkly.com/home/about/architecture) — vendor-neutral patterns
 - [Firebase Remote Config](https://firebase.google.com/docs/remote-config) — common mobile choice
@@ -98,7 +102,8 @@ Launch → fetch config (CDN/API)
 - [FeatureFlagsKit](https://github.com/Livsy90/FeatureFlagsKit)
 - Related: [analytics](../analytics/README.md), [scaling-teams](../scaling-teams/README.md)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -116,6 +121,7 @@ Launch → fetch config (CDN/API)
 - **Answer (RU):** **Remote config** — параметры (строки, числа, JSON): тексты, лимиты, URLs. **Feature flag** — gate поведения (вкл/выкл, variant). На практике один сервис часто делает и то и другое; важно разделить **kill switch** (безопасность) и **experiments** (продукт).
 
 </details>
+
 ### Q2
 - **Question (EN):** How do you implement gradual rollout on the client?
 
@@ -130,6 +136,7 @@ Launch → fetch config (CDN/API)
 - **Answer (RU):** Стабильный **bucket**: `hash(userId) % 100 < rolloutPercent`. Пользователь остаётся в группе между запусками. Добавить фильтры: версия app, OS, locale. Сервер отдаёт процент или готовый boolean per user — оба valid; главное — **sticky** assignment и логирование exposure.
 
 </details>
+
 ### Q3
 - **Question (EN):** What should happen in the UI when a kill switch fires?
 
@@ -144,6 +151,7 @@ Launch → fetch config (CDN/API)
 - **Answer (RU):** Feature **исчезает или degrades gracefully**: скрыть entry point, показать legacy flow, disable только risky sub-step. Не crash и не пустой экран. Config refresh на launch + периодически; при off — локальный cache обновляется. Критичные флаги — **default safe** (off) если config недоступен, если риск высокий.
 
 </details>
+
 ### Q4
 - **Question (EN):** What are the risks of client-side evaluation?
 
@@ -158,6 +166,7 @@ Launch → fetch config (CDN/API)
 - **Answer (RU):** Пользователь может подменить cached config на jailbreak (редко критично для UI experiments). **Платные/безопасные** gates — проверять на **server**. Клиентские флаги — для UX rollout и performance; не для авторизации. Минимизировать вложенность флагов и удалять мёртвые.
 
 </details>
+
 ### Q5
 - **Question (EN):** How do you structure type-safe feature flags on the client?
 

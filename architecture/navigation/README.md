@@ -2,6 +2,7 @@
 
 ## Apple docs
 
+
 - [UINavigationController](https://developer.apple.com/documentation/uikit/uinavigationcontroller) — stack-based navigation in UIKit.
 - [NavigationStack](https://developer.apple.com/documentation/swiftui/navigationstack) — path-driven navigation in SwiftUI (iOS 16+).
 - [NavigationPath](https://developer.apple.com/documentation/swiftui/navigationpath) — type-erased stack for programmatic push/pop.
@@ -10,7 +11,8 @@
 - [Custom URL schemes](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app) — `myapp://` entry points.
 - [UIApplicationDelegate application(_:open:options:)](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application) — URL / activity delivery at launch and foreground.
 
-## За 30 секунд
+## In 30 seconds
+
 
 Navigation is **who owns the stack** and **how screens are composed**. UIKit uses `UINavigationController` + push/pop; SwiftUI uses `NavigationStack` + `NavigationPath` or value-based destinations. **Coordinators** (or routers) keep view controllers / views dumb: they emit intents (“user picked item 42”), and a navigation layer decides push, modal, or tab switch. **Deep links** parse an incoming URL or `NSUserActivity` into a route, then the same router builds the stack—never duplicate routing logic in every screen.
 
@@ -22,9 +24,8 @@ Navigation is **who owns the stack** and **how screens are composed**. UIKit use
 
 </details>
 
-
-
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -42,6 +43,7 @@ Navigation is **who owns the stack** and **how screens are composed**. UIKit use
 - Third-party routing frameworks until native `NavigationStack` + a small router type is insufficient.
 
 ## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -74,8 +76,12 @@ flowchart TB
     C -->|push append route| B
 ```
 
+<details class="lang-ru">
+<summary>По-русски</summary>
+
 Экраны сообщают **intent**, не вызывают `push` на соседние фичи напрямую.
 
+</details>
 **Deep link flow**
 
 ```mermaid
@@ -99,6 +105,7 @@ URL / Universal Link / Push payload
 
 ## 🏋️ Exercises
 
+
 1. **Extract coordinator:** Take one screen that calls `pushViewController` directly; move navigation to a `HomeCoordinator` with `showDetail(id:)`. **Expected:** VC only calls `coordinator.showDetail(id:)`.
 2. **SwiftUI path:** Build two-level flow with `NavigationStack` and `NavigationPath`; add “Back to root” button that clears path. **Expected:** single path binding, no hidden stack state in child views.
 3. **Route enum:** Define `enum AppRoute: Hashable` with tab + stack cases; map `myapp://orders/123` to `.ordersDetail(id: 123)`. **Expected:** parser unit-testable without UIKit.
@@ -107,11 +114,13 @@ URL / Universal Link / Push payload
 
 ## WWDC & resources
 
+
 - [Navigate with SwiftUI (WWDC22)](https://developer.apple.com/videos/play/wwdc2022/10054/)
 - [What's new in SwiftUI (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10148/) — navigation refinements
 - [Meet AsyncSequence (WWDC21)](https://developer.apple.com/videos/play/wwdc2021/10058/) — optional: async route streams
 
 ## Artifacts
+
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -121,6 +130,7 @@ URL / Universal Link / Push payload
 ---
 
 ## Interview Q&A (Knowledge cards)
+
 
 ### Q1
 - **Question (EN):** Why use a Coordinator when `UINavigationController` already exists?
@@ -136,6 +146,7 @@ URL / Universal Link / Push payload
 - **Answer (RU):** `UINavigationController` — контейнер стека, а не место для бизнес-решений «куда дальше». Coordinator знает **flow** (какие экраны, в каком порядке, modally или push), создаёт модули и держит weak-связи с детьми. VC остаётся тонким: сообщает событие, не знает про соседние фичи.
 
 </details>
+
 ### Q2
 - **Question (EN):** How does SwiftUI `NavigationStack` compare to UIKit navigation?
 
@@ -150,6 +161,7 @@ URL / Universal Link / Push payload
 - **Answer (RU):** В SwiftUI путь — **данные** (`NavigationPath` или `[Route]`), UI реагирует через `navigationDestination`. Программный back/pop = изменить path. В UIKit стек живёт в контроллере; programmatic API — `push/pop/setViewControllers`. Оба подхода выигрывают от **единого router**, который обновляет path или nav controller.
 
 </details>
+
 ### Q3
 - **Question (EN):** Where should deep links be handled—app delegate or individual screens?
 
@@ -164,6 +176,7 @@ URL / Universal Link / Push payload
 - **Answer (RU):** Парсинг URL — на **границе приложения** (SceneDelegate / `@main` app), преобразование в `Route` — в **router/coordinator**. Экраны не парсят query сами. Если нужен login, router **откладывает** маршрут и применяет после готовности root. Один pipeline для Universal Links, custom scheme и push tap.
 
 </details>
+
 ### Q4
 - **Question (EN):** How do you test navigation without UI-testing every transition?
 

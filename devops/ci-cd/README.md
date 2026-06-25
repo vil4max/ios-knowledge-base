@@ -2,6 +2,7 @@
 
 ## Apple docs
 
+
 - [Xcode Cloud](https://developer.apple.com/documentation/xcode/xcode-cloud) — Apple-hosted CI for Apple platforms.
 - [Configuring your first Xcode Cloud workflow](https://developer.apple.com/documentation/xcode/configuring-your-first-xcode-cloud-workflow)
 - [Creating a workflow in Xcode Cloud](https://developer.apple.com/documentation/xcode/creating-a-workflow-in-xcode-cloud)
@@ -10,7 +11,8 @@
 - [Building from the command line](https://developer.apple.com/documentation/xcode/building-from-the-command-line) — schemes, destinations.
 - [Environment variable reference](https://developer.apple.com/documentation/xcode/environment-variable-reference) — CI secrets and flags.
 
-## За 30 секунд
+## In 30 seconds
+
 
 **CI/CD** for iOS runs **build + test + archive** on every change. **Xcode Cloud** integrates with App Store Connect, manages macOS runners and signing; **Fastlane** automates lanes (test, beta, release) on any Mac CI. Locally and in CI, **`xcodebuild test`** drives simulators with a **shared scheme** and **Test Plan** (`.xctestplan`) to split PR vs nightly tests. Keys: reproducible schemes (`shared`), locked simulator OS, parallel test execution, and artifacts (`.xcresult`, dSYM) retained for failures.
 
@@ -22,9 +24,8 @@
 
 </details>
 
-
-
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -42,6 +43,7 @@
 - Deploying to App Store from 5 parallel workflows without promotion gates.
 
 ## Key concepts
+
 
 | Term | Meaning |
 |------|---------|
@@ -76,6 +78,7 @@ ReleaseCandidate.xctestplan → full matrix before tag
 
 ## 🏋️ Exercises
 
+
 1. **Share scheme:** Ensure scheme is shared; clone fresh repo; build from CLI succeeds. **Expected:** `xcodebuild -list` shows scheme without local-only data.
 2. **Test Plan:** Create `PR` plan with only unit targets; wire scheme Test action to plan. **Expected:** UI tests skipped when `-testPlan PR`.
 3. **Result bundle:** Run tests with `-resultBundlePath`; open bundle in Xcode on failure. **Expected:** failing test shows log + attachment.
@@ -84,11 +87,13 @@ ReleaseCandidate.xctestplan → full matrix before tag
 
 ## WWDC & resources
 
+
 - [Explore Xcode Cloud workflows (WWDC21)](https://developer.apple.com/videos/play/wwdc2021/10268/)
 - [Customize your advanced Xcode Cloud workflows (WWDC22)](https://developer.apple.com/videos/play/wwdc2022/110374/)
 - [Author fast and reliable tests for Xcode Cloud (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10071/)
 
 ## Artifacts
+
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -98,6 +103,7 @@ ReleaseCandidate.xctestplan → full matrix before tag
 ---
 
 ## Interview Q&A (Knowledge cards)
+
 
 ### Q1
 - **Question (EN):** Xcode Cloud vs Fastlane—when to use which?
@@ -113,6 +119,7 @@ ReleaseCandidate.xctestplan → full matrix before tag
 - **Answer (RU):** **Xcode Cloud** — нативная интеграция Apple (signing, TestFlight, macOS runners), минимум infra. **Fastlane** — гибкость на **любом** CI (GitHub Actions, GitLab), богатые lanes, `match`, кастомные шаги. Часто: Cloud для Apple-centric team; Fastlane там, где уже enterprise CI или multi-platform pipeline.
 
 </details>
+
 ### Q2
 - **Question (EN):** How do you speed up CI tests?
 
@@ -127,6 +134,7 @@ ReleaseCandidate.xctestplan → full matrix before tag
 - **Answer (RU):** **Test Plans** с подмножествами для PR; `-parallel-testing-enabled`; шардирование по классам; stub network; без лишних UI tests на каждый commit. Фиксированный simulator OS; кэш SPM/DerivedData где поддерживается. Quarantine flaky tests в отдельный plan с retry policy, не игнорировать красный CI.
 
 </details>
+
 ### Q3
 - **Question (EN):** Why commit shared schemes and Test Plans?
 
@@ -141,6 +149,7 @@ ReleaseCandidate.xctestplan → full matrix before tag
 - **Answer (RU):** CI и разработчики должны собирать **одинаково**; user-specific scheme не виден на runner. Test Plan версионирует **какие** тесты и **какие** env (язык, args) — PR vs release без дублирования YAML. Изменение набора тестов — code review вместе с фичей.
 
 </details>
+
 ### Q4
 - **Question (EN):** How do you debug failures that only happen in CI?
 

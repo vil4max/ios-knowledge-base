@@ -1,6 +1,6 @@
 # Sync Engine
 
-## За 30 секунд
+## In 30 seconds
 
 
 A **sync engine** moves data between client and server with **versioning**, **delta updates**, **tombstones**, a **durable queue**, and **idempotent** operations. Interview answers explain how the client knows what changed (cursor, vector clock, or revision), how deletes propagate, how retries avoid duplicates, and how the UI stays consistent while sync runs in the background.
@@ -13,15 +13,15 @@ A **sync engine** moves data between client and server with **versioning**, **de
 
 </details>
 
-
-
 ## Apple docs
+
 
 - [BackgroundTasks](https://developer.apple.com/documentation/backgroundtasks) — scheduling sync work within OS limits.
 - [URLSession](https://developer.apple.com/documentation/foundation/urlsession) — batch requests, background transfers.
 - [NSPersistentCloudKitContainer](https://developer.apple.com/documentation/coredata/nspersistentcloudkitcontainer) — reference for Apple-managed sync semantics (compare vs custom engine).
 
 ## 🎯 Focus vs Defer
+
 
 ### Focus
 
@@ -39,7 +39,8 @@ A **sync engine** moves data between client and server with **versioning**, **de
 - Multi-master global ordering unless the product requires it.
 - Sub-second sync SLAs on mobile without stating battery/network trade-offs.
 
-## Ключевые понятия
+## Key concepts
+
 
 | Component | Role |
 |-----------|------|
@@ -67,6 +68,7 @@ A **sync engine** moves data between client and server with **versioning**, **de
 
 ## 🏋️ Exercises
 
+
 1. **Design change feed API** — Request/response for `GET /sync?since=cursor` including tombstones. *Expected:* JSON with `changes[]`, `nextCursor`, `hasMore`.
 
 2. **Delete propagation** — User deletes item on device A offline; device B online. *Expected:* tombstone in delta; B removes locally; outbox on A sends delete with idempotency.
@@ -77,12 +79,14 @@ A **sync engine** moves data between client and server with **versioning**, **de
 
 5. **Conflict** — Two devices edit same note offline. *Expected:* state names chosen policy (LWW or merge UI) and server role as arbiter.
 
-## Ссылки
+## Links
+
 
 - Related: [offline-first](../offline-first/README.md), [push-notifications](../push-notifications/README.md)
 - [Stripe idempotency](https://stripe.com/docs/api/idempotent_requests) — classic idempotency pattern (concept applies beyond payments)
 
-## Карточки знаний (Q&A)
+## Interview Q&A (Knowledge cards)
+
 
 <!-- knowledge-cards-canonical:start -->
 
@@ -100,6 +104,7 @@ A **sync engine** moves data between client and server with **versioning**, **de
 - **Answer (RU):** Удаление — тоже изменение. Без tombstone клиент, пропустивший delete event, **оставит запись навсегда**. Tombstone (`deletedAt` + id + revision) в delta feed говорит всем клиентам убрать объект локально.
 
 </details>
+
 ### Q2
 - **Question (EN):** Delta sync vs full sync?
 
@@ -114,6 +119,7 @@ A **sync engine** moves data between client and server with **versioning**, **de
 - **Answer (RU):** **Delta** — только изменения с cursor (быстро, мало трафика). **Full** — вся коллекция заново (после corruption, смены schema, или первого login). Production: delta по умолчанию, full как recovery path.
 
 </details>
+
 ### Q3
 - **Question (EN):** How do you ensure idempotency on retry?
 
@@ -128,6 +134,7 @@ A **sync engine** moves data between client and server with **versioning**, **de
 - **Answer (RU):** Клиент генерирует **стабильный id** (UUID) на мутацию; сервер хранит результат первого успешного применения и при повторе с тем же ключом возвращает тот же ответ без дубля в БД. Timeout на клиенте ≠ «операция не выполнена» — нужен safe retry.
 
 </details>
+
 ### Q4
 - **Question (EN):** How should the UI learn about sync completion?
 

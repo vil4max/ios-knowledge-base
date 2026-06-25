@@ -132,7 +132,7 @@ STUB_TEMPLATE = """# {title}
 
 > **Status:** draft — content pending
 
-## За 30 секунд
+## In 30 seconds
 
 _(English summary — to be added)_
 
@@ -143,19 +143,19 @@ _(Русский абзац — добавить.)_
 
 </details>
 
-## Ключевые понятия
+## Key concepts
 
 _(to be added)_
 
-## Как отвечать на интервью
+## How to answer in interviews
 
 _(to be added)_
 
-## Код и примеры
+## Code & examples
 
 _(to be added)_
 
-## Ссылки
+## Links
 
 _(to be added)_
 """
