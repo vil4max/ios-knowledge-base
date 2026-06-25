@@ -66,7 +66,7 @@ Pre-filter when cardinality small; post-filter when index lacks composite suppor
 
 **Hybrid search when:** user query contains **SKU**, **error code**, **person name** — pure vector may miss exact token match. Reciprocal Rank Fusion (RRF) merges BM25 and vector ranked lists without score normalization.
 
-**On-device pattern:** bundle `embeddings.bin` + SQLite metadata; query with Accelerate vDSP dot products; cap k=5–10 for Foundation Models context budget ([context-window](../context-window/README.md)).
+**On-device pattern:** bundle `embeddings.bin` + SQLite metadata; query with Accelerate vDSP dot products; cap k=5–10 for Foundation Models context budget ([context-window](../context-window/README.md)). SQLite stack on iOS (Core Data / SwiftData / GRDB): [Storage — SQLite vs NoSQL](../../data-and-network/storage/notes/SQLite-NoSQL-Core-Data-SwiftData.md).
 
 ## 🏋️ Exercises
 
