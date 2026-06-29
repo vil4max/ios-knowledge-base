@@ -1,34 +1,34 @@
 # Testing — exercises
 
-Задачи **без готового решения**. Критерий: AAA, один сценарий на тест, без `sleep`. Подсказки: [Senior-Unit-Testing-Mastery-RU](../notes/Senior-Unit-Testing-Mastery.md), [Testing-Fundamentals-RU](../notes/Testing-Fundamentals.md).
+Tasks **without a ready-made solution**. Criteria: AAA, one scenario per test, no `sleep`. Hints: [Senior-Unit-Testing-Mastery](../notes/Senior-Unit-Testing-Mastery.md), [Testing-Fundamentals](../notes/Testing-Fundamentals.md).
 
 ---
 
 ## Unit + doubles
 
-1. **Email validator** — три кейса: valid, без `@`, пустая строка. Stub не нужен.
-2. **Cart counter** — `add` увеличивает count; `CartStoreSpy` фиксирует `save`.
-3. **Retry policy** — max 3 retry только на `networkConnectionLost`; на 401 — один вызов. Spy на `execute`.
+1. **Email validator** — three cases: valid, missing `@`, empty string. No stub needed.
+2. **Cart counter** — `add` increases count; `CartStoreSpy` records `save`.
+3. **Retry policy** — max 3 retries only on `networkConnectionLost`; on 401 — single call. Spy on `execute`.
 
 ## Async + time
 
-4. **Debouncer** — `Clock` protocol; два события быстрее дедлайна → один вызов callback.
-5. **Token refresh** — async `AuthAPI` spy; отмена `Task` → refresh не завершён второй раз.
+4. **Debouncer** — `Clock` protocol; two events faster than deadline → one callback invocation.
+5. **Token refresh** — async `AuthAPI` spy; cancelling `Task` → refresh does not complete a second time.
 
 ## Integration
 
-6. **JSON fixture** — `user_ok.json` в bundle → mapper в domain model; отсутствующий ключ → ошибка.
-7. **URLProtocol** — stub 200 + body; assert path и decoded model (см. [Testing-Network-Stub-RU](../notes/Testing-Network-Stub.md), [playground](../testing.playground/Contents.swift)).
-8. **Contract fixture** — `user_ok.json` из OpenAPI example → DTO + mapper; сломанное поле в fixture → красный тест (см. [Contract-Tests-OpenAPI-RU](../notes/Contract-Tests-OpenAPI.md)).
+6. **JSON fixture** — `user_ok.json` in bundle → mapper to domain model; missing key → error.
+7. **URLProtocol** — stub 200 + body; assert path and decoded model (see [Testing-Network-Stub](../notes/Testing-Network-Stub.md), [playground](../testing.playground/Contents.swift)).
+8. **Contract fixture** — `user_ok.json` from OpenAPI example → DTO + mapper; broken field in fixture → failing test (see [Contract-Tests-OpenAPI](../notes/Contract-Tests-OpenAPI.md)).
 
 ## UI (optional)
 
-9. **Launch arg** — `-UITesting` открывает экран без логина; один XCUITest на `accessibilityIdentifier` кнопки.
+9. **Launch arg** — `-UITesting` opens screen without login; one XCUITest on button `accessibilityIdentifier`.
 
 ## Test Plan (configuration)
 
-10. Опиши два `.xctestplan`: **PR** (unit only) и **Nightly** (+ UI). Какие теги Swift Testing включишь?
+10. Describe two `.xctestplan` files: **PR** (unit only) and **Nightly** (+ UI). Which Swift Testing tags will you include?
 
 ---
 
-После решения — сверь с [чеклистом ревью](../notes/Senior-Unit-Testing-Mastery.md#11-чеклист-ревью-тестов-как-лид).
+After completing — compare against the [review checklist](../notes/Senior-Unit-Testing-Mastery.md#11-test-review-checklist-as-lead).

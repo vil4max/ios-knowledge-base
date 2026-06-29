@@ -1,19 +1,14 @@
 # Value types, actors, concurrency — quiz breakdown
 
-> **Status:** draft — перенесено из практического опроса; разбор вопросов, follow-up для собеса.
+> **Status:** draft — moved from a practice quiz; question breakdown and interview follow-ups.
 
-Краткая шпаргалка и углублённый разбор: struct vs class, copy-on-write, actor reentrancy, `@MainActor`, производительность массивов.
+Cheat sheet and deep dive: struct vs class, copy-on-write, actor reentrancy, `@MainActor`, array performance.
 
-Связь: карточки **Q12–Q13** (actor isolation, reentrancy) в [Concurrency README](../README.md).
+See cards **Q12–Q13** (actor isolation, reentrancy) in the [Concurrency README](../README.md).
 
 ---
 
 ## 1. Mutation via array copy (class vs struct)
-
-_English summary — expand «По-русски» for full text (1. Мутация через копию массива (class vs struct))._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
 
 ### Question
 
@@ -45,13 +40,13 @@ print(container.entities.map(\.id))
 print(entities.map(\.id))
 ```
 
-Варианты:
+Options:
 
 - `["a", "b"]` / `["d", "b"]`
 - `["a", "b", "c"]` / `["d", "b"]`
 - `["d", "b", "e"]` / `["d", "b", "e"]`
 - **`["d", "b", "e"]` / `["d", "b"]`** ✅
-- `["d", "b", "e"]` / `["d", "b"]` (дубликат правильного варианта в исходном списке)
+- `["d", "b", "e"]` / `["d", "b"]` (duplicate of the correct option in the original list)
 
 ### Answer
 
@@ -62,73 +57,66 @@ print(entities.map(\.id))
 
 ### Mental model
 
-Три уровня копирования:
+Three levels of copying:
 
-| Уровень | Тип | Что копируется |
-|---------|-----|----------------|
-| `container` | `class` | Одна ссылка на `EntityContainer` |
-| `container.entities` vs `entities` | `Array` (struct) | Два **разных** массива после `var entities = container.entities` |
-| Элементы массива | `Entity` (class) | **Одни и те же** объекты на куче |
+| Level | Type | What is copied |
+|-------|------|----------------|
+| `container` | `class` | One reference to `EntityContainer` |
+| `container.entities` vs `entities` | `Array` (struct) | Two **different** arrays after `var entities = container.entities` |
+| Array elements | `Entity` (class) | **The same** heap objects |
 
-`Array` — value type, но массив классов — массив **указателей**. Копия массива = копия указателей, не объектов.
+`Array` is a value type, but an array of classes is an array of **pointers**. Copying the array copies pointers, not the objects.
 
 ### Step by step
 
 ```
-До мутаций:
+Before mutations:
 container.entities → [ptr₀→"a", ptr₁→"b", ptr₂→"c"]
 entities           → [ptr₀→"a", ptr₁→"b", ptr₂→"c"]
 
 entities[0].id = "d"
-→ объект ptr₀ меняется → оба массива видят "d"
+→ object ptr₀ changes → both arrays see "d"
 
 entities.removeLast()
-→ entities: [ptr₀→"d", ptr₁→"b"]                    // длина 2
-→ container.entities: [ptr₀→"d", ptr₁→"b", ptr₂→"c"]  // длина 3
+→ entities: [ptr₀→"d", ptr₁→"b"]                    // length 2
+→ container.entities: [ptr₀→"d", ptr₁→"b", ptr₂→"c"]  // length 3
 
 entity = ptr₂, entity.id = "e"
-→ container.entities[2] тоже "e"
+→ container.entities[2] is also "e"
 ```
 
-| Шаг | Что происходит |
-|-----|----------------|
-| `var entities = container.entities` | Копируется **массив**, элементы — **ссылки** на те же `Entity`. |
-| `entities[0].id = "d"` | Общий объект → `container.entities[0]` тоже `"d"`. |
-| `entities.removeLast()` | Удаление только из локального `entities`; в контейнере 3 элемента. |
-| `entity.id = "e"` | Мутация общего объекта → `container.entities[2]` становится `"e"`. |
+| Step | What happens |
+|------|----------------|
+| `var entities = container.entities` | The **array** is copied; elements are **references** to the same `Entity` instances. |
+| `entities[0].id = "d"` | Shared object → `container.entities[0]` is also `"d"`. |
+| `entities.removeLast()` | Removal only from local `entities`; the container still has 3 elements. |
+| `entity.id = "e"` | Mutation of shared object → `container.entities[2]` becomes `"e"`. |
 
-**Итог:** два разных массива (разная длина), три общих объекта на куче.
+**Result:** two different arrays (different lengths), three shared heap objects.
 
 ### Typical mistakes
 
-| Ошибка | Почему неверно |
-|--------|----------------|
-| `["a","b","c"]` / `["d","b"]` | Забывают, что `entities[0].id = "d"` меняет **общий** объект |
-| `["d","b","e"]` / `["d","b","e"]` | Думают, что `removeLast()` затронул контейнер |
-| `["a","b"]` / `["d","b"]` | Путают shallow copy массива с deep copy объектов |
+| Wrong answer | Why it is wrong |
+|--------------|-----------------|
+| `["a","b","c"]` / `["d","b"]` | Forgetting that `entities[0].id = "d"` mutates a **shared** object |
+| `["d","b","e"]` / `["d","b","e"]` | Assuming `removeLast()` affected the container |
+| `["a","b"]` / `["d","b"]` | Confusing shallow array copy with deep copy of objects |
 
 ### If `Entity` were a struct
 
-Копия массива скопировала бы и значения; мутации через `entities` не затронули бы `container.entities` (COW у буфера массива — отдельная тема; элементы-struct независимы после копии массива).
+Copying the array would copy the values too; mutations through `entities` would not affect `container.entities` (array buffer COW is a separate topic; struct elements are independent after the array copy).
 
 ### Interview follow-up
 
-- **Shallow vs deep copy** — копия `[Class]` всегда shallow для элементов.
-- **`===` vs `==`** — здесь важна идентичность объектов.
-- UIKit: `view.subviews` скопировал, мутировал view → superview тоже видит изменения.
+- **Shallow vs deep copy** — copying `[Class]` is always shallow for elements.
+- **`===` vs `==`** — object identity matters here.
+- UIKit: copy `view.subviews`, mutate a view → the superview sees the change too.
 
-**Одна фраза:** копируется контейнер (массив), не содержимое (объекты class).
+**One-liner:** the container (array) is copied, not the contents (class objects).
 
 ---
 
-</details>
-
 ## 2. Actor reentrancy and `async let`
-
-_English summary — expand «По-русски» for full text (2. Actor reentrancy и `async let`)._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
 
 ### Question
 
@@ -150,25 +138,25 @@ _ = await (a, b)
 print(await counter.value)
 ```
 
-Варианты:
+Options:
 
-1. **Actor reentrancy: оба читают 0 до записи → `value == 1`** ✅
-2. Actor сериализует доступ → `value == 2`
-3. Ошибка компиляции — `async let` с методами actor
+1. **Actor reentrancy: both read 0 before writing → `value == 1`** ✅
+2. Actor serializes access → `value == 2`
+3. Compile error — `async let` with actor methods
 4. Runtime crash — data race
 
 ### Answer
 
-**Печатается `1`.** Правильный вариант — **1**.
+**Prints `1`.** Correct option — **1**.
 
-### Two claims — do not mix
+### Two claims — do not mix them
 
-| Утверждение | Верно? |
-|-------------|--------|
-| Actor **сериализует** доступ | ✅ Два вызова не мутируют `value` одновременно |
-| Actor **не даёт** lost update при `await` между read и write | ❌ Reentrancy |
+| Claim | True? |
+|-------|-------|
+| Actor **serializes** access | ✅ Two calls do not mutate `value` at the same time |
+| Actor **prevents** lost updates with `await` between read and write | ❌ Reentrancy |
 
-Actor ≠ mutex до конца метода. На **suspension point** (`await`) текущий вызов **отпускает** actor, другой изолированный вызов может войти.
+An actor is not a mutex held for the entire method. At a **suspension point** (`await`) the current call **releases** the actor and another isolated call can enter.
 
 ### Timeline
 
@@ -176,18 +164,18 @@ Actor ≠ mutex до конца метода. На **suspension point** (`await`
 Task A: read value=0 → await yield → [suspend]
 Task B: read value=0 → await yield → [suspend]
 Task A: value = 0+1 = 1
-Task B: value = 0+1 = 1   // current устарел
+Task B: value = 0+1 = 1   // stale current
 ```
 
-`async let a` и `async let b` стартуют параллельно — оба доходят до `await` почти сразу.
+`async let a` and `async let b` start in parallel — both reach `await` almost immediately.
 
-Потерянное обновление — ловушка reentrancy, **не data race**: состояние под защитой actor, логика неверна.
+Lost update is a reentrancy trap, **not a data race**: state is protected by the actor, but the logic is wrong.
 
 ### Why not the other options
 
-- **«Сериализует → 2»** — верно только без suspension между read и write (`value += 1` без `await`).
-- **Compile error** — `async let` с actor-методами компилируется.
-- **Data race** — внутри одного actor storage гонки нет; это **логический баг**.
+- **“Serializes → 2”** — true only without suspension between read and write (`value += 1` with no `await`).
+- **Compile error** — `async let` with actor methods compiles fine.
+- **Data race** — no race on a single actor’s storage; this is a **logic bug**.
 
 ### How to write safely
 
@@ -200,7 +188,7 @@ func increment() {
     value = value + 1
 }
 
-// ❌ read → await → write с устаревшим локалом
+// ❌ read → await → write with a stale local
 func increment() async {
     let current = value
     await something()
@@ -208,81 +196,67 @@ func increment() async {
 }
 ```
 
-После `await` — перепроверять инварианты или работать со снимком.
+After `await`, re-check invariants or work from a snapshot.
 
 ### Link to GCD
 
-Serial queue без `await` внутри блока держит очередь на всё тело. Actor с `await` отпускает «замок» на время ожидания → reentrancy.
+A serial queue without `await` inside the block holds the queue for the whole body. An actor with `await` releases the “lock” while waiting → reentrancy.
 
-**Одна фраза:** actor убирает data race, но не защищает от lost update через `await`.
+**One-liner:** an actor removes data races but does not protect against lost updates across `await`.
 
 ---
 
-</details>
-
 ## 3. Performance: 10,000 small models — struct vs class in array
-
-_English summary — expand «По-русски» for full text (3. Производительность: 10 000 маленьких моделей — struct vs class в массиве)._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
 
 ### Question
 
-Какое утверждение точнее всего для performance-sensitive пути с 10 000 небольших объектов в массиве?
+Which statement is most accurate for a performance-sensitive path with 10,000 small objects in an array?
 
-Варианты:
+Options:
 
-1. struct медленнее — COW копирует весь массив при каждой мутации
-2. Одинаковая производительность — ARC делает class-массивы неотличимыми
-3. **struct-массив хранит элементы contiguously, cache-friendly, без heap на элемент; class-массив — ссылки, heap на объект + dereference** ✅
-4. class быстрее — O(1) dereference; struct копируется при каждом чтении
+1. struct is slower — COW copies the entire array on every mutation
+2. Same performance — ARC makes class arrays indistinguishable
+3. **struct array stores elements contiguously, cache-friendly, no per-element heap; class array — pointers, heap per object + dereference** ✅
+4. class is faster — O(1) dereference; struct is copied on every read
 
 ### Answer
 
-**Вариант 3.**
+**Option 3.**
 
-### Memory
+### Memory layout
 
 ```
-[SmallStruct]  →  |s₀|s₁|s₂|...|s₉₉₉₉|   один буфер, плотная упаковка
+[SmallStruct]  →  |s₀|s₁|s₂|...|s₉₉₉₉|   one buffer, dense packing
 
-[SmallClass]   →  |→obj₀|→obj₁|→obj₂|...|   буфер указателей
+[SmallClass]   →  |→obj₀|→obj₁|→obj₂|...|   pointer buffer
                     ↓     ↓     ↓
                    heap  heap  heap
 ```
 
 | | `[SmallModel]` struct | `[SmallModel]` class |
-|--|----------------------|----------------------|
-| Буфер массива | Плотно упакованные значения | Contiguous массив **указателей** |
-| На элемент | В буфере, без отдельного alloc | Отдельная аллокация на куче |
-| Итерация 10k | Последовательный доступ в памяти | 10k pointer chase, промахи кэша |
-| Мутация массива | COW — копия буфера только при shared + write | ARC retain/release при передаче ссылок |
+|--|-------------------------|----------------------|
+| Array buffer | Densely packed values | Contiguous array of **pointers** |
+| Per element | In buffer, no separate alloc | Separate heap allocation |
+| 10k iteration | Sequential memory access | 10k pointer chase, cache misses |
+| Array mutation | COW — buffer copy only on shared + write | ARC retain/release when passing references |
 
 ### Why not the others
 
-- **COW** не на **каждую** мутацию — только при shared buffer + write.
-- Contiguous storage у class-массива — у **массива ссылок**, не у данных объектов.
-- Чтение struct из массива копирует маленькое значение — дешевле разбросанных heap-объектов.
+- **COW** does not run on **every** mutation — only on shared buffer + write.
+- Contiguous storage for a class array applies to the **pointer array**, not the object payloads.
+- Reading a struct from an array copies a small value — cheaper than scattered heap objects.
 
 ### Caveats
 
-- Очень **большой** struct — копия при pass-by-value дороже.
-- Нужна **идентичность** (`===`) или shared mutation — class.
-- Частые shared copies массива + мутации — COW-копии; иногда `ContiguousArray`.
+- A very **large** struct — pass-by-value copy costs more.
+- Need **identity** (`===`) or shared mutation — use a class.
+- Frequent shared copies of the array + mutations — COW buffer copies; sometimes `ContiguousArray`.
 
-**Одна фраза:** для 10k маленьких value-моделей плотный struct-массив cache-friendly; class-массив — heap + pointer chase.
+**One-liner:** for 10k small value models, a dense struct array is cache-friendly; a class array is heap + pointer chase.
 
 ---
 
-</details>
-
 ## 4. `@MainActor` and call from non-isolated `async`
-
-_English summary — expand «По-русски» for full text (4. `@MainActor` и вызов из non-isolated `async`)._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
 
 ### Question
 
@@ -301,39 +275,39 @@ class DataService {
 
     func fetchData() async {
         let result = await someAPICall()
-        viewModel.updateTitle(result) // ← эта строка
+        viewModel.updateTitle(result) // ← this line
     }
 }
 ```
 
-Варианты:
+Options:
 
 1. Runtime crash — `MainActorViolation`
-2. Компилируется, автоматически hop на main без `await`
-3. Выполняется на текущем потоке — `@MainActor` только advisory
-4. **Ошибка компиляции — из non-isolated async нельзя без `await`** ✅
+2. Compiles, automatic hop to main without `await`
+3. Runs on the current thread — `@MainActor` is only advisory
+4. **Compile error — cannot call from non-isolated async without `await`** ✅
 
 ### Answer
 
-**Ошибка компиляции** (Swift 6 strict concurrency; в Swift 5 — warning). Правильный вариант — **4**.
+**Compile error** (Swift 6 strict concurrency; warning in Swift 5). Correct option — **4**.
 
 ### Isolation crossing
 
-`ViewModel` изолирован на `@MainActor`. `fetchData()` — nonisolated async. Вызов `updateTitle` — **пересечение isolation** → нужен hop:
+`ViewModel` is isolated on `@MainActor`. `fetchData()` is nonisolated async. Calling `updateTitle` is an **isolation crossing** → requires a hop:
 
 ```swift
 await viewModel.updateTitle(result)
 ```
 
-`await` здесь не «ждём сеть» — **переключаем isolation domain** на main actor.
+Here `await` is not “waiting for the network” — it **switches the isolation domain** to the main actor.
 
 ### Why not the other options
 
-| Вариант | Реальность |
-|---------|------------|
-| Runtime crash | В первую очередь compile-time; runtime checks в debug — отдельная тема (см. [Swift-6-Runtime-Concurrency-Crashes](Swift-6-Runtime-Concurrency-Crashes.md)) |
-| Автоматический hop без `await` | Нет |
-| Advisory | Нет — enforcement, не подсказка |
+| Option | Reality |
+|--------|---------|
+| Runtime crash | Primarily compile-time; debug runtime checks are a separate topic (see [Swift-6-Runtime-Concurrency-Crashes](Swift-6-Runtime-Concurrency-Crashes.md)) |
+| Automatic hop without `await` | No |
+| Advisory | No — enforcement, not a hint |
 
 ### Typical fix
 
@@ -346,169 +320,132 @@ func fetchData() async {
 
 ### Follow-up
 
-- `@MainActor` на class vs method.
-- `nonisolated` на методе ViewModel.
-- `Sendable` при передаче между isolation domains.
+- `@MainActor` on class vs method.
+- `nonisolated` on a ViewModel method.
+- `Sendable` when passing data across isolation domains.
 
-**Одна фраза:** cross-actor вызов = `await`, иначе compile error в strict concurrency.
+**One-liner:** cross-actor call = `await`, otherwise compile error in strict concurrency.
 
 ---
 
-</details>
-
 ## 5. What an actor is and what problem it solves
-
-_English summary — expand «По-русски» for full text (5. Что такое actor и какую проблему решает)._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
 
 ### Short answer (1–2 sentences)
 
-**Actor** — reference type, у которого только одна задача в момент времени мутирует состояние; компилятор требует `await` при доступе снаружи — защита от **data race** на общем mutable state. Раньше: **serial queue и locks**; главная оговорка — **reentrancy на `await`**: между read и write может вклиниться другой вызов, логика ломается без data race.
+An **actor** is a reference type where only one task mutates state at a time; the compiler requires `await` for external access — protection against **data races** on shared mutable state. Before actors: **serial queues and locks**; main caveat — **reentrancy at `await`**: another call can interleave between read and write; logic breaks without a data race.
 
 ### In depth
 
-**Что это:** тип с взаимным исключением для mutable state + проверки изоляции на compile time. `@MainActor` — тот же принцип для UI.
+**What it is:** a type with mutual exclusion for mutable state plus compile-time isolation checks. `@MainActor` is the same idea for the UI thread.
 
-**Какую проблему решает:** безопасное **общее изменяемое состояние** при concurrency.
+**Problem it solves:** safe **shared mutable state** under concurrency (data races, “which thread may touch this”).
 
-**Что было раньше:**
+**What came before:**
 
 - Serial `DispatchQueue`
 - Locks (`NSLock`, `os_unfair_lock`, …)
-- «Только с main thread» для UI
-- Иммутабельность / value types где возможно
+- “Main thread only” for UI
+- Immutability / value types where possible
 
-**Чего actor не даёт:**
+**What an actor does not give you:**
 
-| Миф | Реальность |
-|-----|------------|
-| «Всё приложение thread-safe» | Гонки между акторами, `nonisolated`, non-Sendable |
-| «Параллелит CPU внутри» | Внутри одного actor — очередь |
-| «Как mutex до конца метода» | `await` отпускает actor |
-| «Замена транзакций БД» | Сеть/диск — отдельные контракты |
+| Myth | Reality |
+|------|---------|
+| “Whole app is thread-safe” | Races between actors, `nonisolated`, non-Sendable references |
+| “Parallelizes CPU inside” | One actor = one queue of work |
+| “Like a mutex for the whole method” | `await` releases the actor |
+| “Replaces DB transactions” | Network/disk are separate contracts |
 
 ### Comparison with predecessors
 
 | | Serial queue + lock | Actor |
 |--|---------------------|-------|
-| Data race на одном state | ✅ при дисциплине | ✅ по дизайну |
-| Reentrancy на await | N/A (sync block) | ⚠️ да |
+| Data race on one state | ✅ with discipline | ✅ by design |
+| Reentrancy at await | N/A (sync block) | ⚠️ yes |
 | Compile-time | ❌ | ✅ Swift 6 |
-| Deadlock | queue A ↔ B | actor A ↔ B через `await` |
+| Deadlock | queue A ↔ B | actor A ↔ B via `await` |
 
 ### Caveats
 
-| Риск | Суть |
-|------|------|
-| Reentrancy | `await` внутри метода actor — окно для другого вызова |
-| Deadlock | Взаимные `await` между двумя actor |
-| Overhead | Cross-actor вызов — suspend + планирование |
-| Не ускоряет CPU | Внутри одного actor работа не параллелится |
-| `nonisolated` / non-`Sendable` | Можно обойти гарантии |
-| Отладка | Порядок приостановок сложнее воспроизвести |
+| Risk | Essence |
+|------|---------|
+| Reentrancy | `await` inside an actor method — window for another call |
+| Deadlock | Mutual `await` between two actors |
+| Overhead | Cross-actor call — suspend + scheduling |
+| No CPU speedup | Work inside one actor does not parallelize |
+| `nonisolated` / non-`Sendable` | Guarantees can be bypassed |
+| Debugging | Suspension order is harder to reproduce |
 
-**Одна фраза:** actor = anti data race, не anti logic bugs.
+**One-liner:** actor = anti data race, not anti logic bugs.
 
 ---
-
-</details>
 
 ## One-line cheat sheet
 
-_English summary — expand «По-русски» for full text (Шпаргалка одной строкой)._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-| Тема | Запомнить |
-|------|-----------|
-| Class в скопированном массиве | Копируется массив ссылок, объекты общие |
-| Actor + `await` внутри | Reentrancy → lost updates возможны |
-| 10k small models | Struct array — плотная память, class — heap + dereference |
-| `@MainActor` из background | Нужен `await`, иначе compile error |
-| Actor | Anti data race, не anti logic bugs |
-| Value type vs stack | Value type ≠ stack; семантика копии, не место хранения (§6) |
+| Topic | Remember |
+|-------|----------|
+| Class in a copied array | Array of references is copied; objects are shared |
+| Actor + `await` inside | Reentrancy → lost updates possible |
+| 10k small models | Struct array — dense memory; class — heap + dereference |
+| `@MainActor` from background | Need `await`, else compile error |
+| Actor | Anti data race, not anti logic bugs |
+| Value type vs stack | Value type ≠ stack; copy semantics, not storage location (§6) |
 
 ---
-
-</details>
 
 ## 6. Value type vs stack vs heap (interview)
 
-_English summary — expand «По-русски» for full text (6. Value type vs stack vs heap (interview))._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
 ### Question
 
-Могут ли **value types** храниться в **heap** (куче)?
+Can **value types** live on the **heap**?
 
 ### Answer
 
-**Да.** **Value type** задаёт **семантику копирования** (value semantics), а не место хранения.
+**Yes.** A **value type** defines **copy semantics** (value semantics), not storage location.
 
-| Контекст | Где обычно лежит значение |
-|----------|---------------------------|
-| Локальная переменная | Часто **stack** (или регистры / inline в кадре вызова) |
-| Stored property **`class`** | **Встроено** в аллокацию объекта класса на **куче** |
-| Захват **escaping closure** (уходящего замыкания) | Может оказаться в **heap**-контексте замыкания |
-| Буфер `Array` / `String` / … | **CoW**-буфер в **куче**, хотя тип — `struct` |
+| Context | Where the value usually lives |
+|---------|--------------------------------|
+| Local variable | Often **stack** (or registers / inline in the frame) |
+| Stored property of a **`class`** | **Embedded** in the class object’s heap allocation |
+| **Escaping closure** capture | May end up in the closure’s **heap** context |
+| `Array` / `String` / … buffer | **CoW** buffer on **heap**, even though the type is a `struct` |
 
 ### Main idea
 
-**Value type ≠ Stack. Reference type ≠ Heap.**
+**Value type ≠ stack. Reference type ≠ heap.**
 
-На собесе сначала говоришь про **семантику** (`struct` / `enum` / **tuple** — независимые копии; `class` — общая **identity**), потом уточняешь **где** лежат байты.
+In an interview, lead with **semantics** (`struct` / `enum` / **tuple** — independent copies; `class` — shared **identity**), then clarify **where** the bytes live.
 
 ### Interview follow-up
 
-- **Tuple** — value type? → **Да** (как `struct` без имени типа).
-- **Tuple** может быть в куче? → **Да**, если поле `class` или захват escaping closure — те же правила, что у любого value type.
-- **Reference type** всегда в куче? → Практически всегда для `class`/`actor`; важнее не это, а то, что **value/reference** — про **семантику**, не про «только стек / только куча».
+- **Tuple** — value type? → **Yes** (like a `struct` without a named type).
+- **Tuple** on the heap? → **Yes**, if it has a `class` field or escaping capture — same rules as any value type.
+- **Reference type** always on heap? → Practically always for `class`/`actor`; what matters is that **value/reference** is about **semantics**, not “stack only / heap only”.
 
-### Link to other materials
+### Links
 
-- [syntax Q45–Q47](../../syntax/README.md) — value vs reference, layout `struct` в `class`
-- [memory-arc README](../../memory-arc/README.md) — области памяти, CoW
-- **§1** этого файла — копия `[Class]` = shallow по элементам
+- [syntax Q45–Q47](../../syntax/README.md) — value vs reference, `struct` layout inside `class`
+- [memory-arc README](../../memory-arc/README.md) — memory regions, CoW
+- **§1** in this file — copying `[Class]` = shallow for elements
 
-**Одна фраза:** value type описывает **как копируется**, heap/stack — **где оказались байты** в конкретном контексте.
+**One-liner:** value type describes **how copying works**; heap/stack is **where bytes ended up** in a given context.
 
 ---
-
-</details>
 
 ## 7. Quick answers (flashcards)
 
-_English summary — expand «По-русски» for full text (7. Быстрые ответы (flashcards))._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-| Вопрос | Короткий ответ | Подробнее |
-|--------|----------------|-----------|
-| Value type всегда на stack? | **Нет.** | [§6](#6-value-type-vs-stack-vs-heap-interview) |
-| Reference type всегда в heap? | Практически да для `class`, но ось — **семантика**, не адрес. | [§6](#6-value-type-vs-stack-vs-heap-interview), [syntax Q45](../../syntax/README.md) |
-| Что делает **`weak`**? | Не удерживает объект; после dealloc → **`nil`** (zeroing). | [memory-arc Q47](../../memory-arc/README.md) |
-| **Tuple** — value type? | **Да.** | [syntax Q59](../../syntax/README.md) |
-| Tuple может быть в heap? | **Да** — поле `class` или escaping capture. | [§6](#6-value-type-vs-stack-vs-heap-interview), [syntax Q59](../../syntax/README.md) |
+| Question | Short answer | More detail |
+|----------|--------------|-------------|
+| Value type always on stack? | **No.** | [§6](#6-value-type-vs-stack-vs-heap-interview) |
+| Reference type always on heap? | Practically yes for `class`, but the axis is **semantics**, not address. | [§6](#6-value-type-vs-stack-vs-heap-interview), [syntax Q45](../../syntax/README.md) |
+| What does **`weak`** do? | Does not retain; after dealloc → **`nil`** (zeroing). | [memory-arc Q47](../../memory-arc/README.md) |
+| **Tuple** — value type? | **Yes.** | [syntax Q59](../../syntax/README.md) |
+| Tuple on heap? | **Yes** — `class` field or escaping capture. | [§6](#6-value-type-vs-stack-vs-heap-interview), [syntax Q59](../../syntax/README.md) |
 
 ---
 
-</details>
-
 ## TODO (draft)
 
-_English summary — expand «По-русски» for full text (TODO (draft))._
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- [ ] Добавить playground с runnable примерами (Q1 array copy, Q2 counter)
-- [ ] Дополнительные вопросы: `Sendable`, `nonisolated`, deadlock двух акторов, bank transfer reentrancy
-
-</details>
-
+- [ ] Add playground with runnable examples (Q1 array copy, Q2 counter)
+- [ ] Link to Q&A cards in the main README (new ids or section refs)
+- [ ] Extra questions: `Sendable`, `nonisolated`, two-actor deadlock, bank transfer reentrancy

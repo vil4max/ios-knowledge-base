@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 **Offline-first** means the app treats **local storage as the source of truth** for what the user sees. Reads never block on network; writes are recorded locally first, then synced. Network is reconciliation, not a gate for every screen. Interview answers cover outbox queues, idempotent APIs, conflict policies, and UX for pending/failed states.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Offline-first**: локальное хранилище — source of truth; sync в фоне; UX при stale data; conflict resolution.
-
-</details>
-
 ## Apple docs
-
 
 - [Using background tasks](https://developer.apple.com/documentation/backgroundtasks) — `BGAppRefreshTask`, deferred sync windows.
 - [NWPathMonitor](https://developer.apple.com/documentation/network/nwpathmonitor) — reachability without polling.
@@ -22,7 +12,6 @@
 - [URLSession background configuration](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/1407496-background) — large uploads/downloads while suspended.
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -40,7 +29,6 @@
 - Perfect real-time consistency across devices in v1.
 
 ## Key concepts
-
 
 | Term | Meaning |
 |------|---------|
@@ -67,7 +55,6 @@
 
 ## 🏋️ Exercises
 
-
 1. **Notes app** — Design local schema + outbox for create/edit/delete. *Expected:* `Note` table, `PendingMutation` table, LWW on `updatedAt`.
 
 2. **Shopping cart offline** — User adds items offline, prices change on server. *Expected:* local cart authoritative for UX; reconcile price conflicts on sync with user message.
@@ -80,74 +67,32 @@
 
 ## Links
 
-
 - [Using Background Tasks](https://developer.apple.com/documentation/backgroundtasks)
 - Related: [sync-engine](../sync-engine/README.md), [caching-offline-first](../../data-and-network/caching-offline-first/README.md)
 - [Offline First (offlinefirst.org)](https://offlinefirst.org/) — principles and patterns
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** What does “local source of truth” mean?
+- **Question:** What does “local source of truth” mean?
 
-- **Answer (EN):** Screens read from local storage; the network updates that store but does not gate every read. The user sees the last known state immediately, including offline.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Что значит «local source of truth»?
-
-- **Answer (RU):** UI и бизнес-логика читают **локальное хранилище** (Core Data, SQLite, файлы). Сеть **обновляет** локальное состояние, но не является единственным местом, откуда экран берёт данные. Пользователь видит последнее известное состояние сразу, даже без сети.
-
-</details>
+- **Answer:** Screens read from local storage; the network updates that store but does not gate every read. The user sees the last known state immediately, including offline.
 
 ### Q2
-- **Question (EN):** Why a durable outbox on disk?
+- **Question:** Why a durable outbox on disk?
 
-- **Answer (EN):** Mutations persist in a disk queue until the server acknowledges them. Survives crashes and offline periods; retries with backoff when online. In-memory queues lose work on process death.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Зачем outbox на диске?
-
-- **Answer (RU):** Мутации (create/update/delete) записываются в **очередь на диске** до ack сервера. При краше или offline очередь сохраняется; при восстановлении сети — retry с backoff. In-memory queue теряет данные при kill процесса.
-
-</details>
+- **Answer:** Mutations persist in a disk queue until the server acknowledges them. Survives crashes and offline periods; retries with backoff when online. In-memory queues lose work on process death.
 
 ### Q3
-- **Question (EN):** Last-write-wins vs custom merge — when to use which?
+- **Question:** Last-write-wins vs custom merge — when to use which?
 
-- **Answer (EN):** LWW fits simple records with a single version timestamp. Custom merge fits multi-field edits, domain rules, or user-visible conflicts. Often combine both strategies by entity type.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Last-write-wins vs custom merge — когда что?
-
-- **Answer (RU):** **LWW** — простые сущности, одно поле «версии» (`updatedAt`), допустимо перезатереть запись. **Custom merge** — разные поля от разных клиентов (статус + комментарий), доменные инварианты, или нужен **user-facing conflict UI**. Часто: LWW для metadata, field merge для контента.
-
-</details>
+- **Answer:** LWW fits simple records with a single version timestamp. Custom merge fits multi-field edits, domain rules, or user-visible conflicts. Often combine both strategies by entity type.
 
 ### Q4
-- **Question (EN):** How does offline-first work with push notifications?
+- **Question:** How does offline-first work with push notifications?
 
-- **Answer (EN):** Push triggers sync, it is not the data transport: silent push wakes the app, fetches a delta, merges locally, UI updates via observation. Do not rely on push payload alone for large payloads.
+- **Answer:** Push triggers sync, it is not the data transport: silent push wakes the app, fetches a delta, merges locally, UI updates via observation. Do not rely on push payload alone for large payloads.
 
 <!-- knowledge-cards-canonical:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как offline-first стыкуется с push?
-
-- **Answer (RU):** Push — **триггер синхронизации**, не транспорт данных: silent push будит app → fetch **delta** → merge в local store → UI обновляется через observation (Combine/async stream/FRC). Не полагаться только на push payload для больших данных.
-
-</details>

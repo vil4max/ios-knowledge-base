@@ -2,7 +2,6 @@
 
 ## Apple docs
 
-
 - [Debugging](https://developer.apple.com/documentation/xcode/debugging) — Xcode debugger overview.
 - [LLDB](https://lldb.llvm.org/) — breakpoint commands, `po`, `expr`, memory inspection.
 - [Analyzing CPU usage with the Time Profiler instrument](https://developer.apple.com/documentation/xcode/analyzing-cpu-usage-with-the-time-profiler-instrument) — sampling call stacks.
@@ -14,19 +13,9 @@
 
 ## In 30 seconds
 
-
 **Debugging** on iOS is LLDB in Xcode (breakpoints, view hierarchy, memory graph) plus **Instruments** for time and memory at scale. Use **breakpoints** (symbolic, conditional, exception) to stop at failure; use **Instruments** when the problem is statistical (jank, leaks over time). **`os_log` / `Logger`** gives structured, low-cost production-safe logging with privacy redaction—pair with **signposts** to correlate code regions in Time Profiler. Memory Graph catches retain cycles UI tests miss; View Hierarchy debugs layout and accessibility tree issues.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Отладка** на iOS — LLDB, breakpoints, View Hierarchy, Memory Graph, Instruments. Symbolication, zombie objects, concurrency breakpoints в Swift 6.
-
-</details>
-
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -45,7 +34,6 @@
 - Symbolicating crash logs manually before Xcode Organizer workflow is understood.
 
 ## Key concepts
-
 
 | Term | Meaning |
 |------|---------|
@@ -71,7 +59,6 @@ Repro bug
 
 ## 🏋️ Exercises
 
-
 1. **Conditional break:** Break in `cellForRow` only when `indexPath.row == 5`. **Expected:** other rows render without stopping.
 2. **Retain cycle:** Create closure capturing `self` strongly in a demo VC; confirm Leaks + Memory Graph show cycle; fix with `[weak self]`. **Expected:** graph clean after fix.
 3. **Time Profiler:** Scroll a heavy list; record 10s; top symbols on main thread. **Expected:** identify one layout or image decode hotspot.
@@ -80,13 +67,11 @@ Repro bug
 
 ## WWDC & resources
 
-
 - [Debug with structured logging (WWDC20)](https://developer.apple.com/videos/play/wwdc2020/10109/)
 - [Model your processes with signposts (WWDC18)](https://developer.apple.com/videos/play/wwdc2018/405/)
 - [Detect and diagnose memory issues (WWDC21)](https://developer.apple.com/videos/play/wwdc2021/10180/)
 
 ## Artifacts
-
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -97,63 +82,22 @@ Repro bug
 
 ## Interview Q&A (Knowledge cards)
 
-
 ### Q1
-- **Question (EN):** How do you find a retain cycle in a running app?
+- **Question:** How do you find a retain cycle in a running app?
 
-- **Answer (EN):** Reproduce, capture Memory Graph or Leaks trace, inspect unexpected strong edges (closures, delegates, timers). Verify `deinit` after fixing weak/unowned captures.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как найти retain cycle в работающем приложении?
-
-- **Answer (RU):** Воспроизвести сценарий → **Debug Memory Graph** (или Leaks в Instruments). Искать объекты, которые должны были deinit, но остались; смотреть **strong references** (часто closure, delegate без `weak`, timer, NotificationCenter). LLDB `po` на suspect; после фикса — повторный snapshot и проверка, что `deinit` вызывается.
-
-</details>
+- **Answer:** Reproduce, capture Memory Graph or Leaks trace, inspect unexpected strong edges (closures, delegates, timers). Verify `deinit` after fixing weak/unowned captures.
 
 ### Q2
-- **Question (EN):** Why prefer `os_log`/`Logger` over `print` on iOS?
+- **Question:** Why prefer `os_log`/`Logger` over `print` on iOS?
 
-- **Answer (EN):** Structured subsystems, privacy redaction, persistence, signpost integration, and lower overhead—`print` lacks filtering and leaks data easily.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Чем `os_log` лучше `print` для iOS?
-
-- **Answer (RU):** Unified logging: **уровни**, **subsystem/category**, фильтрация в Console, низкий overhead, **privacy** placeholders (`.private`), интеграция со **signposts** и Instruments. `print` не структурирован, может тормозить в hot path и светит PII в логах.
-
-</details>
+- **Answer:** Structured subsystems, privacy redaction, persistence, signpost integration, and lower overhead—`print` lacks filtering and leaks data easily.
 
 ### Q3
-- **Question (EN):** When do you use Time Profiler vs Allocations?
+- **Question:** When do you use Time Profiler vs Allocations?
 
-- **Answer (EN):** Time Profiler for CPU/jank; Allocations for heap growth and churn; Leaks/Memory Graph for retention. Often profile CPU first, then heap on the same scenario.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Когда Time Profiler, когда Allocations?
-
-- **Answer (RU):** **Time Profiler** — CPU, лаги UI, долгий main thread, высокий energy. **Allocations** — рост памяти, частые аллокации, пики при действии пользователя. **Leaks/Memory Graph** — подозрение на cycle или объект не освобождается. Часто комбинируют: profiler нашёл hot path → allocations на том же сценарии.
-
-</details>
+- **Answer:** Time Profiler for CPU/jank; Allocations for heap growth and churn; Leaks/Memory Graph for retention. Often profile CPU first, then heap on the same scenario.
 
 ### Q4
-- **Question (EN):** Why set an exception breakpoint if you get a crash log anyway?
+- **Question:** Why set an exception breakpoint if you get a crash log anyway?
 
-- **Answer (EN):** It stops at throw time with intact stack and locals—often clearer than post-mortem crash logs, especially around ObjC exceptions and assertion failures.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Exception breakpoint — зачем, если и так будет crash log?
-
-- **Answer (RU):** Breakpoint останавливает **в момент throw**, с **живым стеком** и локальными переменными до unwinding. Crash log может быть символицирован позже и без контекста Swift/ObjC bridge. Особенно полезно для `objc_exception_throw` и отловa ошибок до SIGABRT.
-
-</details>
+- **Answer:** It stops at throw time with intact stack and locals—often clearer than post-mortem crash logs, especially around ObjC exceptions and assertion failures.

@@ -2,7 +2,6 @@
 
 ## Apple docs
 
-
 - [Keychain Services](https://developer.apple.com/documentation/security/keychain-services) — secure storage for secrets and credentials.
 - [TN3137: On Mac keychain APIs and implementations](https://developer.apple.com/documentation/technotes/tn3137-on-mac-keychain-apis-and-implementations) — keychain behavior notes.
 - [App Transport Security](https://developer.apple.com/documentation/bundleresources/information-property-list/nsapptransportsecurity) — ATS defaults and exceptions.
@@ -13,19 +12,9 @@
 
 ## In 30 seconds
 
-
 iOS security layers: **Keychain** for tokens and keys (not UserDefaults), **ATS** enforcing HTTPS by default, optional **certificate pinning** for high-threat apps, **privacy manifests** declaring sensitive API use, and **entitlements** gating capabilities (Keychain access groups, associated domains, push). **Jailbreak detection** is heuristic—useful for risk scoring, not as sole protection; assume secrets in the client can be extracted. Design: minimize stored secrets, short-lived tokens, server-side authorization, and no sensitive data in logs.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Безопасность iOS: **Keychain** для секретов, **ATS**, jailbreak detection (осторожно), certificate pinning, privacy manifests, минимизация PII в логах.
-
-</details>
-
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -43,7 +32,6 @@ iOS security layers: **Keychain** for tokens and keys (not UserDefaults), **ATS*
 - Pinning every endpoint before threat model says MITM is in scope.
 
 ## Key concepts
-
 
 | Term | Meaning |
 |------|---------|
@@ -71,7 +59,6 @@ PII cache              → encrypted or avoid; never log
 
 ## 🏋️ Exercises
 
-
 1. **Keychain wrapper:** Save/read/delete auth token with `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`. **Expected:** no token in UserDefaults; survives relaunch.
 2. **ATS audit:** List all `NSAppTransportSecurity` keys in project; justify each exception or remove. **Expected:** no blanket arbitrary loads.
 3. **Pinning spike:** URLSession delegate `didReceive challenge`—compare server cert to embedded pin (test env only). **Expected:** invalid proxy cert fails handshake.
@@ -80,13 +67,11 @@ PII cache              → encrypted or avoid; never log
 
 ## WWDC & resources
 
-
 - [Secure your app with App Transport Security (WWDC16)](https://developer.apple.com/videos/play/wwdc2016/706/)
 - [Get started with privacy manifests (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10060/)
 - [What’s new in privacy (WWDC24)](https://developer.apple.com/videos/play/wwdc2024/10123/)
 
 ## Artifacts
-
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -97,63 +82,22 @@ PII cache              → encrypted or avoid; never log
 
 ## Interview Q&A (Knowledge cards)
 
-
 ### Q1
-- **Question (EN):** Store access tokens in UserDefaults or Keychain?
+- **Question:** Store access tokens in UserDefaults or Keychain?
 
-- **Answer (EN):** Keychain for secrets with appropriate accessibility; UserDefaults is not confidential. Pair with short-lived tokens and no logging.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Где хранить access token — UserDefaults или Keychain?
-
-- **Answer (RU):** **Keychain** для секретов и refresh/access tokens: шифрование, контроль доступности (`kSecAttrAccessible*`), опционально access group для extensions. UserDefaults — plist, бэкапится, читается на compromised device проще. Дополнительно: короткий TTL, refresh на сервере, не логировать token.
-
-</details>
+- **Answer:** Keychain for secrets with appropriate accessibility; UserDefaults is not confidential. Pair with short-lived tokens and no logging.
 
 ### Q2
-- **Question (EN):** What is ATS and when are exceptions justified?
+- **Question:** What is ATS and when are exceptions justified?
 
-- **Answer (EN):** ATS enforces secure connections by default; domain-specific exceptions should be temporary and documented—fix the server rather than disabling ATS globally.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Что такое ATS и когда нужны exceptions?
-
-- **Answer (RU):** **App Transport Security** требует безопасный TLS по умолчанию. Exceptions (`NSExceptionDomains`) — только для legacy/dev endpoints с планом миграции. `NSAllowsArbitraryLoads = true` в проде — red flag. Лучше поднять сервер до HTTPS, чем ослаблять ATS глобально.
-
-</details>
+- **Answer:** ATS enforces secure connections by default; domain-specific exceptions should be temporary and documented—fix the server rather than disabling ATS globally.
 
 ### Q3
-- **Question (EN):** Pros and cons of certificate pinning?
+- **Question:** Pros and cons of certificate pinning?
 
-- **Answer (EN):** Pinning mitigates MITM with rogue CAs but complicates rotation and outages; use with backup pins and a clear threat model.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Certificate pinning — плюсы и минусы?
-
-- **Answer (RU):** **Плюс:** защита от MITM с подменой CA (корп. proxy, malicious cert). **Минусы:** операционная боль при ротации cert, риск outage, не заменяет server auth. Нужны backup pins и мониторинг expiry. Для многих consumer apps достаточно ATS + правильный TLS на сервере.
-
-</details>
+- **Answer:** Pinning mitigates MITM with rogue CAs but complicates rotation and outages; use with backup pins and a clear threat model.
 
 ### Q4
-- **Question (EN):** Why does Apple require privacy manifests?
+- **Question:** Why does Apple require privacy manifests?
 
-- **Answer (EN):** Manifests document sensitive API usage and SDK data practices; Xcode merges them at archive—missing required reasons cause rejection.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Privacy manifest — зачем Apple это требует?
-
-- **Answer (RU):** Декларировать **Required Reason APIs** (UserDefaults, disk space, sysboottime, etc.) и сбор данных SDK — чтобы App Store и пользователи видели агрегированную картину. При archive Xcode merges manifests; missing reasons → rejection. Это не замена Privacy Nutrition Label, а технический аудит API use.
-
-</details>
+- **Answer:** Manifests document sensitive API usage and SDK data practices; Xcode merges them at archive—missing required reasons cause rejection.

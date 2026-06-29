@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 **Bluetooth Low Energy (BLE)** is not a cable — it is a **GATT conversation**: Central scans for peripherals, connects, discovers **services** and **characteristics**, then **reads**, **writes**, or **subscribes** to values. **Core Bluetooth** is Apple's framework for both **Central** (`CBCentralManager`) and **Peripheral** (`CBPeripheralManager`) roles. Production BLE is defined by **disconnects**, **background limits**, and **layered architecture** — not the happy-path connect flow. Interview depth: GATT hierarchy, delegate callbacks, notify vs read, state restoration, and why UI must not own `CBCentralManager`.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**BLE** — не «кабель», а **GATT-диалог**: Central сканирует, подключается к Peripheral, читает/пишет характеристики. Background, pairing, throughput — типичные вопросы.
-
-</details>
-
 ## Apple docs
-
 
 - [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) — central and peripheral APIs.
 - [Core Bluetooth Programming Guide](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/) — GATT model, roles, workflows.
@@ -26,7 +16,6 @@
 - [Core Bluetooth Background Processing](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html) — background modes, state preservation/restoration.
 
 ## Mental model — hotel analogy
-
 
 **Infographic:** [`assets/ble-hotel-analogy.png`](assets/ble-hotel-analogy.png) · **Note:** [ble-hotel-mental-model.md](notes/ble-hotel-mental-model.md)
 
@@ -57,7 +46,6 @@ flowchart LR
 5. **Exchange data** — `readValue(for:)`, `writeValue(_:for:type:)`, `setNotifyValue(_:for:)` for streaming updates.
 
 ## Why BLE tests your architecture
-
 
 BLE is **low energy** — the peripheral sleeps; the radio drops; iOS suspends your app. The real world is not the demo path.
 
@@ -100,7 +88,6 @@ stateDiagram-v2
 
 ## 🎯 Focus vs Defer
 
-
 ### Focus
 
 - **GATT hierarchy:** Central → Peripheral → Service → Characteristic → Value.
@@ -120,7 +107,6 @@ stateDiagram-v2
 
 ## Key concepts
 
-
 | Term | Meaning |
 |------|---------|
 | **Central** | Scans and initiates connections (typical iPhone app role). |
@@ -133,7 +119,6 @@ stateDiagram-v2
 | **MTU** | Max payload per packet — negotiate for larger writes on supported stacks. |
 
 ## 🏋️ Exercises
-
 
 1. **Scan filter:** Scan for one known service UUID; list peripheral names and RSSI. **Expected:** explain why filtering saves battery.
 
@@ -148,7 +133,6 @@ stateDiagram-v2
 6. **Timeout:** If connect does not complete in N seconds, transition to `error`. **Expected:** cancel connect or stop scan, user-visible message.
 
 ## Code patterns
-
 
 ### Central manager skeleton
 
@@ -231,7 +215,6 @@ enum ConnectionPhase: Equatable {
 
 ## Artifacts
 
-
 - Notes: `notes/`
 - Assets: `assets/`
 
@@ -241,7 +224,6 @@ enum ConnectionPhase: Equatable {
 
 ## Links
 
-
 - [WWDC 2012 — Core Bluetooth 101](https://developer.apple.com/videos/play/wwdc2012/705/) — foundational session (concepts still apply).
 - [WWDC 2013 — Core Bluetooth in Practice](https://developer.apple.com/videos/play/wwdc2013/708/) — central workflow patterns.
 
@@ -249,280 +231,33 @@ enum ConnectionPhase: Equatable {
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** BLE hierarchy — Central, Peripheral, Service, Characteristic, Value?
+- **Question:** BLE hierarchy — Central, Peripheral, Service, Characteristic, Value?
 
-- **Answer (EN):** Central scans and connects; peripheral exposes services; characteristics are data endpoints; value is the payload. GATT tree, not a raw socket.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** зачем фильтровать scan по service UUID?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Меньше шума, меньше расход батареи, быстрее нужное устройство.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Иерархия BLE — Central, Peripheral, Service, Characteristic, Value?
-
-- **Answer (RU):** **Central** (`CBCentralManager`) сканирует и подключается. **Peripheral** (`CBPeripheral`) рекламирует **сервисы** (`CBService`) — логические группы (Heart Rate, Battery). Внутри сервиса — **характеристики** (`CBCharacteristic`) — конкретные read/write/notify точки. **Value** — `Data` при чтении, записи или notification. Это дерево **GATT**, не поток байт как TCP.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** Central → Peripheral → Service → Characteristic → Value; GATT, не кабель.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Central scans and connects; peripheral exposes services; characteristics are data endpoints; value is the payload. GATT tree, not a raw socket.
 
 ### Q2
-- **Question (EN):** Read vs Write vs Notify — when to use each?
+- **Question:** Read vs Write vs Notify — when to use each?
 
-- **Answer (EN):** Read for one-shot; write for commands; notify/indicate for peripheral-driven updates (sensors).
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** что сделать до прихода notify?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** `setNotifyValue(true, for:)` на характеристике после discovery.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Read vs Write vs Notify — когда что?
-
-- **Answer (RU):** **Read** — разовый запрос значения (`readValue`). **Write** — команда или конфиг (`writeWithResponse` / `writeWithoutResponse`). **Notify/Indicate** — peripheral **пушит** обновления (пульс, шаги); для стримов предпочтительнее poll-read. Indicate требует подтверждения, notify — нет.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** сенсор — notify; настройка — write; статус — read.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Read for one-shot; write for commands; notify/indicate for peripheral-driven updates (sensors).
 
 ### Q3
-- **Question (EN):** Central vs Peripheral on iPhone — always Central?
+- **Question:** Central vs Peripheral on iPhone — always Central?
 
-- **Answer (EN):** Apps are usually Central; Peripheral role via `CBPeripheralManager` when the phone advertises GATT services.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** кто инициирует соединение?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Central вызывает `connect`; peripheral рекламирует себя.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Central vs Peripheral на iPhone — всегда Central?
-
-- **Answer (RU):** Чаще приложение — **Central** (сканер). iPhone может быть **Peripheral** через `CBPeripheralManager` (отдать свой GATT сервер другому Central). Core Bluetooth покрывает **обе** роли; выбор по продукту и спецификации устройства.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** типично Central; Peripheral — когда телефон «устройство».
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Apps are usually Central; Peripheral role via `CBPeripheralManager` when the phone advertises GATT services.
 
 ### Q4
-- **Question (EN):** Why not put all BLE in the ViewModel?
+- **Question:** Why not put all BLE in the ViewModel?
 
-- **Answer (EN):** Separate hardware delegate noise from product types; UI renders finite connection phases only.
+- **Answer:** Separate hardware delegate noise from product types; UI renders finite connection phases only.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** какие UI-состояния минимум?
-
-</details>
-</details>
-</details>
 - **Follow-up answer:** searching, connecting, connected, disconnected, error.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Почему нельзя держать весь BLE во ViewModel?
-
-- **Answer (RU):** Delegate-шторм, reconnect, background и парсинг UUID ломают UI-слой. **Bluetooth layer** владеет `CBCentralManager` и колбэками; **domain** отдаёт `ConnectionPhase` и типизированные значения; **UI** только рисует состояния. Так проще тестировать domain и переживать disconnect без «залипшего» spinner.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** три слоя — BT, domain, UI states; VM не владеет менеджером.
-
-</details>
-</details>
-</details>
-</details>
-
 ### Q5
-- **Question (EN):** BLE in background — what does iOS actually allow?
+- **Question:** BLE in background — what does iOS actually allow?
 
-- **Answer (EN):** Background modes + optional state restoration; not unlimited background scanning; design explicit reconnect.
+- **Answer:** Background modes + optional state restoration; not unlimited background scanning; design explicit reconnect.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** что при уходе пользователя из зоны?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** `didDisconnectPeripheral` → domain `disconnected` → UI + backoff reconnect или manual retry.
-
-</details>
-</details>
-</details>
 <!-- knowledge-cards-canonical:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** BLE в background — что реально даёт iOS?
-
-- **Answer (RU):** Нужен capability **`bluetooth-central`** (или peripheral). iOS может **разбудить** приложение на connect/disconnect и данных; для восстановления после kill — **state preservation and restoration** (`CBCentralManagerOptionRestoreIdentifierKey`). Фон не бесконечный произвол: система ограничивает scan и время работы; продуктовая политика reconnect обязательна.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** bluetooth-central + restoration; не «как на переднем плане».
-
-</details>
-</details>
-</details>
-</details>

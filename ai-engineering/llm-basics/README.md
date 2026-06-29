@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 **Large Language Models (LLMs)** are neural networks trained to predict the **next token** from prior context — enabling chat, summarization, classification, and code generation. They differ from classical ML (fixed input → label) by accepting **variable-length text** and producing open-ended output. Core interview topics: **transformer intuition** (self-attention stacks), **inference** (prefill + decode, streaming), **on-device vs cloud** trade-offs on iOS, and **hallucination** mitigation. Token budgets and context limits are covered in [02 · Tokens](../tokens/README.md) and [03 · Context Window](../context-window/README.md).
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**LLM** — нейросети, предсказывающие **следующий token**. Отличаются от классического ML открытым текстовым выходом. Темы: transformer, inference, on-device vs cloud на iOS, снижение hallucination.
-
-</details>
-
 ## Apple docs
-
 
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels) — on-device LLM API for iOS 26+.
 - [SystemLanguageModel](https://developer.apple.com/documentation/foundationmodels/systemlanguagemodel) — availability and model access.
@@ -24,7 +14,6 @@
 - [Core ML](https://developer.apple.com/documentation/coreml) — custom on-device models (classifiers, not generative LLMs).
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -43,7 +32,6 @@
 - Training pipeline details unless ML infra role.
 
 ## Key concepts
-
 
 | Concept | Interview line |
 |---------|----------------|
@@ -81,7 +69,6 @@ Apple Intelligence routes some workloads to **Private Cloud Compute** when on-de
 
 ## 🏋️ Exercises
 
-
 1. **ML or LLM?** Photo filter that detects faces vs assistant that drafts email replies. *Expected:* Core ML / Vision for detection; Foundation Models or cloud LLM for generation.
 
 2. **Latency budget** — Chat reply must feel instant on iPhone. *Expected:* stream tokens; cap `maximumResponseTokens`; prefer on-device for short tasks; show partial UI.
@@ -94,7 +81,6 @@ Apple Intelligence routes some workloads to **Private Cloud Compute** when on-de
 
 ## Links
 
-
 - [Foundation Models documentation](https://developer.apple.com/documentation/foundationmodels)
 - [Meet the Foundation Models framework (WWDC25)](https://developer.apple.com/videos/play/wwdc2025/286/)
 - [Attention Is All You Need](https://arxiv.org/abs/1706.03762) — original transformer paper
@@ -103,171 +89,28 @@ Apple Intelligence routes some workloads to **Private Cloud Compute** when on-de
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** How does an LLM differ from classical ML?
+- **Question:** How does an LLM differ from classical ML?
 
-- **Answer (EN):** Classical ML maps fixed inputs to labels or scores. LLMs are sequence models that predict the next token autoregressively with open-ended text output. On iOS use Core ML for classification and Foundation Models or cloud APIs for generation.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** когда Core ML, а когда LLM в одном приложении?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Core ML — детерминированные модели с фиксированным I/O (vision, tabular). LLM — языковые задачи, диалог, extraction из текста. Часто **оба**: Vision находит объект, LLM описывает или отвечает на вопрос пользователя.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Чем LLM отличается от «обычного» ML?
-
-- **Answer (RU):** **Классический ML** — фиксированный вход (features/image) → метка или score. **LLM** — **sequence model**: текст → tokens → предсказание **следующего token** autoregressively; выход открытый (текст, JSON через guided generation). На iOS: Core ML для классификации; Foundation Models / cloud для generative задач.
-
-</details>
+- **Answer:** Classical ML maps fixed inputs to labels or scores. LLMs are sequence models that predict the next token autoregressively with open-ended text output. On iOS use Core ML for classification and Foundation Models or cloud APIs for generation.
 
 ### Q2
-- **Question (EN):** Explain transformers intuitively.
+- **Question:** Explain transformers intuitively.
 
-- **Answer (EN):** Text becomes token embeddings. Self-attention lets each token weigh others in context; stacked layers output next-token probabilities. Repeat for generation. Parallel training enabled LLM scale.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** что дороже — длинный prompt или длинный ответ?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** **Decode** (output tokens) часто доминирует latency, т.к. каждый output token sequential. Prefill prompt тоже стоит, но parallel; длинные ответы в chat UI заметнее пользователю.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Transformer «на пальцах»?
-
-- **Answer (RU):** Текст → **token embeddings**. **Self-attention** — каждый token «смотрит» на остальные в контексте и собирает weighted representation. Стек слоёв → logits для **next token**; повтор для генерации. Параллельное обучение на GPU — почему LLM масштабировались.
-
-</details>
+- **Answer:** Text becomes token embeddings. Self-attention lets each token weigh others in context; stacked layers output next-token probabilities. Repeat for generation. Parallel training enabled LLM scale.
 
 ### Q3
-- **Question (EN):** On-device vs cloud LLM on iOS?
+- **Question:** On-device vs cloud LLM on iOS?
 
-- **Answer (EN):** On-device offers privacy, offline use, and no cloud token billing with capacity limits. Cloud APIs offer larger models at per-token cost and network dependency. Private Cloud Compute extends Apple-hosted capacity with privacy protections.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** как проверить доступность on-device модели?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** `SystemLanguageModel.default.isAvailable` + OS/device requirements; показать fallback UI или deep link в Settings → Apple Intelligence.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** On-device vs cloud LLM на iOS?
-
-- **Answer (RU):** **On-device** (`SystemLanguageModel`) — privacy, offline, нет cloud token bill; лимиты context и reasoning. **Cloud API** — больше модель, выше cost, нужна сеть и политика данных. **PCC** — Apple-hosted для тяжёлых задач. Для PII-heavy features предпочитать on-device/PCC над произвольным third-party cloud.
-
-</details>
+- **Answer:** On-device offers privacy, offline use, and no cloud token billing with capacity limits. Cloud APIs offer larger models at per-token cost and network dependency. Private Cloud Compute extends Apple-hosted capacity with privacy protections.
 
 ### Q4
-- **Question (EN):** What is hallucination and how do you reduce it?
+- **Question:** What is hallucination and how do you reduce it?
 
-- **Answer (EN):** The model confidently invents false content. Mitigate with RAG or tools for facts, citations, structured output with validation, explicit refusal instructions, and user confirmation for critical actions. Low temperature alone does not guarantee truth.
+- **Answer:** The model confidently invents false content. Mitigate with RAG or tools for facts, citations, structured output with validation, explicit refusal instructions, and user confirmation for critical actions. Low temperature alone does not guarantee truth.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** пользователь видит citation — достаточно ли?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Citation снижает доверие к unsupported claims, но chunk может быть irrelevant — нужны retrieval quality + «answer only from context» prompt + empty-retrieval handling.
-
-</details>
-</details>
-</details>
 <!-- knowledge-cards-canonical:end -->
 
 <!-- ai-engineering-nav:start -->
@@ -277,13 +120,3 @@ Apple Intelligence routes some workloads to **Private Cloud Compute** when on-de
 **AI Engineering:** [Track overview](../README.md) · [← Roadmap](../roadmap/) · [02 · Tokens →](../tokens/)
 
 <!-- ai-engineering-nav:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Hallucination — что это и как снижать?
-
-- **Answer (RU):** Модель **уверенно генерирует ложное** — не random glitch. Снижение: **RAG/Tools** для фактов, **citations** в UI, **structured output** + validation, инструкция «скажи, если не знаешь», human confirmation для critical actions. Низкая temperature alone **не** гарантирует truth.
-
-</details>

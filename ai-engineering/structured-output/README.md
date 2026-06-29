@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 **Structured output** forces LLM responses into a **machine-parseable shape** — JSON, Swift structs — instead of free-form prose you regex-parse. Patterns: **JSON Schema** (cloud APIs), Apple **`@Generable`** macro with **`@Guide`** constraints, and post-generation **validation** before side effects. Reduces hallucinated fields and integration bugs in iOS apps. Distinct from [08 · Tool Calling](../tool-calling/README.md) (model invokes app code) but shares schema thinking.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Structured output** — ответ в **парсируемой схеме** (JSON, `@Generable`). Валидация и retry при невалидном output.
-
-</details>
-
 ## Apple docs
-
 
 - [Generable](https://developer.apple.com/documentation/foundationmodels/generable) — guided generation macro.
 - [@Guide attribute](https://developer.apple.com/documentation/foundationmodels/guide(description:)) — field constraints for generation.
@@ -23,7 +13,6 @@
 - [WWDC25 — Deep dive into the Foundation Models framework](https://developer.apple.com/videos/play/wwdc2025/301/) — `@Generable` patterns.
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -41,7 +30,6 @@
 - XML structured output legacy unless enterprise integration topic.
 
 ## Key concepts
-
 
 | Approach | Platform | Strength |
 |----------|----------|----------|
@@ -98,7 +86,6 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 
 ## 🏋️ Exercises
 
-
 1. **Extract contact** — Name, phone, email from messy paste. *Expected:* `@Generable struct Contact`; validate phone with `PhoneNumberKit`; nil optional fields.
 
 2. **Enum drift** — Model returns `"pos"` instead of `"positive"`. *Expected:* `@Guide` enum or JSON Schema enum; fail closed to retry.
@@ -111,7 +98,6 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 
 ## Links
 
-
 - [Generable](https://developer.apple.com/documentation/foundationmodels/generable)
 - [Guide](https://developer.apple.com/documentation/foundationmodels/guide(description:))
 - [Meet Foundation Models (WWDC25)](https://developer.apple.com/videos/play/wwdc2025/286/)
@@ -119,94 +105,35 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** Why structured output instead of "return JSON"?
+- **Question:** Why structured output instead of "return JSON"?
 
-- **Answer (EN):** Free-form JSON breaks with fences, extra keys, and type errors. Schema or `@Generable` constrains generation for safer parsing. You still validate values before side effects.
+- **Answer:** Free-form JSON breaks with fences, extra keys, and type errors. Schema or `@Generable` constrains generation for safer parsing. You still validate values before side effects.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** @Generable гарантирует valid JSON?
-
-</details>
-</details>
-</details>
 - **Follow-up answer:** Guarantees **shape** much more reliably than prompt-only; not a substitute for business validation (dates, IDs, authorization).
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Зачем structured output вместо «верни JSON»?
-
-- **Answer (RU):** Free-form JSON **ломается**: markdown fences, trailing commas, extra keys, wrong types. **Schema / @Generable** constrains generation at sampling time — меньше parse errors, type-safe Swift integration. Validation всё равно нужна для **values**.
-
-</details>
-
 ### Q2
-- **Question (EN):** What does @Guide provide?
+- **Question:** What does @Guide provide?
 
-- **Answer (EN):** Field-level descriptions and constraints like ranges and patterns. Improves extraction quality and documents the schema in code. Tool arguments use the same pattern.
+- **Answer:** Field-level descriptions and constraints like ranges and patterns. Improves extraction quality and documents the schema in code. Tool arguments use the same pattern.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** optional vs required поля?
-
-</details>
-</details>
-</details>
 - **Follow-up answer:** Swift `Optional` + `@Guide(description: "null if missing")`; JSON Schema `required` array; always handle missing data in UI — don't force model to invent.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** @Guide — что даёт?
-
-- **Answer (RU):** **Field-level constraints**: description для model, `.range`, patterns, enum hints. Улучшает extraction quality и документирует schema в коде. Tool `Arguments` тоже `@Generable`.
-
-</details>
-
 ### Q3
-- **Question (EN):** What to validate after generation?
+- **Question:** What to validate after generation?
 
-- **Answer (EN):** Business rules beyond schema: dates, bounds, cross-field logic, auth. Never auto-commit financial or calendar actions without user confirmation.
+- **Answer:** Business rules beyond schema: dates, bounds, cross-field logic, auth. Never auto-commit financial or calendar actions without user confirmation.
 
 - **Follow-up:** generation failed twice — UX?
 
 - **Follow-up answer:** Fallback to manual form; log transcript; lower temperature retry; track in Evaluations framework as regression.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Validation после generation — что проверять?
-
-- **Answer (RU):** **Business rules** beyond schema: date sanity, numeric bounds, cross-field logic, authorization, idempotency keys. **Never** auto-charge or auto-book on raw model output. Show **confirmation** UI on iOS.
-
-</details>
-
 ### Q4
-- **Question (EN):** JSON Schema vs @Generable?
+- **Question:** JSON Schema vs @Generable?
 
-- **Answer (EN):** Same concept — JSON Schema for cloud APIs, `@Generable` for native Swift on Apple FM. Hybrid apps often use Codable with a JSON Schema backend contract.
+- **Answer:** Same concept — JSON Schema for cloud APIs, `@Generable` for native Swift on Apple FM. Hybrid apps often use Codable with a JSON Schema backend contract.
 
 - **Follow-up:** can Tool output be @Generable?
 
@@ -221,13 +148,3 @@ let intent = try await session.respond(to: userMessage, generating: BookingInten
 **AI Engineering:** [Track overview](../README.md) · [← 06 · RAG](../rag/) · [08 · Tool Calling →](../tool-calling/)
 
 <!-- ai-engineering-nav:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** JSON Schema (cloud) vs @Generable (Apple)?
-
-- **Answer (RU):** **Same idea**, different surface: JSON Schema in API request for OpenAI/etc.; **@Generable** native Swift with compile-time macro. iOS app on Apple FM → prefer @Generable; hybrid app with backend LLM → Codable + JSON Schema contract.
-
-</details>

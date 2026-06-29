@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 **Vector search** finds the **k nearest neighbors** to a query embedding in a high-dimensional index — the retrieval core of RAG and in-app semantic search. Production systems use **ANN** (approximate nearest neighbor) indexes for speed at scale, **cosine similarity** for scoring, **metadata filters** for tenant/product scoping, and often **hybrid search** (BM25 keywords + vectors) for SKUs and names. Mobile: small indexes in SQLite or bundled flat files; large corpora on server. Builds on [04 · Embeddings](../embeddings/README.md).
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Vector search** — k ближайших соседей к query embedding. On-device: бинарник + SQLite metadata; k=5–10 под budget FM.
-
-</details>
-
 ## Apple docs
-
 
 - [NLEmbedding](https://developer.apple.com/documentation/naturallanguage/nlembedding) — on-device vectors for small indexes.
 - [Accelerate framework](https://developer.apple.com/documentation/accelerate) — SIMD dot products for brute-force k-NN on small datasets.
@@ -22,7 +12,6 @@
 - [Foundation Models — Tool](https://developer.apple.com/documentation/foundationmodels/tool) — model calls app tool that runs vector search.
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -40,7 +29,6 @@
 - Every vendor API (Pinecone, Weaviate) — know pattern, one example enough.
 
 ## Key concepts
-
 
 | Term | Meaning |
 |------|---------|
@@ -82,7 +70,6 @@ Pre-filter when cardinality small; post-filter when index lacks composite suppor
 
 ## 🏋️ Exercises
 
-
 1. **Index sizing** — 10k chunks × 768 floats × 4 bytes. *Expected:* ~30 MB vectors alone; consider quantization or server index for App Store size limits.
 
 2. **Empty results** — All similarities below 0.55 threshold. *Expected:* return empty context; model says "not found" — do not inject random chunks.
@@ -95,7 +82,6 @@ Pre-filter when cardinality small; post-filter when index lacks composite suppor
 
 ## Links
 
-
 - [NLEmbedding](https://developer.apple.com/documentation/naturallanguage/nlembedding)
 - [Accelerate](https://developer.apple.com/documentation/accelerate)
 - [FAISS (Meta)](https://github.com/facebookresearch/faiss) — reference ANN library
@@ -103,109 +89,36 @@ Pre-filter when cardinality small; post-filter when index lacks composite suppor
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** Why ANN when exact k-NN exists?
+- **Question:** Why ANN when exact k-NN exists?
 
-- **Answer (EN):** Exact search is fine for thousands of vectors. At millions of scale, ANN indexes trade a tiny recall loss for much faster queries. Production RAG typically uses ANN on the server.
+- **Answer:** Exact search is fine for thousands of vectors. At millions of scale, ANN indexes trade a tiny recall loss for much faster queries. Production RAG typically uses ANN on the server.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** как проверить, что ANN не ломает quality?
-
-</details>
-</details>
-</details>
 - **Follow-up answer:** Compare recall@k **ANN vs brute force** on golden set; tune HNSW `efSearch` / `M` parameters; monitor retrieval regressions when reindexing.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** ANN — зачем, если есть exact k-NN?
-
-- **Answer (RU):** **Exact** brute-force O(n) — OK для thousands vectors on device. **Millions+** — too slow. **ANN** (HNSW, IVF) жертвует negligible recall ради **sublinear latency**. RAG production almost always ANN on server; mobile FAQ may use flat index.
-
-</details>
-
 ### Q2
-- **Question (EN):** Metadata filters — before or after vector search?
+- **Question:** Metadata filters — before or after vector search?
 
-- **Answer (EN):** Pre-filter when the index supports it. Post-filter by retrieving a larger k first risks empty results if k is too small. Always filter tenant or user scope for security.
+- **Answer:** Pre-filter when the index supports it. Post-filter by retrieving a larger k first risks empty results if k is too small. Always filter tenant or user scope for security.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** iOS offline index — как хранить metadata?
-
-</details>
-</details>
-</details>
 - **Follow-up answer:** SQLite table: `id, chunk_text, source, locale, embedding_blob`; query with filtered IDs then similarity in Swift or GRDB; version index with app releases.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Metadata filters — до или после vector search?
-
-- **Answer (RU):** **Pre-filter** когда index supports filtered ANN — efficient, correct k. **Post-filter** — retrieve larger k', then filter — риск empty if k' too small. Interview: always filter **tenant/user** for security; design index schema upfront.
-
-</details>
-
 ### Q3
-- **Question (EN):** When do you need hybrid search?
+- **Question:** When do you need hybrid search?
 
-- **Answer (EN):** When exact tokens matter — SKUs, error codes, names. Pure vector search can miss exact matches. Combine BM25 with vectors and merge rankings with RRF.
+- **Answer:** When exact tokens matter — SKUs, error codes, names. Pure vector search can miss exact matches. Combine BM25 with vectors and merge rankings with RRF.
 
 - **Follow-up:** Foundation Models on-device — hybrid realistic?
 
 - **Follow-up answer:** Small corpus: local SQLite FTS + NLEmbedding similarity in app Tool; large corpus: server hybrid; expose to model via Tool returning top snippets.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Hybrid search — когда нужен?
-
-- **Answer (RU):** Когда **exact tokens matter**: SKU, error codes, names, IDs. Pure vector семantically близок, но может **miss exact match**. **BM25 + vector** + RRF merge — standard production pattern.
-
-</details>
-
 ### Q4
-- **Question (EN):** How do you choose top-k?
+- **Question:** How do you choose top-k?
 
-- **Answer (EN):** Balance recall against context window size. Often 5–20 chunks of 256–512 tokens. Too many adds noise and overflows the window. Tune on a golden set; rerank if needed.
+- **Answer:** Balance recall against context window size. Often 5–20 chunks of 256–512 tokens. Too many adds noise and overflows the window. Tune on a golden set; rerank if needed.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** similarity score 0.91 vs 0.62 — брать оба?
-
-</details>
-</details>
-</details>
 - **Follow-up answer:** Depends on gap and threshold; steep drop-off after rank 3 may mean only top-2 relevant — use **minimum similarity threshold** + max k; don't fill context with weak matches.
 
 <!-- knowledge-cards-canonical:end -->
@@ -217,13 +130,3 @@ Pre-filter when cardinality small; post-filter when index lacks composite suppor
 **AI Engineering:** [Track overview](../README.md) · [← 04 · Embeddings](../embeddings/) · [06 · RAG →](../rag/)
 
 <!-- ai-engineering-nav:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** top-k — как выбрать k?
-
-- **Answer (RU):** Balance **recall vs context window**. Typical **5–20** chunks; each 256–512 tokens. Too many k → prompt overflow + noise. Tune on golden set recall@k; rerank top-20 → final 5 for prompt.
-
-</details>

@@ -1,6 +1,6 @@
 # Image Caching in UIKit and SwiftUI
 
-Конспект для темы **22 — Кэширование** и собесов (UIKit / SwiftUI / memory). Карточка **Q35** в `Caching-Offline-First.md`. Связь: [Networking Q HTTP cache](../../20%20Networking%20—%20URLSession,%20REST,%20WebSocket,%20GraphQL,%20gRPC/Networking-URLSession-REST-WebSocket.md), playground [ImageLoadingConcurrencyLab](../../../II.%20Swift/08%20Swift%20Concurrency%20—%20async-await,%20actor,%20isolation/ImageLoadingConcurrencyLab.playground/Contents.swift).
+Notes for **22 — Caching** and interviews (UIKit / SwiftUI / memory). Card **Q35** in `Caching-Offline-First.md`. Related: [Networking Q HTTP cache](../../20%20Networking%20—%20URLSession,%20REST,%20WebSocket,%20GraphQL,%20gRPC/Networking-URLSession-REST-WebSocket.md), playground [ImageLoadingConcurrencyLab](../../../II.%20Swift/08%20Swift%20Concurrency%20—%20async-await,%20actor,%20isolation/ImageLoadingConcurrencyLab.playground/Contents.swift).
 
 ## Background
 

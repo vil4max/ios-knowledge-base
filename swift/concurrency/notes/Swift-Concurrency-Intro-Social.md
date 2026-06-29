@@ -1,7 +1,7 @@
 # Swift Concurrency in iOS — Explained Simply
 
 - **Source:** social post (LinkedIn-style intro; URL to be added)
-- **Status:** local digest — исходный URL поста неизвестен; материал в базе без внешней карточки
+- **Status:** local digest — original post URL unknown; material in the knowledge base without an external card
 - **Playground:** [SwiftConcurrencyPrimer.playground](../SwiftConcurrencyPrimer.playground)
 
 ---
@@ -105,7 +105,7 @@ Use for independent network calls, parallel downloads, fan-out inside one async 
 
 ## Not in the post (see main README and other materials)
 
-| Тема | Где углубиться |
+| Topic | Where to go deeper |
 |------|----------------|
 | Structured vs unstructured `Task` | [Structured-Concurrency-What-Structured-Means.md](Structured-Concurrency-What-Structured-Means.md), [StructuredConcurrencyLab.playground](../StructuredConcurrencyLab.playground) |
 | Cancellation | [StructuredConcurrencyLab.playground](../StructuredConcurrencyLab.playground) |

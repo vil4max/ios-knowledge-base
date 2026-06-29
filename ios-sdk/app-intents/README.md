@@ -2,7 +2,6 @@
 
 ## In 30 seconds
 
-
 **App Intents** expose an app feature to the system — Siri, Shortcuts, Spotlight, and the Action button can invoke it without opening your UI first. An **`AppIntent`** describes an action; **`@Parameter`** declares inputs; **`AppEntity`** maps your model for the system; **`AppShortcutsProvider`** registers voice phrases.
 
 Customization beyond the defaults: **`requestValueDialog`** for prompt text, explicit yes/no for optional parameters, and **`ShowsSnippetView`** + **`ProvidesDialog`** for a rich result with spoken feedback.
@@ -17,16 +16,7 @@ Customization beyond the defaults: **`requestValueDialog`** for prompt text, exp
 
 **Related topics:** [SwiftUI](../swiftui/README.md) (snippet views), [Navigation & Deep Links](/architecture/navigation/) (in-app routing from intents), [Deep Links](/system-design/deep-links/) (URL vs intent entry points).
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-| **Track** | iOS SDK |
-
-</details>
-
 ## Topic structure
-
 
 - Sample project: [BooksShelfCustomIntent — starter](https://www.createwithswift.com/content/files/2025/04/BooksShelfCustomIntent-starter.zip) → [final](https://www.createwithswift.com/content/files/2025/04/BooksShelfCustomIntent-final-1.zip)
 - Tutorial: [Customizing an App Intent](https://www.createwithswift.com/customizing-an-app-intent/)
@@ -44,7 +34,6 @@ Typical project layout:
 
 ## 🎯 Top 10 — quick map
 
-
 | # | Question | One-line answer |
 |---|----------|-----------------|
 | Q1 | What is an App Intent? | System-callable action; exposes app capability to Siri/Shortcuts |
@@ -61,7 +50,6 @@ Typical project layout:
 ---
 
 ## Key concepts
-
 
 ### Core types
 
@@ -101,11 +89,10 @@ App opens / updates if needed (NavigationManager, etc.)
 
 ## Interview Q&A (Knowledge cards)
 
-
 ### Q1 — What is an App Intent?
-- **Question (EN):** What is an App Intent?
+- **Question:** What is an App Intent?
 
-- **Answer (EN):** An **App Intent** is a system-invokable app action. You declare parameters and `perform()`; the system collects input and runs your code.
+- **Answer:** An **App Intent** is a system-invokable app action. You declare parameters and `perform()`; the system collects input and runs your code.
 
 ```swift
 import AppIntents
@@ -119,37 +106,10 @@ struct AddBookIntent: AppIntent {
 }
 ```
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Что такое App Intent?
-
-- **Answer (RU):** **App Intent** — действие приложения, которое система может вызвать из Siri, Shortcuts или Spotlight без обязательного UI. Вы описываете параметры и `perform()`, система собирает ввод и запускает код.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** Интент = «экспорт фичи в систему»; пользователь запускает действие голосом или из Shortcuts.
-
-</details>
-</details>
-</details>
-
----
-
-</details>
-
 ### Q2 — AppIntent vs AppEntity
-- **Question (EN):** How is `AppIntent` different from `AppEntity`?
+- **Question:** How is `AppIntent` different from `AppEntity`?
 
-- **Answer (EN):** **`AppIntent`** = action. **`AppEntity`** = data object the system can display, search, or pass as a parameter.
+- **Answer:** **`AppIntent`** = action. **`AppEntity`** = data object the system can display, search, or pass as a parameter.
 
 ```swift
 struct BookEntity: AppEntity {
@@ -167,20 +127,10 @@ struct BookEntity: AppEntity {
 
 ---
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Чем `AppIntent` отличается от `AppEntity`?
-
-- **Answer (RU):** **`AppIntent`** — **действие** (добавить книгу, открыть книгу). **`AppEntity`** — **объект данных**, который система показывает в picker/search (книга, задача, контакт). Entity conforming type оборачивает вашу модель.
-
-</details>
-
 ### Q3 — Register Siri shortcuts
-- **Question (EN):** How do you register Siri phrases?
+- **Question:** How do you register Siri phrases?
 
-- **Answer (EN):** Conform a type to **`AppShortcutsProvider`** and return **`AppShortcut`** entries with phrase templates.
+- **Answer:** Conform a type to **`AppShortcutsProvider`** and return **`AppShortcut`** entries with phrase templates.
 
 ```swift
 struct BookShelfShortcutsProvider: AppShortcutsProvider {
@@ -201,20 +151,10 @@ struct BookShelfShortcutsProvider: AppShortcutsProvider {
 
 ---
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как зарегистрировать фразы для Siri?
-
-- **Answer (RU):** Создайте тип с **`AppShortcutsProvider`**, верните массив **`AppShortcut`**. В `phrases` используйте `\(.applicationName)` — система подставит имя приложения.
-
-</details>
-
 ### Q4 — Customize parameter prompts (`requestValueDialog`)
-- **Question (EN):** How do you customize text when requesting a parameter?
+- **Question:** How do you customize text when requesting a parameter?
 
-- **Answer (EN):** Pass **`requestValueDialog: IntentDialog("…")`** to `@Parameter`. Used in Shortcuts UI and Siri prompts.
+- **Answer:** Pass **`requestValueDialog: IntentDialog("…")`** to `@Parameter`. Used in Shortcuts UI and Siri prompts.
 
 ```swift
 struct AddBookIntent: AppIntent {
@@ -233,19 +173,10 @@ struct AddBookIntent: AppIntent {
 
 ---
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как задать свой текст при запросе параметра?
-
-- **Answer (RU):** В инициализаторе **`@Parameter`** передайте **`requestValueDialog: IntentDialog("…")`**. Текст показывается в Shortcuts и озвучивается Siri (если включены spoken responses).
-
-</details>
-
 ### Q5 — Optional parameters are skipped
-- **Question (EN):** Why does Siri skip optional parameters?
+- **Question:** Why does Siri skip optional parameters?
 
-- **Answer (EN):** Optional `@Parameter` values are **skipped by default** to keep the flow short. Add an explicit choice parameter if you need user input.
+- **Answer:** Optional `@Parameter` values are **skipped by default** to keep the flow short. Add an explicit choice parameter if you need user input.
 
 ```swift
 @Parameter(title: "Type of book", requestValueDialog: IntentDialog("Is it an e-book or a physical one?"))
@@ -254,20 +185,10 @@ var type: BookContentType?  // skipped unless you add custom logic
 
 ---
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Почему Siri не спрашивает optional-параметр?
-
-- **Answer (RU):** **Optional `@Parameter` по умолчанию пропускаются** — система считает их необязательными и не прерывает flow. Если нужен явный выбор — добавьте отдельный yes/no параметр.
-
-</details>
-
 ### Q6 — Ask for optional parameters explicitly
-- **Question (EN):** How do you ask whether the user wants to provide an optional parameter?
+- **Question:** How do you ask whether the user wants to provide an optional parameter?
 
-- **Answer (EN):** Add a yes/no `AppEnum` parameter; in `perform()`, call **`requestDisambiguation`** on the optional parameter when the user opts in.
+- **Answer:** Add a yes/no `AppEnum` parameter; in `perform()`, call **`requestDisambiguation`** on the optional parameter when the user opts in.
 
 ```swift
 enum IsTypeIncluded: String, CaseIterable, Codable, Identifiable, AppEnum {
@@ -310,20 +231,10 @@ struct AddBookIntent: AppIntent {
 
 ---
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как спросить, хочет ли пользователь указать optional-параметр?
-
-- **Answer (RU):** 1) Enum **`AppEnum`** с Yes/No. 2) `@Parameter` для выбора. 3) В `perform()` — если yes, вызовите **`$param.requestDisambiguation(among:dialog:)`** на optional property wrapper.
-
-</details>
-
 ### Q7 — Custom result snippet (`ShowsSnippetView`)
-- **Question (EN):** How do you show a custom UI after the intent completes?
+- **Question:** How do you show a custom UI after the intent completes?
 
-- **Answer (EN):** Return **`IntentResult & ShowsSnippetView`** and use **`.result { MySwiftUIView() }`**.
+- **Answer:** Return **`IntentResult & ShowsSnippetView`** and use **`.result { MySwiftUIView() }`**.
 
 ```swift
 import AppIntents
@@ -356,20 +267,10 @@ func perform() async throws -> some IntentResult & ShowsSnippetView {
 
 ---
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как показать кастомный UI после выполнения интента?
-
-- **Answer (RU):** Верните из `perform()` тип **`IntentResult & ShowsSnippetView`**. Используйте **`.result { MySwiftUIView() }`** — вместо generic «Done» пользователь видит ваш snippet.
-
-</details>
-
 ### Q8 — Result dialog (`ProvidesDialog`)
-- **Question (EN):** How do you provide spoken or displayed result text?
+- **Question:** How do you provide spoken or displayed result text?
 
-- **Answer (EN):** Add **`ProvidesDialog`**, pass **`IntentDialog`** to **`.result(dialog:)`**.
+- **Answer:** Add **`ProvidesDialog`**, pass **`IntentDialog`** to **`.result(dialog:)`**.
 
 ```swift
 @MainActor
@@ -385,20 +286,10 @@ func perform() async throws -> some IntentResult & ShowsSnippetView & ProvidesDi
 
 ---
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как вернуть текст/озвучку результата?
-
-- **Answer (RU):** Добавьте **`ProvidesDialog`** к return type. Передайте **`IntentDialog`** в **`.result(dialog:) { view }`**.
-
-</details>
-
 ### Q9 — `AppEnum` for custom pickers
-- **Question (EN):** How do you expose an enum in the intent UI?
+- **Question:** How do you expose an enum in the intent UI?
 
-- **Answer (EN):** Conform to **`AppEnum`** with display representations for the type and each case.
+- **Answer:** Conform to **`AppEnum`** with display representations for the type and each case.
 
 ```swift
 enum Genre: String, AppEnum {
@@ -415,20 +306,10 @@ enum Genre: String, AppEnum {
 
 ---
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как показать enum в интерфейсе интента?
-
-- **Answer (RU):** Conform enum к **`AppEnum`**: `typeDisplayRepresentation`, `caseDisplayRepresentations`. Для nested model enums (Genre, BookContentType) — тот же паттерн.
-
-</details>
-
 ### Q10 — Wiring intent to app navigation
-- **Question (EN):** How do you navigate to the right screen after an intent?
+- **Question:** How do you navigate to the right screen after an intent?
 
-- **Answer (EN):** Update shared navigation state or model container inside `@MainActor perform()` — same patterns as deep links.
+- **Answer:** Update shared navigation state or model container inside `@MainActor perform()` — same patterns as deep links.
 
 ```swift
 @MainActor
@@ -443,7 +324,6 @@ func perform() async throws -> some IntentResult {
 
 ## 🏋️ Exercises
 
-
 1. **Minimal intent** — `OpenSettingsIntent` with one `@Parameter`; register one Siri phrase.
 2. **Custom dialogs** — three `@Parameter` fields, each with unique `requestValueDialog`; test in Shortcuts app.
 3. **Optional flow** — yes/no for an optional field; verify skip vs disambiguation paths.
@@ -457,7 +337,6 @@ func perform() async throws -> some IntentResult {
 
 ## Links
 
-
 - [Customizing an App Intent (Create with Swift)](https://www.createwithswift.com/customizing-an-app-intent/)
 - [BooksShelfCustomIntent — starter (zip)](https://www.createwithswift.com/content/files/2025/04/BooksShelfCustomIntent-starter.zip)
 - [BooksShelfCustomIntent — final (zip)](https://www.createwithswift.com/content/files/2025/04/BooksShelfCustomIntent-final-1.zip)
@@ -469,12 +348,3 @@ func perform() async throws -> some IntentResult {
 ---
 
 > Customize prompts, respect optional parameters, show rich results — that's how you make **App Intents** feel native.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как открыть нужный экран после интента?
-
-- **Answer (RU):** В `perform()` обновите shared state: **`NavigationManager`**, `@Observable` router, или deep-link URL. `@MainActor` на `perform()` если трогаете UI/SwiftData. Starter project использует `NavigationManager` + shared `ModelContainer` в `@main`.
-
-</details>

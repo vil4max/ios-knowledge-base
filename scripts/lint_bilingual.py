@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lint bilingual RU+EN compliance for topic READMEs and notes."""
+"""Lint English-only compliance for topic READMEs and notes."""
 
 from __future__ import annotations
 
@@ -17,34 +17,19 @@ SKIP_FILES = {
     KB / "_sidebar.md",
     KB / "README.md",
     KB / "ai-engineering/README.md",
-    KB / "ai-engineering/roadmap/README.md",
     KB / "quality/testing/exercises/README.md",
 }
 
+CYRILLIC_HEADING = re.compile(r"^#{1,6}\s+.*[а-яА-ЯёЁ]", re.M)
+CYRILLIC = re.compile(r"[а-яА-ЯёЁ]")
+LANG_RU = re.compile(r'<details\s+class="lang-ru"', re.I)
 RU_LABEL = re.compile(
     r"^\s*[-*]\s+\*\*(Question|Answer|Follow-up answer|Follow-up|"
     r"Устная заготовка|Итог одной фразой)\s*\(RU\):",
     re.I,
 )
-EN_LABEL = re.compile(
-    r"^\s*[-*]\s+\*\*(Question|Answer|Follow-up answer|Follow-up|"
-    r"Устная заготовка|Итог одной фразой)\s*\(EN\):",
-    re.I,
-)
-Q_CARD = re.compile(r"^### Q\d+", re.M)
-HAS_DETAILS = re.compile(r'<details\s+class="lang-ru"', re.I)
-RU_FILENAME = re.compile(r"-RU\.md$", re.I)
-SEC_30 = re.compile(r"^## In 30 seconds\s*$", re.M)
 SEC_30_RU = re.compile(r"^## За 30 секунд\s*$", re.M)
-CYRILLIC_HEADING = re.compile(r"^#{1,6}\s+.*[а-яА-ЯёЁ]", re.M)
-CYRILLIC = re.compile(r"[а-яА-ЯёЁ]")
-DETAILS_OPEN = re.compile(r'<details\s+class="lang-ru"', re.I)
-DETAILS_CLOSE = re.compile(r"</details>", re.I)
-
-README_SKIP_CYRILLIC = {
-    KB / "glossary/README.md",
-    KB / "ai-engineering/roadmap/README.md",
-}
+RU_FILENAME = re.compile(r"-RU\.md$", re.I)
 
 
 @dataclass
@@ -75,19 +60,15 @@ def iter_targets() -> list[Path]:
 
 
 def visible_cyrillic_count(text: str) -> int:
-    in_details = False
     in_fence = False
     total = 0
     for line in text.splitlines():
         stripped = line.strip()
         if stripped.startswith("```"):
             in_fence = not in_fence
-        if DETAILS_OPEN.search(line):
-            in_details = True
-        if not in_details and not in_fence:
+            continue
+        if not in_fence:
             total += len(CYRILLIC.findall(line))
-        if DETAILS_CLOSE.search(line):
-            in_details = False
     return total
 
 
@@ -101,36 +82,20 @@ def lint_file(path: Path) -> Violations:
     if SEC_30_RU.search(text):
         v.issues.append("uses deprecated '## За 30 секунд' heading — use '## In 30 seconds'")
 
+    if LANG_RU.search(text):
+        v.issues.append("contains <details class=\"lang-ru\"> — remove RU helpers")
+
+    if RU_LABEL.search(text):
+        v.issues.append("contains RU Q-card fields — English only")
+
     for match in CYRILLIC_HEADING.finditer(text):
         title = match.group().strip()
         v.issues.append(f"Cyrillic heading: {title[:60]}{'…' if len(title) > 60 else ''}")
         break
 
-    if Q_CARD.search(text):
-        cards = list(Q_CARD.finditer(text))
-        for i, match in enumerate(cards):
-            start = match.start()
-            end = cards[i + 1].start() if i + 1 < len(cards) else len(text)
-            block = text[start:end]
-            if "<!-- knowledge-cards" in text[max(0, start - 80):start]:
-                pass
-            has_en = bool(EN_LABEL.search(block))
-            has_ru = bool(RU_LABEL.search(block))
-            qnum = match.group().strip()
-            if has_ru and not has_en:
-                v.issues.append(f"{qnum}: RU without EN")
-            if has_en and not has_ru:
-                v.issues.append(f"{qnum}: EN without RU")
-            if has_ru and has_en and not HAS_DETAILS.search(block):
-                v.issues.append(f"{qnum}: RU not in <details class=\"lang-ru\">")
-
-    if SEC_30.search(text) and not HAS_DETAILS.search(text):
-        v.issues.append("30-sec section missing <details class=\"lang-ru\">")
-
-    if path.name == "README.md" and path not in README_SKIP_CYRILLIC:
-        n = visible_cyrillic_count(text)
-        if n > 0:
-            v.issues.append(f"README has {n} visible Cyrillic char(s) outside <details class=\"lang-ru\">")
+    n = visible_cyrillic_count(text)
+    if n > 0:
+        v.issues.append(f"{n} visible Cyrillic char(s) outside code fences")
 
     return v
 
@@ -141,7 +106,7 @@ def main() -> int:
     violations = [v for v in all_v if v.issues]
 
     lines = [
-        f"# Bilingual audit — {len(all_v)} files scanned, {len(violations)} with issues\n"
+        f"# English-only audit — {len(all_v)} files scanned, {len(violations)} with issues\n"
     ]
     for v in violations:
         rel = v.path.relative_to(KB)

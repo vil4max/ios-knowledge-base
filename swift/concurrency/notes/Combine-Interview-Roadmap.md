@@ -1,7 +1,7 @@
 # Combine — interview roadmap
 
-**Goal:** confident answers on Combine (3+ years commercial framing) + two live implementation stories from real projects.  
-**Format:** short daily blocks (~15–20 min) or one 2-hour sprint.  
+**Goal:** confident answers on Combine (3+ years commercial framing) + two live implementation stories from real projects.
+**Format:** short daily blocks (~15–20 min) or one 2-hour sprint.
 
 **Related in this repo:** [Swift-Concurrency.md](../Swift-Concurrency.md) (Q&A: Combine vs async/await, when to choose what) · [SECTION_MAP](../../SECTION_MAP.md)
 
@@ -31,12 +31,12 @@
 
 **Say on interview (30 sec)**
 
-> «Около 3+ лет коммерческого опыта с Combine: state/event streams, auth/session, debounce-поиск, пайплайны с операторами. В новых модулях чаще `async/await` для one-shot задач, Combine — где нужны долгоживущие потоки событий.»
+> About 3+ years of commercial Combine experience: state/event streams, auth/session, debounced search, operator pipelines. In new modules I more often use `async/await` for one-shot tasks; Combine where long-lived event streams are needed.
 
 **Self-check**
 
-- [ ] Могу объяснить разницу Combine vs `async/await` без «Combine устарел».
-- [ ] Знаю, зачем тестируют **Presenter / ViewModel**, а не View: там ветвления и бизнес-решения.
+- [ ] I can explain Combine vs `async/await` without saying "Combine is obsolete."
+- [ ] I know why tests target **Presenter / ViewModel**, not View: that is where branching and business decisions live.
 
 ---
 
@@ -111,34 +111,34 @@
 
 Rehearse each answer in **1–2 sentences** out loud.
 
-1. **What is Combine and where did you use it?**  
+1. **What is Combine and where did you use it?**
    Reactive framework for async event streams; auth state, search debounce, UI state in production iOS apps.
 
-2. **`PassthroughSubject` vs `CurrentValueSubject`?**  
+2. **`PassthroughSubject` vs `CurrentValueSubject`?**
    Passthrough = events only. CurrentValue = holds last value; new subscriber gets it immediately.
 
-3. **Why `eraseToAnyPublisher()`?**  
+3. **Why `eraseToAnyPublisher()`?**
    Hides concrete publisher type; cleaner API and easier refactoring.
 
-4. **`subscribe(on:)` vs `receive(on:)`?**  
+4. **`subscribe(on:)` vs `receive(on:)`?**
    Where work runs vs where subscriber receives; UI updates on main.
 
-5. **`map` vs `flatMap`?**  
+5. **`map` vs `flatMap`?**
    Sync transform vs spawn inner publisher per value.
 
-6. **Why `switchToLatest`?**  
+6. **Why `switchToLatest`?**
    Cancels outdated inner publishers (e.g. old search requests).
 
-7. **Error handling?**  
+7. **Error handling?**
    `catch`, `retry`, map to UI state; separate recoverable vs fatal errors.
 
-8. **Memory leaks?**  
+8. **Memory leaks?**
    `weak self`, store cancellables, verify `deinit` in debug.
 
-9. **Testing Combine?**  
+9. **Testing Combine?**
    XCTest + mocks + assert state sequence; avoid real network/timers.
 
-10. **Combine vs async/await today?**  
+10. **Combine vs async/await today?**
     async/await for one-shot; Combine for long-lived multi-source streams.
 
 ---
@@ -157,7 +157,7 @@ Rehearse each answer in **1–2 sentences** out loud.
 4. `flatMap` / `switchToLatest` → repository request.
 5. Map to `ViewState`; `receive(on: .main)`.
 
-**Your story:** `SearchScreenViewModel` — debounce via `Task.sleep` + cancel previous task (same idea; be ready to say «можно и через Combine debounce»).
+**Your story:** `SearchScreenViewModel` — debounce via `Task.sleep` + cancel previous task (same idea; be ready to say you could also use Combine's `debounce`).
 
 ### Case B — Global auth state
 
@@ -170,21 +170,20 @@ Rehearse each answer in **1–2 sentences** out loud.
 3. Screens `sink` / combine with local state; reload data on change.
 4. Low coupling: modules do not poll keychain directly.
 
-
 ---
 
 ## Phase 6 — Mock round (Day 6, ~15 min)
 
 Answer without notes:
 
-1. When `CurrentValueSubject` vs `@Published`?  
-2. Why `switchToLatest` in search, not only `flatMap`?  
+1. When `CurrentValueSubject` vs `@Published`?
+2. Why `switchToLatest` in search, not only `flatMap`?
 3. What if `AnyCancellable` is not stored?
 
 **Target answers (check yourself)**
 
-1. **Subject** in services crossing modules; **`@Published`** inside a single VM/ObservableObject for SwiftUI binding.  
-2. **`flatMap`** keeps all inners alive; **`switchToLatest`** cancels stale requests.  
+1. **Subject** in services crossing modules; **`@Published`** inside a single VM/ObservableObject for SwiftUI binding.
+2. **`flatMap`** keeps all inners alive; **`switchToLatest`** cancels stale requests.
 3. Subscription cancelled immediately; no updates / flaky behavior.
 
 ---
@@ -228,4 +227,3 @@ Pitch: 3+ yrs, streams + operators, async/await for one-shot
 ```
 
 ---
-

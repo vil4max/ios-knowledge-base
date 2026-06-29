@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 The **context window** is the maximum number of **tokens** a model can attend to in a single request — system instructions, tool definitions, conversation history, retrieved documents, and the user message must all fit. When content overflows, the model **cannot see** what was dropped — leading to forgotten instructions and contradictions. Mobile strategies: **truncation**, **summarization**, **rolling windows**, and Apple FM **transcript management** (`historyTransform`, `summarizeHistory` via [FoundationModelsUtilities](https://github.com/apple/foundation-models-utilities)). Token basics: [02 · Tokens](../tokens/README.md).
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Context window** — максимум **tokens**, которые модель учитывает за один запрос. Стратегии: сжатие, RAG, summarization.
-
-</details>
-
 ## Apple docs
-
 
 - [LanguageModelSession](https://developer.apple.com/documentation/foundationmodels/languagemodelsession) — stateful transcript and context limits.
 - [LanguageModelSession.DynamicProfile — historyTransform](https://developer.apple.com/documentation/foundationmodels/languagemodelsession/dynamicprofile) — per-profile lossless transcript transforms.
@@ -23,7 +13,6 @@ The **context window** is the maximum number of **tokens** a model can attend to
 - [Foundation Models Utilities (GitHub)](https://github.com/apple/foundation-models-utilities) — `rollingWindow`, `droppingCompletedToolCalls`, `summarizeHistory` modifiers.
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -41,7 +30,6 @@ The **context window** is the maximum number of **tokens** a model can attend to
 - Sliding-window attention architecture (model-side) vs app-side truncation — distinguish clearly.
 
 ## Key concepts
-
 
 | Strategy | When | Risk |
 |----------|------|------|
@@ -76,7 +64,6 @@ The **context window** is the maximum number of **tokens** a model can attend to
 
 ## 🏋️ Exercises
 
-
 1. **Overflow symptom** — User set language preference in turn 1; turn 25 model switches to English. *Expected:* early turn truncated; fix with pinned system instruction or summary that preserves preference.
 
 2. **Support bot** — 50-turn ticket thread. *Expected:* summarize turns 1–40 into bullet summary entry; keep last 10 verbatim; or RAG over ticket database instead of full paste.
@@ -89,7 +76,6 @@ The **context window** is the maximum number of **tokens** a model can attend to
 
 ## Links
 
-
 - [LanguageModelSession](https://developer.apple.com/documentation/foundationmodels/languagemodelsession)
 - [DynamicProfile — historyTransform](https://developer.apple.com/documentation/foundationmodels/languagemodelsession/dynamicprofile)
 - [Build agentic experiences (WWDC26-242)](https://developer.apple.com/videos/play/wwdc2026/242/)
@@ -98,159 +84,30 @@ The **context window** is the maximum number of **tokens** a model can attend to
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** What happens when you exceed the context window?
+- **Question:** What happens when you exceed the context window?
 
-- **Answer (EN):** Content beyond the window is invisible to the model, not slowly processed. Symptoms include forgotten instructions and contradictions. Fix with truncation, summarization, RAG, or a new session — as an explicit product choice.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** можно ли «попросить модель запомнить» beyond window?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** **Нет** — только то, что в текущем prompt/transcript. External memory = app state, database, RAG index, session properties — не магия модели.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Context window — что происходит при overflow?
-
-- **Answer (RU):** Контент **за пределами окна невидим** модели — не «медленно читается», а **отсутствует**. Симптомы: забытые instructions, противоречия, ignored constraints. Лечение: truncate, summarize, RAG, новый session — **явная** product strategy.
-
-</details>
+- **Answer:** Content beyond the window is invisible to the model, not slowly processed. Symptoms include forgotten instructions and contradictions. Fix with truncation, summarization, RAG, or a new session — as an explicit product choice.
 
 ### Q2
-- **Question (EN):** Truncation vs summarization?
+- **Question:** Truncation vs summarization?
 
-- **Answer (EN):** Truncation drops content quickly and predictably. Summarization compresses older turns but risks summary errors and adds cost. Hybrid approaches keep a summary plus recent verbatim turns.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** кто делает summary — та же session?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Можно отдельным `respond` с instruction «summarize for context» или `summarizeHistory` modifier; validate summary length; on Apple FM watch token budget for the summarization call itself.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Truncation vs summarization?
-
-- **Answer (RU):** **Truncation** — drop entries/tokens (быстро, предсказуемо, теряются детали). **Summarization** — LLM сжимает старые turns в короткий summary (сохраняет gist, риск hallucination в summary, extra latency/cost). Часто **hybrid**: summary + last N turns verbatim.
-
-</details>
+- **Answer:** Truncation drops content quickly and predictably. Summarization compresses older turns but risks summary errors and adds cost. Hybrid approaches keep a summary plus recent verbatim turns.
 
 ### Q3
-- **Question (EN):** When is a rolling window enough?
+- **Question:** When is a rolling window enough?
 
-- **Answer (EN):** Fine for short chats or when tool results live in app state. Insufficient when early turns hold durable constraints — pin those in system instructions or a summary.
+- **Answer:** Fine for short chats or when tool results live in app state. Insufficient when early turns hold durable constraints — pin those in system instructions or a summary.
 
 - **Follow-up:** `.rollingWindow(size: .entries(10))` vs token-based?
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Entry-based проще, но entries uneven in tokens; token-based window точнее для hard limits; FoundationModelsUtilities supports entry sizing — measure real transcripts.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Rolling window — когда достаточно?
-
-- **Answer (RU):** **Short chat** без long-range dependencies; **agents** после persist tool results в app state. Недостаточно когда early turns содержат constraints (language, account id) — pin в system или summary.
-
-</details>
-
 ### Q4
-- **Question (EN):** Apple FM — historyTransform vs history property?
+- **Question:** Apple FM — historyTransform vs history property?
 
-- **Answer (EN):** `historyTransform` provides a lossless per-profile view before prompting without changing the global transcript. The `history` property is lossy and global across profiles. Prefer transforms for scoped filtering.
+- **Answer:** `historyTransform` provides a lossless per-profile view before prompting without changing the global transcript. The `history` property is lossy and global across profiles. Prefer transforms for scoped filtering.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** tool calls в history — всегда держать?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Зависит от profile: scouting может `.droppingCompletedToolCalls()` после save в app; trail guide может нуждаться в tool output в prompt — per-profile transforms (WWDC26 Crafts demo).
-
-</details>
-</details>
-</details>
 <!-- knowledge-cards-canonical:end -->
 
 <!-- ai-engineering-nav:start -->
@@ -260,13 +117,3 @@ The **context window** is the maximum number of **tokens** a model can attend to
 **AI Engineering:** [Track overview](../README.md) · [← 02 · Tokens](../tokens/) · [04 · Embeddings →](../embeddings/)
 
 <!-- ai-engineering-nav:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Apple FM — historyTransform vs history property?
-
-- **Answer (RU):** **`historyTransform`** — lossless, **per-profile** view перед prompt; не меняет global transcript. **`history` property** — **lossy, global**; изменения видны всем profiles. Apple рекомендует transforms для scoped filtering; permanent delete/summary — осознанно через lifecycle hooks.
-
-</details>

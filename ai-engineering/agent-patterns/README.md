@@ -2,29 +2,13 @@
 
 ## In 30 seconds
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Agent patterns** — повторяемые решения в промптах и runtime, которые делают AI-фичу **grounded**, **safe**, и **useful**. Изучать их полезнее, чем копировать сырые system prompts: Apple в Xcode Coding Intelligence явно учит модель **сначала искать контекст**, **рассуждать до действия**, и **выбирать tools** вместо галлюцинаций. Эти паттерны лежат между [08 · Tool Calling](../tool-calling/) и [09 · Agents](../agents/) — один tool round-trip vs полный agent loop.
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Agent patterns** — повторяемые решения в промптах и runtime для надёжных AI-фич: routing, reflection, human-in-the-loop.
-
-</details>
-
 ## Apple docs
-
 
 - [Expanding generation with tool calling](https://developer.apple.com/documentation/foundationmodels/expanding-generation-with-tool-calling) — when the model must call tools vs answer directly.
 - [WWDC26 — Build agentic app experiences (242)](https://developer.apple.com/videos/play/wwdc2026/242/) — agentic flows on Foundation Models.
 - [Model Context Protocol](https://modelcontextprotocol.io/) — how hosts expose tools to agents (same idea as Xcode `xcode-tools` MCP).
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -42,17 +26,7 @@
 
 ## Patterns
 
-
 ### 1 · Search Before Answer
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Идея:** модель не отвечает «из головы», пока не получила релевантный контекст.
-
-Xcode Coding Intelligence буквально требует: если API новее training data — **DocumentationSearch**; если вопрос про проект — **query_search** почти всегда; не угадывать содержимое файлов через `find`/`grep` в shell.
-
-</details>
 
 ```text
 User question
@@ -71,13 +45,6 @@ Question
   → answer with citations
 ```
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Это зачаток [06 · RAG](../rag/): retrieve → augment → generate, но tools могут заменить или дополнить vector search.
-
-</details>
-
 | Signal | Action |
 |--------|--------|
 | Unknown API / framework | Documentation or embedding search |
@@ -88,15 +55,6 @@ Question
 
 ### 2 · Think Before Act
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Идея:** запретить немедленную генерацию кода или side effects без классификации и плана.
-
-Xcode planner сначала **classify_message** (explain vs make changes), затем для edits: понять → кратко объяснить план → **один** `edit_file` на файл за turn.
-
-</details>
-
 ```text
 User message
   → classify intent
@@ -105,25 +63,9 @@ User message
   → act (tool call) OR answer only
 ```
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Mobile guardrails:** max steps, timeout, confirm destructive tools — см. [09 · Agents](../agents/).
-
-</details>
-
 ---
 
 ### 3 · Tool Calling
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Идея:** победа агента — в **инструментах**, не в «умнее промпте».
-
-Xcode предпочитает MCP (`BuildProject`, `DocumentationSearch`, `XcodeRefreshCodeIssuesInFile`) вместо ad hoc shell. Каждый tool — typed capability с описанием для model routing.
-
-</details>
 
 | Anti-pattern | Pattern |
 |--------------|---------|
@@ -131,30 +73,10 @@ Xcode предпочитает MCP (`BuildProject`, `DocumentationSearch`, `Xcod
 | Model guesses file layout | Project search / read file tool |
 | Silent side effects | Explicit write tools + confirmation |
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-См. [08 · Tool Calling](../tool-calling/) для schema, idempotency, error feedback.
-
-</details>
-
 ---
 
 ### 4 · Context Gathering
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Идея:** отдельная фаза, когда стартового контекста (current file, selection) недостаточно.
-
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Промпты Xcode: «don't overly rely on files given at start»; «avoid guessing at contents of other files»; use search liberally for cross-file refs (renames, call sites).
-
-</details>
 ```text
 Injected context (selection, open file)
   → enough? → respond
@@ -162,23 +84,9 @@ Injected context (selection, open file)
   → merge observations → continue
 ```
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**iOS app:** session holds vehicle id + last N messages; tools fetch fresh mileage/expenses on each turn — не кэшировать stale facts в prompt навсегда.
-
-</details>
-
 ---
 
 ### 5 · Single Agent + Many Tools
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Идея:** один agent loop + богатый tool allowlist часто лучше, чем 10 специализированных sub-agents.
-
-</details>
 
 ```text
 Vehicle Assistant (one session)
@@ -197,15 +105,7 @@ Vehicle Assistant (one session)
 | Duplicated guardrails | Central allowlist + max steps |
 | Hard to eval | Golden questions on one loop |
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Добавляй sub-agents только когда **domains truly isolated** (e.g. separate compliance reviewer).
-
-</details>
-
 ## Priority for AI Product Engineering
-
 
 | Priority | Topic | Level |
 |:--------:|-------|-------|
@@ -214,15 +114,7 @@ Vehicle Assistant (one session)
 | 3 | RAG, Embeddings | Grounding at scale |
 | 4 | Attention / transformer internals | How LLM works (research) |
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Patterns из production IDE ближе к цели **Senior iOS + AI Product Engineer**, чем глубокая теория GPT-2.
-
-</details>
-
 ## 🏋️ Exercises
-
 
 1. **Search gate** — User asks «when is next oil change?» without vehicle id. *Expected:* tool fetch vehicle + history before answer; cite dates.
 
@@ -236,64 +128,32 @@ Patterns из production IDE ближе к цели **Senior iOS + AI Product En
 
 ## Links
 
-
 - [artemnovichkov/xcode-27-system-prompts](https://github.com/artemnovichkov/xcode-27-system-prompts) — reverse-engineered Xcode 27 prompts; read for **patterns**, not leakage tourism
 - Related: [09 · Agents](../agents/), [08 · Tool Calling](../tool-calling/), [06 · RAG](../rag/), [10 · MCP](../mcp/)
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** What does Search Before Answer mean?
+- **Question:** What does Search Before Answer mean?
 
-- **Answer (EN):** The model retrieves context via search or tools before answering. Empty retrieval means retry or admit uncertainty — never invent facts.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Что значит Search Before Answer?
-
-- **Answer (RU):** Модель **сначала** получает контекст через search/tools (docs, codebase, DB), **потом** генерирует ответ. Если retrieval пуст — не выдумывать; повторить search или сказать пользователю.
-
-</details>
+- **Answer:** The model retrieves context via search or tools before answering. Empty retrieval means retry or admit uncertainty — never invent facts.
 
 ### Q2
-- **Question (EN):** Why Think Before Act?
+- **Question:** Why Think Before Act?
 
-- **Answer (EN):** Classify intent, gather context, state a brief plan, then invoke tools. Reduces unsafe edits and runaway loops.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Think Before Act — зачем?
-
-- **Answer (RU):** Разделить **explain** и **make changes**; собрать контекст; озвучить короткий план; только потом tool calls с side effects. Снижает опасные правки и runaway loops.
-
-</details>
+- **Answer:** Classify intent, gather context, state a brief plan, then invoke tools. Reduces unsafe edits and runaway loops.
 
 ### Q3
-- **Question (EN):** Why single agent plus many tools?
+- **Question:** Why single agent plus many tools?
 
-- **Answer (EN):** One loop simplifies guardrails, evals, and UX. A rich tool allowlist covers most product needs; multi-agent only when domains are truly isolated.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Почему Single Agent + Many Tools?
-
-- **Answer (RU):** Один loop проще guardrails, eval и UX. Много **typed tools** покрывают домен без orchestration между sub-agents. Multi-agent — когда домены реально изолированы.
-
-</details>
+- **Answer:** One loop simplifies guardrails, evals, and UX. A rich tool allowlist covers most product needs; multi-agent only when domains are truly isolated.
 
 ### Q4
-- **Question (EN):** How are agent patterns different from copying system prompts?
+- **Question:** How are agent patterns different from copying system prompts?
 
-- **Answer (EN):** Raw prompts rot and are product-specific. Patterns (search-first, classify, prefer tools) transfer to your app and regress with golden tests.
+- **Answer:** Raw prompts rot and are product-specific. Patterns (search-first, classify, prefer tools) transfer to your app and regress with golden tests.
 
 <!-- knowledge-cards-canonical:end -->
 
@@ -304,13 +164,3 @@ Patterns из production IDE ближе к цели **Senior iOS + AI Product En
 **AI Engineering:** [Track overview](../README.md) · [← 09 · Agents](../agents/) · [10 · MCP →](../mcp/)
 
 <!-- ai-engineering-nav:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Чем agent patterns отличаются от копирования system prompts?
-
-- **Answer (RU):** Prompts устаревают и привязаны к продукту. **Паттерны** (search-first, classify, tool preference) переносимы в свой app и тестируются через golden questions.
-
-</details>

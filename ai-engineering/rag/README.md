@@ -2,26 +2,15 @@
 
 ## In 30 seconds
 
-
 **Retrieval-Augmented Generation (RAG)** improves LLM answers by **retrieving** relevant documents from a **vector store** (similarity search on **embeddings**) and injecting them into the prompt. Quality hinges on **chunking**, metadata filters, and reranking — not just “embed everything.” Mobile apps often run retrieval on server; on-device search may use smaller indexes or Natural Language embeddings for offline FAQ.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**RAG** улучшает ответы LLM **извлечением** релевантных фрагментов перед генерацией. Снижает hallucination при актуальных данных.
-
-</details>
-
 ## Apple docs
-
 
 - [NLEmbedding](https://developer.apple.com/documentation/naturallanguage/nlembedding) — on-device word/sentence embeddings (limited vs cloud embedding models).
 - [Natural Language framework](https://developer.apple.com/documentation/naturallanguage) — tokenization, language identification.
 - [Foundation Models — tool calling](https://developer.apple.com/documentation/foundationmodels) — model calls app tools to fetch context (RAG-like pattern on device).
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -39,7 +28,6 @@
 - Full enterprise search ACL design unless prompted.
 
 ## Key concepts
-
 
 | Stage | Detail |
 |-------|--------|
@@ -65,7 +53,6 @@ User question: ...
 
 ## 🏋️ Exercises
 
-
 1. **Chunk strategy** — 50-page PDF help center. *Expected:* split by H2, 400-token chunks, 50-token overlap, store page title in metadata.
 
 2. **Empty retrieval** — No chunks above similarity threshold. *Expected:* model responds “not found” — do not invent.
@@ -78,65 +65,33 @@ User question: ...
 
 ## Links
 
-
 - [NLEmbedding](https://developer.apple.com/documentation/naturallanguage/nlembedding)
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
 - Related: [llm](../llm/README.md), [prompt-engineering](../prompt-engineering/README.md)
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** What are embeddings?
+- **Question:** What are embeddings?
 
-- **Answer (EN):** Dense vectors representing text meaning — similar texts map nearby. Used for semantic search in RAG beyond keyword matching.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Embeddings — что это?
-
-- **Answer (RU):** **Векторное представление** текста (или image) в высокомерном пространстве: близкие по смыслу тексты → близкие векторы (cosine similarity). Используются для **semantic search** в RAG вместо только keyword match.
-
-</details>
+- **Answer:** Dense vectors representing text meaning — similar texts map nearby. Used for semantic search in RAG beyond keyword matching.
 
 ### Q2
-- **Question (EN):** Why is chunking important?
+- **Question:** Why is chunking important?
 
-- **Answer (EN):** Models cannot ingest entire corpora; retrieval returns fragments. Bad chunks yield irrelevant context and hallucinations. Structure-aware chunks plus overlap preserve continuity.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Зачем chunking?
-
-- **Answer (RU):** LLM не вмещает весь корпус; retrieval возвращает **фрагменты**. Плохой chunk (слишком большой, обрезанный абзац) → irrelevant context → hallucination. Chunk по структуре документа + overlap сохраняет continuity.
-
-</details>
+- **Answer:** Models cannot ingest entire corpora; retrieval returns fragments. Bad chunks yield irrelevant context and hallucinations. Structure-aware chunks plus overlap preserve continuity.
 
 ### Q3
-- **Question (EN):** How do you improve retrieval quality?
+- **Question:** How do you improve retrieval quality?
 
-- **Answer (EN):** Tune chunks, filter by metadata, use hybrid search and reranking, keep indexes fresh, evaluate on golden questions. Instruct the model to stay grounded and refuse when context is empty.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как улучшить retrieval quality?
-
-- **Answer (RU):** Tune **chunk size/overlap**, add **metadata filters**, **hybrid** BM25+vector, **rerank** top candidates, maintain **fresh index**, evaluate on **golden set**. Prompt: instruct model to stay in context and refuse when empty.
-
-</details>
+- **Answer:** Tune chunks, filter by metadata, use hybrid search and reranking, keep indexes fresh, evaluate on golden questions. Instruct the model to stay grounded and refuse when context is empty.
 
 ### Q4
-- **Question (EN):** Is on-device RAG realistic on iOS?
+- **Question:** Is on-device RAG realistic on iOS?
 
-- **Answer (EN):** Small corpora can ship with a local index and on-device embeddings. Large knowledge bases usually need server retrieval; combine on-device LLMs with tools that fetch from local or remote indexes — mind size, battery, and freshness.
+- **Answer:** Small corpora can ship with a local index and on-device embeddings. Large knowledge bases usually need server retrieval; combine on-device LLMs with tools that fetch from local or remote indexes — mind size, battery, and freshness.
 
 <!-- knowledge-cards-canonical:end -->
 
@@ -147,13 +102,3 @@ User question: ...
 **AI Engineering:** [Track overview](../README.md) · [← 05 · Vector Search](../vector-search/) · [07 · Structured Output →](../structured-output/)
 
 <!-- ai-engineering-nav:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** RAG on-device на iOS — realistic?
-
-- **Answer (RU):** **Small corpora** (FAQ, manual): prebuilt index in app bundle or SQLite + on-device embedder (**NLEmbedding** or small Core ML model). **Large/knowledge** — server retrieval; on-device LLM (**Foundation Models**) + **Tool** that fetches snippets from local index or API. Trade-off: size, battery, freshness.
-
-</details>

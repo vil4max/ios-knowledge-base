@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 **Deep links** route users into a specific screen from outside the app: **Universal Links** (HTTPS, verified), **custom URL schemes** (`myapp://`), and **deferred deep links** (attribution after install). iOS validates Universal Links via **Associated Domains** (`apple-app-site-association`). Design covers routing layer, cold vs warm start, auth gates, and fallback when the app is not installed.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Deep links** ведут на конкретный экран: **Universal Links**, custom URL schemes, deferred deep links. Cold start, state restoration, attribution.
-
-</details>
-
 ## Apple docs
-
 
 - [Supporting universal links in your app](https://developer.apple.com/documentation/xcode/supporting-universal-links-in-your-app) — Associated Domains, AASA file.
 - [Allowing apps and websites to link to your content](https://developer.apple.com/documentation/xcode/allowing-apps-and-websites-to-link-to-your-content) — entitlements, paths.
@@ -22,7 +12,6 @@
 - [Scene-based lifecycle](https://developer.apple.com/documentation/uikit/app_and_environment/scenes) — `scene(_:openURLContexts:)`, `continue userActivity`.
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -40,7 +29,6 @@
 - Every edge case of Facebook/Instagram in-app browsers — mention wrapped WebView limitations briefly.
 
 ## Key concepts
-
 
 | Mechanism | Pros | Cons |
 |-----------|------|------|
@@ -65,7 +53,6 @@ URL / NSUserActivity
 
 ## 🏋️ Exercises
 
-
 1. **Product page link** — `https://example.com/product/42` opens ProductDetail. *Expected:* AASA path `/product/*`, router extracts id, handles missing product.
 
 2. **Auth gate** — Deep link to settings while logged out. *Expected:* store pending route, login, replay navigation.
@@ -78,74 +65,32 @@ URL / NSUserActivity
 
 ## Links
 
-
 - [Universal Links](https://developer.apple.com/ios/universal-links/)
 - [Associated Domains entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_associated-domains)
 - Related: [push-notifications](../push-notifications/README.md), [mobile](../mobile/README.md)
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** Universal Link vs custom URL scheme?
+- **Question:** Universal Link vs custom URL scheme?
 
-- **Answer (EN):** Universal Links use verified HTTPS and AASA for seamless, secure opening. Custom schemes are easy but not ownership-proof. Prefer Universal Links in production; schemes for dev or legacy.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Universal Link vs custom URL scheme?
-
-- **Answer (RU):** **Universal Link** — HTTPS URL, Apple проверяет **AASA** и открывает app без лишнего диалога; безопаснее для marketing. **Custom scheme** (`app://`) — проще, но любой app может зарегистировать похожую схему; часто fallback или legacy. Production: Universal Links + scheme для dev/tests.
-
-</details>
+- **Answer:** Universal Links use verified HTTPS and AASA for seamless, secure opening. Custom schemes are easy but not ownership-proof. Prefer Universal Links in production; schemes for dev or legacy.
 
 ### Q2
-- **Question (EN):** What are Associated Domains and AASA?
+- **Question:** What are Associated Domains and AASA?
 
-- **Answer (EN):** The `applinks:` entitlement links your app to a domain. Host the apple-app-site-association file listing app IDs and paths. Without a valid AASA, links stay in Safari.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Что такое Associated Domains и AASA?
-
-- **Answer (RU):** Entitlement **`applinks:your.domain`** связывает app с доменом. На сервере файл **apple-app-site-association** перечисляет teamID.bundleID и **paths**, которые app может обрабатывать. Без корректного AASA ссылка откроется в Safari.
-
-</details>
+- **Answer:** The `applinks:` entitlement links your app to a domain. Host the apple-app-site-association file listing app IDs and paths. Without a valid AASA, links stay in Safari.
 
 ### Q3
-- **Question (EN):** How do you explain deferred deep links?
+- **Question:** How do you explain deferred deep links?
 
-- **Answer (EN):** User clicks a link before install; after first launch the app restores the intended destination via attribution (SDK or custom backend). Trade-offs include privacy, match accuracy, and vendor dependency.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Deferred deep link — как объяснить на интервью?
-
-- **Answer (RU):** Пользователь кликает ссылку **до установки** → Store → первый запуск. **Deferred** attribution (Branch, Firebase Dynamic Links, custom) сохраняет intent и при первом open восстанавливает маршрут (promo, invite). Компромисс: privacy, accuracy, зависимость от SDK/сервера.
-
-</details>
+- **Answer:** User clicks a link before install; after first launch the app restores the intended destination via attribution (SDK or custom backend). Trade-offs include privacy, match accuracy, and vendor dependency.
 
 ### Q4
-- **Question (EN):** Where do you handle deep links with scenes / SwiftUI?
+- **Question:** Where do you handle deep links with scenes / SwiftUI?
 
-- **Answer (EN):** Use `onOpenURL`, `onContinueUserActivity`, or scene delegate methods — but route everything through one router/coordinator shared with push and shortcuts to avoid duplicate navigation.
+- **Answer:** Use `onOpenURL`, `onContinueUserActivity`, or scene delegate methods — but route everything through one router/coordinator shared with push and shortcuts to avoid duplicate navigation.
 
 <!-- knowledge-cards-canonical:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Где обрабатывать deep link в SwiftUI / scenes?
-
-- **Answer (RU):** **Scene phase:** `onOpenURL`, `onContinueUserActivity`, или `scene(_:openURLContexts:)` / `continue userActivity`. Один **router** на все entry points (push, link, shortcut). Избегать двойной навигации — centralize в coordinator.
-
-</details>

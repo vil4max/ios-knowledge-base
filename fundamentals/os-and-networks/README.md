@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 Operating systems and networking explain how an iOS app lives inside a sandboxed process, schedules work on threads and RunLoop, reacts to memory pressure, and talks to servers over TCP/TLS/HTTP. Interviewers connect this layer to symptoms you see daily: main-thread jank, background task limits, certificate errors, stale DNS, and crashes after jetsam. You do not need to draw the full OS kernel, but you should explain why URLSession callbacks may hop queues, what happens on a memory warning, and how TLS fits between HTTP and TCP. This topic bridges CS fundamentals to Foundation, URLSession, and app lifecycle.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-ОС и сети объясняют жизнь iOS-приложения в sandbox: процессы, потоки, TCP/UDP, DNS, TLS. Нужно для networking, background modes и отладки «зависаний» и таймаутов.
-
-</details>
-
 ## Apple docs
-
 
 - [RunLoop](https://developer.apple.com/documentation/foundation/runloop) — event processing on a thread; main RunLoop drives UIKit.
 - [Dispatch (GCD)](https://developer.apple.com/documentation/dispatch) — queues, groups, semaphores, work submission.
@@ -26,7 +16,6 @@ Operating systems and networking explain how an iOS app lives inside a sandboxed
 - [Network framework](https://developer.apple.com/documentation/network) — lower-level connections, TLS, path monitoring (`NWPathMonitor`).
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -57,7 +46,6 @@ Operating systems and networking explain how an iOS app lives inside a sandboxed
 
 ## Key concepts
 
-
 - **Process:** OS instance with virtual memory; iOS apps and extensions run as separate sandboxed processes.
 - **Thread:** Concurrent execution within a process; main thread owns UIKit/SwiftUI updates.
 - **RunLoop:** Event loop on a thread processing input sources and timers; main RunLoop ties UI to system events.
@@ -73,7 +61,6 @@ Operating systems and networking explain how an iOS app lives inside a sandboxed
 
 ## 🏋️ Exercises
 
-
 1. **Main-thread freeze:** A JSON parse of 50 MB runs synchronously after `URLSession` callback on main. List two fixes and why. **Expected:** move decode to background QoS; return to main only for UI; mention cooperative cancellation.
 2. **GCD deadlock:** Explain why `DispatchQueue.main.sync { }` called from main hangs. **Expected:** serial queue waits for itself; use async or avoid blocking main.
 3. **HTTP debugging:** Map status codes 301, 401, 429, 503 to client actions (redirect, refresh token, backoff, retry). **Expected:** policy table with idempotency note for retries.
@@ -83,7 +70,6 @@ Operating systems and networking explain how an iOS app lives inside a sandboxed
 Doc link: [Responding to memory warnings](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622957-applicationdidreceivememorywarning)
 
 ## Links
-
 
 - WWDC 2015 — [Protocol-Oriented Programming in Swift](https://developer.apple.com/videos/play/wwdc2015/408/) — still cited for performance mindset (context for system interaction)
 - WWDC 2021 — [Meet async/await in Swift](https://developer.apple.com/videos/play/wwdc2021/10132/) — scheduling model today
@@ -96,318 +82,26 @@ Doc link: [Responding to memory warnings](https://developer.apple.com/documentat
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** How does the iOS app process model and sandbox work?
+- **Question:** How does the iOS app process model and sandbox work?
 
-- **Answer (EN):** Each iOS app runs in its own sandboxed process with a private container. Extensions are separate processes; shared storage requires App Groups or Keychain. Background apps are suspended unless using approved background modes.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** One app, one sandboxed process; extensions are separate.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** где хранить пользовательские файлы vs кэш?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Documents (backup) vs Library/Caches (может чиститься системой); tmp — эфемерно.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как устроена **модель процесса** iOS-приложения и **sandbox**?
-
-- **Answer (RU):** Каждое приложение — **отдельный process** с изолированной виртуальной памятью. **Sandbox** ограничивает доступ к файлам других apps, большинству IPC и ресурсам без entitlement. Данные — в container (`Documents`, `Library`, `tmp`); общий доступ — через **App Group** или Keychain при настройке. Extension (Share, Widget, NSE) — **свой process**, часто общий group container. Background — процесс может быть **suspended**; CPU не «крутится бесконечно». App Store review смотрит entitlements.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** Один app = один process; чужие файлы недоступны; extension — отдельно.
-
-</details>
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [Managing your app's life cycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle)
-
-</details>
+- **Answer:** Each iOS app runs in its own sandboxed process with a private container. Extensions are separate processes; shared storage requires App Groups or Keychain. Background apps are suspended unless using approved background modes.
 
 ### Q2
-- **Question (EN):** Why does the main thread need a RunLoop, and how does GCD relate?
+- **Question:** Why does the main thread need a RunLoop, and how does GCD relate?
 
-- **Answer (EN):** The main RunLoop drives UI and input; blocking it freezes the UI. GCD schedules blocks; the main queue runs on the main RunLoop turn. Background work uses other queues or Swift tasks.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Main RunLoop powers UI—offload heavy work.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** чем опасен `DispatchQueue.main.sync` с background?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** deadlock если background ждёт main, а main ждёт background; prefer async + callback/continuation.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Зачем **RunLoop** на main и связь с **GCD**?
-
-- **Answer (RU):** **RunLoop** на main обрабатывает sources: UI events, timers, `performSelector`, display link. Пока loop крутится — UI живой. Долгая синхронная работа на main **блокирует** RunLoop. **GCD** ставит blocks в очереди; **main queue** drain’ится RunLoop’ом. `DispatchQueue.main.async` — выполнить на следующем turn. GCD ≠ RunLoop, но main queue интегрирован с main RunLoop. Для фона — concurrent/serial background queues или Swift `Task` с executor.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** Main RunLoop = UI; не блокируй; тяжёлое — off main.
-
-</details>
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [RunLoop](https://developer.apple.com/documentation/foundation/runloop), [Dispatch](https://developer.apple.com/documentation/dispatch)
-
-</details>
+- **Answer:** The main RunLoop drives UI and input; blocking it freezes the UI. GCD schedules blocks; the main queue runs on the main RunLoop turn. Background work uses other queues or Swift tasks.
 
 ### Q3
-- **Question (EN):** Walk through an HTTP request path: DNS → TCP → TLS → HTTP.
+- **Question:** Walk through an HTTP request path: DNS → TCP → TLS → HTTP.
 
-- **Answer (EN):** DNS resolves the host; TCP connects; TLS encrypts and authenticates; HTTP carries request/response semantics. URLSession manages the stack; ATS enforces secure defaults on iOS.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Layer stack ending in HTTP; URLSession wraps it.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** что такое **certificate pinning** и риск?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** жёсткое доверие к конкретному ключу/серту; ломается при ротации без update app; альтернатива — trust system + short-lived certs.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Объясни путь **HTTP-запроса**: DNS → TCP → TLS → HTTP.
-
-- **Answer (RU):** **DNS** переводит hostname в IP. **TCP** — установление соединения (handshake), надёжная доставка байт. **TLS** — шифрование и проверка сертификата (ATS на iOS требует strong TLS по умолчанию). **HTTP** — метод, URL, заголовки, тело; ответ — status + headers + body. **URLSession** orchestrates stack; ошибки: DNS fail, timeout, cert untrusted, 401/5xx. Keep-alive переиспользует TCP для нескольких запросов.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** DNS → TCP → TLS → HTTP; URLSession закрывает детали.
-
-</details>
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [URL Loading System](https://developer.apple.com/documentation/foundation/url_loading_system), [ATS](https://developer.apple.com/documentation/bundleresources/information_property_list/nsapptransportsecurity)
-
-</details>
+- **Answer:** DNS resolves the host; TCP connects; TLS encrypts and authenticates; HTTP carries request/response semantics. URLSession manages the stack; ATS enforces secure defaults on iOS.
 
 ### Q4
-- **Question (EN):** Memory pressure and jetsam—what should the app do?
+- **Question:** Memory pressure and jetsam—what should the app do?
 
-- **Answer (EN):** On memory warnings, purge caches and release large buffers. Jetsam terminates the process under system pressure—design for lower peak memory and fast recovery after relaunch.
+- **Answer:** On memory warnings, purge caches and release large buffers. Jetsam terminates the process under system pressure—design for lower peak memory and fast recovery after relaunch.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Purge on warning; avoid high peaks to survive jetsam.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** чем memory warning отличается от `didEnterBackground`?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** warning = системе не хватает RAM сейчас; background — lifecycle; оба могут требовать cache eviction, но причины разные.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** **Memory pressure** и **jetsam** — что делает приложение?
-
-- **Answer (RU):** При нехватке памяти система шлёт **memory warning** → сбросить in-memory caches, отменить prefetch, уменьшить decoded image size. **Jetsam** убивает process без graceful shutdown — пользователь видит cold start. Снижать **peak footprint**: streaming decode, downsampling images, не держать giant `[Model]` на main. Мониторинг: Xcode Memory Debugger, `os_proc_available_memory` (осторожно с порогами). После kill — восстановить state из disk/network.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** Warning — чистим RAM; jetsam — нас убили; держим peak низким.
-
-</details>
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [applicationDidReceiveMemoryWarning](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622957-applicationdidreceivememorywarning)
-
-</details>
 <!-- knowledge-cards-canonical:end -->

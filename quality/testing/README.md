@@ -2,211 +2,25 @@
 
 ## Apple docs
 
-
 - [XCTest](https://developer.apple.com/documentation/xctest) — unit / performance, `XCTestCase`, assertions, expectations.
-<details class="lang-ru">
-<summary>По-русски</summary>
 
-- [Swift Testing](https://developer.apple.com/documentation/testing) — `@Test`, `#expect`, теги, параметризация, Swift Concurrency.
-- [Migrating a test from XCTest](https://developer.apple.com/documentation/testing/migratingfromxctest) — миграция сценариев.
-- [Adding tests to your Xcode project](https://developer.apple.com/documentation/xcode/adding-tests-to-your-xcode-project) — таргеты, схемы.
-- [Running tests and interpreting results](https://developer.apple.com/documentation/xcode/running-tests-and-interpreting-results) — прогон, отчёты.
-- [Organizing tests to improve feedback](https://developer.apple.com/documentation/xcode/organizing-tests-to-improve-feedback) — **Test Plans**, подмножества, конфигурации.
-
-</details>
 - [UI Testing (XCUITest)](https://developer.apple.com/documentation/xcuiautomation) — black-box UI, accessibility tree.
 
 ## 🎯 Focus vs Defer
 
-
 ### Focus
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Писать deterministic async-тесты без лишней вложенности.
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Явно проверять порядок событий и фазовые переходы в асинхронных сценариях.
-
-
-</details>
-
-
-</details>
-
-
-</details>
 
 ### Defer
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Пиксельные **snapshot** всего экрана при частой смене дизайна — до стабилизации UI или отдельным ночным job.
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Полный **E2E** «как пользователь» без изоляции и стабильных тестовых данных — пока нет инфраструктуры (аккаунты, флаги, сиды).
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Гонка за **coverage %** ради метрики — после базы критических путей.
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Дублирование одних и тех же сценариев в **unit + UI** без явной границы ответственности.
-
-
-</details>
-
-
-</details>
-
-
-</details>
-
 ## Topic map (iOS)
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-| Слой | Типичный инструмент | Что проверяем |
-|------|---------------------|---------------|
-| **Unit** | XCTest, Swift Testing | Домен, мапперы, политики, VM при инжекте зависимостей |
-| **Integration** | XCTest + фикстуры, локальный stack | Связка слоёв (декодирование, репозиторий + in-memory store) |
-| **UI** | XCUITest | Критические потоки, навигация, доступность |
-| **Snapshot** | Обычно сторонние библиотеки + CI | Визуальный регресс компонентов при фиксированной среде |
-| **Test Plan** | `.xctestplan` в Xcode | Подмножества тестов, конфиги, теги, pre-release vs PR |
-
-**Снапшоты в Apple-стеке:** первоклассного «snapshot testing» для SwiftUI в SDK нет; команды используют сторонние решения и дисциплину эталонов (один simulator/OS, обновление через ревью). Для сравнения структуры данных иногда достаточно `Codable` + фикстуры или эталонный JSON в bundle.
-
-</details>
 
 ## 📚 Key terms (Q&A)
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Test pyramid (пирамида тестов):** много быстрых unit → меньше integration → ещё меньше UI/E2E; цель — скорость фидбека и локализация поломки.
-- **SUT (system under test, тестируемая система):** один тип / use case; зависимости под контролем.
-- **Regression safety:** тесты ловят поломки уже работающего при изменениях — не замена ручного «потыкать приложение».
-- **FIRST:** Fast, Isolated, Repeatable, Self-validating, Timely — чеклист качества теста (см. [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md)).
-- **Test double (тестовый двойник):** общее имя для подмены зависимости; роли — **dummy**, **stub**, **mock**, **spy**, **fake** (см. [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md), [Senior-Unit-Testing-Mastery-RU](notes/Senior-Unit-Testing-Mastery.md)).
-- **AAA / Given–When–Then:** Arrange–Act–Assert — структура теста; снижает «простыни» и улучшает чтение при ревью.
-- **Deterministic test (детерминированный тест):** одинаковый результат при повторных прогонах; без `sleep`, случайных задержек, зависимости от сети/часов без абстракции.
-- **Flaky test (нестабильный тест):** иногда падает без смены кода; типичные причины — гонки, MainActor, общие синглтоны, реальная сеть, недостаточные `await`.
-- **Unit test (модульный):** изолированная логика + подставные зависимости; без реального UIKit-дерева и без сети (если не цель теста).
-- **Integration test (интеграционный):** несколько реальных слоёв (например декодер + JSON-фикстура, `URLProtocol` stub + сессия); медленнее unit, дороже в поддержке.
-- **UI test (UI-тест):** обычно **XCUITest** — сценарии через accessibility; проверяют поток и контракт экрана, не заменяют unit для бизнес-правил.
-- **Snapshot test (снапшот-тест):** сравнение эталонного изображения / описания view с текущим рендером; часто сторонние библиотеки + дисциплина обновления эталонов (device/OS).
-- **Test Plan (тест-план в Xcode):** `.xctestplan` — какие тесты, какие конфигурации (язык, диагностика, повторы), подмножества для CI vs pre-release; теги Swift Testing / категории XCTest.
-- **Swift Testing vs XCTest:** новый фреймворк с `#expect`, параметризацией, тегами; XCTest остаётся стандартом для legacy и части CI-интеграций; в одном бандле могут сосуществовать.
-- **TDD / test-after:** TDD — цикл red–green–refactor; test-after — тесты после кода; см. [TDD-Basics-RU](notes/TDD-Basics.md), [Q37](#q37).
-- **Testing trophy:** альтернатива пирамиде — больше integration/service tests, меньше fanatic unit-only; на собесе: пирамида = скорость фидбека, trophy = уверенность в стыках (не оправдание для 100% UI).
-- **`@testable import`:** доступ к `internal` в тестах — удобно, но частый `internal` только «для тестов» — smell; предпочитай узкие протоколы и DI.
-- **AI-assisted TDD:** LLM ускоряет red/green; инженер владеет triangulation, refactor тестов и constraints-файлом; автотесты — детерминированная валидация сгенерированного Swift — см. [AI-assisted TDD](notes/ai-assisted-tdd.md).
-- **Regression test (регрессионный):** тест на конкретный баг (красный → фикс → зелёный); высокий ROI.
-- **Contract test (контрактный):** клиент ↔ API (схема, фикстуры ответов); ловит расхождение до продакшена — см. [Contract-Tests-OpenAPI-RU](notes/Contract-Tests-OpenAPI.md).
-
-</details>
-
 ## 🏋️ Exercises
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-1. **Граница unit:** для одного экрана со SwiftUI перечисли, что тестировать в **ViewModel/Observable** модуле, а что отложить в UI-тест. **Ожидаемо:** список входов/состояний vs тапы по дереву.
-2. **Stub vs Spy:** для `PaymentClient` опиши, что вернёт **stub**, что запишет **spy** в сценарии «401 не ретраим». **Ожидаемо:** stub задаёт ответы, spy считает вызовы `execute`.
-3. **Async без флейков:** перепиши гипотетический тест с `sleep(1)` на `async` + контролируемый источник событий (см. Q5 / `AsyncStream`). **Ожидаемо:** явный порядок событий, без таймера.
-4. **Test Plan:** набросай два плана для одной схемы: `PR` (только unit + быстрые integration) и `Nightly` (+ медленные UI). **Ожидаемо:** ссылка на [Organizing tests to improve feedback](https://developer.apple.com/documentation/xcode/organizing-tests-to-improve-feedback).
-5. **Snapshot-дисциплина:** перечисли 3 правила, когда **не** добавлять полноэкранный snapshot. **Ожидаемо:** живой дизайн, динамический контент, разные OS без эталона.
-
-Подробные задачки без готового кода — в [Senior-Unit-Testing-Mastery-RU](notes/Senior-Unit-Testing-Mastery.md) (раздел «Задачки»).
-
-</details>
 
 ## 🌟 Senior+ (strategic)
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Риск > coverage:** приоритизировать деньги, данные, главный пользовательский поток и инварианты домена (см. Q37 в карточках ниже).
-- **Тестируемая архитектура:** узкие протоколы, инъекция зависимостей, отсутствие «магии» в синглтонах — иначе unit дорогой и флейковый.
-- **CI как продукт:** параллелизация, шардирование, стабильные фикстуры, отдельный контейнер для тестов; красный CI = блокер мержа.
-- **Диагностика:** Thread Sanitizer / concurrency checks на подходящих таргетах; воспроизводимые баги сначала красным тестом.
-- **Контракты API:** фикстуры + OpenAPI — [Contract-Tests-OpenAPI-RU](notes/Contract-Tests-OpenAPI.md).
-- **Команда:** договорённость по именованию doubles, уровню снапшотов и «что не тестируем в unit» — снижает споры на ревью.
-
-</details>
-
 ## Artifacts
-
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -215,21 +29,10 @@
 
 ### Recent notes
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-| Уровень | Заметки |
-
-</details>
 |---------|---------|
 | Fundamentals | [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md) · [TDD-Basics-RU](notes/TDD-Basics.md) |
 | Frameworks | [Swift-Testing-vs-XCTest-RU](notes/Swift-Testing-vs-XCTest.md) |
-<details class="lang-ru">
-<summary>По-русски</summary>
 
-| Слои | [Testing-Network-Stub-RU](notes/Testing-Network-Stub.md) · [Contract-Tests-OpenAPI-RU](notes/Contract-Tests-OpenAPI.md) · [XCUITest-Essentials-RU](notes/XCUITest-Essentials.md) · [Snapshot-Testing-Discipline-RU](notes/Snapshot-Testing-Discipline.md) |
-
-</details>
 | Delivery | [Test-Plans-CI-RU](notes/Test-Plans-CI.md) · [CI/CD](../../devops/ci-cd/README.md) |
 | Senior + AI | [Senior-Unit-Testing-Mastery-RU](notes/Senior-Unit-Testing-Mastery.md) · [AI-assisted TDD](notes/ai-assisted-tdd.md) |
 
@@ -239,51 +42,15 @@
 
 ## TL;DR
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- `confirmation` в Swift Testing хорошо работает для простых async-проверок, но быстро уходит во вложенность.
-- Для сценариев “важен порядок callback-событий” удобнее представить события как `AsyncStream`.
-- Затем собирать события массивом и проверять их декларативно: `#expect(events == [...])`.
-- Для поэтапных проверок полезен `collect(until:)`, чтобы снять “срез” событий без полного завершения потока.
-
-</details>
-
 ## Source
-
 
 - `https://www.massicotte.org/blog/testing-event-stream/`
 
 ## Problem when migrating from XCTest
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-При переходе с `XCTestExpectation` на `confirmation` простые кейсы мигрируются легко, но в сценариях с несколькими callback и требованием строгого порядка возникают две боли:
-
-- сильная вложенность `confirmation`;
-- нет удобного способа явно проверить последовательность (`a -> b` vs `b -> a`).
-
-</details>
-
 ## Idea: test event stream, not callback
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Вместо набора флагов/expectations:
-
-1. Создаём `AsyncStream<Event>` и `Continuation`.
-2. В callback вызываем `continuation.yield(event)`.
-3. После действия (`await system.go()`) собираем события и сравниваем с ожидаемым порядком.
-
-</details>
-
 ## Basic template
-
 
 ```swift
 import Testing
@@ -303,15 +70,7 @@ func testSystemEventOrder() async {
 }
 ```
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Ключевой момент: если используете `collect()` до конца потока, нужно вызвать `finish()`, иначе сбор не завершится.
-
-</details>
-
 ## Handy AsyncSequence extensions
-
 
 ```swift
 extension AsyncSequence {
@@ -323,12 +82,6 @@ extension AsyncSequence {
 }
 ```
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Для “частичного” чтения потока:
-
-</details>
 ```swift
 extension AsyncSequence where Element: Equatable {
     func collect(until match: Element) async rethrows -> [Element] {
@@ -343,7 +96,6 @@ extension AsyncSequence where Element: Equatable {
 ```
 
 ## Phased validation
-
 
 ```swift
 @Test
@@ -372,601 +124,103 @@ func testSystemInPhases() async {
 
 ## What you gain
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Тесты читаются как сценарий событий.
-- Порядок проверяется явно и стабильно.
-- Меньше вложенности и процедурного шума.
-- Удобнее масштабировать на сложные async-пайплайны.
-
-</details>
-
 ## Practical takeaways
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Используйте enum для событий (`enum Event`) вместо строк, чтобы избежать опечаток.
-- Завершайте поток (`finish`) только там, где действительно нужен полный сбор.
-- Для длинных сценариев делите проверку на фазы через `collect(until:)`.
-- Если таких тестов много, вынесите обёртку `EventStream<Event>` и переиспользуйте.
-
-</details>
 
 ## Mini checklist
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Есть ли в тесте явная проверка порядка событий, а не только факта вызова.
-- Закрывается ли поток через `finish()`, когда ожидается полный `collect()`.
-- Разделены ли большие async-сценарии на фазы через `collect(until:)`.
-- Используются ли типобезопасные события (enum), а не “магические” строки.
-
-</details>
-
 ---## Interview Q&A (Knowledge cards)
-
 
 Interview Q&A below.
 
 <!-- knowledge-cards-canonical:start -->
 
 ### Q60
-- **Question (EN):** Why write tests if you can run the app manually?
+- **Question:** Why write tests if you can run the app manually?
 
-- **Answer (EN):** Manual checks don't scale or catch regressions on every change. Tests provide regression safety and act as executable specification.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Not "does it work now" but "did we break what worked" plus living docs.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** зачем тесты, если можно запустить приложение и проверить руками?
-
-- **Answer (RU):** Ручной прогон не масштабируется и не ловит **регрессии** при каждом изменении. Тесты дают **regression safety** и читаются как **спецификация** поведения для команды.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** не «работает ли сейчас», а «не сломали ли то, что работало» + живая документация.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Manual checks don't scale or catch regressions on every change. Tests provide regression safety and act as executable specification.
 
 - **Notes:** [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md)
 ### Q61
-- **Question (EN):** Testing pyramid—levels and why not all UI tests?
+- **Question:** Testing pyramid—levels and why not all UI tests?
 
-- **Answer (EN):** Many fast isolated unit tests, fewer integration, minimal UI for critical paths. All UI is slow, brittle, and hard to debug.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Pyramid optimizes feedback speed; UI is insurance, not the base.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** пирамида тестирования — уровни и почему не всё UI-тестами?
-
-- **Answer (RU):** **Unit** (~70%) — быстро, изоляция; **integration** (~20%) — связка слоёв; **UI/E2E** (~10%) — критические потоки. Всё UI — медленно, дорого в поддержке, сложно найти причину падения.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** пирамида — скорость фидбека; UI — страховка, не основа.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Many fast isolated unit tests, fewer integration, minimal UI for critical paths. All UI is slow, brittle, and hard to debug.
 
 - **Notes:** [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md)
 ### Q62
-- **Question (EN):** What does FIRST stand for in testing?
+- **Question:** What does FIRST stand for in testing?
 
-- **Answer (EN):** Fast, Isolated, Repeatable, Self-validating, Timely—write tests with the code, no shared state, no flaky CI.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** почему flaky хуже отсутствия теста?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Команда перестаёт доверять красному CI и игнорирует падения.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** FIRST — что означает каждая буква?
-
-- **Answer (RU):** **Fast** (миллисекунды), **Isolated** (без общего состояния), **Repeatable** (без флейков), **Self-validating** (pass/fail без ручных логов), **Timely** (пишутся с кодом).
-
-</details>
+- **Answer:** Fast, Isolated, Repeatable, Self-validating, Timely—write tests with the code, no shared state, no flaky CI.
 
 - **Notes:** [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md)
 ### Q63
-- **Question (EN):** Stub vs Mock—and other test doubles?
+- **Question:** Stub vs Mock—and other test doubles?
 
-- **Answer (EN):** Stub supplies canned data; Mock verifies interactions. Dummy fills a parameter; Spy records calls; Fake is a simplified working implementation.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Interview sound bite: stub = data, mock = behavior.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Stub vs Mock (и остальные doubles) — в чём разница?
-
-- **Answer (RU):** **Stub** — заготовленные **данные**, не проверяет вызовы. **Mock** — **верификация поведения** (вызов, аргументы, count). **Dummy** — параметр-заглушка. **Spy** — запись вызовов (частый Swift-паттерн). **Fake** — упрощённая рабочая реализация (in-memory store).
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** на собесе: stub — данные, mock — поведение.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Stub supplies canned data; Mock verifies interactions. Dummy fills a parameter; Spy records calls; Fake is a simplified working implementation.
 
 - **Notes:** [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md)
 ### Q64
-- **Question (EN):** Swift Testing vs XCTest—when to use which?
+- **Question:** Swift Testing vs XCTest—when to use which?
 
-- **Answer (EN):** Swift Testing for new async unit tests; XCTest for UI and legacy; both can live in one target.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Swift Testing vs XCTest — когда что?
-
-- **Answer (RU):** **Swift Testing** — новые unit/integration, `async`, `#expect`, теги. **XCTest** — UI (`XCUITest`), legacy, `measure`. В одном bundle сосуществуют.
-
-</details>
+- **Answer:** Swift Testing for new async unit tests; XCTest for UI and legacy; both can live in one target.
 
 - **Notes:** [Swift-Testing-vs-XCTest-RU](notes/Swift-Testing-vs-XCTest.md)
 ### Q65
-- **Question (EN):** How do you stabilize UI tests?
+- **Question:** How do you stabilize UI tests?
 
-- **Answer (EN):** Stable identifiers, test launch args, isolated data, explicit waits, few critical flows in a dedicated plan.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** как стабилизировать XCUITest?
-
-- **Answer (RU):** `accessibilityIdentifier`, launch arguments для тестового режима, изоляция данных, `waitForExistence` вместо `sleep`, мало критических flow в отдельном Test Plan.
-
-</details>
+- **Answer:** Stable identifiers, test launch args, isolated data, explicit waits, few critical flows in a dedicated plan.
 
 - **Notes:** [XCUITest-Essentials-RU](notes/XCUITest-Essentials.md)
 ### Q66
-- **Question (EN):** How do you unit-test networking without HTTP?
+- **Question:** How do you unit-test networking without HTTP?
 
-- **Answer (EN):** Inject a fake client or stub URLProtocol on a dedicated session—never poison URLSession.shared.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** как unit-тестировать сеть без HTTP?
-
-- **Answer (RU):** Fake `HTTPClient` или `URLProtocol` в `protocolClasses` + своя `URLSession`; не `URLSession.shared`. Детали — [Networking Q H30](../../data-and-network/networking/README.md).
-
-</details>
+- **Answer:** Inject a fake client or stub URLProtocol on a dedicated session—never poison URLSession.shared.
 
 - **Notes:** [Testing-Network-Stub-RU](notes/Testing-Network-Stub.md)
 ### Q67
-- **Question (EN):** When are snapshot tests appropriate?
+- **Question:** When are snapshot tests appropriate?
 
-- **Answer (EN):** Stable components with pinned simulator/OS—not whole screens during active redesign.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** когда snapshot-тесты уместны?
-
-- **Answer (RU):** Стабильные **компоненты** design system при фиксированном device/OS; не full-screen при живом дизайне; альтернатива — unit на state + JSON fixtures.
-
-</details>
+- **Answer:** Stable components with pinned simulator/OS—not whole screens during active redesign.
 
 - **Notes:** [Snapshot-Testing-Discipline-RU](notes/Snapshot-Testing-Discipline.md)
 ### Q68
-- **Question (EN):** Test Plans in CI—PR vs Nightly?
+- **Question:** Test Plans in CI—PR vs Nightly?
 
-- **Answer (EN):** Fast subset on every PR; slow UI/snapshots nightly; quarantine flaky tests explicitly.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Test Plans в CI — PR vs Nightly?
-
-- **Answer (RU):** **PR** — unit + быстрый integration (<10 min), parallel. **Nightly** — UI, snapshots, locale smoke. Flaky — quarantine plan, не игнор CI.
-
-</details>
+- **Answer:** Fast subset on every PR; slow UI/snapshots nightly; quarantine flaky tests explicitly.
 
 - **Notes:** [Test-Plans-CI-RU](notes/Test-Plans-CI.md)
 ### Q69
-- **Question (EN):** TDD vs test-after?
+- **Question:** TDD vs test-after?
 
-- **Answer (EN):** TDD when designing behavior; test-after under deadline with risk-based prioritization.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** TDD vs test-after?
-
-- **Answer (RU):** TDD — red/green/refactor при неясном контракте. Test-after — hotfix/дедлайн, но **риск-first** (Q37). Triangulation и удаление устаревших тестов — на инженере.
-
-</details>
+- **Answer:** TDD when designing behavior; test-after under deadline with risk-based prioritization.
 
 - **Notes:** [TDD-Basics-RU](notes/TDD-Basics.md)
 ### Q70
-- **Question (EN):** Contract tests and OpenAPI—why and how on iOS?
+- **Question:** Contract tests and OpenAPI—why and how on iOS?
 
-- **Answer (EN):** Fixture-based decode/mapping tests against spec examples; OpenAPI codegen for large APIs; keep domain rules in unit tests.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Spec fixtures catch schema drift before production; OpenAPI drives codegen.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** contract tests и OpenAPI — зачем и как на iOS?
-
-- **Answer (RU):** Проверяют согласованность **клиент ↔ API**: JSON fixtures из спеки, decode + mapper в integration; **OpenAPI в git** + Swift OpenAPI Generator для типов. PR — fixtures без реального HTTP; staging — Nightly. Домен — unit, не contract.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** fixture из спеки → decode падает раньше продакшена; OpenAPI — source of truth для codegen.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Fixture-based decode/mapping tests against spec examples; OpenAPI codegen for large APIs; keep domain rules in unit tests.
 
 - **Notes:** [Contract-Tests-OpenAPI-RU](notes/Contract-Tests-OpenAPI.md)
 ### Q52
-- **Question (EN):** How do you validate LLM-generated Swift code?
+- **Question:** How do you validate LLM-generated Swift code?
 
-- **Answer (EN):** Deterministic unit/integration tests plus human review; project constraints encode TDD rules. Engineer owns triangulation and test lifecycle. Product LLM features need eval suites separately.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Tests gate generated code; human owns test evolution; evals are for in-app LLM behavior.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** чем AI-assisted TDD отличается от Evaluations framework?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** Unit-тесты проверяют **ваш Swift** (домен, VM, мапперы). Evaluations — **недетерминированные** ответы модели в фиче (golden set, tool trajectory).
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** как валидировать Swift-код, сгенерированный LLM / coding agent?
-
-- **Answer (RU):** **Unit/integration** тесты на поведение и регрессии (детерминированные); **ревью** до merge; **constraints-файл** (`CLAUDE.md`, `AGENTS.md`) с правилами TDD и TPP — не wiki. Инженер решает triangulation и удаление устаревших тестов. **On-device LLM-фичи** приложения — отдельно [evaluations](../../ai-engineering/evaluations/README.md), не вместо domain tests.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** тесты — фильтр для сгенерированного кода; человек — за refactor и «какой тест устарел»; evals — для LLM в продукте.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Deterministic unit/integration tests plus human review; project constraints encode TDD rules. Engineer owns triangulation and test lifecycle. Product LLM features need eval suites separately.
 
 - **Notes:** [AI-assisted TDD](notes/ai-assisted-tdd.md)
 ### Q37
-- **Question (EN):** Which tests first under a deadline?
+- **Question:** Which tests first under a deadline?
 
-- **Answer (EN):** Under time pressure: business-critical flows and domain rules first, API contract second, regression tests for fixed bugs third—defer vanity coverage and flaky snapshots.
+- **Answer:** Under time pressure: business-critical flows and domain rules first, API contract second, regression tests for fixed bugs third—defer vanity coverage and flaky snapshots.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Risk-first: critical path → API fixtures → bug regressions; snapshots last.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** что точно не тестировать первым?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** хрупкие snapshot всего экрана при живом дизайне; end-to-end всего приложения без изоляции; покрытие ради процента без риска.
-
-</details>
-</details>
-</details>
 - **Playground:** [open](testing.playground/Contents.swift) — `user_ok.json`, `user_401.json` → `ProfileError`
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** какие тесты приоритетны под deadline (дедлайн)?
-
-- **Answer (RU):** Зацепка: под дедлайн тестируешь **риск**, не процент строк — сначала **деньги/данные/главный поток**, потом **контракт с API**, потом **регресс по фиксу**.
-
-    сначала критический пользовательский поток и доменные инварианты (оплата, создание сущности, синк); затем контракт клиента API (фикстуры ответов); затем регрессионные багфиксы с тестом «красный→зелёный». Полное покрытие edge cases и UI-снимки — когда есть время.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** сначала то, что убьёт продукт или данные; потом API-контракт; снапшоты всего UI — в конце.
-
-</details>
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [Contract-Tests-OpenAPI-RU](notes/Contract-Tests-OpenAPI.md).
-
-</details>
 - **Notes:** [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md) · [TDD-Basics-RU](notes/TDD-Basics.md) · [Test-Plans-CI-RU](notes/Test-Plans-CI.md)
 ### Q46
-- **Question (EN):** Testing baseline—cover what first?
+- **Question:** Testing baseline—cover what first?
 
-- **Answer (EN):** Fast feedback: unit-test domain/rules with mocks; fewer integration tests for real wiring (decoder + fixtures, URLProtocol stubs)—use AAA.
+- **Answer:** Fast feedback: unit-test domain/rules with mocks; fewer integration tests for real wiring (decoder + fixtures, URLProtocol stubs)—use AAA.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Pure logic + injected deps first; glue tests second.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** как отличать unit test (модульный) от integration test (интеграционный) в мобильном проекте?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** unit — один тип, зависимости подделаны; integration — несколько реальных слоёв (например сеть до `URLProtocol` stub + декодер).
-
-</details>
-</details>
-</details>
 - **Playground:** [open](testing.playground/Contents.swift) — `user_ok.json`, `user_401.json` → `ProfileError`
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** testing baseline (база тестирования): что покрывать первым?
-
-- **Answer (RU):** Зацепка: **unit первым** — правила без сети/UI и с подставными зависимостями; **integration точечно** — где важна связка слоёв.
-
-    бизнес-правила изолированно (unit), контракт с зависимостями через протоколы/моки; структура AAA. Интеграционные — меньше, на стыке со слоями (реальный декодер + фикстура JSON).
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** изоляция и моки → unit; несколько настоящих слоёв → integration.
-
-</details>
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** флаки из общего синглтона — изолировать тестовый контейнер.
-
-</details>
 - **Notes:** [Testing-Fundamentals-RU](notes/Testing-Fundamentals.md) · [Testing-Network-Stub-RU](notes/Testing-Network-Stub.md)
 
 ---

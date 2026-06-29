@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 **UICollectionView** displays a grid or custom layout of reusable cells. **`UICollectionViewCompositionalLayout`** (iOS 13+) builds layouts from composable **sections**, **groups**, and **items** with orthogonal scrolling, headers, and supplementary views — replacing most custom `UICollectionViewLayout` subclasses. **`UICollectionViewDiffableDataSource`** applies snapshot updates with automatic diffing and animations, reducing `performBatchUpdates` crashes. **Cell reuse** via `dequeueReusableCell` keeps memory flat during scroll; **`prepareForReuse`** resets stale state. **Prefetching** (`UICollectionViewDataSourcePrefetching`) loads data/images ahead of the visible rect. SwiftUI's **`LazyVGrid`** / **`LazyHGrid`** offer declarative lazy grids but differ in identity, diffing, and UIKit integration — know when to bridge with `UIViewRepresentable` vs stay in UIKit for complex compositional layouts.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**UICollectionView** — сетка или кастомный layout переиспользуемых ячеек. **`UICollectionViewDiffableDataSource`** упрощает обновления. Performance: prefetch, reuse, compositional layout.
-
-</details>
-
 ## Apple docs
-
 
 - [UICollectionView](https://developer.apple.com/documentation/uikit/uicollectionview) — data source, delegate, scrolling, selection.
 - [UICollectionViewCompositionalLayout](https://developer.apple.com/documentation/uikit/uicollectionviewcompositionallayout) — sections, groups, items, orthogonal scrolling.
@@ -27,7 +17,6 @@
 - [Updating collection views using diffable data sources](https://developer.apple.com/documentation/uikit/views_and_controls/collection_views/updating_collection_views_using_diffable_data_sources) — migration guide.
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -47,7 +36,6 @@
 - **Prefetch everything** — prefetch only when decode/load is measurable bottleneck; always cancel.
 
 ## Key concepts
-
 
 | Term | Meaning |
 |------|---------|
@@ -84,7 +72,6 @@
 
 ## 🏋️ Exercises
 
-
 1. **Basic grid:** 3-column compositional grid with fractional width items and 8 pt spacing. **Expected:** explain item → group → section chain without copying boilerplate blindly.
 
 2. **Diffable feed:** `UICollectionViewDiffableDataSource<String, UUID>` with pull-to-refresh inserting items at top. **Expected:** smooth insert animation, no batch update exceptions.
@@ -103,7 +90,6 @@
 
 ## Links
 
-
 - [WWDC 2019 — Advances in Collection View Layout](https://developer.apple.com/videos/play/wwdc2019/215/)
 - [WWDC 2020 — Build lists in UICollectionView](https://developer.apple.com/videos/play/wwdc2020/10026/)
 - [WWDC 2021 — Make UICollectionView diffable](https://developer.apple.com/videos/play/wwdc2021/10252/)
@@ -111,7 +97,6 @@
 - [Updating collection views using diffable data sources](https://developer.apple.com/documentation/uikit/views_and_controls/collection_views/updating_collection_views_using_diffable_data_sources)
 
 ## Code patterns
-
 
 ### Compositional grid section
 
@@ -159,279 +144,28 @@ func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItem
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** How does UICollectionView cell reuse work, and what belongs in `prepareForReuse`?
+- **Question:** How does UICollectionView cell reuse work, and what belongs in `prepareForReuse`?
 
-- **Answer (EN):** Off-screen cells enter a reuse pool; dequeue returns arbitrary instances. Reset UI in `prepareForReuse` and guard async callbacks against stale index paths.
+- **Answer:** Off-screen cells enter a reuse pool; dequeue returns arbitrary instances. Reset UI in `prepareForReuse` and guard async callbacks against stale index paths.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Pool reuse; always reset; async must validate cell still shows same item.
-
-</details>
-</details>
-</details>
 - **Follow-up:** register class vs nib?
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** `register(_:forCellWithReuseIdentifier:)` для programmatic cell; nib — для XIB/storyboard prototype.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как работает **reuse** ячеек в `UICollectionView` и что обязательно в **`prepareForReuse`**?
-
-- **Answer (RU):** При scroll off-screen ячейка попадает в **reuse pool**, не уничтожается. `dequeueReusableCell` выдаёт готовый экземпляр — **нельзя** полагаться на прошлое состояние (image, text, gestures). **`prepareForReuse`** сбрасывает UI к neutral (nil image, hidden accessory, cancel pending animation). Async загрузки должны проверять, что callback относится к текущему item (indexPath / model id).
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** dequeue ≠ новая ячейка; prepareForReuse — сброс; async — guard по identity.
-
-</details>
-</details>
-</details>
-</details>
-
 ### Q2
-- **Question (EN):** UICollectionViewCompositionalLayout — what builds a section?
+- **Question:** UICollectionViewCompositionalLayout — what builds a section?
 
-- **Answer (EN):** Item sizes feed groups; groups feed sections; sections add insets, orthogonal scrolling, and boundary supplementary views — composable declarative layout.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Three-level composition; orthogonal = perpendicular scroll in section.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** estimated vs fixed item height в list?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** estimated ускоряет первый layout; self-sizing уточняет через Auto Layout в cell — invalidation при изменении текста.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** **`UICollectionViewCompositionalLayout`** — из чего собирается section?
-
-- **Answer (RU):** **Item** (размер: fractional/fixed/estimated) → **Group** (horizontal/vertical/custom, group size) → **Section** (insets, orthogonal scrolling, boundary supplementary items для header/footer). Несколько group в section — через `NSCollectionLayoutGroup.custom` или nested groups. Заменяет большинство hand-written `layoutAttributesForElements`.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** item → group → section; orthogonal — карусель внутри вертикального feed.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Item sizes feed groups; groups feed sections; sections add insets, orthogonal scrolling, and boundary supplementary views — composable declarative layout.
 
 ### Q3
-- **Question (EN):** Why UICollectionViewDiffableDataSource over performBatchUpdates?
+- **Question:** Why UICollectionViewDiffableDataSource over performBatchUpdates?
 
-- **Answer (EN):** Snapshots declare end state; UIKit diffs safely. Stable item IDs are mandatory; reconfigure refreshes content without identity change.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** End-state snapshots; stable IDs; reconfigure for in-place refresh.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** когда всё же batch updates?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** редкие edge cases, сторонние layout invalidations, legacy interop — в новом коде diffable default.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** **`UICollectionViewDiffableDataSource`** vs `performBatchUpdates` — зачем diffable?
-
-- **Answer (RU):** Snapshot описывает **целевое состояние**; система diff'ит insert/delete/move/reload. Меньше рассинхрона model ↔ UI и классических crash “invalid number of items.” **Hashable identity** item критична: смена id = delete+insert. iOS 15+ **`reconfigureItems`** — обновить контент без смены identity.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** snapshot = truth; diff анимирует; duplicate ID — crash.
-
-</details>
-</details>
-</details>
-</details>
+- **Answer:** Snapshots declare end state; UIKit diffs safely. Stable item IDs are mandatory; reconfigure refreshes content without identity change.
 
 ### Q4
-- **Question (EN):** UICollectionView vs SwiftUI LazyVGrid — when to choose which?
+- **Question:** UICollectionView vs SwiftUI LazyVGrid — when to choose which?
 
-- **Answer (EN):** UIKit for complex compositional feeds, prefetch, and mature list features; LazyVGrid for simple SwiftUI-native grids. Hybrid bridges have sizing and lifecycle cost.
+- **Answer:** UIKit for complex compositional feeds, prefetch, and mature list features; LazyVGrid for simple SwiftUI-native grids. Hybrid bridges have sizing and lifecycle cost.
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (EN):** Complex feeds UIKit; simple grids SwiftUI; know bridge trade-offs.
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** prefetch в SwiftUI?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** нет зеркала `DataSourcePrefetching`; паттерны — `.task`, shared cache, `onAppear`/`onDisappear`, или UIKit для hot path.
-
-</details>
-</details>
-</details>
 <!-- knowledge-cards-canonical:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** **`UICollectionView` vs `LazyVGrid`** — когда что на собесе?
-
-- **Answer (RU):** **UICollectionView** — compositional carousel, supplementary views, prefetch/cancel, diffable на больших feed, UIKit navigation. **LazyVGrid** — простые lazy сетки в SwiftUI, меньше boilerplate, `.task` на cell вместо prefetch API. Гибрид: сложный feed в UIKit внутри `UICollectionViewRepresentable` или SwiftUI cells через hosting — осознанно, с cost на sizing.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Устная заготовка (RU):** сложный feed → compositional + diffable; простая сетка в SwiftUI → LazyVGrid.
-
-</details>
-</details>
-</details>
-</details>

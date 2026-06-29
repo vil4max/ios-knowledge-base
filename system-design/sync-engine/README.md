@@ -2,26 +2,15 @@
 
 ## In 30 seconds
 
-
 A **sync engine** moves data between client and server with **versioning**, **delta updates**, **tombstones**, a **durable queue**, and **idempotent** operations. Interview answers explain how the client knows what changed (cursor, vector clock, or revision), how deletes propagate, how retries avoid duplicates, and how the UI stays consistent while sync runs in the background.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Sync engine**: версионирование, delta sync, конфликты (last-write-wins, CRDT, merge rules), idempotency, backoff.
-
-</details>
-
 ## Apple docs
-
 
 - [BackgroundTasks](https://developer.apple.com/documentation/backgroundtasks) — scheduling sync work within OS limits.
 - [URLSession](https://developer.apple.com/documentation/foundation/urlsession) — batch requests, background transfers.
 - [NSPersistentCloudKitContainer](https://developer.apple.com/documentation/coredata/nspersistentcloudkitcontainer) — reference for Apple-managed sync semantics (compare vs custom engine).
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -40,7 +29,6 @@ A **sync engine** moves data between client and server with **versioning**, **de
 - Sub-second sync SLAs on mobile without stating battery/network trade-offs.
 
 ## Key concepts
-
 
 | Component | Role |
 |-----------|------|
@@ -68,7 +56,6 @@ A **sync engine** moves data between client and server with **versioning**, **de
 
 ## 🏋️ Exercises
 
-
 1. **Design change feed API** — Request/response for `GET /sync?since=cursor` including tombstones. *Expected:* JSON with `changes[]`, `nextCursor`, `hasMore`.
 
 2. **Delete propagation** — User deletes item on device A offline; device B online. *Expected:* tombstone in delta; B removes locally; outbox on A sends delete with idempotency.
@@ -81,73 +68,31 @@ A **sync engine** moves data between client and server with **versioning**, **de
 
 ## Links
 
-
 - Related: [offline-first](../offline-first/README.md), [push-notifications](../push-notifications/README.md)
 - [Stripe idempotency](https://stripe.com/docs/api/idempotent_requests) — classic idempotency pattern (concept applies beyond payments)
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** Why are tombstones needed in a sync engine?
+- **Question:** Why are tombstones needed in a sync engine?
 
-- **Answer (EN):** Deletes must replicate like updates. Without tombstones, clients that miss a delete event keep stale records forever. Tombstones in the change feed tell every client to remove the entity locally.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Зачем tombstones в sync engine?
-
-- **Answer (RU):** Удаление — тоже изменение. Без tombstone клиент, пропустивший delete event, **оставит запись навсегда**. Tombstone (`deletedAt` + id + revision) в delta feed говорит всем клиентам убрать объект локально.
-
-</details>
+- **Answer:** Deletes must replicate like updates. Without tombstones, clients that miss a delete event keep stale records forever. Tombstones in the change feed tell every client to remove the entity locally.
 
 ### Q2
-- **Question (EN):** Delta sync vs full sync?
+- **Question:** Delta sync vs full sync?
 
-- **Answer (EN):** Delta sync fetches only changes since a cursor — fast and bandwidth-friendly. Full sync reloads everything — used for first login, schema changes, or recovery after corruption.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Delta sync vs full sync?
-
-- **Answer (RU):** **Delta** — только изменения с cursor (быстро, мало трафика). **Full** — вся коллекция заново (после corruption, смены schema, или первого login). Production: delta по умолчанию, full как recovery path.
-
-</details>
+- **Answer:** Delta sync fetches only changes since a cursor — fast and bandwidth-friendly. Full sync reloads everything — used for first login, schema changes, or recovery after corruption.
 
 ### Q3
-- **Question (EN):** How do you ensure idempotency on retry?
+- **Question:** How do you ensure idempotency on retry?
 
-- **Answer (EN):** Assign a stable idempotency key per mutation; the server stores the first successful result and returns it on duplicates. Client timeouts do not mean the operation failed — design safe retries.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как обеспечить идемпотентность при retry?
-
-- **Answer (RU):** Клиент генерирует **стабильный id** (UUID) на мутацию; сервер хранит результат первого успешного применения и при повторе с тем же ключом возвращает тот же ответ без дубля в БД. Timeout на клиенте ≠ «операция не выполнена» — нужен safe retry.
-
-</details>
+- **Answer:** Assign a stable idempotency key per mutation; the server stores the first successful result and returns it on duplicates. Client timeouts do not mean the operation failed — design safe retries.
 
 ### Q4
-- **Question (EN):** How should the UI learn about sync completion?
+- **Question:** How should the UI learn about sync completion?
 
-- **Answer (EN):** The UI observes local DB changes after transactional applies. Expose sync state (idle/syncing/error) and pending counts for status surfaces — do not block every screen on network.
+- **Answer:** The UI observes local DB changes after transactional applies. Expose sync state (idle/syncing/error) and pending counts for status surfaces — do not block every screen on network.
 
 <!-- knowledge-cards-canonical:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как UI узнаёт о завершении sync?
-
-- **Answer (RU):** Локальная БД — источник для UI; sync engine пишет в БД в **транзакции**, UI подписан через **FRC / observation / async stream**. Отдельно: индикатор `syncState` (idle/syncing/error) и счётчик pending в outbox — для settings/support, не для блокировки каждого экрана.
-
-</details>

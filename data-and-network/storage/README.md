@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / Caches / Application Support), **Core Data**, **SwiftData**, and **SQLite** (direct or via wrappers). Interview focus: **where** to store what, **threading** rules for Core Data, **migration** strategy, and **encryption** for secrets. Wrong layer (e.g. large blobs in UserDefaults) causes performance and backup issues.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Персистентность на iOS: **UserDefaults**, **Keychain**, **файлы**, **SQLite** (через GRDB/Core Data/SwiftData). Выбор слоя зависит от чувствительности, объёма, запросов и миграций.
-
-</details>
-
 ## Apple docs
-
 
 - [Preserving your app's data across launches](https://developer.apple.com/documentation/uikit/app_and_environment/scenes/preparing_your_ui_to_run_in_the_background/preserving_your_app_s_data_across_launches) — state restoration vs durable storage.
 - [Using Core Data in your app](https://developer.apple.com/documentation/coredata/using_core_data_in_your_app) — stack, contexts, fetch requests.
@@ -29,99 +19,18 @@ iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / 
 
 ## 🎯 Focus vs Defer
 
-
 ### Focus
 
 - **Layer choice:** UserDefaults — flags/small prefs; Keychain — tokens/passwords; Files — user content & caches; Core Data/SwiftData — relational object graphs.
 - **Core Data threading:** `NSManagedObject` is **not** thread-safe; pass **`NSManagedObjectID`**; use `perform` / `performAndWait` on the context's queue.
 - **Context hierarchy:** main (UI) + private background child; `save` child → merge to parent; set **`mergePolicy`** explicitly.
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Migration:** lightweight (additive) vs mapping model; versioned `.xcdatamodeld`; test migrations in CI with fixture stores.
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **SwiftData vs Core Data:** SwiftData for greenfield SwiftUI; Core Data for mature stacks, complex migrations, existing ObjC bridges.
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **SQLite vs NoSQL vs stack:** SQLite и NoSQL — разные категории; Core Data / SwiftData — object-graph frameworks поверх SQLite; см. [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md) (**Q51–Q53**).
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Core Data + Observation:** SwiftData — native property-level UI updates; Core Data — `@ObservedObject` split или мост (CDE); см. [`notes/Core-Data-Observation.md`](notes/Core-Data-Observation.md).
-
-
-</details>
-
-
-</details>
-
-
-</details>
 
 ### Defer
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Full **CloudKit** conflict matrix until basic local stack is solid.
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Raw **SQLite C API** in app code — prefer GRDB / SQLite.swift; **understand** the SQLite stack for interviews and debugging Core Data stores (см. [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md)).
-
-</details>
-
-</details>
-
-</details>
 - **NSKeyedArchiver** for new features — prefer `Codable` + files or Core Data.
 - Custom **encryption at rest** for entire DB before Keychain + Data Protection classes are understood.
 
 ## Key concepts
-
 
 - **Persistent store** — SQLite file (or in-memory) behind Core Data stack.
 - **NSManagedObjectContext** — unit of work; queue-confined (`main` or `private`).
@@ -136,7 +45,6 @@ iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / 
 
 ## 🏋️ Exercises
 
-
 1. **Directory pick:** Classify 5 data types (auth token, feed JSON cache, user avatar file, onboarding flag, order graph) → storage layer. **Expected:** Keychain / Caches / Documents / UserDefaults / Core Data.
 2. **Cross-thread ID:** Fetch on background context; pass `objectID` to main; materialize with `existingObject(with:)`. **Expected:** no cross-thread `NSManagedObject` usage.
 3. **Migration test:** Add optional attribute; run lightweight migration on old store fixture. **Expected:** launch without crash; new field defaults correctly.
@@ -145,14 +53,12 @@ iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / 
 
 ## Links
 
-
 - [WWDC19 — Using Core Data With CloudKit](https://developer.apple.com/videos/play/wwdc2019/202/)
 - [WWDC20 — Sync a Core Data store with CloudKit](https://developer.apple.com/videos/play/wwdc2020/10650/)
 - [WWDC23 — Meet SwiftData](https://developer.apple.com/videos/play/wwdc2023/10187/)
 - [WWDC24 — Track model data with SwiftData](https://developer.apple.com/videos/play/wwdc2024/10137/)
 
 ## Artifacts
-
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -161,288 +67,49 @@ iOS apps persist data in **UserDefaults**, **Keychain**, **files** (Documents / 
 
 ### Recent notes
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md) — SQLite vs NoSQL (категории), Core Data / SwiftData поверх SQLite, copy-paste interview answer
-- [`notes/Core-Data-Observation.md`](notes/Core-Data-Observation.md) — property-level Observation на `NSManagedObject`, CDE, границы reactivity (Fatbobman)
-
-</details>
-
 ---
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q33
-- **Question (EN):** Core Data concurrency basics?
+- **Question:** Core Data concurrency basics?
 
-- **Answer (EN):** Contexts are queue-bound; never pass `NSManagedObject` across threads—use `NSManagedObjectID` and `perform`. Parent/child contexts with explicit merge policies; CloudKit adds sync-specific merging.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** merge conflict strategy в offline flow?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** server-wins / client-wins / field-level merge; версия записи + UI для конфликта; merge при save parent или отдельная сущность «conflict» до push.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Core Data concurrency basics (база многопоточности Core Data)?
-
-- **Answer (RU):** **`NSManagedObject` не передаём между потоками** — он живёт внутри конкретного **`NSManagedObjectContext`**. Контекст сериализует доступ на своей очереди (`main` или `private`). Между контекстами передают **`NSManagedObjectID`**, на целевом контексте — `object(with:)` / `existingObject(with:)` внутри `perform`. Иерархия: `main` для UI + child `private` для записи; `save` ребёнка → merge в родителя; **`mergePolicy`** задавать явно.
-
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [Using Core Data in the background](https://developer.apple.com/documentation/coredata/using_core_data_in_the_background); `performAndWait` с main из фона — риск deadlock.
-
-</details>
+- **Answer:** Contexts are queue-bound; never pass `NSManagedObject` across threads—use `NSManagedObjectID` and `perform`. Parent/child contexts with explicit merge policies; CloudKit adds sync-specific merging.
 
 ### Q48
-- **Question (EN):** UserDefaults vs Keychain vs files—when to use each?
+- **Question:** UserDefaults vs Keychain vs files—when to use each?
 
-- **Answer (EN):** UserDefaults for small non-secret prefs; Keychain for secrets; Files for content and caches with correct directory semantics.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up:** App Group зачем?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer:** общий контейнер для app + extension/widget; `containerURL(forSecurityApplicationGroupIdentifier:)`.
-
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** UserDefaults vs Keychain vs файл — когда что?
-
-- **Answer (RU):** **UserDefaults** — мелкие настройки, не секреты, не большие данные (plist, backup). **Keychain** — токены, пароли, ключи; шифрование и политики доступа. **Файлы** — пользовательский контент, кэши (`Caches` можно снести системой), большие blob; **Documents** — то, что пользователь «владеет». Секреты не в UserDefaults.
-
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [FileManager](https://developer.apple.com/documentation/foundation/filemanager); [Keychain Services](https://developer.apple.com/documentation/security/keychain_services).
-
-</details>
+- **Answer:** UserDefaults for small non-secret prefs; Keychain for secrets; Files for content and caches with correct directory semantics.
 
 ### Q49
-- **Question (EN):** SwiftData vs Core Data in interviews?
+- **Question:** SwiftData vs Core Data in interviews?
 
-- **Answer (EN):** SwiftData for new SwiftUI apps; Core Data for complex migrations and existing stacks. Know concurrency and migration either way.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** SwiftData vs Core Data на собесе?
-
-- **Answer (RU):** **SwiftData** — Swift-native, макросы `@Model`, `@Query`, тесная SwiftUI; меньше boilerplate на новых проектах. **Core Data** — зрелый стек, сложные миграции, ObjC, NSPredicate, большие legacy кодовые базы. Оба могут использовать SQLite под капотом; SwiftData не отменяет понимание контекстов и миграций.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up (RU):** Полная картина стека SQLite → Core Data → SwiftData?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer (RU):** Core Data — object graph framework, не БД; оба по умолчанию → SQLite file. NoSQL — backend. См. [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md).
-
-</details>
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [SwiftData](https://developer.apple.com/documentation/swiftdata); WWDC23 Meet SwiftData; [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md).
-
-</details>
+- **Answer:** SwiftData for new SwiftUI apps; Core Data for complex migrations and existing stacks. Know concurrency and migration either way.
 
 ### Q50
-- **Question (EN):** Core Data + SwiftUI: how to get property-level updates without splitting views?
+- **Question:** Core Data + SwiftUI: how to get property-level updates without splitting views?
 
-- **Answer (EN):** SwiftData integrates Observation natively. Core Data needs `@ObservedObject` per MO or a bridge like CDE: subscribe on read, publish after save; `saveObservedChanges()` for background field snapshots; honest degradation when metadata is objectID-only.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Core Data + SwiftUI: как добиться property-level updates без split views?
-
-- **Answer (RU):** **SwiftData** — relationship reads в `body` автоматически в Observation. **Core Data (native)** — `@ObservedObject` на каждый `NSManagedObject` в цепочке или coarse refresh. **CDE** — `@PersistentModel(observation: .mainActor)` + `CDEObservationDomain`: read регистрирует dependency, save/merge публикует keyPath changes; background updates через `saveObservedChanges()`. Property-level только когда известны changed fields — CloudKit/batch → object-level fallback.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up (RU):** CDE vs миграция на SwiftData?
-
-</details>
-</details>
-</details>
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Follow-up answer (RU):** CDE для legacy Core Data с migrations/CloudKit/custom stack, где SwiftData ещё не покрывает сценарий. SwiftData — когда можно перенести model и принять его limits.
-
-</details>
-</details>
-</details>
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [`notes/Core-Data-Observation.md`](notes/Core-Data-Observation.md); [WWDC23 — Discover Observation in SwiftUI](https://developer.apple.com/videos/play/wwdc2023/10149/); [CoreDataEvolution](https://github.com/fatbobman/CoreDataEvolution).
-
-</details>
+- **Answer:** SwiftData integrates Observation natively. Core Data needs `@ObservedObject` per MO or a bridge like CDE: subscribe on read, publish after save; `saveObservedChanges()` for background field snapshots; honest degradation when metadata is objectID-only.
 
 ### Q51
-- **Question (EN):** Are SQLite and NoSQL competitors or different categories?
+- **Question:** Are SQLite and NoSQL competitors or different categories?
 
-- **Answer (EN):** Different categories. SQLite is embedded relational SQL for local files; NoSQL is server-side families optimized for scale and flexible schemas. iOS uses SQLite on device; NoSQL lives behind the API.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** SQLite и NoSQL — конкуренты или разные категории?
-
-- **Answer (RU):** **Разные категории.** SQLite — встраиваемая реляционная SQL-БД в одном файле (ACID, JOINs, offline на устройстве). NoSQL — семейство backend-БД (Document, Key-Value, Graph, Column) для масштаба и гибкой схемы. iOS: SQLite локально; NoSQL за REST/GraphQL на сервере.
-
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md).
-
-</details>
+- **Answer:** Different categories. SQLite is embedded relational SQL for local files; NoSQL is server-side families optimized for scale and flexible schemas. iOS uses SQLite on device; NoSQL lives behind the API.
 
 ### Q52
-- **Question (EN):** Is Core Data a database? Where does SwiftData fit?
+- **Question:** Is Core Data a database? Where does SwiftData fit?
 
-- **Answer (EN):** Core Data is an object-graph persistence framework, not a database. SwiftData is the modern Swift layer on Core Data concepts. Both typically persist to SQLite—you use objects and fetch APIs.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Core Data — это база данных? Где SwiftData?
-
-- **Answer (RU):** **Core Data — не БД**, а object graph + persistence framework. **SwiftData** — Swift-native слой (iOS 17+) на тех же идеях. Оба обычно пишут в **SQLite** (`.sqlite`). Работа через объекты, fetch requests, `@Model` / `@Query`, не через raw SQL.
-
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md); **Q49**.
-
-</details>
+- **Answer:** Core Data is an object-graph persistence framework, not a database. SwiftData is the modern Swift layer on Core Data concepts. Both typically persist to SQLite—you use objects and fetch APIs.
 
 ### Q53
-- **Question (EN):** When direct SQLite, Core Data, SwiftData, or backend NoSQL?
+- **Question:** When direct SQLite, Core Data, SwiftData, or backend NoSQL?
 
-- **Answer (EN):** Direct SQLite for SQL control; Core Data for complex graphs and legacy; SwiftData for new iOS 17+ SwiftUI; backend NoSQL for cloud scale—the app talks over the network.
+- **Answer:** Direct SQLite for SQL control; Core Data for complex graphs and legacy; SwiftData for new iOS 17+ SwiftUI; backend NoSQL for cloud scale—the app talks over the network.
 
 - **Follow-up:** 30-second interview answer?
 
 - **Follow-up answer:** Copy-paste EN/RU blocks in [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md#copy-paste-30-second-interview-answer).
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Когда SQLite напрямую, Core Data, SwiftData или backend NoSQL?
-
-- **Answer (RU):** **SQLite direct** (GRDB, SQLite.swift) — контроль SQL, FTS, очереди. **Core Data** — сложный граф, legacy, migrations. **SwiftData** — greenfield iOS 17+ SwiftUI. **NoSQL** — cloud (Firestore, MongoDB), гибкая схема, horizontal scale; клиент через API.
-
-</details>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Доп. информация:** [`notes/SQLite-NoSQL-Core-Data-SwiftData.md`](notes/SQLite-NoSQL-Core-Data-SwiftData.md).
-
-</details>
 <!-- knowledge-cards-canonical:end -->

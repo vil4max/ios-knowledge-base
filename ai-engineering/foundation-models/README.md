@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 **Foundation Models framework** (iOS 26+, iPadOS 26+, macOS 26+) exposes Apple’s **on-device LLM** powering Apple Intelligence: Swift-native API, offline-capable, no per-token cloud bill for on-device inference. Core types: **`SystemLanguageModel`**, **`LanguageModelSession`**, **guided generation** (`@Generable`), and **Tools** for app callbacks. Requires Apple Intelligence–compatible device with Intelligence enabled; larger requests may use **Private Cloud Compute**.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**Foundation Models** (iOS 26+) — on-device LLM API Apple: `SystemLanguageModel`, `LanguageModelSession`, guided generation.
-
-</details>
-
 ## Apple docs
-
 
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
 - [SystemLanguageModel](https://developer.apple.com/documentation/foundationmodels/systemlanguagemodel)
@@ -25,7 +15,6 @@
 - [Apple Intelligence & privacy](https://www.apple.com/legal/privacy/data/en/intelligence-engine/)
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -44,7 +33,6 @@
 - Jailbreak / model extraction — out of scope for app dev interview.
 
 ## Key concepts
-
 
 | API | Purpose |
 |-----|---------|
@@ -76,7 +64,6 @@ let response = try await session.respond(to: userText)
 
 ## 🏋️ Exercises
 
-
 1. **Availability UX** — Feature flag + `isAvailable` gating. *Expected:* graceful hide on unsupported hardware/OS.
 
 2. **Guided extraction** — `@Generable struct EventDraft { title, date }` from natural language. *Expected:* validate before saving to Calendar API.
@@ -89,7 +76,6 @@ let response = try await session.respond(to: userText)
 
 ## Links
 
-
 - [Foundation Models documentation](https://developer.apple.com/documentation/foundationmodels)
 - [Meet the Foundation Models framework (WWDC25)](https://developer.apple.com/videos/play/wwdc2025/286/)
 - [Apple Intelligence overview](https://www.apple.com/apple-intelligence/)
@@ -97,58 +83,27 @@ let response = try await session.respond(to: userText)
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** What does the Foundation Models framework give iOS developers?
+- **Question:** What does the Foundation Models framework give iOS developers?
 
-- **Answer (EN):** Native Swift access to Apple’s on-device LLM: generation, sessions, structured output via `@Generable`, and Tools for app data — offline on supported devices without cloud token billing for standard on-device use.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Что даёт Foundation Models framework iOS разработчику?
-
-- **Answer (RU):** Нативный **Swift API** к on-device LLM Apple Intelligence: генерация текста, multi-turn **sessions**, **structured output** (`@Generable`), **Tools** для данных app. Работает **offline** на supported devices; inference on-device без cloud API billing для базового сценария.
-
-</details>
+- **Answer:** Native Swift access to Apple’s on-device LLM: generation, sessions, structured output via `@Generable`, and Tools for app data — offline on supported devices without cloud token billing for standard on-device use.
 
 ### Q2
-- **Question (EN):** LanguageModelSession vs one-shot prompts?
+- **Question:** LanguageModelSession vs one-shot prompts?
 
-- **Answer (EN):** Sessions keep transcripts and instructions across turns. One-shot calls suit single transforms without history; chat UIs use sessions.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** LanguageModelSession vs one-shot prompt?
-
-- **Answer (RU):** **Session** хранит **transcript** multi-turn диалога и **instructions**; модель использует контекст предыдущих turns. One-shot — один запрос без history. Chat UI почти всегда session; простые transforms — single `respond`.
-
-</details>
+- **Answer:** Sessions keep transcripts and instructions across turns. One-shot calls suit single transforms without history; chat UIs use sessions.
 
 ### Q3
-- **Question (EN):** Why guided generation?
+- **Question:** Why guided generation?
 
-- **Answer (EN):** Raw JSON from LLMs is fragile. `@Generable` targets Swift structs with a defined schema — fewer parse failures and type-safe integration.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Guided generation — зачем?
-
-- **Answer (RU):** LLM raw text → хрупкий `JSONDecoder`. **`@Generable`** заставляет модель заполнять **Swift struct** с compile-time schema — меньше parse errors, type-safe integration с app logic.
-
-</details>
+- **Answer:** Raw JSON from LLMs is fragile. `@Generable` targets Swift structs with a defined schema — fewer parse failures and type-safe integration.
 
 ### Q4
-- **Question (EN):** On-device vs Private Cloud Compute?
+- **Question:** On-device vs Private Cloud Compute?
 
-- **Answer (EN):** On-device offers privacy, latency, and offline use with capacity limits. PCC extends capability on Apple-controlled infrastructure with privacy protections — prefer over third-party clouds for sensitive Apple Intelligence workflows.
+- **Answer:** On-device offers privacy, latency, and offline use with capacity limits. PCC extends capability on Apple-controlled infrastructure with privacy protections — prefer over third-party clouds for sensitive Apple Intelligence workflows.
 
 <!-- knowledge-cards-canonical:end -->
 
@@ -159,13 +114,3 @@ let response = try await session.respond(to: userText)
 **AI Engineering:** [Track overview](../README.md) · [← 10 · MCP](../mcp/) · [12 · Apple Intelligence →](../apple-intelligence/)
 
 <!-- ai-engineering-nav:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** On-device vs Private Cloud Compute?
-
-- **Answer (RU):** **On-device** — privacy, latency, offline; лимиты размера задачи. **PCC** — Apple-hosted compute для более тяжёлых запросов с **privacy architecture** (не classic cloud logging user content). Проверять availability и не отправлять sensitive data третьим cloud LLM без необходимости.
-
-</details>

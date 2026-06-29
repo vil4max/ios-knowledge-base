@@ -2,41 +2,11 @@
 
 ## In 30 seconds
 
-
 **Model Context Protocol (MCP)** standardizes how AI hosts (Cursor, agents, IDEs) discover **tools**, **resources**, and **prompts** from servers. On iOS you rarely ship an MCP server in production; you **consume** the pattern when building with agents and when wiring app capabilities as typed tools. Pair with [Tool Calling](../tool-calling/) for the model side and [Agents](../agents/) for multi-step loops.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-**MCP** стандартизирует discovery **tools**, **resources**, **prompts** для AI-хостов. На iOS чаще consumer паттерна, не свой MCP-сервер в проде.
-
-</details>
 
 ## 🎯 Focus vs Defer
 
-
 ### Focus
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Стабильный AI workflow: setup, правила, контроль качества, итеративная поставка.
-
-
-</details>
-
-
-</details>
-
-
-</details>
 
 ### Defer
 
@@ -47,16 +17,7 @@
 
 ## 🏋️ Exercises
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Каждое упражнение: **задача** → **ожидаемый результат** → при необходимости **ссылка** на документацию.
-
-</details>
-
 ## Artifacts
-
 
 - Notes: `notes/`
 - Exercises: `exercises/`
@@ -75,613 +36,105 @@
 
 ## What the article covers
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Автор делится опытом после фулл-тайм работы с AI-агентами в реальной разработке. Главная мысль: агенты не убирают ответственность инженера, а **усиливают** как хорошие, так и плохие процессы.
-
-</details>
-
 ## 11 lessons from the article
-
 
 ### 1) Not using plan mode — mistake
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Прыжок сразу в реализацию часто приводит к коду “не про то”, даже если формально он корректный. План-режим снижает потери токенов/времени и улучшает старт задачи.
-
-</details>
-
 ### 2) Treating prompts as one-shot — mistake
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Без накопленного контекста модель каждый раз “додумывает” ограничения сама. Нужен устойчивый контекст (проектные знания, ограничения, аудитория, архитектурные решения).
-
-</details>
 
 ### 3) Ignoring skills — mistake
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Skills работают как переиспользуемые компетенции агента. Они уменьшают хаос в AGENTS/правилах и делают поведение агента стабильнее от задачи к задаче.
-
-</details>
-
 ### 4) Fully automatic model choice — risk
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Для сложных задач полезно явно выбирать reasoning-модели и сначала получать качественный план. Иначе “good enough” определяется инструментом, а не вами.
-
-</details>
 
 ### 5) One giant prompt for everything — mistake
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Большие промпты -> большие диффы -> сложный review -> больше скрытых дефектов. Лучше разбивать на маленькие scoped-задачи и запускать несколько агентов по узким зонам.
-
-</details>
-
 ### 6) Shallow review — fast path to tech debt
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Агенты ускоряют не только разработку, но и накопление плохих решений. Тесты могут пройти, но стиль/связность/поддерживаемость деградируют.
-
-</details>
 
 ### 7) Not learning tools deeply — lost leverage
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Shallow usage ведет к “инструмент виноват”. Deep usage дает предсказуемость: когда переключать режим, как ограничивать вывод, как строить циклы взаимодействия.
-
-</details>
-
 ### 8) Working without hooks/rules/guardrails — mistake
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Без ограничений агент заполняет пробелы своими дефолтами. Линтеры, правила и hooks резко уменьшают неоднозначность и повышают консистентность кода.
-
-</details>
 
 ### 9) Not evolving AGENTS/rules from mistakes — mistake
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Если ошибка повторяется, нужно чинить не конкретный output, а среду: добавить правило, skill, или новый check в workflow.
-
-</details>
-
 ### 10) Skipping tests/CI in PR — fast regressions
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-“Выглядит правильно” не равно “работает правильно”.
-
-Что именно имеется в виду:
-
-- AI-код часто правдоподобен, но может ломать edge-cases, контракты API и конкурентный доступ.
-- Регрессия может не проявиться локально, но всплыть в CI/на другом окружении.
-- Если не гонять обязательные проверки на каждый PR, ошибки накапливаются незаметно.
-
-Минимальный quality gate для PR:
-
-1. `lint/format` (единый стиль, базовая статическая проверка).
-2. Unit tests (быстрая проверка бизнес-логики).
-3. Integration/UI tests там, где это критично.
-4. Сборка всех затронутых targets/schemes.
-5. Code review человеком.
-
-Почему полезен “агент без контекста”:
-
-- Он читает PR так же, как будущий мейнтейнер, который не знает вашей локальной истории.
-- Быстро выявляет неочевидность, слабые нейминги, пропущенные инварианты и рискованные места.
-- Это не замена human review, а дополнительный независимый взгляд.
-
-Практический вывод:
-
-- На каждый PR: `tests + CI + review` — обязательны, даже если изменение кажется “маленьким”.
-- AI ускоряет написание кода, значит проверка должна быть не слабее, а строже.
-
-</details>
 
 ### 11) Avoiding discomfort with new tools — limits growth
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Эксперименты с непривычными инструментами помогают выявить blind spots и улучшить процесс даже если в итоге остаетесь на текущем стеке.
-
-</details>
-
 ## Actionable takeaways
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Всегда начинать сложные изменения с plan mode.
-- Держать “долгую память” проекта: rules/skills/контекстные документы.
-- Делить работу на маленькие PR и независимые review-итерации.
-- Вшить quality gate в процесс: lint + tests + CI + review.
-- После каждой повторяющейся ошибки обновлять правила, а не надеяться “в следующий раз аккуратнее”.
-- Метрику успеха считать по outcome: скорость поставки + качество + поддерживаемость.
-
-</details>
-
 ---## TL;DR
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Проблема генерации SwiftUI через ИИ обычно не в “плохой модели”, а в отсутствии стабильных правил качества.
-- Отдельный skill даёт агенту контекстно-зависимый набор проверок и рекомендаций, вместо повторных ручных правок.
-- На практике это уменьшает количество типичных ошибок: лишние `GeometryReader`, вложенные scroll-контейнеры, дублирующаяся lifecycle-логика, неаккуратная работа с изображениями.
-- Подход переводит ИИ из режима “сгенерировал и забыл” в режим “сгенерировал + самопроверил”.
-
-</details>
 
 ## Problem the skill solves
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-При прямой генерации экранов ИИ часто выдаёт код, который выглядит рабочим, но несёт скрытые риски:
-
-- устаревшие или неудачные паттерны (`onChange` и lifecycle-хуки в неподходящих местах);
-- избыточные layout-конструкции (`GeometryReader` без необходимости);
-- архитектурные UI-ошибки (вложенные scroll views);
-- ранние performance-проблемы (лишние перерасчёты view, неаккуратная загрузка изображений).
-
-Результат: время уходит не на фичу, а на одинаковые post-fix правки после каждого ответа агента.
-
-</details>
-
 ## Why a skill beats one large AGENTS.md
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Статья подчёркивает, что “всё в одном файле правил” масштабируется плохо:
-
-- файл быстро разрастается;
-- часть правил теряется в шуме;
-- обновления происходят реактивно, уже после проблем.
-
-Skill-подход более управляемый:
-
-- правила изолированы по домену (здесь — SwiftUI);
-- их легче эволюционировать и ревьюить;
-- агент подключает их осознанно для релевантных задач.
-
-</details>
 
 ## Rules especially valuable for SwiftUI
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Из практики, собранной в skill:
-
-- корректное использование `onChange` без циклических обновлений;
-- обоснованное применение `GeometryReader`;
-- запрет/минимизация вложенных scroll-контейнеров;
-- аккуратная стратегия работы с изображениями и памятью;
-- стабильные паттерны для навигации, списков и модальных сценариев;
-- отдельный фокус на runtime performance, где ИИ ошибается чаще всего.
-
-</details>
-
 ## What changes in day-to-day development
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-С подключённым skill агент чаще действует как встроенный reviewer:
-
-- заранее помечает рискованные решения;
-- предлагает более простые и устойчивые альтернативы;
-- объясняет причину изменения, а не только переписывает код.
-
-Это снижает “стоимость генерации”: меньше итераций, меньше скрытого техдолга, более предсказуемый code review.
-
-</details>
-
 ## What to adopt
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Для UI-задач держать отдельный SwiftUI skill как обязательный слой качества.
-- Не расширять бесконечно общий AGENTS.md: переносить предметные правила в профильные skills.
-- Добавлять в skill только проверяемые и операциональные правила (не абстрактные “пиши лучше”).
-- Использовать skill как живую базу практик: пополнять новыми кейсами после ревью/инцидентов.
-
-</details>
 
 ## Mini checklist before generating a SwiftUI screen
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Skill для SwiftUI подключён для текущей задачи.
-- В промпте есть ограничения по layout, state и производительности.
-- После генерации агент прогнал self-review по критичным anti-patterns.
-- Перед merge зафиксированы риски и правки (если они были) в коротком changelog.
-
-</details>
-
 ---## TL;DR
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Генерация тестов ИИ без правил часто даёт хрупкие и поверхностные тесты.
-- Отдельный testing skill задаёт агенту стабильный стандарт качества и структуру проверки.
-- Это уменьшает количество false confidence: когда тесты есть, но они мало что гарантируют.
-- Skill полезен и как генератор, и как встроенный reviewer тестов до merge.
-
-</details>
-
 ## Source
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Статья: [Swift Testing Agent Skill: Write high-quality tests with AI](https://www.avanderlee.com/ai-development/swift-testing-agent-skill-write-high-quality-tests-with-ai/)
-- Репозиторий skill: [AvdLee/Swift-Testing-Agent-Skill](https://github.com/AvdLee/Swift-Testing-Agent-Skill)
-
-</details>
 
 ## What to read first in the repo
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- `SKILL.md` — основной контракт: когда подключать skill и какой формат результата ожидать от агента.
-- примеры миграции `XCTest` → `Swift Testing` — чтобы быстро понять, какие паттерны переводятся 1:1, а где нужно менять структуру теста.
-- разделы про async/parallel testing — самые частые источники flaky-тестов.
-- issue tracker — реальные кейсы, где команды упираются в ограничения/нюансы.
-
-</details>
-
 ## Problem with “ordinary” AI-generated tests
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Без предметного контекста агент часто:
-
-- пишет тесты “по поверхности” API вместо проверки поведения;
-- пропускает edge cases и negative paths;
-- делает слишком связанный с реализацией тест, который ломается при рефакторинге;
-- создаёт дубли и шум, которые не улучшают покрытие рисков.
-
-Итог: видимость хорошей тестовой базы без реального роста confidence.
-
-</details>
 
 ## What Testing Skill changes
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Skill превращает “попросил тесты” в воспроизводимый процесс:
-
-- фиксирует чеклист качества (структура, сценарии, assertions, async-patterns);
-- направляет модель к проверке поведения, а не внутренних деталей;
-- подсказывает, какие кейсы обычно забывают;
-- помогает держать единый стиль тестов в команде.
-
-</details>
-
 ## Especially important practices
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Явное разделение Arrange / Act / Assert.
-- Обязательные негативные сценарии и edge cases.
-- Проверка не только результата, но и контрактов взаимодействия (где это уместно).
-- Аккуратная стратегия для async-тестов и event sequence проверок.
-- Минимизация flakiness: отказ от тайминговых костылей и нестабильных ожиданий.
-
-</details>
 
 ## What it gives in daily development
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Меньше ручного “дописывания” тестов после генерации.
-- Более быстрый и предсказуемый code review тестов.
-- Ниже риск регрессий при изменении реализации.
-- Легче масштабировать тестовую культуру между модулями и разработчиками.
-
-</details>
-
 ## What to adopt
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Подключать testing skill как обязательный слой для задач “написать/обновить тесты”.
-- Держать правила skill живыми: пополнять после каждого найденного пробела в ревью.
-- Разделить usage на два режима: генерация новых тестов и аудит существующих.
-- Для Swift Testing отдельно закрепить паттерны проверки async и последовательности событий.
-- Для каждой новой feature фиксировать минимальный шаблон “что обязан проверить агент в тестах” и сверять его с содержимым skill.
-
-</details>
 
 ## Mini checklist for AI-generated tests
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Тест проверяет поведение, а не детали реализации.
-- Есть минимум один негативный сценарий.
-- Async-логика не опирается на нестабильные задержки.
-- Assertions объясняют бизнес-ожидание, а не только технический факт.
-- Тесты читаются как спецификация сценария.
-
-</details>
-
 ---## TL;DR
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Несмотря на SwiftData, Core Data остаётся массовым выбором в legacy и enterprise iOS-приложениях.
-- Главная ценность Core Data skill — систематизировать сложные зоны: threading, merge conflicts, migrations, performance.
-- Skill полезен как “встроенный ревьюер” для решений, где легко допустить дорогие ошибки.
-- Это не замена архитектурного мышления, а ускоритель корректных решений в повторяющихся проблемах.
-
-</details>
-
 ## Source
-
 
 - [Core Data Agent Skill now available open source](https://www.avanderlee.com/ai-development/core-data-agent-skill-now-available-open-source/)
 
 ## Why the topic is still relevant
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-В реальной разработке многие команды продолжают использовать Core Data, потому что:
-
-- большой существующий код и данные уже завязаны на Core Data;
-- migration cost на SwiftData может быть высок;
-- зрелая экосистема и проверенные production-паттерны уже наработаны.
-
-Поэтому запрос “как уменьшить боль Core Data” остаётся практичным, а не теоретическим.
-
-</details>
-
 ## Problems the skill helps close
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Ошибки многопоточности и нарушение context confinement.
-- Конфликты при сохранении и merge policy.
-- Сложные миграции модели и эволюция схемы.
-- Производительность fetch/save и поведение на больших объёмах данных.
-- CloudKit-сценарии (если используется `NSPersistentCloudKitContainer`).
-
-</details>
 
 ## How it helps in daily work
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Агент быстрее находит типовые anti-patterns.
-- Рекомендации становятся более консистентными между задачами и разработчиками.
-- Снижается вероятность “быстрых фиксов”, которые потом приводят к crash/данным в неконсистентном состоянии.
-
-</details>
-
 ## Practical takeaways
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Для Core Data задач подключать профильный skill как обязательный контекст.
-- Проверять решения через единый чеклист: context usage, object ID handoff, merge strategy, migration path.
-- Для legacy-проектов сначала стабилизировать текущие практики (skill + тесты), потом планировать эволюцию слоя данных.
-- Фиксировать повторяющиеся кейсы команды и дополнять skill локальными правилами.
-
-</details>
 
 ## Mini checklist
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- В задаче явно определены контексты и правила передачи данных между ними.
-- Не передаются `NSManagedObject` между потоками/контекстами напрямую.
-- Миграционная стратегия и merge policy описаны до релиза.
-- Для performance-путей есть измерение, а не только предположение.
-
-</details>
-
 ---## TL;DR
 
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Удвоение output получается не из-за “умного агента”, а из-за инженерного конвейера вокруг него.
-- Рабочая модель: агент пишет/тестирует/собирает, инженер читает 100% диффа как PR и остаётся ответственным за итог.
-- Основные ускорители: связка с трекером задач, стандартизированный pipeline, skills и документация для модели рядом с кодом.
-- Результат в production достигается не сразу: нужны месяцы настройки правил, контекста и ограничений.
-
-</details>
-
 ## Source
-
 
 - [Coding agents for production iOS: a senior engineer's setup for 2x the output](https://ignatovv.me/blog/coding-agents-for-production-ios/)
 
 ## Central idea of the article
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Автор показывает, что “vibe coding” в production может быть зрелым инженерным процессом, если:
-
-- автоматизация забирает рутину;
-- человек оставляет за собой архитектурную ответственность и полный review;
-- pipeline делает работу воспроизводимой, а не “магической”.
-
-</details>
-
 ## What a working pipeline looks like
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Примерный контур:
-
-1. `Task ID` из трекера.
-2. План реализации.
-3. Генерация/правки кода агентом.
-4. Локальный review (как полноценный PR).
-5. Автооформление commit/push/PR через команды и шаблоны.
-
-Дополнительно:
-
-- сборка и тесты через терминал (`xcodebuild`);
-- генерация PR-описаний/release notes;
-- единый формат задач и результатов.
-
-</details>
 
 ## What actually improves results
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Контекстные документы для агента (гайдлайны, объектная модель, дизайн-система).
-- Skills с доменными правилами и ограничениями.
-- Стабильные операционные команды (вместо ручной “дрессировки” в каждом чате).
-- Жёсткий post-review каждого изменения человеком.
-
-</details>
-
 ## Honest part: why “from scratch” fails at first
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-На раннем этапе агент:
-
-- упрощает архитектуру там, где нельзя;
-- пропускает дизайн-системные ограничения;
-- нестабилен на нетривиальных задачах.
-
-Перелом происходит после накопления:
-
-- правил;
-- проверочных чеклистов;
-- структуры знаний в репозитории;
-- повторяемых сценариев запуска.
-
-</details>
 
 ## What it means for the team
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Проблема уже не в доступности технологий, а в оргдисциплине:
-
-- готовы ли вы описать процесс;
-- готовы ли поддерживать skills/docs как “инфраструктуру”;
-- готовы ли формально ревьюить каждый агентский дифф.
-
-</details>
-
 ## Practical takeaways
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Начинать не с “пусть агент пишет всё”, а с явного конвейера Task→Plan→Code→Review→PR.
-- Вынести iOS-правила и архитектурные ограничения в машиночитаемые skills/docs в репо.
-- Принять практику 100% review агентских изменений как обязательный quality gate.
-- Измерять прогресс метриками: lead time, доля one-shot задач, число пост-релизных регрессий.
-
-</details>
 
 ## Mini checklist
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- Есть ли единый pipeline с понятными входами/выходами для агента.
-- Может ли агент поднять релевантный контекст без ручного “докидывания” каждый раз.
-- Проверяет ли инженер 100% диффа перед merge.
-- Фиксируются ли неудачные кейсы в правила/skills, чтобы не повторять ошибки.
-
-</details>
-
 ---## Interview Q&A (Knowledge cards)
 
-
 ### Q1
-- **Question (EN):** What is MCP in one sentence?
-- **Answer (EN):** Model Context Protocol standardizes how AI hosts discover tools, resources, and prompts from servers—relevant when wiring agent workflows, not typically an in-app production server on iOS.
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Что такое MCP одной фразой?
-- **Answer (RU):** Model Context Protocol стандартизирует, как AI-хосты (Cursor, IDE) находят tools, resources и prompts у серверов; на iOS чаще consumer паттерна, чем свой MCP в проде.
-
-</details>
+- **Question:** What is MCP in one sentence?
+- **Answer:** Model Context Protocol standardizes how AI hosts discover tools, resources, and prompts from servers—relevant when wiring agent workflows, not typically an in-app production server on iOS.
 
 <!-- ai-engineering-nav:start -->
 

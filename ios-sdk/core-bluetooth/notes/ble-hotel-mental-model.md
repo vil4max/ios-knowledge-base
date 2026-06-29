@@ -8,22 +8,6 @@
 
 ## In 30 seconds
 
-
-
-_English summary — expand «По-русски» for the full Russian text._
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-BLE is not "connect and send data." It is a **GATT hotel**: the iPhone is the **guest** (Central), the device is the **hotel** (Peripheral), **services** are departments, **characteristics** are desks, and **values** are the information you read, write, or subscribe to. **Low Energy** means the device does not want to talk all the time — and the **happy path is not the real world**. Senior mobile work starts when you design for disconnect, background, and weak signal.
-
----
-
-</details>
-
-
-
 ## Infographic
 
 ![BLE hotel analogy — Central, Peripheral, services, characteristics, layered architecture](../assets/ble-hotel-analogy.png)

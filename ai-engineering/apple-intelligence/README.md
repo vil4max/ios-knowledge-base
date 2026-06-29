@@ -2,19 +2,9 @@
 
 ## In 30 seconds
 
-
 Practical **on-device AI** in iOS apps mixes **Apple frameworks** by task: **Vision** / **Core ML** for perception, **Natural Language** for lightweight NLP, **Foundation Models** (iOS 26+) for generative text and tools. Patterns: capability gating, streaming UI, background inference off main thread, privacy manifests, hybrid cloud fallback only when justified. Ship measurable value — summarization, search, assistive input — not AI for its own sake.
 
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-Практический **on-device AI** на iOS: **Vision**, **Speech**, **Natural Language**, **Foundation Models** — выбор framework под задачу.
-
-</details>
-
 ## Apple docs
-
 
 - [Core ML](https://developer.apple.com/documentation/coreml) — custom and converted models.
 - [Vision](https://developer.apple.com/documentation/vision) — face, text, barcode, object detection.
@@ -24,7 +14,6 @@ Practical **on-device AI** in iOS apps mixes **Apple frameworks** by task: **Vis
 - [Privacy manifest files](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) — declare ML-related API use.
 
 ## 🎯 Focus vs Defer
-
 
 ### Focus
 
@@ -43,7 +32,6 @@ Practical **on-device AI** in iOS apps mixes **Apple frameworks** by task: **Vis
 - Embedding entire ChatGPT clone in v1 — scope to one assistive feature.
 
 ## Key concepts
-
 
 | Use case | Apple stack |
 |----------|-------------|
@@ -74,7 +62,6 @@ UI (SwiftUI)
 
 ## 🏋️ Exercises
 
-
 1. **Smart reply** — Three suggested replies to incoming message using on-device model. *Expected:* low temp, max length, user tap to send (no auto-send).
 
 2. **Receipt scan** — Vision OCR + guided extraction of total/date. *Expected:* Vision for text, FM or regex for fields, validate currency.
@@ -87,7 +74,6 @@ UI (SwiftUI)
 
 ## Links
 
-
 - [Core ML](https://developer.apple.com/documentation/coreml)
 - [Foundation Models framework](https://developer.apple.com/documentation/foundationmodels)
 - [Human Interface Guidelines — Machine learning](https://developer.apple.com/design/human-interface-guidelines/machine-learning) — UX expectations
@@ -95,58 +81,27 @@ UI (SwiftUI)
 
 ## Interview Q&A (Knowledge cards)
 
-
 <!-- knowledge-cards-canonical:start -->
 
 ### Q1
-- **Question (EN):** How do you choose between Core ML and Foundation Models?
+- **Question:** How do you choose between Core ML and Foundation Models?
 
-- **Answer (EN):** Core ML fits fixed IO tasks like classification and detection. Foundation Models fit generative text, dialog, and tools. Do not use an LLM where Vision and rules suffice.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Как выбрать между Core ML и Foundation Models?
-
-- **Answer (RU):** **Core ML** — фиксированная задача (classify, detect, regress), известный input/output, часто меньше и deterministic. **Foundation Models** — open-ended **text generation**, dialog, tools. Не гонять generative LLM туда, где хватит Vision + regex.
-
-</details>
+- **Answer:** Core ML fits fixed IO tasks like classification and detection. Foundation Models fit generative text, dialog, and tools. Do not use an LLM where Vision and rules suffice.
 
 ### Q2
-- **Question (EN):** Where should inference run?
+- **Question:** Where should inference run?
 
-- **Answer (EN):** Keep inference off the main thread in a Task or actor; update UI on MainActor. Stream long generation with cancellation; downsample large images to control memory.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** Где выполнять inference?
-
-- **Answer (RU):** **Не на main thread** — Vision/Core ML/FM calls в `Task` или dedicated **actor**; UI только observes state on **MainActor**. Длинная генерация — **streaming** + cancel. Watch memory on large images — downsample first.
-
-</details>
+- **Answer:** Keep inference off the main thread in a Task or actor; update UI on MainActor. Stream long generation with cancellation; downsample large images to control memory.
 
 ### Q3
-- **Question (EN):** On-device AI UX patterns?
+- **Question:** On-device AI UX patterns?
 
-- **Answer (EN):** Show progress or streaming; disclose AI-generated content; confirm irreversible actions; provide fallbacks and settings links; avoid long blank waits without feedback.
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** On-device AI UX patterns?
-
-- **Answer (RU):** Показать **progress/streaming**; не скрывать что ответ AI; **confirm** перед irreversible actions; fallback когда model unavailable; settings link для Apple Intelligence. Избегать blank screen >2s без indicator.
-
-</details>
+- **Answer:** Show progress or streaming; disclose AI-generated content; confirm irreversible actions; provide fallbacks and settings links; avoid long blank waits without feedback.
 
 ### Q4
-- **Question (EN):** App Store and privacy considerations for AI features?
+- **Question:** App Store and privacy considerations for AI features?
 
-- **Answer (EN):** Accurate privacy manifests and labels; on-device processing reduces collection disclosure. For cloud AI use encryption, minimal retention, and consent. Do not hide AI behavior from App Review; disclose third-party ML SDKs.
+- **Answer:** Accurate privacy manifests and labels; on-device processing reduces collection disclosure. For cloud AI use encryption, minimal retention, and consent. Do not hide AI behavior from App Review; disclose third-party ML SDKs.
 
 <!-- knowledge-cards-canonical:end -->
 
@@ -157,13 +112,3 @@ UI (SwiftUI)
 **AI Engineering:** [Track overview](../README.md) · [← 11 · Foundation Models](../foundation-models/) · [13 · Dynamic Profiles →](../dynamic-profiles/)
 
 <!-- ai-engineering-nav:end -->
-
-
-<details class="lang-ru">
-<summary>По-русски</summary>
-
-- **Question (RU):** App Store / privacy для AI features?
-
-- **Answer (RU):** **Privacy manifest** и nutrition labels отражают сбор данных; on-device processing снижает disclosure. Если cloud — encrypt, minimize retention, user consent. **Guideline 2.3** — не скрывать AI capabilities от review. Document third-party ML SDKs.
-
-</details>
